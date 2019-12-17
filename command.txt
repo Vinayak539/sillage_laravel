@@ -1,0 +1,82 @@
+php artisan tinker
+
+App\Model\Admin::create([
+    'name' => 'Admin',
+    'email' => 'admin@gmail.com',
+    'password' => bcrypt('asdasdasd'),
+    'super_admin' => true
+]);
+
+factory(App\Model\User::class , 20)->create();
+
+$users = App\Model\User::all();
+
+foreach($users as $user) {
+        $subname = strtoupper(substr($user->name, 0, 3));
+        $user_id=str_pad($user->id,5,'0',STR_PAD_LEFT); 
+        $promocode = $subname . $user_id . date('d') . date('m');
+        $user->update(['promocode' => $promocode]);
+}
+
+factory(App\Model\Product::class, 20)->create()->each(function ($product) {
+    $sizes = factory(App\Model\ProductSize::class, rand(1 , 4))->make();
+    foreach($sizes as $size) {
+        $product->sizes()->save($size);
+    }
+});
+
+factory(App\Model\Order::class, 20)->create()->each(function ($order) {
+    $orderdetails = factory(App\Model\OrderDetail::class, rand(1 , 4))->make();
+    foreach($orderdetails as $orderdetail) {
+        $order->details()->save($orderdetail);
+    }
+});
+
+factory(App\Model\Review::class , 20)->create();
+
+php artisan co:cl
+php artisan ca:cl
+php artisan v:cl
+php artisan r:cl
+php artisan cl
+composer dump-autoload
+
+
+PAYTM_ENVIRONMENT=TEST
+PAYTM_MERCHANT_KEY="cwDhR4EsyU@HthU#"
+PAYTM_MERCHANT_MID="UMWTec00223886636993"
+PAYTM_MERCHANT_WEBSITE="WEBSTAGING"
+PAYTM_STATUS_QUERY_URL="https://securegw-stage.paytm.in/merchant-status/getTxnStatus"
+PAYTM_TXN_URL="https://securegw-stage.paytm.in/theia/processTransaction"
+PAYTM_INDUSTRY_TYPE_ID=Retail
+CHANNEL_ID=WEB
+
+Slider size
+
+825 * 520 
+
+
+coupon welcome 300 
+odd 500
+
+add out of stock in product after search and other
+
+<input list="categoriesList" id="category_id" class="form-control" required>
+<datalist id="categoriesList">
+    @foreach($categories as $category)
+    <option data-value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+    @endforeach
+</datalist>
+<input type="hidden" name="category_id" id="category_id-hidden">
+
+
+
+add column used_royalty_points bigint in txn_orders 
+replace column last_purchase date in txn_users 
+
+
+...
+
+
+Note : 
+14-Dec-19 -> product show blade in related product i want category url (now it is taken from $product not $related-products)
