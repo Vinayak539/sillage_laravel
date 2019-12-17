@@ -80,3 +80,5 @@ replace column last_purchase date in txn_users
 
 Note : 
 14-Dec-19 -> product show blade in related product i want category url (now it is taken from $product not $related-products)
+
+....
