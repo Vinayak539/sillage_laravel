@@ -327,7 +327,7 @@
                                 <a href="{{ route('checkout') }}" class="btn btn-cls btn-fullwidth btn-style-1">
                                     Proceed To Checkout
                                 </a>
-                                <a href="{{ route('product-detail') }}" class="btn btn-cls btn-fullwidth btn-style-1 mt--10">
+                                <a href="{{ route('product') }}" class="btn btn-cls btn-fullwidth btn-style-1 mt--10">
                                      Continue   Shopping
                                 </a>
                             </div>

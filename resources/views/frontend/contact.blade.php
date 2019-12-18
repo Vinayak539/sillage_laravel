@@ -59,30 +59,32 @@
                         class="form"
                         method="POST">
                         @csrf
-                        <div class="form__group mb--20">
+                        <div class="row">
+                            <div class="col-md-6 form__group mb--20">
                                 <input type="text" placeholder="Name *"  class="form__input form__input--2" name="name" required="required"
                                 value="{{old('name')}}" oninvalid="this.setCustomValidity('Please enter name')"
                                 oninput="setCustomValidity('')">
-                        </div>
-                        <div class="form__group mb--20">
-                            <input type="text" placeholder="E-mail *" class="form__input form__input--2" name="email" required="required"
-                                    value="{{old('email')}}" oninvalid="this.setCustomValidity('Please enter email')"
-                                    oninput="setCustomValidity('')">
-                        </div>
-                        <div class="form__group mb--20">
-                            <input type="text" placeholder="Phone" class="form__input form__input--2" name="mobile" required="required"
-                                    value="{{old('mobile')}}" oninvalid="this.setCustomValidity('Please enter mobile')"
-                                    oninput="setCustomValidity('')">
-                        </div>
-                        <div class="form__group mb--20">
-                            <input type="text" placeholder="Subject"  class="form__input form__input--2" name="subject" value="{{old('subject')}}">
-                        </div>
-                        <div class="form__group mb--20">
-                            <textarea placeholder="Type Your Message" name="message"
-                            class="form__input form__input--textarea">{{old('message')}}</textarea>
-                        </div>
-                        <div class="form__group">
-                            <Button type="submit" class="btn btn-submit btn-style-1 update_button">Send</Button>
+                            </div>
+                            <div class="col-md-6 form__group mb--20">
+                                <input type="text" placeholder="E-mail *" class="form__input form__input--2" name="email" required="required"
+                                        value="{{old('email')}}" oninvalid="this.setCustomValidity('Please enter email')"
+                                        oninput="setCustomValidity('')">
+                            </div>
+                            <div class="col-md-6 form__group mb--20">
+                                <input type="text" placeholder="Phone" class="form__input form__input--2" name="mobile" required="required"
+                                        value="{{old('mobile')}}" oninvalid="this.setCustomValidity('Please enter mobile')"
+                                        oninput="setCustomValidity('')">
+                            </div>
+                            <div class="col-md-6 form__group mb--20">
+                                <input type="text" placeholder="Subject"  class="form__input form__input--2" name="subject" value="{{old('subject')}}">
+                            </div>
+                            <div class="col-md-12 form__group mb--20">
+                                <textarea placeholder="Type Your Message" name="message"
+                                class="form__input form__input--textarea">{{old('message')}}</textarea>
+                            </div>
+                            <div class="col-md-12 form__group">
+                                <Button type="submit" class="btn btn-submit btn-style-1 update_button">Send</Button>
+                            </div>
                         </div>
                     </form>
                     <!-- Contact form end Here -->
@@ -94,8 +96,9 @@
                     <!-- Contact info widget start here -->
                     <div class="contact-info-widget mb--45 mb-sm--35">
                         <div class="contact-info">
-                            <h3>Postal Address</h3>
-                            <p>Coming Soon...</p>
+                            <h3>Our Location</h3>
+                            <p>Unit no.112, 1st Floor, Bldg no.A6,<br />
+                                Harihar Complex, Dapode,Thane- 421302.</p>
                         </div>
                     </div>
                     <!-- Contact info widget end here -->
@@ -104,31 +107,25 @@
                     <div class="contact-info-widget two-column-list sm-one-column mb--45 mb-sm--35">
                         <div class="contact-info mb-sm--35">
                             <h3>Business Phone</h3>
-                            <a href="#">+91 1234567890</a>
+                            <a href="tel:+919619614785">(+91) 961 9614 785</a>
                         </div>
                         <div class="contact-info">
                             <h3>Say Hello</h3>
-                            <a href="mailto:info@la-studioweb.com">info@thehatkestore.co.in</a>
+                            <a href="mailto:support@hnilifestyle.com">support@hnilifestyle.com</a>
                         </div>
                     </div>
                     <!-- Contact info widget end here -->
                     <!-- Social Icons Start Here -->
                     <ul class="social body-color">
                         <li class="social__item">
-                            <a href="https://facebook.com/" class="social__link">
+                            <a href="https://www.facebook.com/hnilifestyle" target="_blank" class="social__link">
                                 <i class="fa fa-facebook"></i>
                             </a>
                         </li>
-                        <li class="social__item">
-                            <a href="https://twitter.com/" class="social__link">
-                                <i class="fa fa-twitter"></i>
-                            </a>
-                        </li>
-
 
                         <li class="social__item">
-                            <a href="https://youtube.com/" class="social__link">
-                                <i class="fa fa-youtube"></i>
+                            <a href="https://www.instagram.com/hni.lifestyle/" target="_blank" class="social__link">
+                                <i class="fa fa-instagram"></i>
                             </a>
                         </li>
 

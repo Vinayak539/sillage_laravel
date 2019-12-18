@@ -2,29 +2,6 @@
 @section('title', 'Edit Product')
 @section('content')
 
-<div class="card borderless-card">
-    <div class="card-block inverse-breadcrumb">
-        <div class="breadcrumb-header">
-            <h5>Edit Product</h5>
-        </div>
-        <div class="page-header-breadcrumb">
-            <ul class="breadcrumb-title">
-                <li class="breadcrumb-item">
-                    <a href="/adrana951">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="{{ route('admin.products.all') }}">All Products</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="#addModal" data-toggle="modal" data-target="#addModal"> Add More Custom Fields</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="#addImageModal" data-toggle="modal" data-target="#addImageModal"> Add More Images</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
 
 {{-- Model --}}
 
@@ -32,11 +9,10 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header bg-primary">
-                <h3 class="modal-title text-light">Add More Size of {{ $product->title }}</h3>
+                <h3 class="modal-title text-light">Add More Custom Field of {{ $product->title }}</h3>
                 <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
             </div>
-            <form action="/adrana951/manage-products/add-product-custom-field/{{$product->id}}" method="POST"
-                class="needs-validation">
+            <form action="{{ route('admin.products.add.custom.field', $product->id) }}" method="POST"class="needs-validation">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -71,8 +47,7 @@
                 <h3 class="modal-title text-light">Add More Image of {{ $product->title }}</h3>
                 <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
             </div>
-            <form action="/adrana951/manage-products/add-product-images/{{$product->id}}" method="POST"
-                class="needs-validation" enctype="multipart/form-data">
+            <form action="{{ route('admin.products.add.images', $product->id) }}" method="POST" class="needs-validation" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -80,8 +55,6 @@
                         <input type="file" required="required" name="image_urls[]" class="form-control" id="image_urls"
                             accept="image/jpeg, image/png" multiple>
                     </div>
-
-                    <input type="hidden" name="product_id" value="{{ $product->id }}">
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary btnSubmit">
@@ -95,18 +68,27 @@
 
 {{-- Model End --}}
 
-<div class="card">
-    <div class="card-block">
-        <form method="POST" role="form" class="needs-validation" enctype="multipart/form-data">
-            @csrf
-            <div class="modal-body">
+<section class="section">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-dark text-white-all">
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="fas fa-home"></i>Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-list"></i>Edit Product</li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.products.all') }}">All Products</a></li>
+            <li class="breadcrumb-item"><a href="#addModal" data-toggle="modal" data-target="#addModal"> AddMore Custom Fields</a></li>
+            <li class="breadcrumb-item"><a href="#addImageModal" data-toggle="modal" data-target="#addImageModal"> Add More Images</a></li>
+        </ol>
+    </nav>
+
+    <div class="card">
+        <div class="card-header bg-dark text-white-all">
+            <h4>Update Brand</h4>
+        </div>
+
+        <div class="card-body">
+            <form method="POST" role="form" class="needs-validation" enctype="multipart/form-data">
+                @csrf
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="alert alert-danger">
-                            <h5> <i class="fa fa-warning"></i> Note : Product Image should be of width: 600px & height:
-                                600px.</h5>
-                        </div>
-                    </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="category_id">Category <span class="text-danger">*</span></label>
@@ -114,7 +96,8 @@
                                 <option value="">--Select Category--</option>
                                 @foreach($categories as $category)
                                 <option value="{{ $category->id }}"
-                                    {{ $category->id == $product->category_id ? 'selected' : '' }}>{{ $category->name }}
+                                    {{ $category->id == $product->category_id ? 'selected' : '' }}>
+                                    {{ $category->name }}
                                 </option>
                                 @endforeach
                             </select>
@@ -136,7 +119,8 @@
                                 <option value="">--Select Brand--</option>
                                 @foreach($brands as $brand)
                                 <option value="{{ $brand->id }}"
-                                    {{ $brand->id == $product->brand_id ? 'selected' : '' }}>{{ $brand->brand_name }}
+                                    {{ $brand->id == $product->brand_id ? 'selected' : '' }}>
+                                    {{ $brand->brand_name }}
                                 </option>
                                 @endforeach
                             </select>
@@ -344,7 +328,8 @@
                             <select name="status" id="status" class="form-control" required>
                                 <option value="">--Select Status--</option>
                                 <option value="1" {{ $product->status == true ? 'selected' : '' }}>Active</option>
-                                <option value="0" {{ $product->status == false ? 'selected' : '' }}>Inactive</option>
+                                <option value="0" {{ $product->status == false ? 'selected' : '' }}>Inactive
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -400,20 +385,6 @@
                                     name="quality_issue" {{ $product->quality_issue == true ? 'checked' : '' }}>
                                 <label class="custom-control-label" for="quality_issue">Quality Issue</label>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="section_id">Top Section</label>
-                            <select name="section_id" id="section_id" class="form-control" multiple>
-                                <option value="">--Select Top Section--</option>
-                                @foreach($top_sections as $section)
-                                <option value="{{ $section->id }}" class="customCheck">
-                                    {{ $section->SectionName }}
-                                </option>
-                                @endforeach
-                            </select>
                         </div>
                     </div>
 
@@ -476,90 +447,82 @@
                         </button>
                     </div>
                 </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div class="card borderless-card">
-    <div class="card-block inverse-breadcrumb">
-        <div class="breadcrumb-header">
-            <h5>Available Custom Fields for {{ str_limit($product->title, 20) }}</h5>
-        </div>
-        <div class="page-header-breadcrumb">
-            <ul class="breadcrumb-title">
-                <li class="breadcrumb-item">
-                    <a href="/adrana951">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="{{ route('admin.products.all') }}">Manage Products</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="#addModal" data-toggle="modal" data-target="#addModal"> Add More Custom Fields</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="#addImageModal" data-toggle="modal" data-target="#addImageModal"> Add More Images</a>
-                </li>
-            </ul>
+            </form>
         </div>
     </div>
 
-    @if($product->custom_fields)
-    <div class="card-body">
-        <table class="table table-striped table-bordered">
-            <thead>
-                <tr>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-dark text-white-all">
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="fas fa-home"></i>Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-list"></i>Edit Product</li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.products.all') }}">All Products</a></li>
+            <li class="breadcrumb-item"><a href="#addModal" data-toggle="modal" data-target="#addModal"> AddMore Custom Fields</a></li>
+            <li class="breadcrumb-item"><a href="#addImageModal" data-toggle="modal" data-target="#addImageModal"> Add More Images</a></li>
+        </ol>
+    </nav>
 
-                    <th>
-                        <label for="field_id">ID </label>
-                    </th>
-                    <th>
-                        <label for="field_name">Field Name </label>
-                    </th>
-                    <th>
-                        <label for="field_value">Field Value</label>
-                    </th>
-                    <th>
-                        Action
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($product->custom_fields as $key => $cf)
-                <tr>
-                    <td>
-                        <input type="number" name="field_id[{{$key}}]" value="{{ $cf->id }}" class="form-control"
-                            id="field_id" disabled>
-                    </td>
-                    <td>
-                        <input type="text" name="field_name[{{$key}}]" value="{{ $cf->field_name }}"
-                            class="form-control" id="field_name">
-                    </td>
-                    <td>
-                        <input type="text" name="field_value[{{$key}}]" value="{{ $cf->field_value }}"
-                            class="form-control" id="field_value">
-                    </td>
+    <div class="card">
+        <div class="card-header">
+            <h5>Available Custom Fields for {{ Str::limit($product->title, 20) }}</h5>
+        </div>
 
-                    <td>
+        @if($product->custom_fields)
+        <div class="card-body">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
 
-                        <a href="javascript:void(0)" title="Update Data"
-                            class="btn btn-primary text-white update-object" data-object-index="{{$key}}">
-                            <i class="fa fa-save"></i>
-                        </a>
+                        <th>
+                            <label for="field_id">ID </label>
+                        </th>
+                        <th>
+                            <label for="field_name">Field Name </label>
+                        </th>
+                        <th>
+                            <label for="field_value">Field Value</label>
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($product->custom_fields as $key => $cf)
+                    <tr>
+                        <td>
+                            <input type="number" name="field_id[{{$key}}]" value="{{ $cf->id }}" class="form-control"
+                                id="field_id" disabled>
+                        </td>
+                        <td>
+                            <input type="text" name="field_name[{{$key}}]" value="{{ $cf->field_name }}"
+                                class="form-control" id="field_name">
+                        </td>
+                        <td>
+                            <input type="text" name="field_value[{{$key}}]" value="{{ $cf->field_value }}"
+                                class="form-control" id="field_value">
+                        </td>
 
-                        <a href="javascript:void(0)" data-obj-id="{{$cf->id}}" title="Delete"
-                            class="btn btn-danger text-white delete-object">
-                            <i class="fa fa-trash"></i>
-                        </a>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+                        <td>
+
+                            <a href="javascript:void(0)" title="Update Data"
+                                class="btn btn-primary text-white update-object" data-object-index="{{$key}}">
+                                <i class="fa fa-save"></i>
+                            </a>
+
+                            <a href="javascript:void(0)" data-obj-id="{{$cf->id}}" title="Delete"
+                                class="btn btn-danger text-white delete-object">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        @endif
     </div>
-    @endif
-</div>
 
+</section>
 <form id="formDelete" method="POST" action="/adrana951/manage-products/delete-product-custom-field/">
     @csrf
 </form>
@@ -618,7 +581,9 @@
             $('#gst_amount').val(gst_amount);
         });
 
-        var old_categories = {!! json_encode($product -> topSection) !!};
+        var old_categories = {
+            !!json_encode($product - > topSection) !!
+        };
 
         if (old_categories && typeof old_categories == "object") {
             for (x of old_categories) {

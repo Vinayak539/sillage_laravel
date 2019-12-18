@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Model\MapColorSize;
 use App\Model\MapProductToTopSection;
 use App\Model\MasterWarranty;
 use App\Model\MstColor;
@@ -23,6 +24,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -66,40 +68,42 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(
+        $validator = Validator::make(
+            $request->all(),
             [
                 'title' => 'required|string',
                 'image_url' => 'required|image|max:1024|mimes:jpeg,png',
+                'image_url1' => 'required|image|max:1024|mimes:jpeg,png',
                 'description' => 'required|string',
                 'brand_id' => 'required|integer|exists:txn_brands,id',
                 'category_id' => 'required|exists:txn_categories,id',
-                'color_id' => 'required|integer|exists:txn_colors,id',
+                'color_id' => 'required|integer|exists:mst_colors,id',
+                'size_id' => 'required|exists:mst_sizes,id',
                 'material_id' => 'required|integer|exists:txn_materials,id',
-                'weight_id' => 'required|integer|exists:txn_weights,id',
+                'weight_id' => 'nullable|integer|exists:txn_weights,id',
                 'condition_id' => 'required|integer|exists:txn_conditions,id',
-                'gst_id' => 'required|integer|exists:txn_master_gsts,id',
                 'warranty_id' => 'required|integer|exists:master_warranties,id',
                 'expiry_date' => 'required|date_format:Y-m-d',
-                'starting_price' => 'required|numeric|min:1',
-                'buy_it_now_price' => 'required|numeric|min:1',
-                'reserve_price' => 'required|numeric|min:1',
-                'mrp' => 'required|numeric|min:1',
-                'length' => 'required|string|max:191',
-                'breadth' => 'required|string|max:191',
-                'height' => 'required|string|max:191',
-                'weight' => 'required|string|max:191',
-                'stock' => 'required|numeric|min:0',
+                'breadth' => 'nullable|string|max:191',
+                'height' => 'nullable|string|max:191',
+                'weight' => 'nullable|string|max:191',
                 'image_urls' => 'required|array',
                 'image_urls.*' => 'image|max:1024|mimes:jpeg,png',
                 'keywords' => 'required|string',
                 'is_cod' => 'required|numeric|max:1',
+                'mrp' => 'required|numeric|min:1',
+                'stock' => 'required|numeric|min:1',
             ],
             [
                 'title.required' => 'Please Enter Product Name',
-                'image_url.required' => 'Please Choose Product Image',
-                'image_url.image' => 'Please Choose Proper Image',
-                'image_url.mimes' => 'Please Choose Image of type JPG & PNG Only',
-                'image_url.max' => 'Please Choose Image of Maximum Size 1MB Only',
+                'image_url.required' => 'Please Choose Front Image',
+                'image_url.image' => 'Please Choose Proper front Image',
+                'image_url.mimes' => 'Please Choose Front Image of type JPG & PNG Only',
+                'image_url.max' => 'Please Choose Front Image of Maximum Size 1MB Only',
+                'image_url1.required' => 'Please Choose Back Image',
+                'image_url1.image' => 'Please Choose Back Proper Image',
+                'image_url1.mimes' => 'Please Choose Back Image of type JPG & PNG Only',
+                'image_url1.max' => 'Please Choose Back Image of Maximum Size 1MB Only',
                 'brand_id.required' => 'Please Select Brand',
                 'brand_id.exists' => 'Brand Not Exists',
                 'category_id.required' => 'Please Select Category',
@@ -119,27 +123,35 @@ class ProductController extends Controller
                 'image_urls.*.image' => 'Please Choose Proper Multiple Image',
                 'image_url.*.mimes' => 'Please Choose Multiple Image of type JPG & PNG Only',
                 'image_url.*.max' => 'Please Choose Multiple Image of Maximum Size 1MB Only',
+                'size_id.required' => 'Please Select Sizes',
+                'size_id.exists' => 'Size does not exists',
                 'description.required' => 'Please Enter Description',
                 'keywords.required' => 'Please Enter Atleast One Keyword of the Product',
-                'stock.required' => 'Please Enter Stock',
-                'stock.numeric' => 'Invalid data provided for stock',
-                'stock.min' => 'Stock Should not be less than 0',
                 'is_cod.required' => 'Please Select Cod Availability',
                 'is_cod.min' => 'Invalid data provided in cod availability',
+                'mrp.required' => 'Please Enter Mrp',
+                'mrp.min' => 'Mrp Should be More than 1',
+                'stock.required' => 'Please Enter Stock',
+                'stock.min' => 'Stock Should be More than 1',
             ]
         );
 
+        if ($validator->fails()) {
+            connectify('error', 'Add Product', $validator->errors()->first());
+            return redirect(route('admin.products.create'))->withInput();
+        }
+
         if ($request->hasFile('image_url')) {
-            $request['img'] = Str::slug(Str::llimit($request->title, 20), '-') . '-' . rand(0, 10) . '.' . pathinfo($request->image_url->getClientOriginalName(), PATHINFO_EXTENSION);
+            $request['img'] = "front_" . Str::slug(Str::limit($request->title, 20), '-') . '-' . rand(0, 10) . '.' . pathinfo($request->image_url->getClientOriginalName(), PATHINFO_EXTENSION);
             $request->image_url->storeAs('public/images/products', $request->img);
         }
 
-        $request['status'] = $request->saveAsDraft == 'on' ? false : true;
-        $request['expiry_date'] = $request->expiry_date == null ? null : $request->expiry_date;
-
-        if ($request->filled('category_id')) {
-            $category = TxnCategory::where('name', $request->category_id)->first();
+        if ($request->hasFile('image_url1')) {
+            $request['img1'] = "back_" . Str::slug(Str::limit($request->title, 20), '-') . '-' . rand(0, 10) . '.' . pathinfo($request->image_url1->getClientOriginalName(), PATHINFO_EXTENSION);
+            $request->image_url1->storeAs('public/images/products', $request->img1);
         }
+
+        $request['expiry_date'] = $request->expiry_date == null ? null : $request->expiry_date;
 
         $product = TxnProduct::create([
             'title' => $request->title,
@@ -148,24 +160,21 @@ class ProductController extends Controller
             'material_id' => $request->material_id,
             'weight_unit' => $request->weight_id,
             'condition_id' => $request->condition_id,
-            'gst' => $request->gst_id,
             'description' => $request->description,
-            'starting_price' => $request->starting_price,
-            'buy_it_now_price' => $request->buy_it_now_price,
-            'reserve_price' => $request->reserve_price,
             'mrp' => $request->mrp,
+            'stock' => $request->stock,
             'length' => $request->length,
             'breadth' => $request->breadth,
             'height' => $request->height,
             'weight' => $request->weight,
             'width' => $request->width,
-            'stock' => $request->stock,
             'upc' => $request->upc,
             'expiry_date' => $request->expiry_date,
-            'category_id' => $category->id,
+            'category_id' => $request->category_id,
             'warranty_id' => $request->warranty_id,
             'image_url' => $request->img,
-            'status' => $request->status,
+            'image_url1' => $request->img1,
+            'status' => true,
             'gst_value' => $request->gst_amount,
             'isCodAvailable' => $request->is_cod,
             'within_days' => $request->within_days,
@@ -198,8 +207,19 @@ class ProductController extends Controller
                 TxnImage::create([
                     'product_id' => $product->id,
                     'image_url' => $request->image,
+                    'color_id' => $request->color_id,
                 ]);
             }
+        }
+
+        if ($request->filled('color_id')) {
+            MapColorSize::create([
+                'product_id' => $product->id,
+                'color_id' => $request->color_id,
+                'size_id' => $request->size_id,
+                'mrp' => $request->mrp,
+                'stock' => $request->stock,
+            ]);
         }
 
         if (array_key_exists('field_name', $request->all())) {
@@ -214,18 +234,9 @@ class ProductController extends Controller
             }
         }
 
-        if ($request->filled('section_id')) {
+        connectify('success', 'Product Added', 'Product has been added successfully !');
 
-            MapProductToTopSection::create([
-                'section_id' => $request->section_id,
-                'product_id' => $product->id,
-            ]);
-        }
-
-        if ($product->status == true) {
-            return redirect(route('admin.products.all'))->with('messageSuccess', 'Product has been added Successfully !');
-        }
-        return redirect(route('admin.products.all'))->with('messageSuccess', 'Product has been save as draft !');
+        return redirect(route('admin.products.all'));
     }
 
     /**
@@ -405,16 +416,6 @@ class ProductController extends Controller
                 }
             }
 
-            if ($request->filled('section_id')) {
-
-                DB::table('map_product_to_top_sections')->where('product_id', $product->id)->delete();
-
-                MapProductToTopSection::create([
-                    'section_id' => $request->section_id,
-                    'product_id' => $product->id,
-                ]);
-            }
-
             if ($request->filled('side_product')) {
 
                 $side_product = SideProduct::where('product_id', $product->id)->first();
@@ -507,7 +508,9 @@ class ProductController extends Controller
                 ]);
             }
 
-            return redirect(route('admin.products.edit', $product->slug_url))->with('messageSuccess', 'Data has been added Successfully !');
+            connectify('success', 'Custom Field Added', 'Custom Field has been added successfully !');
+
+            return redirect(route('admin.products.edit', $product->slug_url));
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
                 return redirect(route('admin.products.all'))->with('messageDanger', 'We can\'t find product with that id !');
@@ -532,7 +535,9 @@ class ProductController extends Controller
 
             $image->delete();
 
-            return redirect(route('admin.products.edit', $image->product->slug_url))->with('messageSuccess', 'Image has been Deleted Successfully !');
+            connectify('success', 'Image Added', 'Image has been Deleted Successfully !');
+
+            return redirect(route('admin.products.edit', $image->product->slug_url));
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
                 return redirect(route('admin.products.all'))->with('messageDanger', 'We can\'t find product with that id !');
@@ -566,7 +571,11 @@ class ProductController extends Controller
                 'product_id' => $product->id,
             ]);
 
-            return redirect(route('admin.products.edit', $product->slug_url))->with('messageSuccess', 'Data has been added Successfully !');
+
+            connectify('success', 'Custom Field Added', 'Custom Field has been Deleted Successfully !');
+
+            return redirect(route('admin.products.edit', $product->slug_url));
+
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
                 return redirect(route('admin.products.all'))->with('messageDanger', 'We can\'t find product with that id !');

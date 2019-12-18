@@ -69,7 +69,13 @@
                                                 ]'>
                                         <figure class="product-gallery__thumb--single">
 
-                                            <img src="/storage/images/products/{{ $product->image_url }}"
+                                            <img src="{!! asset('storage/images/products').'/'.$product->image_url !!}"
+                                                alt="Products">
+
+                                        </figure>
+                                        <figure class="product-gallery__thumb--single">
+
+                                            <img src="{!! asset('storage/images/products').'/'.$product->image_url1 !!}"
                                                 alt="Products">
 
                                         </figure>
@@ -78,7 +84,7 @@
                                         @foreach($product->images as $image)
                                         <figure class="product-gallery__thumb--single">
 
-                                            <img src="/storage/images/multi-products/{{ $image->image_url }}"
+                                            <img src="{!! asset('storage/images/multi-products').'/'.$image->image_url !!}"
                                                 alt="Products">
 
                                         </figure>
@@ -101,7 +107,13 @@
                                                     }'>
                                             <figure class="product-gallery__image zoom">
 
-                                                <img src="/storage/images/products/{{ $product->image_url }}"
+                                                <img src="{!! asset('storage/images/products').'/'.$product->image_url !!}"
+                                                    alt="Product">
+
+                                            </figure>
+                                            <figure class="product-gallery__image zoom">
+
+                                                <img src="{!! asset('storage/images/products').'/'.$product->image_url1 !!}"
                                                     alt="Product">
 
                                             </figure>
@@ -110,7 +122,7 @@
                                             @foreach($product->images as $image)
                                             <figure class="product-gallery__image zoom">
 
-                                                <img src="/storage/images/multi-products/{{ $image->image_url }}"
+                                                <img src="{!! asset('storage/images/multi-products').'/'.$image->image_url !!}"
                                                     alt="Product">
 
                                             </figure>
@@ -159,9 +171,7 @@
                             @endif
 
                         </div>
-                        <a href="#" data-toggle="modal" data-target="#bulk-order"
-                            class="btn btn-sm float-right bulk-order-btn">Bulk Order</a>
-
+                        
                         <div class="clearfix"></div>
                         <h3 class="product-titles">{{ $product->title }}</h3>
                         @if($product->category)
@@ -280,10 +290,6 @@
 
                                 <div id="button-box" style="margin-right: 10px;">
                                     <a href="{{ route('cart') }}" class="button-cls sss">Add to cart</a>
-                                </div>
-                                <div id="button-box">
-                                    <a href="{{ route('own-creation') }}" class="button-cls sss">Create Your Own
-                                    </a>
                                 </div>
 
                             </div>
@@ -475,7 +481,7 @@
                                                     <img src="{!! asset('storage/images/products').'/'.$rproduct->image_url !!} "
                                                         alt="Product Image" class="primary-image">
 
-                                                    <img src="{!! asset('assets/img/products/prod-12-4.jpg') !!} "
+                                                    <img src="{!! asset('storage/images/products').'/'.$rproduct->image_url1 !!} "
                                                         alt="Product Image" class="secondary-image">
                                                 </a>
                                             </div>
@@ -572,6 +578,9 @@
     .bulk-order-btn {
         padding: 2px 10px;
         font-size: 12px;
+    }
+    #st-1{
+        z-index: 0 !important;
     }
 </style>
 <script type='text/javascript'

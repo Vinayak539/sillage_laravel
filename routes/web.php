@@ -13,17 +13,16 @@
 
 Route::GET('/', 'MainController@index')->name('index');
 Route::view('/about', 'frontend.about')->name('about');
-// Route::view('/contact', 'frontend.contact')->name('contact');
-Route::view('/all-product', 'frontend.all-product')->name('all-product');
-Route::view('/product-detail', 'frontend.product-detail')->name('product-detail');
-Route::view('/compare', 'frontend.compare')->name('compare');
+// Route::view('/all-product', 'frontend.all-product')->name('all-product');
+// Route::view('/product-detail', 'frontend.product-detail')->name('product-detail');
+// Route::view('/compare', 'frontend.compare')->name('compare');
 Route::view('/cart', 'frontend.cart')->name('cart');
 Route::view('/checkout', 'frontend.checkout')->name('checkout');
-Route::view('/terms-condition', 'frontend.terms-condition')->name('terms-condition');
-Route::view('/privacy', 'frontend.privacy')->name('privacy');
-Route::view('/cancellation', 'frontend.cancellation')->name('cancellation');
-Route::view('/refund-return', 'frontend.refund-return')->name('refund-return');
-Route::view('/shipping', 'frontend.shipping')->name('shipping');
+Route::view('/terms-condition', 'frontend.policy.terms-condition')->name('terms-condition');
+Route::view('/privacy', 'frontend.policy.privacy')->name('privacy');
+Route::view('/cancellation', 'frontend.policy.cancellation')->name('cancellation');
+Route::view('/refund-return', 'frontend.policy.refund-return')->name('refund-return');
+Route::view('/shipping', 'frontend.policy.shipping')->name('shipping');
 Route::view('/faq', 'frontend.faq')->name('faq');
 Route::view('/myaccount/login', 'frontend.login')->name('user.login');
 Route::view('/team', 'frontend.team')->name('team');
@@ -44,7 +43,7 @@ Route::GET('/product/{slug}', 'MainController@getProduct')->name('product');
 Route::GET('/category/{slug}', 'MainController@getCategoryProducts')->name('cate');
 Route::GET('/search', 'MainController@search');
 
-Route::prefix('adhatke852')->group(function () {
+Route::prefix('adhni753')->group(function () {
 
     Route::middleware(['guest:admin'])->group(function () {
         Route::GET('/login', 'AdminAuth\LoginController@showLoginForm')->name('login');
@@ -98,6 +97,14 @@ Route::prefix('adhatke852')->group(function () {
             Route::POST('/edit/{slider}', 'Admin\SliderController@update');
             Route::POST('/delete/{slider}', 'Admin\SliderController@destroy');
         });
+        
+        Route::prefix('/manage-home-offer-sliders')->group(function () {
+            Route::GET('/', 'Admin\HomeOfferSliderController@index')->name('admin.home-offer-sliders.all');
+            Route::POST('/', 'Admin\HomeOfferSliderController@store');
+            Route::GET('/edit/{slider}', 'Admin\HomeOfferSliderController@edit')->name('admin.home-offer-sliders.edit');
+            Route::POST('/edit/{slider}', 'Admin\HomeOfferSliderController@update');
+            Route::POST('/delete/{slider}', 'Admin\HomeOfferSliderController@destroy');
+        });
 
         Route::prefix('/manage-categories')->group(function () {
             Route::GET('/', 'Admin\CategoryController@index')->name('admin.categories.all');
@@ -115,13 +122,13 @@ Route::prefix('adhatke852')->group(function () {
             Route::GET('/edit/{id}', 'Admin\ProductController@edit')->name('admin.products.edit');
             Route::POST('/edit/{id}', 'Admin\ProductController@update');
             Route::GET('/questions/{id}', 'Admin\ProductController@getQuestions')->name('admin.products.questions');
-            Route::POST('/add-product-custom-field/{id}', 'Admin\ProductController@addCustomField');
-            Route::POST('/update-product-custom-field/{id}', 'Admin\ProductController@updateCustomField');
-            Route::POST('/delete-product-custom-field/{id}', 'Admin\ProductController@destroyCustomField');
-            Route::POST('/update-stock/{id}', 'Admin\ProductController@updateStock');
-            Route::POST('/update-price/{id}', 'Admin\ProductController@updatePrice');
-            Route::POST('/add-product-images/{id}', 'Admin\ProductController@addImages');
-            Route::POST('/delete-image/{id}', 'Admin\ProductController@deleteImage');
+            Route::POST('/add-product-custom-field/{id}', 'Admin\ProductController@addCustomField')->name('admin.products.add.custom.field');
+            Route::POST('/update-product-custom-field/{id}', 'Admin\ProductController@updateCustomField')->name('admin.products.update.custom.field');
+            Route::POST('/delete-product-custom-field/{id}', 'Admin\ProductController@destroyCustomField')->name('admin.products.delete.custom.field');
+            Route::POST('/update-stock/{id}', 'Admin\ProductController@updateStock')->name('admin.products.update.stock');
+            Route::POST('/update-price/{id}', 'Admin\ProductController@updatePrice')->name('admin.products.update.price');
+            Route::POST('/add-product-images/{id}', 'Admin\ProductController@addImages')->name('admin.products.add.images');
+            Route::POST('/delete-image/{id}', 'Admin\ProductController@deleteImage')->name('admin.products.delete.images');
             Route::GET('/edit/question/{id}', 'Admin\ProductController@getQuestion')->name('admin.product-faqs.edit');
             Route::POST('/edit/question/{id}', 'Admin\ProductController@updateQuestion')->name('admin.product-faqs.edit');
             Route::POST('/delete/question/{id}', 'Admin\ProductController@deleteQuestion')->name('admin.product-faqs.delete');
@@ -277,9 +284,7 @@ Route::prefix('adhatke852')->group(function () {
             Route::POST('/edit/{id}', 'Admin\AboutController@update');
             Route::POST('/delete/{id}', 'Admin\AboutController@destroy');
         });
-
     });
-
 });
 
 
@@ -320,7 +325,5 @@ Route::prefix('myaccount')->group(function () {
         Route::POST('/order/help/{id}', 'UserController@orderHelp')->name('user.orders.help');
         Route::POST('/order/cancel/{id}', 'UserController@cancelOrder');
         Route::GET('/download/{id}', 'UserController@downloadInvoice')->name('user.invoices.download');
-
     });
-
 });

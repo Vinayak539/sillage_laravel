@@ -40,10 +40,10 @@ class CreateTxnProductsTable extends Migration
             $table->string('width')->nullable();
             $table->double('gst_value')->nullable();
             $table->boolean('isCodAvailable')->nullable();
-            $table->boolean('within_days')->default(false);
-            $table->boolean('wrong_products')->default(false);
-            $table->boolean('faulty_products')->default(false);
-            $table->boolean('quality_issue')->default(false);
+            $table->boolean('within_days')->default(false)->nullable();
+            $table->boolean('wrong_products')->default(false)->nullable();
+            $table->boolean('faulty_products')->default(false)->nullable();
+            $table->boolean('quality_issue')->default(false)->nullable();
             $table->timestamps();
         });
     }

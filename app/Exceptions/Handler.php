@@ -61,7 +61,7 @@ class Handler extends ExceptionHandler
         switch ($guard) {
 
             case 'admin':
-                return redirect()->guest('/adhatke852/login');
+                return redirect()->guest('/adhni753/login');
                 break;
 
             case 'user':

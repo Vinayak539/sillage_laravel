@@ -7,7 +7,7 @@
         <ol class="breadcrumb bg-dark text-white-all">
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.dashboard') }}"><i class="fas fa-home"></i>
-                    Home
+                    Dashboard
                 </a>
             </li>
             <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-list"></i>Edit Size</li>
@@ -56,25 +56,25 @@
 <script>
     $("#formEditSize").validate({
              rules: {
-    
+
                 title: {
                    required: true
                 },
-               
+
                 status: {
                    required: true
                 },
-    
+
              },
              messages: {
                 title: {
                    required: "Please Enter Size"
                 },
-                
+
                 status: {
                    required: "Please Select Status"
                 },
-    
+
              },
              submitHandler: function (form) {
                 $('.btnSubmit').attr('disabled', 'disabled');

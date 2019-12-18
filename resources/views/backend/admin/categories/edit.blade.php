@@ -7,7 +7,7 @@
         <ol class="breadcrumb bg-dark text-white-all">
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.dashboard') }}"><i class="fas fa-home"></i>
-                    Home
+                    Dashboard
                 </a>
             </li>
             <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-list"></i>Edit Category</li>
@@ -78,11 +78,11 @@
             name: {
                required: true
             },
-            
+
             parent_id: {
                required: true
             },
-            
+
             status: {
                required: true
             },
@@ -92,11 +92,11 @@
             name: {
                required: "Please Enter Category Name"
             },
-            
+
             parent_id: {
                required: "Please Select Parent Category Name"
             },
-            
+
             status: {
                required: "Please Select Status"
             },

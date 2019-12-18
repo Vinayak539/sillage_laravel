@@ -39,7 +39,7 @@
         <ol class="breadcrumb bg-dark text-white-all">
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.dashboard') }}"><i class="fas fa-home"></i>
-                    Home
+                    Dashboard
                 </a>
             </li>
             <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-list"></i> Categories</li>
@@ -160,7 +160,7 @@
         $('.addCategory').click(function () {
             var val = $(this).attr('data-parent-id');
             var name = $(this).attr('data-parent-name');
-            
+
             if (val) {
                 $('#txtCategoryID').val(val);
                 $('#txtCategoryName').html(name);

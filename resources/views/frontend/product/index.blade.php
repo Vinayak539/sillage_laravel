@@ -225,7 +225,7 @@
 
                                                            
 
-                                                                <img src="{!! asset('assets/img/products/prod-20-2.jpg') !!}"
+                                                                <img src="{!! asset('storage/images/products').'/'.$product->image_url1 !!}"
                                                                 alt="Product Image" class="secondary-image">
                                                         </a>
                                                     </div>

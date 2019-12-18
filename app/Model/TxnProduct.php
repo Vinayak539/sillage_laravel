@@ -32,12 +32,12 @@ class TxnProduct extends Model
 
     public function color()
     {
-        return $this->belongsTo(TxnColor::class);
+        return $this->belongsTo(MstColor::class);
     }
 
     public function sizes()
     {
-        return $this->belongsTo(TxnSize::class, 'product_id', 'id');
+        return $this->belongsTo(MstSize::class, 'product_id', 'id');
     }
 
     public function images()
@@ -89,10 +89,4 @@ class TxnProduct extends Model
     {
         return $this->hasMany(MapProductSection::class, 'product_id', 'id');
     }
-
-    public function topSection()
-    {
-        return $this->hasMany(MapProductToTopSection::class, 'product_id', 'id');
-    }
-
 }

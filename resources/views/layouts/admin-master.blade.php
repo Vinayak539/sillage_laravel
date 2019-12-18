@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>@yield('title') || THE HATKE STORE</title>
+    <title>@yield('title') || HNILIFESTYLE</title>
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{!! asset('admin/css/app.min.css') !!}">
 
@@ -51,16 +51,16 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right pullDown">
                             <div class="dropdown-title">Hello {{ auth('admin')->user()->name }}</div>
-                            <a href="/adhatke852/profile" class="dropdown-item has-icon">
+                            <a href="/adhni753/profile" class="dropdown-item has-icon">
                                 <i class="far fa-user"></i> Profile
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="/adhatke852/logout"
+                            <a href="/adhni753/logout"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                 class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
                                 Logout
                             </a>
-                            <form id="logout-form" action="/adhatke852/logout" method="POST" style="display: none;">
+                            <form id="logout-form" action="/adhni753/logout" method="POST" style="display: none;">
                                 @csrf
                             </form>
                         </div>
@@ -71,9 +71,9 @@
             <div class="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="/adhatke852">
+                        <a href="/adhni753">
                             {{-- <img alt="image" src="/admin/img/logo.png" class="header-logo" />  --}}
-                            <span class="logo-name">The Hatke Store</span>
+                            <span class="logo-name">HNILIFESTYLE</span>
                         </a>
                     </div>
                     <ul class="sidebar-menu">
@@ -103,6 +103,10 @@
                         <li class="dropdown">
                             <a href="{{ route('admin.sliders.all') }}" class="nav-link"><i
                                     data-feather="monitor"></i><span>Slider</span></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="{{ route('admin.home-offer-sliders.all') }}" class="nav-link"><i
+                                    data-feather="monitor"></i><span>Home Offer Slider</span></a>
                         </li>
                         <li class="dropdown">
                             <a href="{{ route('admin.enquiries.all') }}" class="nav-link"><i
@@ -222,7 +226,7 @@
             <footer class="main-footer bg-dark">
                 <div class="footer-left">
                     Copyright &copy; {{ date('Y') == '2019' ? '2019' : '2019 - ' . date('Y') }}
-                    <div class="bullet"></div> The Hatke Store - Designed & Developed By <a
+                    <div class="bullet"></div> HNILIFESTYLE - Designed & Developed By <a
                         href="https://www.sanjaresolutions.com" target="_blank">Sanjar E Solutions</a>
                 </div>
             </footer>

@@ -7,7 +7,7 @@
         <ol class="breadcrumb bg-dark text-white-all">
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.dashboard') }}"><i class="fas fa-home"></i>
-                    Home
+                    Dashboard
                 </a>
             </li>
             <li class="breadcrumb-item"><a href="{{ route('admin.products.all') }}"> All Products</a></li>
@@ -50,7 +50,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="brand_id">Brand <span class="text-danger">*</span></label>
-                                <select name="brand_id" id="brand_id" class="form-control select2">
+                                <select name="brand_id" id="brand_id" class="form-control select2" required>
                                     <option value="">--Select Brand--</option>
                                     @foreach($brands as $brand)
                                     <option value="{{ $brand->id }}"
@@ -65,8 +65,8 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="material_id">Material </label>
-                                <select name="material_id" id="material_id" class="form-control select2">
+                                <label for="material_id">Material <span class="text-danger">*</span></label>
+                                <select name="material_id" id="material_id" class="form-control select2" required>
                                     <option value="">--Select Material--</option>
                                     @foreach($materials as $material)
                                     <option value="{{ $material->id }}"
@@ -130,11 +130,25 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="image_url">Image <span class="text-danger">*</span></label>
+                                <label for="image_url">Front Image <span class="text-danger">*</span></label>
                                 <div class="custom-file">
-                                    <input type="file" name="image_url" class="custom-file-input" id="image_url">
+                                    <input type="file" name="image_url" class="custom-file-input" id="image_url"
+                                        required>
                                     <label class="custom-file-label" for="image_url">Choose file</label>
                                 </div>
+                                <label id="" class="error" for="image_url"></label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="image_url1">Back Image <span class="text-danger">*</span></label>
+                                <div class="custom-file">
+                                    <input type="file" name="image_url1" class="custom-file-input" id="image_url1"
+                                        required>
+                                    <label class="custom-file-label" for="image_url1">Choose file</label>
+                                </div>
+                                <label id="" class="error" for="image_url1"></label>
                             </div>
                         </div>
 
@@ -151,47 +165,6 @@
                                 <label for="expiry_date">Expiry Date </label>
                                 <input type="text" name="expiry_date" id="expiry_date" class="form-control datepicker"
                                     value="{{ old('expiry_date') }}" placeholder="Select Expiry Date">
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="gst_id">GST <span class="text-danger">*</span></label>
-                                <select name="gst_id" id="gst_id" class="form-control select2">
-                                    <option value="">--Select GST--</option>
-                                    @foreach($gsts as $gst)
-                                    <option value="{{ $gst->id }}" data-value="{{ $gst->gst_value }}"
-                                        {{ old('gst_id') == $gst->id ? 'selected' : '' }}>
-                                        {{ $gst->gst_value }}</option>
-                                    @endforeach
-                                </select>
-                                <label id="" class="error" for="gst_id"></label>
-                            </div>
-                        </div>
-
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="buy_it_now_price">Selling Price <span class="text-danger">*</span></label>
-                                <input type="number" name="buy_it_now_price" id="buy_it_now_price" class="form-control"
-                                    value="{{ old('buy_it_now_price') }}" placeholder="Enter Selling Price" min="1">
-                                <input type="hidden" name="gst_amount" id="gst_amount">
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="starting_price">Price Before GST <span class="text-danger">*</span></label>
-                                <input type="number" name="starting_price" id="starting_price" class="form-control"
-                                    value="{{ old('starting_price') }}" placeholder="Enter Price Before GST" min="1">
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="mrp">MRP <span class="text-danger">*</span></label>
-                                <input type="number" name="mrp" id="mrp" class="form-control" value="{{ old('mrp') }}"
-                                    placeholder="Enter Selling Price" min="1">
                             </div>
                         </div>
 
@@ -237,25 +210,6 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="stock">Stock <span class="text-danger">*</span></label>
-                                <input type="number" name="stock" id="stock" class="form-control"
-                                    value="{{ old('stock') }}" placeholder="Enter Stock" min="0">
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="image_urls">Multiple Images </label>
-                                <div class="custom-file">
-                                    <input type="file" name="image_urls[]" class="custom-file-input" id="image_urls"
-                                        accept="image/jpeg,image/png" multiple>
-                                    <label class="custom-file-label" for="image_urls">Choose file</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
                                 <label for="is_cod">Cod Available <span class="text-danger">*</span></label>
                                 <select name="is_cod" id="is_cod" class="form-control">
                                     <option value="">--Select Cod Availability--</option>
@@ -265,6 +219,67 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="color_id">Colour <span class="text-danger">*</span></label>
+                                <select name="color_id" id="color_id" class="form-control select2" required>
+                                    <option value="">--Select Colour--</option>
+                                    @foreach($colors as $color)
+                                    <option value="{{ $color->id }}"
+                                        {{ old('color_id') == $color->id ? 'selected' : '' }}>
+                                        {{ $color->title }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                <label id="" class="error" for="color_id"></label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="size_id">Sizes <span class="text-danger">*</span></label>
+                                <select name="size_id" id="size_id" class="form-control select2" required>
+                                    <option value="">--Select Sizes--</option>
+                                    @foreach($sizes as $size)
+                                    <option value="{{ $size->id }}" {{ old('size_id') == $size->id ? 'selected' : '' }}>
+                                        {{ $size->title }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                <label id="" class="error" for="size_id"></label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="mrp">MRP <span class="text-danger">*</span></label>
+                                <input type="text" name="mrp" id="mrp" class="form-control" value="{{ old('mrp') }}"
+                                    placeholder="Enter Mrp" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="stock">Stock <span class="text-danger">*</span></label>
+                                <input type="number" name="stock" id="stock" class="form-control"
+                                    value="{{ old('stock') }}" min="0" placeholder="Enter Stock" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="image_urls">Color Images <span class="text-danger">*</span></label>
+                                <div class="custom-file">
+                                    <input type="file" name="image_urls[]" class="custom-file-input" id="image_urls"
+                                        accept="image/jpeg,image/png" multiple required>
+                                    <label class="custom-file-label" for="image_urls">Choose file</label>
+                                </div>
+                                <label id="" class="error" for="image_urls"></label>
+
+                            </div>
+                        </div>
+
 
                         <div class="col-md-8 mb-3">
                             <label>Return Policy <span class="text-danger">*</span></label> <br>
@@ -292,36 +307,6 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="color_id">Colour <span class="text-danger">*</span></label>
-                                <select name="color_id" id="color_id" class="form-control select2" required>
-                                    <option value="">--Select Colour--</option>
-                                    @foreach($colors as $color)
-                                    <option value="{{ $color->id }}"
-                                        {{ old('color_id') == $color->id ? 'selected' : '' }}>
-                                        {{ $color->title }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                                <label id="" class="error" for="color_id"></label>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="size_id">Sizes <span class="text-danger">*</span></label>
-                                <select name="size_id[]" id="size_id" class="form-control select2" multiple required>
-                                    <option value="">--Select Sizes--</option>
-                                    @foreach($sizes as $size)
-                                    <option value="{{ $size->id }}" {{ old('size_id') == $size->id ? 'selected' : '' }}>
-                                        {{ $size->title }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                                <label id="" class="error" for="size_id"></label>
-                            </div>
-                        </div>
 
                         <div class="col-md-12">
                             <div class="row">
@@ -459,18 +444,10 @@
                 image_url: {
                    required: true
                 },
-                gst_id: {
+                image_url1: {
                    required: true
                 },
-                buy_it_now_price: {
-                   required: true
-                },
-                starting_price: {
-                   required: true
-                },
-                mrp: {
-                   required: true
-                },
+
                 is_cod: {
                    required: true
                 },
@@ -478,6 +455,21 @@
                    required: true
                 },
                 keywords: {
+                   required: true
+                },
+                color_id: {
+                   required: true
+                },
+                "image_urls[]": {
+                   required: true
+                },
+                size_id: {
+                   required: true
+                },
+                mrp: {
+                   required: true
+                },
+                stock: {
                    required: true
                 },
              },
@@ -501,20 +493,21 @@
                    required: "Please Select Warranty"
                 },
                 image_url: {
-                   required: "Please Select Image"
+                   required: "Please Upload Front Image"
+                },
+                image_url1: {
+                   required: "Please Upload Back Image"
                 },
                 gst_id: {
                    required: "Please Select GST"
                 },
-                buy_it_now_price: {
-                   required: "Please Enter Selling Price"
+                color_id: {
+                   required: "Please Select Colour"
                 },
-                starting_price: {
-                   required: "Please Enter Price Before GST"
+                size_id: {
+                   required: "Please Select Sizes"
                 },
-                mrp: {
-                   required: "Please Enter MRP"
-                },
+
                 is_cod: {
                    required: "Please Select COD Availability"
                 },
@@ -523,6 +516,15 @@
                 },
                 keywords: {
                    required: "Please Enter Keywords of Product"
+                },
+                mrp: {
+                   required: "Please Enter MRP"
+                },
+                stock: {
+                   required: "Please Enter Stock"
+                },
+                "image_urls[]": {
+                   required: "Please Upload Colour Images"
                 },
              },
              submitHandler: function (form) {

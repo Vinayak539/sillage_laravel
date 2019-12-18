@@ -85,13 +85,13 @@ class AppServiceProvider extends ServiceProvider
                 }
             } else if ($count == 1) {
                 if (count($category['parent_cats'][$parent]) > 1) {
-                    $html .= "<ul class='mainmenu mainmenu--3'>";
+                    $html .= "<ul class='mainmenu mainmenu--centered'>";
                     foreach ($category['parent_cats'][$parent] as $cat_id) {
                         if (!isset($category['parent_cats'][$cat_id])) {
-                            $html .= "<li class='mainmenu__item menu-item-has-children has-children'><a href='/category/" . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text navigation-head'>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
+                            $html .= "<li class='mainmenu__item menu-item-has-children has-children'><a href='/category/" . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text '>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
                         }
                         if (isset($category['parent_cats'][$cat_id])) {
-                            $html .= "<li class='mainmenu__item menu-item-has-children has-children'><a href='/category/" . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text navigation-head'>" . $category['categories'][$cat_id]['name'] . "</span></a></i>";
+                            $html .= "<li class='mainmenu__item menu-item-has-children has-children'><a href='/category/" . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text '>" . $category['categories'][$cat_id]['name'] . "</span></a></i>";
                             $html .= $this->buildCategory($cat_id, $category, $count);
                             $html .= "</li>";
                         }
@@ -101,10 +101,10 @@ class AppServiceProvider extends ServiceProvider
                     $html .= "<ul class='mainmenu mainmenu--3'>";
                     foreach ($category['parent_cats'][$parent] as $cat_id) {
                         if (!isset($category['parent_cats'][$cat_id])) {
-                            $html .= "<li class='mainmenu__item menu-item-has-children'><a href='/category/" . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text navigation-head'>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
+                            $html .= "<li class='mainmenu__item menu-item-has-children'><a href='/category/" . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text '>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
                         }
                         if (isset($category['parent_cats'][$cat_id])) {
-                            $html .= "<li class='mainmenu__item menu-item-has-children'><a href='/category/" . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text navigation-head'>" . $category['categories'][$cat_id]['name'] . "</span></a></i>";
+                            $html .= "<li class='mainmenu__item menu-item-has-children'><a href='/category/" . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text '>" . $category['categories'][$cat_id]['name'] . "</span></a></i>";
                             $html .= $this->buildCategory($cat_id, $category, $count);
                             $html .= "</li>";
                         }

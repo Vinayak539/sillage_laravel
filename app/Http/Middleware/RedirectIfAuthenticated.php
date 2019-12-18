@@ -21,7 +21,7 @@ class RedirectIfAuthenticated
         switch ($guard) {
             case 'admin':
                 if (Auth::guard($guard)->check()) {
-                    return redirect()->intended('/adhatke852');
+                    return redirect()->intended('/adhni753');
                 }
                 break;
 

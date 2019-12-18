@@ -7,7 +7,7 @@
         <ol class="breadcrumb bg-dark text-white-all">
             <li class="breadcrumb-item">
                 <a href="{{ route('admin.dashboard') }}"><i class="fas fa-home"></i>
-                    Home
+                    Dashboard
                 </a>
             </li>
             <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-list"></i>Edit Condition</li>
@@ -61,7 +61,7 @@
             condition: {
                required: true
             },
-           
+
             status: {
                required: true
             },
@@ -71,7 +71,7 @@
             condition: {
                required: "Please Enter Product Condition"
             },
-            
+
             status: {
                required: "Please Select Status"
             },

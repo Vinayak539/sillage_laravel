@@ -27,19 +27,38 @@
                 <div class="col-lg-12  col-md-12 order-md-2 mb-sm--25">
                     <div class="about-text">
                  
-                        <p class="color--light-3 mb--25">Praesent sed ex vel mauris eleifend mollis. Vestibulum
-                            dictum sodales ante, ac pulvinar urna sollicitudin in. Suspendisse sodales dolor nec
-                            mattis convallis. Quisque ut nulla viverra, posuere lorem eget, ultrices metus.
-                            Dspendisse sodales dolor nec mattis convallis. Quisque ut
-                            nulla viverra, posuere lorem eget, ultrices metus ed maximus neque feugiat magna
-                            pretium, euismod sagittis massa tincidunt.</p>
+                        <h5>Perfumes & Room Fresheners are Not Returnable.</h5>
+                        <p class="color--light-3">We have <span>“Happy Return Policy“</span> where you can return a product within 72hrs [ From Time of
+                            Delivery ] and we also accept partial returns of one or more products in a order.</p>
+                        <strong>Note : Returns not accepted under following Circumstances :</strong>
+                        <ul>
+                            <li>Product returned without original Packing including Price Tags, Labels, Freebies / Gifts
+                                and other accessories.</li>
+                            <li>Product used or seal is Tampered.</li>
+                            <li>Barcode or security Code is Tampered with.</li>
+                            <li>If request for return is initiated after 72 hrs from the time of Delivery.</li>
+                            <li>Freebies / Gift is damaged or not returned with Products Ordered.</li>
+                        </ul>
+                        <strong>Incase of Damaged / Defective / Wrong Product in my Order</strong>
+                        <p class="color--light-3">We follow 2 layer check before a product is packed and use right packaging to ensure customer
+                            receive product in Perfect Condition. Even after taking all precautions if the product is
+                            damaged during shipment or transit, you can request for a replacement or refund.
+                        </p>
+                        <p class="color--light-3">If you have received an item in a damaged/defective condition or have been sent a wrong
+                            product, you can follow a few simple steps to initiate your return/refund within 3 days of
+                            receiving the order:</p>
+                        <ul>
+                            <li><strong>Step 1:</strong> Contact our Customer Support team via email ( <a href="mailto:customersupport@hnilifestyle.com">customersupport@hnilifestyle.com</a> )
+                                within 72 hrs from the time of receiving the order.</li>
+                            <li><strong>Step 2:</strong> Kindly share your Invoice number and an image of the product.</li>
+                            <li><strong>Step 3:</strong> We will pick up the products within 2- 4 business days. We will initiate the
+                                refund or replacement process only if the products are received by us in their original
+                                packaging with their seals, labels and barcodes intact.
+                            </li>
+                        </ul>
+                        <p class="color--light-3">Note: Incase of replacement, it is subject to the availability of stock. If stock not
+                            available we will refund you the full amount.</p>
 
-                        <p class="color--light-3 mb--25">Praesent sed ex vel mauris eleifend mollis. Vestibulum
-                            dictum sodales ante, ac pulvinar urna sollicitudin in. Suspendisse sodales dolor nec
-                            mattis convallis. Quisque ut nulla viverra, posuere lorem eget, ultrices metus.
-                            Dspendisse sodales dolor nec mattis convallis. Quisque ut
-                            nulla viverra, posuere lorem eget, ultrices metus ed maximus neque feugiat magna
-                            pretium, euismod sagittis massa tincidunt.</p>
                     </div>
                 </div>
               

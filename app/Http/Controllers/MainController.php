@@ -6,6 +6,7 @@ use App\Model\MsSection;
 use App\Model\ProductFaq;
 use App\Model\SideProduct;
 use App\Model\Slider;
+use App\Model\HomeOfferSlider;
 use App\Model\Subscriber;
 use App\Model\Testimonial;
 use App\Model\TopMasterSection;
@@ -21,11 +22,12 @@ class MainController extends Controller
     public function index()
     {
         $sliders = Slider::where('status', true)->orderBy('sort_index')->get();
+        $homeOfferSliders = HomeOfferSlider::where('status', true)->orderBy('sort_index')->get();
         $testimonials = Testimonial::where('status', true)->orderBy('sort_index')->get();
         // $side_products = SideProduct::with('product')->orderBy('sort_index')->limit(2)->get();
         $sections = MsSection::where('status', true)->with('msections')->get();
         // dd($sections);
-        return view('frontend.index', compact('sliders', 'sections', 'testimonials'));
+        return view('frontend.index', compact('sliders', 'sections', 'testimonials','homeOfferSliders'));
         // return view('frontend.index', compact('sliders', 'testimonials', 'sections', 'side_products'));
     }
 
@@ -72,7 +74,7 @@ class MainController extends Controller
                 ->first();
 
             $related_products = \DB::table('txn_products as p')
-                ->selectRaw("p.id , p.title , p.slug_url , p.buy_it_now_price , p.image_url, p.starting_price,p.mrp,p.stock, FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment, c.name as category_name, c.slug_url as category_url")
+                ->selectRaw("p.id , p.title , p.slug_url , p.buy_it_now_price , p.image_url, p.image_url1, p.starting_price,p.mrp,p.stock, FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment, c.name as category_name, c.slug_url as category_url")
                 ->leftJoin("txn_reviews as r", "r.product_id", "p.id")
                 ->leftJoin("txn_categories as c", "c.id", "p.category_id")
                 ->where('p.status', '=', true)
@@ -97,7 +99,7 @@ class MainController extends Controller
         if ($request->filled('q')) {
 
             $products = \DB::table('txn_products as p')
-                ->selectRaw("p.id , p.title , p.slug_url , p.buy_it_now_price , p.image_url, p.starting_price,p.mrp, p.stock, FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment")
+                ->selectRaw("p.id , p.title , p.slug_url , p.buy_it_now_price , p.image_url,p.image_url1, p.starting_price,p.mrp, p.stock, FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment")
                 ->leftJoin("txn_reviews as r", "r.product_id", "p.id")
                 ->leftJoin("txn_keywords as k", "k.product_id", "p.id")
                 ->where('p.status', '=', true)
@@ -107,7 +109,7 @@ class MainController extends Controller
         } else {
 
             $products = \DB::table('txn_products as p')
-                ->selectRaw("p.id , p.title , p.slug_url , p.buy_it_now_price , p.image_url, p.starting_price,p.mrp, p.stock, FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment")
+                ->selectRaw("p.id , p.title , p.slug_url , p.buy_it_now_price , p.image_url,p.image_url1, p.starting_price,p.mrp, p.stock, FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment")
                 ->leftJoin("txn_reviews as r", "r.product_id", "p.id")
                 ->leftJoin("txn_keywords as k", "k.product_id", "p.id")
                 ->where('p.stock', '>', 0)
@@ -287,7 +289,7 @@ class MainController extends Controller
             }
 
             $products = \DB::table('txn_products as p')
-                ->selectRaw("p.id , p.title , p.slug_url , p.buy_it_now_price , p.image_url, p.category_id , p.starting_price,p.mrp, p.stock,c.parent_id, FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment")
+                ->selectRaw("p.id , p.title , p.slug_url , p.buy_it_now_price , p.image_url, p.image_url1, p.category_id , p.starting_price,p.mrp, p.stock,c.parent_id, FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment")
                 ->leftJoin("txn_reviews as r", "r.product_id", "p.id")
                 ->leftJoin("txn_categories as c", "p.category_id", "c.id")
                 ->where('p.status', true)

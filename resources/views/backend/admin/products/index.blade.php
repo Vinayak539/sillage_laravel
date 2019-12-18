@@ -143,13 +143,12 @@
                         <tr>
                             <td>{{ $product->id }}</td>
                             <td>
-                                <!-- <img src="/storage/images/products/{{ $product->image_url }}" alt="{{ $product->title }}"
-                                class="img img-responsive img-circle" width="40" height="40" loading="lazy"> -->
-
-                                <img src="{!! asset('storage/images/products').'/' !!}{{ $product->image_url }}"
-                                    alt="{{ $product->title }}" class="img img-responsive img-circle" width="40"
-                                    height="40" loading="lazy">
-
+                                <a href="{!! asset('storage/images/products').'/' !!}{{ $product->image_url }}"
+                                    target="_blank">
+                                    <img src="{!! asset('storage/images/products').'/' !!}{{ $product->image_url }}"
+                                        alt="{{ $product->title }}" class="img img-responsive img-circle" width="40"
+                                        height="40" loading="lazy">
+                                </a>
                             </td>
                             <td>{{ Str::limit($product->title, 30) }}</td>
                             @if($product->category)
@@ -173,16 +172,16 @@
                                     <div class="dropdown-menu">
                                         <a href="{{ route('admin.products.edit', $product->slug_url) }}"
                                             class="dropdown-item has-icon" title="Edit Detail">
-                                            <i class="fa fa-edit text-primary"></i> Edit
+                                            <i class="fa fa-edit"></i> Edit
                                         </a>
                                         <a href="{{ route('admin.products.questions', $product->slug_url) }}"
                                             class="dropdown-item has-icon" title="Questions">
-                                            <i class="fa fa-question-circle-o text-primary"></i> Questions
+                                            <i class="fa fa-question-circle"></i> Questions
                                         </a>
                                         <a href="javascript:void(0)" class="dropdown-item has-icon updateStock"
                                             title="Update Stock" data-obj-name="{{ $product->title }}"
                                             data-obj-id="{{ $product->id }}" data-obj-stock="{{ $product->stock }}">
-                                            <i class="fa fa-shopping-cart text-primary"></i> Update Stock
+                                            <i class="fa fa-shopping-cart"></i> Update Stock
                                         </a>
                                         <a href="javascript:void(0)" class="dropdown-item has-icon updatePrice"
                                             title="Update Price" data-obj-name="{{ $product->title }}"
@@ -191,7 +190,7 @@
                                             data-obj-pbgst="{{ $product->starting_price }}"
                                             data-obj-bp="{{ $product->reserve_price }}"
                                             data-obj-mrp="{{ $product->mrp }}">
-                                            <i class="fa fa-money text-primary"></i> Update Price
+                                            <i class="fa fa-credit-card"></i> Update Price
                                         </a>
                                     </div>
                                 </div>
@@ -231,18 +230,18 @@
     @endsection
     @section('extrajs')
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
 
-            $('.updateStock').click(function(){
+            $('.updateStock').click(function () {
                 $('.product_name').html($(this).attr('data-obj-name'));
                 $('#stock').val($(this).attr('data-obj-stock'));
                 var action = '/adrana951/manage-products/update-stock/' + $(this).attr('data-obj-id');
                 $('#formUpdateStock').attr('action', action);
                 $('#updateStockModal').modal('show');
             });
-            
-            $('.updatePrice').click(function(){
-                
+
+            $('.updatePrice').click(function () {
+
                 $('#buy_it_now_price').val($(this).attr('data-obj-sp'));
                 $('#starting_price').val($(this).attr('data-obj-pbgst'));
                 $('#reserve_price').val($(this).attr('data-obj-bp'));
@@ -257,14 +256,14 @@
             $('#buy_it_now_price').on('keyup', function () {
                 var vgst = $('option:selected', '#gst_id').val();
                 var gst = $('option:selected', '#gst_id').attr('data-gst-value');
-                if(vgst == ""){
+                if (vgst == "") {
                     $('#gst_id').focus();
                     $('.error').css('display', 'block');
                     $('.error').html('First Select GST');
-                    setTimeout(function(){
+                    setTimeout(function () {
                         $('.error').fadeOut();
                     }, 2000);
-                }else{
+                } else {
                     var gst = $('option:selected', '#gst_id').attr('data-gst-value');
                     var gst_value = 1 + (gst / 100);
                     var buy_it_now_price = $(this).val();
@@ -273,9 +272,10 @@
                     $('#starting_price').val(before_gst_price);
                     $('#gst_amount').val(gst_amount);
                 }
-                
+
             });
 
         });
+
     </script>
     @endsection

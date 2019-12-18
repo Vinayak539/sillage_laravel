@@ -1,0 +1,40 @@
+Steps for cpanel git auto deployment
+
+On Server using ssh
+
+=> connect to server using ssh
+
+=> Create folder named repo > site.git(folder) 
+
+=> cmd to move site.git
+
+=> run command "git init --bare"
+
+=> move to hooks folder
+
+=> create a file named post-receive
+
+=> write in post-receive file 
+#!/bin/sh 
+git --work-tree=/home/ranay3eu --git-dir=/home/ranay3eu/repo/site.git checkout -f
+
+=> run command "chmod +x post-receive"
+
+=> run command "cd ~"
+
+=> create a folder named ".ssh"
+
+=> create a file in .ssh folder "authorized_keys"
+
+=> paste your public ssh key in authorized_keys file
+
+=> exit
+
+On local PC
+
+=> Move to laravel project 
+
+=> create a remote "git remote add live ssh://sanjae43@sanjaresolutions.com/~/repo/site.git"
+
+=> push on serve using "git push live master"
+
