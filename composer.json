@@ -59,6 +59,5 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    },
-    "l-cmd" : ["ln -sr storage/app/public public/storage"]
+    }
 }
