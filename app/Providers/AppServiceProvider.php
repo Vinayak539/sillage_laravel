@@ -27,7 +27,26 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-        
+        if (config('app.env') === 'production') {
+            \URL::forceScheme('https');
+        }
+        $txnCategory = TxnCategory::where('status', true)->orderBy('parent_id')->get();
+        $category = array(
+            'categories' => array(),
+            'parent_cats' => array(),
+        );
+
+        foreach ($txnCategory as $key => $value) {
+            $category['categories'][$value->id] = $value;
+            //creates entry into parent_cats array. parent_cats array contains a list of all categories with children
+            $category['parent_cats'][$value->parent_id][] = $value->id;
+        }
+
+        $dynamicCategory = $this->buildCategory(0, $category, 0);
+        $smallDeviceDynamicCategory = $this->smallDeviceBuildCategory(0, $category, 0);
+        $keywords        = TxnKeyword::all();
+        // $topsections     = TopMasterSection::limit(5)->get();
+        view()->share(['keywords' => $keywords, 'dynamicCategory' => $dynamicCategory, 'smallDeviceDynamicCategory' => $smallDeviceDynamicCategory]);
     }
     public function buildCategory($parent, $category, $count)
     {
