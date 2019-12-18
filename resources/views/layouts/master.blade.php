@@ -163,8 +163,8 @@
                                             <div class="header-search-form-wrap">
                                                 <form action="/search" method="GET" class="searchform searchform-3">
                                                     <input name="q" type="text"
-                                                        value="{{ Request::get('q') }}" list="suggestion1" id="search-box1" class="searchform__input" autocomplete="off" placeholder="Search products..." />
-                                                    <datalist id="suggestion1">
+                                                        value="{{ Request::get('q') }}" list="suggestion" id="search-box" class="searchform__input" autocomplete="off" placeholder="Search products..." />
+                                                    <datalist id="suggestion">
                                                         @foreach($keywords as $key)
                                                         <option value="{{ $key->keyword }}">
                                                             @endforeach
