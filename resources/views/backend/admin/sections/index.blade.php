@@ -90,14 +90,14 @@
                                             class="dropdown-item has-icon" title="Edit Detail">
                                             <i class="fa fa-edit"></i> Edit
                                         </a>
-                                        {{-- <a href="{{ route('admin.sections.assign', $section->id) }}"
+                                        <a href="{{ route('admin.sections.assign', $section->id) }}"
                                         class="dropdown-item has-icon" title="Assign Products">
                                         <i class="fa fa-link"></i> Assign
                                         </a>
                                         <a href="{{ route('admin.sections.viewAssign', $section->id) }}"
                                             class="dropdown-item has-icon" title="View Assign Products">
                                             <i class="fa fa-eye"></i> View Assign
-                                        </a> --}}
+                                        </a>
                                     </div>
                                 </div>
                             </td>
