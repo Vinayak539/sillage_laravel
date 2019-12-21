@@ -562,11 +562,11 @@
     <!-- ************************* JS Files ************************* -->
 
     <!-- jQuery JS -->
-    <script src="{!! asset('assets/js/vendor/jquery.min.js') !!}"></script>
+    <script src="{!! asset('/assets/js/vendor/jquery.min.js') !!}"></script>
 
     <!-- Bootstrap and Popper Bundle JS -->
 
-    <script src="{!! asset('assets/js/bootstrap.bundle.min.js') !!}"></script>
+    <script src="{!! asset('/assets/js/bootstrap.bundle.min.js') !!}"></script>
 
     <!-- All Plugins Js -->
 
