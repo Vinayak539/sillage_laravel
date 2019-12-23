@@ -218,13 +218,13 @@
                                     </li>
                                     <li class="header-toolbar__item">
                                         <a href="#miniCart" class="mini-cart-btn toolbar-btn">
-                                            <i class="dl-icon-cart4"></i>
+                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                             <sup class="mini-cart-count">2</sup>
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item">
                                         <a href="#searchForm" class="search-btn toolbar-btn">
-                                            <i class="dl-icon-search1"></i>
+                                            <i class="fa fa-search" aria-hidden="true"></i>
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item d-lg-none">
@@ -260,21 +260,14 @@
                         <div class="footer-column-1 mb-md--40">
                             <div class="footer-widget">
                                 <h3 class="widget-title widget-title--2">
-                                    Customer Service
+                                    Main Category
                                 </h3>
                                 <ul class="widget-menu widget-menu--3 ">
+                                    @foreach($footerDynamicCategory as $mainCat)
                                     <li>
-                                        <a href="{{ route('about') }}">ABOUT US</a>
+                                        <a href="{!! asset('category').'/'.$mainCat->slug_url !!}">{{ $mainCat->name }}</a>
                                     </li>
-                                    <!-- <li><a href="#">SHOP</a></li> -->
-                                    <!-- <li><a href="/all-product">PRODUCT</a></li> -->
-                                    <li>
-                                        <a href="{{ route('contact') }}">CONTACT US</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('faq') }}">FAQ'S</a>
-                                    </li>
-                                    <li><a href="#">ORDER TRACKING</a></li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>

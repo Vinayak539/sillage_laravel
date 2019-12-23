@@ -42,11 +42,15 @@ class AppServiceProvider extends ServiceProvider
             $category['parent_cats'][$value->parent_id][] = $value->id;
         }
 
+        // footer only parent start
+        $footerDynamicCategory = TxnCategory::where('status', true)->where('parent_id', 0)->orderBy('parent_id')->get();
+        // footer only parent end
+
         $dynamicCategory = $this->buildCategory(0, $category, 0);
         $smallDeviceDynamicCategory = $this->smallDeviceBuildCategory(0, $category, 0);
-        $keywords        = TxnKeyword::all();
+        $keywords = TxnKeyword::all();
         // $topsections     = TopMasterSection::limit(5)->get();
-        view()->share(['keywords' => $keywords, 'dynamicCategory' => $dynamicCategory, 'smallDeviceDynamicCategory' => $smallDeviceDynamicCategory]);
+        view()->share(['keywords' => $keywords, 'dynamicCategory' => $dynamicCategory, 'smallDeviceDynamicCategory' => $smallDeviceDynamicCategory, 'footerDynamicCategory' => $footerDynamicCategory]);
     }
     public function buildCategory($parent, $category, $count)
     {
