@@ -204,7 +204,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <a href="#" class="btn-close"><i class="dl-icon-close"></i></a>
+                                        <a href="#" class="btn-close"><i class="fa fa-times" aria-hidden="true"></i></a>
                                     </div>
                                 </div> --}}
                             </div>
@@ -244,10 +244,10 @@
                                                     <div class="product-rating">
                                                         <span>
                                                             @for($i = 1; $i<= $product->rating; $i++)
-                                                                <i class="dl-icon-star rated"></i>
+                                                                <i class="fa fa-star rated" aria-hidden="true"></i>
                                                                 @endfor
                                                                 @for($i = 1; $i<= 5 - $product->rating; $i++)
-                                                                    <i class="dl-icon-star"></i>
+                                                                    <i class="fa fa-star-o" aria-hidden="true"></i>
                                                                     @endfor
                                                         </span>
                                                     </div>

@@ -55,7 +55,7 @@
                                             <tr>
                                                 <td class="product-remove text-left">
                                                     <a href="javascript:void(0)" class="btn-remove-item" data-remove-id="{{ $item->id }}">
-                                                        <i class="dl-icon-close"></i>
+                                                        <i class="fa fa-times" aria-hidden="true"></i>
                                                     </a>
                                                 </td>
 

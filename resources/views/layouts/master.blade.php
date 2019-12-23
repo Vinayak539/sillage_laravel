@@ -520,7 +520,7 @@
 
         <!-- Search from Start -->
         <div class="searchform__popup" id="searchForm">
-            <a href="#" class="btn-close"><i class="dl-icon-close"></i></a>
+            <a href="#" class="btn-close"><i class="fa fa-times" aria-hidden="true"></i></a>
             <div class="searchform__body">
                 <p>Start typing and press Enter to search</p>
                 <form class="searchform" action="/v2/search" method="GET">
@@ -544,7 +544,7 @@
         <!-- Side Navigation Start -->
         <aside class="side-navigation" id="sideNav">
             <div class="side-navigation-wrapper">
-                <a href="#" class="btn-close"><i class="dl-icon-close"></i></a>
+                <a href="#" class="btn-close"><i class="fa fa-times" aria-hidden="true"></i></a>
                 <div class="side-navigation-inner">
                     <div class="widget">
                         <ul class="sidenav-menu">
@@ -601,7 +601,7 @@
         <!-- Mini Cart Start -->
         <aside class="mini-cart" id="miniCart">
             <div class="mini-cart-wrapper">
-                <a href="#" class="btn-close"><i class="dl-icon-close"></i></a>
+                <a href="#" class="btn-close"><i class="fa fa-times" aria-hidden="true"></i></a>
                 <div class="mini-cart-inner">
                     <h5 class="mini-cart__heading mb--40 mb-lg--30">
                         Shopping Cart
@@ -622,7 +622,7 @@
                             <li class="mini-cart__product">
                                 <a href="#" class="remove-from-cart remove btn-remove-item"
                                     data-remove-id="{{ $item->id }}">
-                                    <i class="dl-icon-close"></i>
+                                    <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>
                                 <div class="mini-cart__product__image">
                                     <img src="{!! asset('storage/images/products/'.$item->attributes->image_url) !!}"
