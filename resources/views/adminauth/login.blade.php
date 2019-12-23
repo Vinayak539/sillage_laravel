@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{!! asset('admin/css/components.css') !!}">
     <!-- Custom style CSS -->
     <link rel="stylesheet" href="{!! asset('admin/css/custom.css') !!}">
-    <link rel='shortcut icon' type='image/x-icon' href='/admin/img/favicon.ico' />
+    <link rel='shortcut icon' type='image/x-icon' href="{!! asset('admin/img/favicon.ico') !!}" />
 </head>
 
 <body>
@@ -95,14 +95,14 @@
         </section>
     </div>
     <!-- General JS Scripts -->
-    <script src="/admin/js/app.min.js"></script>
+    <script src="{!! asset('admin/js/app.min.js') !!}"></script>
     <!-- JS Libraies -->
     <!-- Page Specific JS File -->
     <!-- Template JS File -->
-    <script src="/admin/js/scripts.js"></script>
+    <script src="{!! asset('admin/js/scripts.js') !!}"></script>
     <!-- Custom JS File -->
-    <script src="/admin/js/custom.js"></script>
-    <script src="/admin/js/jquery.validate.min.js"></script>
+    <script src="{!! asset('admin/js/custom.js') !!}"></script>
+    <script src="{!! asset('admin/js/jquery.validate.min.js') !!}"></script>
 
     <script>
         $(document).ready(function () {
