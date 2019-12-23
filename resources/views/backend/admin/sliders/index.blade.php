@@ -173,7 +173,7 @@
 
 
 @endsection
-<form id="formDelete" method="POST" action="/adrana951/manage-sliders/delete/">
+<form id="formDelete" method="POST" action="/adhni753/manage-sliders/delete/">
     @csrf
 </form>
 
