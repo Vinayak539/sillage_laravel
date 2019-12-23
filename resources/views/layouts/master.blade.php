@@ -21,7 +21,8 @@
     <link rel="stylesheet" href="{!! asset('assets/css/bootstrap.min.css') !!}" />
 
     <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="{!! asset('assets/css/font-awesome.min.css') !!}" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/10dbd8ec26.css">
+    <!--<link rel="stylesheet" href="{!! asset('assets/css/font-awesome.min.css') !!}" />-->
 
     <!-- dl Icon CSS -->
     <link rel="stylesheet" href="{!! asset('assets/css/dl-icon.css') !!}" />
@@ -100,6 +101,10 @@
         .header-style-4 .logo-box figure {
             width: 140px;
         }
+        
+        .searchform-3 .searchform__submit {
+            padding-top: 0;
+        }
 
     </style>
 </head>
@@ -154,17 +159,17 @@
                                     </li>
                                     <li class="header-toolbar__item">
                                         <a href="#miniCart" class="mini-cart-btn toolbar-btn">
-                                            <i class="dl-icon-cart4"></i>
+                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                             <sup class="mini-cart-count">2</sup>
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item">
                                         <div class="header-component__item header-component__search-form">
                                             <div class="header-search-form-wrap">
-                                                <form action="/search" method="GET" class="searchform searchform-3">
+                                                <form action="/v2/search" method="GET" class="searchform searchform-3">
                                                     <input name="q" type="text"
-                                                        value="{{ Request::get('q') }}" list="suggestion1" id="search-box1" class="searchform__input" autocomplete="off" placeholder="Search products..." />
-                                                    <datalist id="suggestion1">
+                                                        value="{{ Request::get('q') }}" list="suggestion" id="search-box" class="searchform__input" autocomplete="off" placeholder="Search products..." />
+                                                    <datalist id="suggestion">
                                                         @foreach($keywords as $key)
                                                         <option value="{{ $key->keyword }}">
                                                             @endforeach
@@ -172,7 +177,7 @@
                                                     </datalist>
                                                     
                                                     <button type="submit" class="searchform__submit">
-                                                        <i class="dl-icon-search4"></i>
+                                                        <i class="fa fa-search" aria-hidden="true"></i>
                                                     </button>
                                                 </form>
                                             </div>
@@ -410,7 +415,7 @@
             <a href="#" class="btn-close"><i class="dl-icon-close"></i></a>
             <div class="searchform__body">
                 <p>Start typing and press Enter to search</p>
-                <form class="searchform" action="/search" method="GET">
+                <form class="searchform" action="/v2/search" method="GET">
                     <input name="q" placeholder="Search entire store here ..." type="text"
                         value="{{ Request::get('q') }}" id="search-box1" class="searchform__input" autocomplete="off" />
                     <datalist id="suggestion1">
@@ -562,11 +567,11 @@
     <!-- ************************* JS Files ************************* -->
 
     <!-- jQuery JS -->
-    <script src="{!! asset('assets/js/vendor/jquery.min.js') !!}"></script>
+    <script src="{!! asset('/assets/js/vendor/jquery.min.js') !!}"></script>
 
     <!-- Bootstrap and Popper Bundle JS -->
 
-    <script src="{!! asset('assets/js/bootstrap.bundle.min.js') !!}"></script>
+    <script src="{!! asset('/assets/js/bootstrap.bundle.min.js') !!}"></script>
 
     <!-- All Plugins Js -->
 
