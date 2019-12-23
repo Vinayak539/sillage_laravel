@@ -62,7 +62,7 @@ Route::POST('/checkout', 'OrderController@checkout')->name('order.checkout');
 Route::POST('/transaction-callback', 'OrderController@handleCallbackFromPaytm')->name('paytm.callback');
 Route::POST('/pincode', 'MainController@verifyPincode');
 
-Route::prefix('adhatke852')->group(function () {
+Route::prefix('adhni753')->group(function () {
 
     Route::middleware(['guest:admin'])->group(function () {
         Route::GET('/login', 'AdminAuth\LoginController@showLoginForm')->name('login');
