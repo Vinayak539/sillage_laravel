@@ -14,15 +14,8 @@ class CreateTxnProductsTable extends Migration
             $table->integer('category_id')->unsigned()->nullable();
             $table->bigInteger('upc')->nullable();
             $table->integer('brand_id')->unsigned()->nullable();
-            $table->integer('size_id')->unsigned()->nullable();
-            $table->integer('color_id')->unsigned()->nullable();
             $table->integer('material_id')->unsigned()->nullable();
             $table->text('description')->nullable();
-            $table->integer('gst')->default('0')->nullable();
-            $table->float('starting_price')->nullable();
-            $table->float('buy_it_now_price')->nullable();
-            $table->float('discount_price')->default('0')->nullable();
-            $table->float('reserve_price')->nullable();
             $table->float('length')->nullable();
             $table->float('breadth')->nullable();
             $table->float('height')->nullable();
@@ -35,10 +28,7 @@ class CreateTxnProductsTable extends Migration
             $table->boolean('status')->default(false);
             $table->unsignedBigInteger('warranty_id')->nullable();
             $table->foreign('warranty_id')->references('id')->on('master_warranties')->onDelete('restrict');
-            $table->bigInteger('stock')->nullable();
-            $table->double('mrp')->nullable();
             $table->string('width')->nullable();
-            $table->double('gst_value')->nullable();
             $table->boolean('isCodAvailable')->nullable();
             $table->boolean('within_days')->default(false)->nullable();
             $table->boolean('wrong_products')->default(false)->nullable();
