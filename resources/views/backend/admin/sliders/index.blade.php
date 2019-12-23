@@ -14,7 +14,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" role="form" class="needs-validation" enctype="multipart/form-data">
+                <form method="POST" role="form" class="needs-validation" enctype="multipart/form-data"
+                    id="formAddSlider">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
@@ -36,7 +37,8 @@
                                 <div class="form-group">
                                     <label for="description">Description (Optional)</label>
                                     <textarea name="description" id="description" class="form-control"
-                                        placeholder="Write Something here..." rows="5">{{ old('description') }} </textarea>
+                                        placeholder="Write Something here..."
+                                        rows="5">{{ old('description') }} </textarea>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -60,7 +62,8 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <h6 class="text-warning"> <i class="fa fa-info-circle"></i> Note * mark is compulsory</h6>
+                                <h6 class="text-warning"> <i class="fa fa-info-circle"></i> Note * mark is compulsory
+                                </h6>
                             </div>
                         </div>
                     </div>
@@ -121,20 +124,23 @@
                             </td>
                             <td>{{ date('d-M-Y h:i A', strtotime($slider->created_at)) }}</td>
                             <td>
-                                <div class="dropdown">
-                                    <button type="button" class="btn btn-outline-primary dropdown-toggle"
-                                        data-toggle="dropdown">
+
+                                <div class="dropdown d-inline">
+                                    <button class="btn btn-outline-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
                                         Action
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a href="{{ route('admin.sliders.edit', $slider->id) }}" class="dropdown-item"
-                                            title="Edit Detail">
-                                            <i class="fa fa-edit text-primary"></i> Edit
+                                        <a href="{{ route('admin.sliders.edit', $slider->id) }}"
+                                            class="dropdown-item has-icon" title="Edit Detail">
+                                            <i class="fa fa-edit"></i> Edit
                                         </a>
-                                        <button type="button" data-role="delete-obj" data-obj-id="{{ $slider->id }}"
-                                            class="dropdown-item delete-object" title="Delete Slider">
+                                        <a href="javascript:void(0)" data-role="delete-obj"
+                                            data-obj-id="{{ $slider->id }}" class="dropdown-item has-icon delete-object"
+                                            title="Delete Slider">
                                             <i class="fa fa-trash text-danger"></i> Delete
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </td>
@@ -173,8 +179,9 @@
 
 
 @endsection
-<form id="formDelete" method="POST" action="/adhni753/manage-sliders/delete/">
+<form id="formDelete" method="POST" action="{{ route('admin.sliders.delete') }}">
     @csrf
+    <input type="hidden" name="slider_id" id="txtSliderID">
 </form>
 
 @section('extrajs')
@@ -182,10 +189,38 @@
     $(document).ready(function () {
         $(".delete-object").click(function () {
             if (window.confirm("Are you sure, You want to Delete ? ")) {
-                var action = $("#formDelete").attr("action") + $(this).attr("data-obj-id");
-                $("#formDelete").attr("action", action);
+                $("#txtSliderID").val($(this).attr("data-obj-id"));
                 $("#formDelete").submit();
                 $(this).html('wait...');
+            }
+        });
+
+        $("#formAddSlider").validate({
+            rules: {
+
+                sort_index: {
+                    required: true
+                },
+
+                image_url: {
+                    required: true
+                },
+
+            },
+
+            messages: {
+                sort_index: {
+                    required: "Please Enter Sort Index"
+                },
+                image_url: {
+                    required: "Please Choose Image"
+                },
+
+            },
+            submitHandler: function (form) {
+                $('.btnSubmit').attr('disabled', 'disabled');
+                $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+                form.submit();
             }
         });
     });

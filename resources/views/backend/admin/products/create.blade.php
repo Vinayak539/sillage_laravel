@@ -353,7 +353,7 @@
                                         <th>Field Value</th>
                                     </tr>
                                     <tr class="table-row-sizes" ng-repeat="size in sizes track by $index">
-                                        <td ng-bind="$index+s + 1"></td>
+                                        <td ng-bind="$index + 1"></td>
                                         <td>
                                             <input type="text" name="field_name[(=:$index:=)]"
                                                 ng-value="field_name[$index]" class="form-control">

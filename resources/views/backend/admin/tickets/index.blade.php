@@ -4,12 +4,14 @@
 
 {{-- Model --}}
 
-<div class="modal" id="addModal">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-primary">
-                <h3 class="modal-title text-light">Raise Ticket</h3>
-                <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+            <div class="modal-header bg-dark text-white-all">
+                <h5 class="modal-title" id="formModal">Raise ticket</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
             <form method="POST" role="form" class="needs-validation" enctype="multipart/form-data" autocomplete="off">
@@ -56,94 +58,93 @@
 </div>
 
 {{-- Model End --}}
+<section class="section">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-dark text-white-all">
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="fas fa-home"></i>
+                    Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-list"></i> Manage Tickets</li>
+            <li class="breadcrumb-item"><a href="#addModal" data-toggle="modal" data-target="#addModal"><i
+                        class="fas fa-plus"></i> Raise Ticket</a></li>
+        </ol>
+    </nav>
 
-<div class="card borderless-card">
-    <div class="card-block inverse-breadcrumb">
-        <div class="breadcrumb-header">
-            <h5>Manage Tickets</h5>
-        </div>
-        <div class="page-header-breadcrumb">
-            <ul class="breadcrumb-title">
-                <li class="breadcrumb-item">
-                    <a href="/adrana951">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="#addModal" data-toggle="modal" data-target="#addModal">Raise Ticket</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
+    <div class="card">
+        <div class="card-block">
+            <div class="table-responsive dt-responsive">
+                <table id="dom-jqry" class="table table-striped table-bordered nowrap">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>Raise By</th>
+                            <th>Status</th>
+                            <th>Raise On</th>
+                            <th>Closed On</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($tickets as $ticket)
+                        <tr>
+                            <td>{{ $ticket->id }}</td>
+                            <td>{{ $ticket->email }}</td>
+                            <td>{{ Str::limit($ticket->subject, 30) }}</td>
+                            <td>{{ $ticket->open_by }}</td>
+                            <td>{{ $ticket->status == true ? 'Open' : 'Closed' }}</td>
+                            <td>{{ date('d-M-Y h:i A', strtotime($ticket->created_at)) }}</td>
+                            <td>{{ $ticket->closed_at ? date('d-m-Y h:i A', strtotime($ticket->closed_at)) : 'Not closed yet' }}
+                            </td>
+                            <td>
 
-<div class="card">
-    <div class="card-block">
-        <div class="table-responsive dt-responsive">
-            <table id="dom-jqry" class="table table-striped table-bordered nowrap">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Email</th>
-                        <th>Subject</th>
-                        <th>Raise By</th>
-                        <th>Status</th>
-                        <th>Raise On</th>
-                        <th>Closed On</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($tickets as $ticket)
-                    <tr>
-                        <td>{{ $ticket->id }}</td>
-                        <td>{{ $ticket->email }}</td>
-                        <td>{{ str_limit($ticket->subject, 30) }}</td>
-                        <td>{{ $ticket->open_by }}</td>
-                        <td>{{ $ticket->status == true ? 'Open' : 'Closed' }}</td>
-                        <td>{{ date('d-M-Y h:i A', strtotime($ticket->created_at)) }}</td>
-                        <td>{{ $ticket->closed_at ? date('d-m-Y h:i A', strtotime($ticket->closed_at)) : 'Not closed yet' }}
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-outline-primary dropdown-toggle"
-                                    data-toggle="dropdown">
-                                    Action
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a href="{{ route('admin.tickets.edit', $ticket->id) }}" class="dropdown-item"
-                                        title="Edit Detail">
-                                        <i class="fa fa-edit text-primary"></i> Edit
-                                    </a>
+                                <div class="dropdown d-inline">
+                                    <button class="btn btn-outline-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        Action
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a href="{{ route('admin.tickets.edit', $ticket->id) }}"
+                                            class="dropdown-item has-icon" title="Edit Detail">
+                                            <i class="fa fa-edit"></i> Edit
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr class="text-center">
-                        <td class="text-danger" colspan="8">
-                            <h4>No Record Found..</h4>
-                        </td>
-                    </tr>
-                    @endforelse
-                    <tr class="text-center">
-                        <td colspan="8">
-                            {{ $tickets->links() }}
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>#</th>
-                        <th>Email</th>
-                        <th>Subject</th>
-                        <th>Raise By</th>
-                        <th>Status</th>
-                        <th>Raise On</th>
-                        <th>Closed On</th>
-                        <th>Action</th>
-                    </tr>
-                </tfoot>
-            </table>
+
+                            </td>
+                        </tr>
+                        @empty
+                        <tr class="text-center">
+                            <td class="text-danger" colspan="8">
+                                <h4>No Record Found..</h4>
+                            </td>
+                        </tr>
+                        @endforelse
+                        @if($tickets->total() > 50)
+                        <tr class="text-center">
+                            <td colspan="8">
+                                {{ $tickets->links() }}
+                            </td>
+                        </tr>
+                        @endif
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Email</th>
+                            <th>Subject</th>
+                            <th>Raise By</th>
+                            <th>Status</th>
+                            <th>Raise On</th>
+                            <th>Closed On</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
-</div>
+
+</section>
 @endsection

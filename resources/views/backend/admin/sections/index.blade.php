@@ -91,8 +91,8 @@
                                             <i class="fa fa-edit"></i> Edit
                                         </a>
                                         <a href="{{ route('admin.sections.assign', $section->id) }}"
-                                        class="dropdown-item has-icon" title="Assign Products">
-                                        <i class="fa fa-link"></i> Assign
+                                            class="dropdown-item has-icon" title="Assign Products">
+                                            <i class="fa fa-link"></i> Assign
                                         </a>
                                         <a href="{{ route('admin.sections.viewAssign', $section->id) }}"
                                             class="dropdown-item has-icon" title="View Assign Products">
@@ -137,26 +137,27 @@
 @section('extrajs')
 <script>
     $(document).ready(function () {
-    
-            $("#formAddSections").validate({
-             rules: {
-    
+
+        $("#formAddSections").validate({
+            rules: {
+
                 title: {
-                   required: true
+                    required: true
                 },
-             },
-             messages: {
+            },
+            messages: {
                 title: {
-                   required: "Please Enter Section"
+                    required: "Please Enter Section"
                 },
-             },
-             submitHandler: function (form) {
+            },
+            submitHandler: function (form) {
                 $('.btnSubmit').attr('disabled', 'disabled');
                 $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
                 form.submit();
-             }
-          });
-    
+            }
         });
+
+    });
+
 </script>
 @endsection

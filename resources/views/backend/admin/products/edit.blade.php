@@ -8,11 +8,14 @@
 <div class="modal" id="addModal">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <div class="modal-header bg-primary">
-                <h3 class="modal-title text-light">Add More Custom Field of {{ $product->title }}</h3>
-                <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+            <div class="modal-header bg-dark text-white-all">
+                <h5 class="modal-title" id="formModal">Add More Cuistom Field of {{ $product->title }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <form action="{{ route('admin.products.add.custom.field', $product->id) }}" method="POST"class="needs-validation">
+            <form action="{{ route('admin.products.add.custom.field', $product->id) }}" method="POST"
+                class="needs-validation" id="formAddCustom">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -23,7 +26,7 @@
                     <div class="form-group">
                         <label for="field_value">Field Value </label>
                         <input type="text" name="field_value" value="{{ old('field_value') }}" class="form-control"
-                            id="field_value" min="1" placeholder="Enter Field Value" required>
+                            id="field_value" placeholder="Enter Field Value" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -38,16 +41,58 @@
 
 {{-- Model End --}}
 
+{{-- Model --}}
+
+<div class="modal" id="addSizesModal">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white-all">
+                <h5 class="modal-title" id="formModal">Add Sizes of {{ $product->title }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('admin.products.add.sizes', $product->id) }}" method="POST" class="needs-validation"
+                id="formAddSizes">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="size_id">Size</label>
+                        <select name="size_id" id="size_id" class="form-control" required>
+                            <option value="">--Select Size--</option>
+                            @foreach($sizes as $size)
+                            <option value="{{ $size->id }}" {{ old('size_id') ? 'selected' : '' }}>
+                                {{ $size->title }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btnSubmit">
+                        <i class="fa fa-plus"></i> Add Size
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- Model End --}}
+
 {{-- Image Model --}}
 
 <div class="modal" id="addImageModal">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <div class="modal-header bg-primary">
-                <h3 class="modal-title text-light">Add More Image of {{ $product->title }}</h3>
-                <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+            <div class="modal-header bg-dark text-white-all">
+                <h5 class="modal-title" id="formModal">Add More Images of {{ $product->title }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <form action="{{ route('admin.products.add.images', $product->id) }}" method="POST" class="needs-validation" enctype="multipart/form-data">
+            <form action="{{ route('admin.products.add.images', $product->id) }}" method="POST" class="needs-validation"
+                enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -68,25 +113,112 @@
 
 {{-- Model End --}}
 
+
+{{-- Color & Size Model --}}
+
+<div class="modal" id="addColorModal">
+    <div class="modal-dialog modal-md">
+
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white-all">
+                <h5 class="modal-title" id="formModal">Add More Color & Size of {{ $product->title }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form action="{{ route('admin.products.add.color', $product->id) }}" method="POST" class="needs-validation"
+                enctype="multipart/form-data" id="formAddColor">
+                @csrf
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="color_id">Colour <span class="text-danger">*</span></label>
+                        <select name="color_id" id="color_id" class="form-control" required>
+                            <option value="">--Select Colour--</option>
+                            @foreach($colors as $color)
+                            <option value="{{ $color->id }}" {{ old('color_id') == $color->id ? 'selected' : '' }}>
+                                {{ $color->title }}
+                            </option>
+                            @endforeach
+                        </select>
+                        <label id="" class="error" for="color_id"></label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="size_id">Sizes <span class="text-danger">*</span></label>
+                        <select name="size_id" id="size_id" class="form-control" required>
+                            <option value="">--Select Sizes--</option>
+                            @foreach($product->sizes as $size)
+                            <option value="{{ $size->size_id }}" {{ old('size_id') == $size->size_id ? 'selected' : '' }}>
+                                {{ $size->title }}
+                            </option>
+                            @endforeach
+                        </select>
+                        <label id="" class="error" for="size_id"></label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mrp">MRP <span class="text-danger">*</span></label>
+                        <input type="text" name="mrp" id="mrp" class="form-control" value="{{ old('mrp') }}"
+                            placeholder="Enter Mrp" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="stock">Stock <span class="text-danger">*</span></label>
+                        <input type="number" name="stock" id="stock" class="form-control" value="{{ old('stock') }}"
+                            min="0" placeholder="Enter Stock" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image_urls">Color Images <span class="text-danger">*</span></label>
+                        <div class="custom-file">
+                            <input type="file" name="image_urls[]" class="custom-file-input" id="image_urls"
+                                accept="image/jpeg,image/png" multiple required>
+                            <label class="custom-file-label" for="image_urls">Choose file</label>
+                        </div>
+                        <label id="" class="error" for="image_urls"></label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btnSubmit">
+                        <i class="fa fa-plus"></i> Add Color & Size
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- Model End --}}
+
 <section class="section">
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-dark text-white-all">
-            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="fas fa-home"></i>Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i
+                        class="fas fa-home"></i>Dashboard</a></li>
             <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-list"></i>Edit Product</li>
             <li class="breadcrumb-item"><a href="{{ route('admin.products.all') }}">All Products</a></li>
-            <li class="breadcrumb-item"><a href="#addModal" data-toggle="modal" data-target="#addModal"> AddMore Custom Fields</a></li>
-            <li class="breadcrumb-item"><a href="#addImageModal" data-toggle="modal" data-target="#addImageModal"> Add More Images</a></li>
+            <li class="breadcrumb-item"><a href="#addModal" data-toggle="modal" data-target="#addModal"> Add More Custom
+                    Fields</a></li>
+            <li class="breadcrumb-item"><a href="#addImageModal" data-toggle="modal" data-target="#addImageModal"> Add
+                    More Images</a></li>
+            <li class="breadcrumb-item"><a href="#addColorModal" data-toggle="modal" data-target="#addColorModal"> Add
+                    More Color & Sizes</a></li>
+            <li class="breadcrumb-item"><a href="#addSizesModal" data-toggle="modal" data-target="#addSizesModal"> Add
+                    Sizes</a></li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-header bg-dark text-white-all">
-            <h4>Update Brand</h4>
+            <h4>Update Product</h4>
         </div>
 
         <div class="card-body">
-            <form method="POST" role="form" class="needs-validation" enctype="multipart/form-data">
+            <form method="POST" role="form" class="needs-validation" enctype="multipart/form-data"
+                id="formupdateProduct" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-md-4">
@@ -121,20 +253,6 @@
                                 <option value="{{ $brand->id }}"
                                     {{ $brand->id == $product->brand_id ? 'selected' : '' }}>
                                     {{ $brand->brand_name }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="color_id">Color </label>
-                            <select name="color_id" id="color_id" class="form-control">
-                                <option value="">--Select Colour--</option>
-                                @foreach($colors as $color)
-                                <option value="{{ $color->id }}"
-                                    {{ $color->id == $product->color_id ? 'selected' : '' }}>{{ $color->color }}
                                 </option>
                                 @endforeach
                             </select>
@@ -201,8 +319,15 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="image_url">Change Image </label>
+                            <label for="image_url">Change Front Image </label>
                             <input type="file" name="image_url" id="image_url" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="image_url1">Change Back Image </label>
+                            <input type="file" name="image_url1" id="image_url1" class="form-control">
                         </div>
                     </div>
 
@@ -219,58 +344,6 @@
                             <label for="expiry_date">Expiry Date</label>
                             <input type="date" name="expiry_date" id="expiry_date" class="form-control"
                                 value="{{ $product->expiry_date }}" placeholder="Select Expiry Date">
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="gst_id">GST <span class="text-danger">*</span></label>
-                            <select name="gst_id" id="gst_id" class="form-control" required>
-                                <option value="">--Select GST--</option>
-                                @foreach($gsts as $gst)
-                                <option value="{{ $gst->id }}" data-value="{{ $gst->gst_value }}"
-                                    {{ $product->gst == $gst->id ? 'selected' : '' }}>
-                                    {{ $gst->gst_value }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="buy_it_now_price">Selling Price <span class="text-danger">*</span></label>
-                            <input type="number" name="buy_it_now_price" id="buy_it_now_price" class="form-control"
-                                value="{{ $product->buy_it_now_price }}" placeholder="Enter Selling Price" min="1"
-                                required>
-                            <input type="hidden" name="gst_amount" id="gst_amount">
-
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="starting_price">Price Before GST <span class="text-danger">*</span></label>
-                            <input type="number" name="starting_price" id="starting_price" class="form-control"
-                                value="{{ $product->starting_price }}" placeholder="Enter Price Before GST" min="1"
-                                required>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="reserve_price">Bid Price <span class="text-danger">*</span></label>
-                            <input type="number" name="reserve_price" id="reserve_price" class="form-control"
-                                value="{{ $product->reserve_price }}" placeholder="Enter Bid Price " min="1" required>
-                        </div>
-                    </div>
-
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="mrp">MRP <span class="text-danger">*</span></label>
-                            <input type="number" name="mrp" id="mrp" class="form-control" value="{{ $product->mrp }}"
-                                placeholder="Enter Selling Price" min="1" required>
                         </div>
                     </div>
 
@@ -316,35 +389,12 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="stock">Stock <span class="text-danger">*</span></label>
-                            <input type="number" name="stock" id="stock" class="form-control"
-                                value="{{ $product->stock }}" placeholder="Enter Stock" min="0" required>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
                             <label for="status">Status <span class="text-danger">*</span></label>
                             <select name="status" id="status" class="form-control" required>
                                 <option value="">--Select Status--</option>
                                 <option value="1" {{ $product->status == true ? 'selected' : '' }}>Active</option>
                                 <option value="0" {{ $product->status == false ? 'selected' : '' }}>Inactive
                                 </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="side_product">Featured Product</label>
-                            <select name="side_product" id="side_product" class="form-control">
-                                <option value="">--Select Featured Product Position--</option>
-                                <option value="1"
-                                    {{ $product->side_product ? $product->side_product->sort_index == 1 ? 'selected' : '' : '' }}>
-                                    1</option>
-                                <option value="2"
-                                    {{ $product->side_product ? $product->side_product->sort_index == 2 ? 'selected' : '' : '' }}>
-                                    2</option>
                             </select>
                         </div>
                     </div>
@@ -390,14 +440,14 @@
 
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="title">Description <span class="text-danger">*</span></label>
                                     <textarea name="description" id="description" rows="8" class="form-control"
                                         required>{{ $product->description }}</textarea>
                                 </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="keywords">Keywords </span><span class="text-danger">*</span> <span
                                             class="text-warning">(Use Comma "," to seperate
@@ -407,12 +457,22 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
-                                    <label>Existing Main Image</label>
+                                    <label>Existing Front Image</label>
                                     <div>
                                         <img src="/storage/images/products/{{ $product->image_url }}"
-                                            alt="{{ $product->title }}" width="200">
+                                            alt="{{ $product->title }}" width="100">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Existing Back Image</label>
+                                    <div>
+                                        <img src="/storage/images/products/{{ $product->image_url1 }}"
+                                            alt="{{ $product->title }}" width="100">
                                     </div>
                                 </div>
                             </div>
@@ -426,8 +486,8 @@
                             @foreach($product->images as $image)
                             <div class="col-md-2">
                                 <img src="/storage/images/multi-products/{{ $image->image_url }}"
-                                    alt="{{ $product->title }}" height="100">
-                                <div class="text-center">
+                                    alt="{{ $product->title }}" width="100">
+                                <div class="m-l-80 m-t-10">
                                     <button type="button" class="btn btn-outline-danger image-delete"
                                         data-delete-id="{{ $image->id }}"><i class="fa fa-trash"></i></button>
                                 </div>
@@ -453,13 +513,115 @@
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-dark text-white-all">
-            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="fas fa-home"></i>Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i
+                        class="fas fa-home"></i>Dashboard</a></li>
             <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-list"></i>Edit Product</li>
             <li class="breadcrumb-item"><a href="{{ route('admin.products.all') }}">All Products</a></li>
-            <li class="breadcrumb-item"><a href="#addModal" data-toggle="modal" data-target="#addModal"> AddMore Custom Fields</a></li>
-            <li class="breadcrumb-item"><a href="#addImageModal" data-toggle="modal" data-target="#addImageModal"> Add More Images</a></li>
+            <li class="breadcrumb-item"><a href="#addModal" data-toggle="modal" data-target="#addModal"> Add More Custom
+                    Fields</a></li>
+            <li class="breadcrumb-item"><a href="#addImageModal" data-toggle="modal" data-target="#addImageModal"> Add
+                    More Images</a></li>
+            <li class="breadcrumb-item"><a href="#addColorModal" data-toggle="modal" data-target="#addColorModal"> Add
+                    More Color & Sizes</a></li>
+                    <li class="breadcrumb-item"><a href="#addSizesModal" data-toggle="modal" data-target="#addSizesModal"> Add
+                        Sizes</a></li>
         </ol>
     </nav>
+
+
+    <div class="card">
+        <div class="card-header">
+            <h5>Available Color & Szess for {{ Str::limit($product->title, 20) }}</h5>
+        </div>
+
+        @if($product_details)
+        <div class="card-body">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+
+                        <th>
+                            <label for="id">ID </label>
+                        </th>
+                        <th>
+                            <label for="color_id">Colour Name </label>
+                        </th>
+                        <th>
+                            <label for="size_id">Size</label>
+                        </th>
+                        <th>
+                            <label for="mrp">MRP</label>
+                        </th>
+                        <th>
+                            <label for="stock">Stock</label>
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach($product_details as $key => $cf)
+
+                    <tr>
+                        <td>
+                            <input type="number" name="map_id[{{ $key }}]" value="{{ $cf->map_id }}" class="form-control"
+                               disabled>
+                        </td>
+
+                        <td>
+                            <select name="colour_id[{{ $key }}]" class="form-control" required>
+                                <option value="">--Select Colour--</option>
+                                @foreach($colors as $color)
+                                <option value="{{ $color->id }}" {{ $cf->color_id == $color->id ? 'selected' : '' }}>
+                                    {{ $color->title }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </td>
+
+                        <td>
+                            <select name="size_id[{{ $key }}]" class="form-control" required>
+                                <option value="">--Select Sizes--</option>
+                                @foreach($product->sizes as $size)
+                                <option value="{{ $size->size_id }}" {{ $cf->size_id === $size->size_id ? 'selected' : '' }}>
+                                    {{ $size->title }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </td>
+
+                        <td>
+                            <input type="text" name="mrp[{{ $key }}]" value="{{ $cf->mrp }}" class="form-control"
+                                id="mrp">
+                        </td>
+
+                        <td>
+                            <input type="text" name="stock[{{ $key }}]" value="{{ $cf->stock }}" class="form-control"
+                                id="stock">
+                        </td>
+
+                        <td>
+
+                            <a href="javascript:void(0)" title="Update Data"
+                                class="btn btn-primary text-white update-color-object" data-object-index="{{ $key }}">
+                                <i class="fa fa-save"></i>
+                            </a>
+
+                            <a href="javascript:void(0)" data-obj-id="{{ $cf->map_id }}" title="Delete"
+                                class="btn btn-danger text-white delete-color-object">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        @endif
+    </div>
+
 
     <div class="card">
         <div class="card-header">
@@ -523,18 +685,35 @@
     </div>
 
 </section>
-<form id="formDelete" method="POST" action="/adrana951/manage-products/delete-product-custom-field/">
+<form id="formDelete" method="POST" action="{{ route('admin.products.delete.custom.field') }}">
     @csrf
+    <input type="hidden" name="cust_id" id="txtCustID">
 </form>
 
-<form id="formImageDelete" method="POST" action="/adrana951/manage-products/delete-image/">
+<form id="formColorDelete" method="POST" action="{{ route('admin.products.delete.color') }}">
     @csrf
+    <input type="hidden" name="map_id" id="txtMapID">
 </form>
 
-<form id="formUpdate" method="POST" action="/adrana951/manage-products/update-product-custom-field/">
+<form id="formImageDelete" method="POST" action="{{ route('admin.products.delete.images') }}">
+    @csrf
+    <input type="hidden" name="image_id" id="txtImageID">
+</form>
+
+<form id="formUpdate" method="POST" action="{{ route('admin.products.update.custom.field') }}">
     @csrf
     <input type="hidden" name="field_name" id="txtFieldNameUpdate" />
     <input type="hidden" name="field_value" id="txtFieldValueUpdate" />
+    <input type="hidden" name="field_id" id="txtFieldID" />
+</form>
+
+<form id="formColorUpdate" method="POST" action="{{ route('admin.products.update.color') }}">
+    @csrf
+    <input type="hidden" name="color_id" id="txtColorIDUpdate" />
+    <input type="hidden" name="size_id" id="txtSizeIDUpdate" />
+    <input type="hidden" name="mrp" id="txtMrpUpdate" />
+    <input type="hidden" name="stock" id="txtStockUpdate" />
+    <input type="hidden" name="map_id" id="txtUpdateMapID" />
 </form>
 
 @endsection
@@ -544,30 +723,54 @@
     $(document).ready(function () {
         $(".delete-object").click(function () {
             if (window.confirm("Are you sure to delete this Custom Field ?")) {
-                var action = $("#formDelete").attr("action") + $(this).attr("data-obj-id");
-                $("#formDelete").attr("action", action);
+                $('#txtCustID').val($(this).attr("data-obj-id"));
                 $("#formDelete").submit();
-                $(this).html('wait...');
+                $(this).attr('disabled', 'disabled');
+                $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+            }
+        });
+
+        $(".delete-color-object").click(function () {
+            if (window.confirm("Are you sure to delete this Color & Size ?")) {
+                $('#txtMapID').val($(this).attr("data-obj-id"));
+                $("#formColorDelete").submit();
+                $(this).attr('disabled', 'disabled');
+                $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
             }
         });
 
         $(".image-delete").click(function () {
             if (window.confirm("Are you sure to delete this Image ?")) {
-                var action = $("#formImageDelete").attr("action") + $(this).attr("data-delete-id");
-                $("#formImageDelete").attr("action", action);
+                $("#txtImageID").val($(this).attr("data-delete-id"));
                 $("#formImageDelete").submit();
-                $(this).html('wait...');
+                $(this).attr('disabled', 'disabled');
+                $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
             }
         });
+
         $(".update-object").click(function () {
             var index = $(this).attr("data-object-index");
             var field_id = $("input[name='field_id[" + index + "]']").val();
             $("#txtFieldNameUpdate").val($("input[name='field_name[" + index + "]']").val());
             $("#txtFieldValueUpdate").val($("input[name='field_value[" + index + "]']").val());
-            var action = $("#formUpdate").attr("action") + field_id;
-            $("#formUpdate").attr("action", action);
+            $("#txtFieldID").val(field_id);
             $("#formUpdate").submit();
-            $(this).html('wait...');
+            $(this).attr('disabled', 'disabled');
+                $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+
+        });
+
+        $(".update-color-object").click(function () {
+            var key = $(this).attr("data-object-index");
+            var id = $("input[name='map_id[" + key + "]']").val();
+            $("#txtColorIDUpdate").val($("select[name='colour_id[" + key + "]']").val());
+            $("#txtSizeIDUpdate").val($("select[name='size_id[" + key + "]']").val());
+            $("#txtMrpUpdate").val($("input[name='mrp[" + key + "]']").val());
+            $("#txtStockUpdate").val($("input[name='stock[" + key + "]']").val());
+            $("#txtUpdateMapID").val(id);
+            $("#formColorUpdate").submit();
+            $(this).attr('disabled', 'disabled');
+            $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
 
         });
 
@@ -581,16 +784,173 @@
             $('#gst_amount').val(gst_amount);
         });
 
-        var old_categories = {
-            !!json_encode($product - > topSection) !!
-        };
+        $("#formupdateProduct").validate({
+            rules: {
+                category_id: {
+                    required: true
+                },
+                title: {
+                    required: true
+                },
+                brand_id: {
+                    required: true
+                },
+                material_id: {
+                    required: true
+                },
+                condition: {
+                    required: true
+                },
+                warranty_id: {
+                    required: true
+                },
 
-        if (old_categories && typeof old_categories == "object") {
-            for (x of old_categories) {
-                $(".customCheck[value=" + x.section_id + "]").attr('selected', 'selected');
+                is_cod: {
+                    required: true
+                },
+                description: {
+                    required: true
+                },
+                keywords: {
+                    required: true
+                },
+
+            },
+            messages: {
+                category_id: {
+                    required: "Please Select Category"
+                },
+                title: {
+                    required: "Please Enter Product Name"
+                },
+                brand_id: {
+                    required: "Please Select Brand"
+                },
+                material_id: {
+                    required: "Please Select Material"
+                },
+                condition: {
+                    required: "Please Select Condition"
+                },
+                warranty_id: {
+                    required: "Please Select Warranty"
+                },
+
+                is_cod: {
+                    required: "Please Select COD Availability"
+                },
+                description: {
+                    required: "Please Enter Description of Product"
+                },
+                keywords: {
+                    required: "Please Enter Keywords of Product"
+                },
+
+            },
+            submitHandler: function (form) {
+                $('.btnSubmit').attr('disabled', 'disabled');
+                $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+                form.submit();
             }
-        }
+        });
 
+        $("#formAddColor").validate({
+            rules: {
+
+                color_id: {
+                    required: true
+                },
+
+                "image_urls[]": {
+                    required: true
+                },
+
+                size_id: {
+                    required: true
+                },
+
+                mrp: {
+                    required: true
+                },
+
+                stock: {
+                    required: true
+                },
+            },
+            messages: {
+
+                color_id: {
+                    required: "Please Select Colour"
+                },
+                size_id: {
+                    required: "Please Select Sizes"
+                },
+
+                mrp: {
+                    required: "Please Enter MRP"
+                },
+                stock: {
+                    required: "Please Enter Stock"
+                },
+                "image_urls[]": {
+                    required: "Please Upload Colour Images"
+                },
+            },
+            submitHandler: function (form) {
+                $('.btnSubmit').attr('disabled', 'disabled');
+                $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+                form.submit();
+            }
+        });
+
+        $("#formAddCustom").validate({
+            rules: {
+
+                field_name: {
+                    required: true
+                },
+
+                field_value: {
+                    required: true
+                },
+            },
+            messages: {
+
+                field_name: {
+                    required: "Please Enter Field Name"
+                },
+                field_value: {
+                    required: "Please Enter Field Value"
+                },
+            },
+            submitHandler: function (form) {
+                $('.btnSubmit').attr('disabled', 'disabled');
+                $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+                form.submit();
+            }
+        });
+
+        $("#formAddSizes").validate({
+            rules: {
+
+                size_id: {
+                    required: true
+                },
+
+            },
+            messages: {
+
+                size_id: {
+                    required: "Please Select Size"
+                },
+
+            },
+            submitHandler: function (form) {
+                $('.btnSubmit').attr('disabled', 'disabled');
+                $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+                form.submit();
+            }
+        });
     });
 
 </script>

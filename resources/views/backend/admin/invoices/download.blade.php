@@ -216,7 +216,7 @@
                     <tr class="pb-20">
                         <td colspan="2">
                             <div class="text-center">
-                                <p class="company_title text-center"> Ranayas Store </p>
+                                <p class="company_title text-center"> The Hatke Store </p>
                                 <p class="company_address"> Unit no.112, 1st Floor, Bldg no.A6,
                                     Harihar Complex, Dapode,Thane- 421302.</p>
                             </div>
@@ -233,7 +233,7 @@
                     <tr>
                         <td colspan="2">
                             Contact: 9898989898
-                            <span class="invoice_span">Email id : support@ranayas.com</span>
+                            <span class="invoice_span">Email id : support@thehatkestore.com</span>
                         </td>
                     </tr>
                 </table>
@@ -293,7 +293,7 @@
                         <td>{{ $detail->product->title }}</td>
                         <td>{{ $detail->mrp }}</td>
                         <td>{{ $detail->quantity }}</td>
-                        <td>{{ $detail->total }}</td>
+                        <td>{{ $detail->mrp * $detail->quantity }}</td>
                     </tr>
 
                     @endforeach
@@ -313,7 +313,7 @@
                             + CGST
                         </th>
                         <td>
-                            Rs. {{ $invoice->tax / 2 }}
+                            Rs. {{ round($invoice->tax / 2, 2) }}
                         </td>
                     </tr>
                     <tr>
@@ -321,9 +321,10 @@
                             + SGST
                         </th>
                         <td>
-                            Rs. {{ $invoice->tax / 2 }}
+                            Rs. {{ round($invoice->tax / 2, 2) }}
                         </td>
                     </tr>
+                    @if($invoice->discount)
                     <tr>
                         <th colspan="3">
                             - Discount
@@ -332,16 +333,8 @@
                             Rs. {{ $invoice->discount }}
                         </td>
                     </tr>
-                    @if($invoice->used_royalty_points)
-                    <tr>
-                        <th colspan="3">
-                            - Ranayas Coins
-                        </th>
-                        <td>
-                            Rs. {{ $invoice->used_royalty_points }}
-                        </td>
-                    </tr>
                     @endif
+
                     <tr>
                         <th colspan="3">
                             Grand Total
