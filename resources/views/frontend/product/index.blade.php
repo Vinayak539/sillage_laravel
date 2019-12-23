@@ -230,7 +230,7 @@
         
                                                             <a class="add_to_cart_btn action-btn" href="{{ route('cart') }}"
                                                                 data-toggle="tooltip" data-placement="top" title="Add to Cart">
-                                                                <i class="dl-icon-cart29"></i>
+                                                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                                             </a>
         
                                                         </div>
