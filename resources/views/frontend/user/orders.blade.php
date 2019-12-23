@@ -1,9 +1,7 @@
 @extends('layouts.master') @section('title','Orders') @section('content')
 
 <!-- Breadcrumb area Start -->
-<div
-    class="breadcrumb-area bg--white-6 pt--60 pb--70 pt-lg--40 pb-lg--50 pt-md--30 pb-md--40"
->
+<div class="breadcrumb-area bg--white-6 pt--60 pb--70 pt-lg--40 pb-lg--50 pt-md--30 pb-md--40">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 text-center">
@@ -153,17 +151,12 @@
                     <div class="order-bordered mb-20">
                         <div class="row">
                             <div class="col-md-12">
-                                <a
-                                    href="/myaccount/order/{{ $order->id }}"
-                                    class="order-btn"
-                                    >{{ $order->id }}</a
-                                >
-                                <a
-                                    href="{{ route('user.invoices.download', $order->id) }}"
-                                    class="download-btn float-right"
-                                    >Download Invoice</a
-                                >
+                                <a href="/myaccount/order/{{ $order->id }}" class="order-btn">{{ $order->id }}</a>
+                                <a href="{{ route('user.invoices.download', $order->id) }}"
+                                    class="download-btn float-right">Download Invoice</a>
                             </div>
+                            @php $statusBoolean = true @endphp
+
                             @foreach($order->details as $detail)
                             <div class="col-md-12 mt-10">
                                 <div class="order_sec">
@@ -171,10 +164,8 @@
                                         <div class="col-md-4">
                                             <div class="pro_sec">
                                                 <div class="img">
-                                                    <img
-                                                        src="/storage/images/products/{{ $detail->product->image_url }}"
-                                                        alt="{{ $detail->product->title }}"
-                                                    />
+                                                    <img src="/storage/images/products/{{ $detail->product->image_url }}"
+                                                        alt="{{ $detail->product->title }}" />
                                                 </div>
                                                 <div class="content">
                                                     <p class="title">
@@ -193,7 +184,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <p class="price">
-                                                &#8377; {{ $detail->total }}
+                                                &#8377; {{ $order->total }}
                                             </p>
                                         </div>
                                         <div class="col-md-4">
@@ -204,10 +195,14 @@
                                                             )) }}
                                             </p>
                                             @endif
+                                            @if($statusBoolean)
+                                            @php $statusBoolean = false @endphp
                                             <p class="padding10">
-                                                Return policy valid till
-                                                {{ date('M, d', strtotime('+7 days', strtotime(str_replace('/', '-', \Carbon\Carbon::now())))) }}
+                                                Order Status: <h4>
+                                                    {{ $order->status != 'Order Cancel By Buyer' ? $order->status  : 'Order Cancelled by you' }}
+                                                </h4>
                                             </p>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -217,58 +212,31 @@
                                 <div class="review-sec mt-20">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <p
-                                                class="date"
-                                                style="line-height: 20px;"
-                                            >
+                                            <p class="date" style="line-height: 20px;">
                                                 Order On <br />
-                                                <strong
-                                                    >{{ date('d M \'y h:i A', strtotime($order->created_at)) }}</strong
-                                                >
+                                                <strong>{{ date('d M \'y h:i A', strtotime($order->created_at)) }}</strong>
                                             </p>
                                         </div>
                                         @if($order->return_status === null &&
                                         $order->status === 'delivered' &&
-                                        $order->status !== 'Order Cancel By
-                                        Buyer')
+                                        $order->status !== 'Order Cancel By Buyer')
                                         <div class="col-sm-3">
-                                            <a
-                                                href="javascript:void(0)"
-                                                class="return-btn"
-                                                data-obj-id="{{ $order->id }}"
-                                            >
-                                                <i
-                                                    class="fa fa-refresh"
-                                                    aria-hidden="true"
-                                                ></i>
+                                            <a href="javascript:void(0)" class="return-btn"
+                                                data-obj-id="{{ $order->id }}">
+                                                <i class="fa fa-refresh" aria-hidden="true"></i>
                                                 Return
                                             </a>
                                         </div>
                                         @endif @if($order->return_status ===
                                         null && $order->status != 'delivered' &&
-                                        $order->status != 'Order Cancel By
-                                        Buyer') @if($order->status != 'shipped')
-                                        <a
-                                            href="javascript:void(0);"
-                                            class="cancelBtn"
-                                            data-obj-id="{{ $order->id }}"
-                                        >
-                                            <i
-                                                class="fa fa-times"
-                                                aria-hidden="true"
-                                            ></i>
+                                        $order->status != 'Order Cancel By Buyer') @if($order->status != 'shipped')
+                                        <a href="javascript:void(0);" class="cancelBtn" data-obj-id="{{ $order->id }}">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
                                             Cancel
                                         </a>
                                         @else
-                                        <a
-                                            href="javascript:void(0);"
-                                            class="cancelBtn"
-                                            data-obj-id="{{ $order->id }}"
-                                        >
-                                            <i
-                                                class="fa fa-times"
-                                                aria-hidden="true"
-                                            ></i>
+                                        <a href="javascript:void(0);" class="cancelBtn" data-obj-id="{{ $order->id }}">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
                                             Cancel
                                         </a>
                                         <p>
@@ -279,15 +247,9 @@
                                         </p>
                                         @endif @endif
                                         <div class="col-sm-3">
-                                            <a
-                                                href="javascript:void(0)"
-                                                class="need-help-btn"
-                                                data-obj-id="{{ $order->id }}"
-                                            >
-                                                <i
-                                                    class="fa fa-question-circle"
-                                                    aria-hidden="true"
-                                                ></i>
+                                            <a href="javascript:void(0)" class="need-help-btn"
+                                                data-obj-id="{{ $order->id }}">
+                                                <i class="fa fa-question-circle" aria-hidden="true"></i>
                                                 Need Help
                                             </a>
                                         </div>
@@ -302,5 +264,43 @@
         </div>
     </div>
 </div>
+
+<form id="formCancel" method="POST" action="{{ route('user.orders.cancel') }}">
+    @csrf
+    <input type="hidden" name="order_id" id="txtCancelOrder">
+</form>
+
+@endsection
+@section('extrajs')
+
+<script>
+    $(document).ready(function () {
+        $('.return-btn').click(function () {
+            var id = $(this).attr('data-obj-id');
+            var action = '/myaccount/order/return/' + id;
+            $('#returnForm').attr('action', action);
+            $('#orderReturn').modal('show');
+        });
+
+        $('.need-help-btn').click(function () {
+            var id = $(this).attr('data-obj-id');
+            var action = '/myaccount/order/help/' + id;
+            $('#helpForm').attr('action', action);
+            $('#orderHelp').modal('show');
+        });
+
+        $('.cancelBtn').click(function () {
+            if (window.confirm('Are you sure want to cancel order ?')) {
+                $("#txtCancelOrder").val($(this).attr("data-obj-id"));
+                $("#formCancel").submit();
+                $(this).attr('disabled', 'disabled');
+                $(this).html(
+                    '<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">Loading...</span>'
+                );
+            }
+        });
+    });
+
+</script>
 
 @endsection

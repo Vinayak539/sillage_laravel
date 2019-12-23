@@ -1,17 +1,137 @@
 @extends('layouts.master') @section('title','Orders') @section('content')
 
+{{-- Model --}}
+
+<div class="modal fade" id="orderReturn">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Return Order</h4>
+                <button type="button" class="close cclose" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form method="POST" role="form" class="form" action="{{ route('user.orders.return', $order->id) }}"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="reason">Select Reason <span class="text-danger">*</span></label>
+                                    <select name="reason" id="reason" class="form-control" required>
+                                        <option value="">--Select Reason--</option>
+                                        <option value="Within 7 Days"
+                                            {{ old('reason') == 'Within 7 Days' ? 'selected' : '' }}>Within 7 Days
+                                        </option>
+                                        <option value="Wrong Products"
+                                            {{ old('reason') == 'Wrong Products' ? 'selected' : '' }}>Wrong Products
+                                        </option>
+                                        <option value="Faulty Products"
+                                            {{ old('reason') == 'Faulty Products' ? 'selected' : '' }}>Faulty Products
+                                        </option>
+                                        <option value="Quality Products"
+                                            {{ old('reason') == 'Quality Products' ? 'selected' : '' }}>Quality Products
+                                        </option>
+                                        <option value="other" {{ old('reason') == 'other' ? 'selected' : '' }}>Other
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 other_reason">
+                                <div class="form-group">
+                                    <label for="other_reason">Write Reason <span class="text-danger">*</span></label>
+                                    <textarea name="other_reason" id="other_reason" class="form-control"
+                                        rows="5">{{ old('other_reason') }}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="image_url">Upload Product Image</label>
+                                    <input type="file" name="image_url" id="image_url" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 text-danger">
+                                Note : All * Mark Fields are Compulsory !
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary button_update">
+                            <i class="fa fa-plus"></i> Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{{-- Model End --}}
+
+{{-- Help Model --}}
+
+<div class="modal fade" id="orderHelp">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Need Help ? </h4>
+                <button type="button" class="close cclose" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form method="POST" role="form" class="form" action="{{ route('user.orders.help', $order->id) }}">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="description">Write your query <span class="text-danger">*</span></label>
+                                    <textarea name="description" id="description" class="form-control" rows="5"
+                                        required>{{ old('description') }}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 text-danger">
+                                Note : All * Mark Fields are Compulsory !
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary button_update">
+                            <i class="fa fa-plus"></i> Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{{-- Help Model End --}}
 <!-- Breadcrumb area Start -->
-<div
-    class="breadcrumb-area bg--white-6 pt--60 pb--70 pt-lg--40 pb-lg--50 pt-md--30 pb-md--40"
->
+<div class="breadcrumb-area bg--white-6 pt--60 pb--70 pt-lg--40 pb-lg--50 pt-md--30 pb-md--40">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 text-center">
-                <h1 class="page-title">Orders [{{ $order->id }}]</h1>
+                <h1 class="page-title">Order id: {{ $order->id }}</h1>
                 <ul class="breadcrumb justify-content-center">
                     <li><a href="{{ route('index') }}">Home</a></li>
                     <li><a href="{{ route('user.showOrder') }}">Orders</a></li>
-                    <li class="current"><span>{{ $order->id }}</span></li>
                 </ul>
             </div>
         </div>
@@ -24,7 +144,7 @@
         <div class="container">
             <div class="personal-detail">
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-9">
                         <div class="address">
                             <h4>Delivery Address</h4>
                             <h5><strong>{{ $order->user->name }}</strong></h5>
@@ -39,18 +159,7 @@
                             <p><strong>Email Id - {{ $order->user->email }}</strong></p>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="coins">
-                            <h4>Your Ranayas Coins</h4>
-                            <h5>
-                                <strong>
-                                    {!! $order->reward_points ? '<i class="fa fa-bolt icon-circle"
-                                        aria-hidden="true"></i> '.($order->reward_points / 2) . ' SuperCoin' : 'Product
-                                    Yet to Delivered' !!}
-                                </strong>
-                            </h5>
-                        </div>
-                    </div>
+
                     <div class="col-md-3">
                         <div class="review-sec float-right">
                             <h4><strong>More actions</strong></h4>
@@ -156,7 +265,7 @@
                                         </div>
                                         <div class="col-sm-12 mb-15">
                                             <p class="mb-0"><strong>Payment Mode </strong></p>
-                                            <p> {{ $order->payment_mode }}</p>
+                                            <p class="text-capitalize"> {{ $order->payment_mode }}</p>
                                         </div>
                                         @if($order->used_royalty_points)
                                         <div class="col-sm-12 mb-15">
@@ -193,16 +302,12 @@
                                                 <th> + SGST </th>
                                                 <td> &#8377; {{ round($order->tax/2, 2) }} </td>
                                             </tr>
+                                            @IF($order->discount)
                                             <tr>
                                                 <th> - Discount </th>
                                                 <td> &#8377; {{ $order->discount }} </td>
                                             </tr>
-                                            @if($order->used_royalty_points)
-                                            <tr>
-                                                <th> - Ranayas Coins </th>
-                                                <td> &#8377; {{ $order->used_royalty_points }} </td>
-                                            </tr>
-                                            @endif
+                                            @ENDIF
                                             <tr>
                                                 <th> <strong>Grand Total</strong> </th>
                                                 <td> <strong>&#8377; {{ round($order->total, 2) }}</strong> </td>
@@ -219,4 +324,134 @@
     </div>
 </div>
 
+{{-- Review Model Start --}}
+
+<div class="modal fade" id="review">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Rating & Review</h4>
+                <button type="button" class="close cclose" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="login">
+                    <div class="login_form_container">
+                        <div class="account_login_form">
+                            <form class="form" method="POST" action="/myaccount/review">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Select Product <span class="text-danger">*</span></label>
+                                        <select name="product_id" id="product_id" class="form-control">
+                                            <option value="">--Select Product--</option>
+                                            @foreach($order->details as $order)
+                                            <option value="{{ $order->product->id }}">
+                                                {{ $order->product->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Rating <span class="text-danger">*</span></label>
+                                        <div class="starability-grow">
+                                            <input type="radio" id="growing-rate1" class="star" name="rating" checked
+                                                value="1" {{old('rating')== 1 ? 'checked' : ''}}>
+                                            <label for="growing-rate1" title="Terrible">1
+                                                star</label>
+
+                                            <input type="radio" id="growing-rate2" class="star" name="rating" value="2"
+                                                {{old('rating')== 2 ? 'checked' : ''}}>
+                                            <label for="growing-rate2" title="Not good">2
+                                                stars</label>
+
+                                            <input type="radio" id="growing-rate3" class="star" name="rating" value="3"
+                                                {{old('rating')== 3 ? 'checked' : ''}}>
+                                            <label for="growing-rate3" title="Average">3
+                                                stars</label>
+
+                                            <input type="radio" id="growing-rate4" class="star" name="rating" value="4"
+                                                {{old('rating')== 4 ? 'checked' : ''}}>
+                                            <label for="growing-rate4" title="Very good">4
+                                                stars</label>
+
+                                            <input type="radio" id="growing-rate5" class="star" name="rating" value="5"
+                                                {{old('rating')== 5 ? 'checked' : ''}}>
+                                            <label for="growing-rate5" title="Amazing">5
+                                                stars</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Comment <span class="text-danger">*</span></label>
+                                        <textarea class="form-control" name="comment" id="comment" cols="30" rows="4"
+                                            placeholder="Write your comments here"
+                                            required>{{ old('comment') }}</textarea>
+                                    </div>
+                                    <div class="col-md-12 mb-4 text-center">
+                                        <div class="save_button primary_btn default_button">
+                                            <button type="submit" class="button_update">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Review Model End --}}
+
+<form id="formCancel" method="POST" action="/myaccount/order/cancel/">
+    @csrf
+</form>
+
+@endsection
+@section('extrajs')
+
+<script>
+    $(document).ready(function () {
+        var val = '';
+        reason(val);
+        $('#reason').change(function () {
+            var val = $(this).val();
+            reason(val);
+        });
+
+        $('.cancelBtn').click(function () {
+
+            if (window.confirm('Are you sure want to cancel order ?')) {
+                var action = $("#formCancel").attr("action") + $(this).attr("data-obj-id");
+                $("#formCancel").attr("action", action);
+                $("#formCancel").submit();
+                $(this).html('wait...');
+            }
+        });
+    });
+
+    function downloadInvoice() {
+        $('.download-invoice').html(
+            '<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">Loading...</span>');
+        setTimeout(function () {
+            $('.download-invoice').html('<i class="fa fa-download" aria-hidden="true"></i> Download');
+
+        }, 2000);
+    }
+
+    function reason(val) {
+
+        if (val == 'other') {
+            $('.other_reason').show();
+            $('#other_reason').attr('required', 'required');
+        } else {
+            $('.other_reason').hide();
+            $('#other_reason').removeAttr('required', 'required');
+        }
+    }
+
+</script>
 @endsection

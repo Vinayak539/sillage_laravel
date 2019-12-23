@@ -101,11 +101,10 @@
         .header-style-4 .logo-box figure {
             width: 140px;
         }
-        
+
         .searchform-3 .searchform__submit {
             padding-top: 0;
         }
-
     </style>
 </head>
 
@@ -160,22 +159,23 @@
                                     <li class="header-toolbar__item">
                                         <a href="#miniCart" class="mini-cart-btn toolbar-btn">
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <sup class="mini-cart-count">2</sup>
+                                            <sup class="mini-cart-count">{{ Cart::getContent()->count() }}</sup>
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item">
                                         <div class="header-component__item header-component__search-form">
                                             <div class="header-search-form-wrap">
                                                 <form action="/v2/search" method="GET" class="searchform searchform-3">
-                                                    <input name="q" type="text"
-                                                        value="{{ Request::get('q') }}" list="suggestion" id="search-box" class="searchform__input" autocomplete="off" placeholder="Search products..." />
+                                                    <input name="q" type="text" value="{{ Request::get('q') }}"
+                                                        list="suggestion" id="search-box" class="searchform__input"
+                                                        autocomplete="off" placeholder="Search products..." />
                                                     <datalist id="suggestion">
                                                         @foreach($keywords as $key)
                                                         <option value="{{ $key->keyword }}">
                                                             @endforeach
                                                         </option>
                                                     </datalist>
-                                                    
+
                                                     <button type="submit" class="searchform__submit">
                                                         <i class="fa fa-search" aria-hidden="true"></i>
                                                     </button>
@@ -211,23 +211,135 @@
                             </div>
                             <div class="col-8">
                                 <ul class="header-toolbar text-right">
-                                    <li class="header-toolbar__item user-info-menu-btn">
-                                        <a href="#sideNav" class="toolbar-btn ">
-                                            <i class="fa fa-user-circle-o"></i>
+                                    <li
+                                        class="header-toolbar__item user-info-menu-btn"
+                                    >
+                                        <a href="#">
+                                            <i
+                                                class="fa fa-user-circle-o toolbar-btn-cls"
+                                            ></i>
+                                        </a>
+                                        <ul class="user-info-menu">
+                                            @if(auth('user')->check())
+                                            <li>
+                                                <a
+                                                    href="javascript:void(0);"
+                                                >
+                                                    <i
+                                                        class="fa fa-user-circle-o"
+                                                    ></i>
+                                                    {{ Str::limit(auth('user')->user()->name,8,'') }}</a
+                                                >
+                                            </li>
+                                            <li>
+                                                <a
+                                                    href="{{
+                                                        route(
+                                                            'user.dashboard'
+                                                        )
+                                                    }}"
+                                                >
+                                                    Dashboard
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a
+                                                    href="{{
+                                                        route(
+                                                            'user.profile'
+                                                        )
+                                                    }}"
+                                                    >My Account</a
+                                                >
+                                            </li>
+                                            <li>
+                                                <a
+                                                    href="{{
+                                                        route(
+                                                            'user.showOrder'
+                                                        )
+                                                    }}"
+                                                    >Orders</a
+                                                >
+                                            </li>
+
+                                            <!-- <li><a href="#">Download</a></li> -->
+                                            <li>
+                                                <a
+                                                    href="{{
+                                                        route(
+                                                            'user.change-password'
+                                                        )
+                                                    }}"
+                                                    >Change Password</a
+                                                >
+                                            </li>
+
+                                            <li>
+                                                <a
+                                                    href="javascript:void(0)"
+                                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                                    title="Logout"
+                                                >
+                                                    Logout
+                                                </a>
+                                                <form
+                                                    id="logout-form"
+                                                    action="/myaccount/logout"
+                                                    method="POST"
+                                                    style="display: none;"
+                                                >
+                                                    @csrf
+                                                </form>
+                                            </li>
+                                            @else
+                                            <li>
+                                                <a
+                                                    href="{{
+                                                        route('user.login')
+                                                    }}"
+                                                    >Login</a
+                                                >
+                                            </li>
+                                            <li>
+                                                <a
+                                                    href="{{
+                                                        route(
+                                                            'user.register'
+                                                        )
+                                                    }}"
+                                                    >Register</a
+                                                >
+                                            </li>
+                                            @endif
+                                        </ul>
+                                    </li>
+                                    <li class="header-toolbar__item">
+                                        <a
+                                            href="#miniCart"
+                                            class="mini-cart-btn toolbar-btn"
+                                        >
+                                            <i
+                                                class="dl-icon-cart3 toolbar-btn-cls"
+                                            ></i>
+                                            <sup class="mini-cart-count"
+                                                >2</sup
+                                            >
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item">
-                                        <a href="#miniCart" class="mini-cart-btn toolbar-btn">
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <sup class="mini-cart-count">2</sup>
+                                        <a
+                                            href="#searchForm"
+                                            class="search-btn toolbar-btn"
+                                        >
+                                            <i
+                                                class="dl-icon-search1 toolbar-btn-cls"
+                                            ></i>
                                         </a>
                                     </li>
-                                    <li class="header-toolbar__item">
-                                        <a href="#searchForm" class="search-btn toolbar-btn">
-                                            <i class="fa fa-search" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
-                                    <li class="header-toolbar__item d-lg-none">
+                                    <li
+                                        class="header-toolbar__item d-lg-none"
+                                    >
                                         <a href="#" class="menu-btn"></a>
                                     </li>
                                 </ul>
@@ -265,7 +377,8 @@
                                 <ul class="widget-menu widget-menu--3 ">
                                     @foreach($footerDynamicCategory as $mainCat)
                                     <li>
-                                        <a href="{!! asset('category').'/'.$mainCat->slug_url !!}">{{ $mainCat->name }}</a>
+                                        <a
+                                            href="{!! asset('category').'/'.$mainCat->slug_url !!}">{{ $mainCat->name }}</a>
                                     </li>
                                     @endforeach
                                 </ul>
@@ -330,16 +443,19 @@
                                 <ul class="contact-info">
                                     <li class="contact-info__item">
                                         <i class="fa fa-phone"></i>
-                                        <span><a href="tel:+919619614785" class="contact-info__link">(+91) 961 9614 785</a></span>
+                                        <span><a href="tel:+919619614785" class="contact-info__link">(+91) 961 9614
+                                                785</a></span>
                                     </li>
                                     <li class="contact-info__item">
                                         <i class="fa fa-envelope"></i>
-                                        <span><a href="mailto:support@hnilifestyle.com" class="contact-info__link">support@hnilifestyle.com</a></span>
+                                        <span><a href="mailto:support@hnilifestyle.com"
+                                                class="contact-info__link">support@hnilifestyle.com</a></span>
                                     </li>
                                     <li class="contact-info__item">
                                         <i class="fa fa-map-marker"></i>
                                         <span>KHUSHI NATURALS,<br />
-                                            Unit no.112, 1st Floor, Bldg no.A6,Harihar Complex, Dapode,Thane- 421302.</span>
+                                            Unit no.112, 1st Floor, Bldg no.A6,Harihar Complex, Dapode,Thane-
+                                            421302.</span>
                                     </li>
                                 </ul>
                             </div>
@@ -350,12 +466,11 @@
                                     Keep Up To Date
                                 </h3>
                                 <div class="form-widget mb--20">
-                                    <form
-                                        action="#"
-                                        class="newsletter-form newsletter-form--6 mc-form" method="post"
+                                    <form action="#" class="newsletter-form newsletter-form--6 mc-form" method="post"
                                         target="_blank">
                                         <input type="email" name="newsletter-email" id="newsletter-email"
-                                            class="newsletter-form__input" placeholder="Enter Your Email Address.." required />
+                                            class="newsletter-form__input" placeholder="Enter Your Email Address.."
+                                            required />
                                         <button type="submit" class="newsletter-form__submit">
                                             Subscribe
                                         </button>
@@ -364,15 +479,15 @@
                                 <div class="textwidget">
                                     <ul class="social">
                                         <li class="social__item">
-                                            <a href="https://www.facebook.com/hnilifestyle" target="_blank" class="social__link" target="_blank"
-                                                rel="nofollow noopener noreferrer">
+                                            <a href="https://www.facebook.com/hnilifestyle" target="_blank"
+                                                class="social__link" target="_blank" rel="nofollow noopener noreferrer">
                                                 <i class="fa fa-facebook"></i>
                                                 <span class="sr-only">Facebook</span>
                                             </a>
                                         </li>
                                         <li class="social__item">
-                                            <a href="https://www.instagram.com/hni.lifestyle/" target="_blank" class="social__link" target="_blank"
-                                                rel="nofollow noopener noreferrer">
+                                            <a href="https://www.instagram.com/hni.lifestyle/" target="_blank"
+                                                class="social__link" target="_blank" rel="nofollow noopener noreferrer">
                                                 <i class="fa fa-instagram"></i>
                                                 <span class="sr-only">Instagram</span>
                                             </a>
@@ -414,8 +529,8 @@
                     <datalist id="suggestion1">
                         @foreach($keywords as $key)
                         <option value="{{ $key->keyword }}">
-                            @endforeach
                         </option>
+                        @endforeach
                     </datalist>
 
                     <button type="submit" class="searchform__submit">
@@ -491,64 +606,57 @@
                     <h5 class="mini-cart__heading mb--40 mb-lg--30">
                         Shopping Cart
                     </h5>
+                    @if(Cart::isEmpty())
+                    <div class="row">
+                        <div class="col-md-12 mb-50 mt-50">
+                            <div class="alert alert-warning text-center">
+                                <h4>Your cart is empty... You can add some product from <a href="/search">here</a></h4>
+                            </div>
+                        </div>
+                    </div>
+                    @else
                     <div class="mini-cart__content">
                         <ul class="mini-cart__list">
+                            @foreach (Cart::getcontent() as $item)
+
                             <li class="mini-cart__product">
-                                <a href="#" class="remove-from-cart remove">
+                                <a href="#" class="remove-from-cart remove btn-remove-item"
+                                    data-remove-id="{{ $item->id }}">
                                     <i class="dl-icon-close"></i>
                                 </a>
                                 <div class="mini-cart__product__image">
-                                    <img src="{!! asset('assets/img/products/prod-17-1-70x91.jpg') !!}"
-                                        alt="products" />
+                                    <img src="{!! asset('storage/images/products/'.$item->attributes->image_url) !!}"
+                                        alt="{{ $item->name }}" />
                                 </div>
                                 <div class="mini-cart__product__content">
-                                    <a class="mini-cart__product__title" href="#">Chain
-                                        print bermuda shorts
+                                    <a class="mini-cart__product__title"
+                                        href="{{ route('product', $item->attributes->slug_url) }}">{{ $item->name }}
                                     </a>
-                                    <span class="mini-cart__product__quantity">1 x ₹49.00</span>
+                                    <span class="mini-cart__product__quantity">{{ $item->quantity }} x
+                                        ₹{{ $item->price }}</span>
                                 </div>
                             </li>
-                            <li class="mini-cart__product">
-                                <a href="#" class="remove-from-cart remove">
-                                    <i class="dl-icon-close"></i>
-                                </a>
-                                <div class="mini-cart__product__image">
-                                    <img src="{!! asset('assets/img/products/prod-18-1-70x91.jpg') !!}"
-                                        alt="products" />
-                                </div>
-                                <div class="mini-cart__product__content">
-                                    <a class="mini-cart__product__title"
-                                        href="#">Waxed-effect pleated skirt</a>
-                                    <span class="mini-cart__product__quantity">1 x ₹49.00</span>
-                                </div>
-                            </li>
-                            <li class="mini-cart__product">
-                                <a href="#" class="remove-from-cart remove">
-                                    <i class="dl-icon-close"></i>
-                                </a>
-                                <div class="mini-cart__product__image">
-                                    <img src="{!! asset('assets/img/products/prod-19-1-70x91.jpg') !!}"
-                                        alt="products" />
-                                </div>
-                                <div class="mini-cart__product__content">
-                                    <a class="mini-cart__product__title"
-                                        href="#">Waxed-effect pleated skirt</a>
-                                    <span class="mini-cart__product__quantity">1 x ₹49.00</span>
-                                </div>
-                            </li>
+
+                            @endforeach
                         </ul>
                         <div class="mini-cart__total">
-                            <span>Subtotal</span>
-                            <span class="ammount">₹98.00</span>
+                            <span>Total</span>
+                            <span class="ammount">₹{{ Cart::getTotal() }}</span>
                         </div>
                         <div class="mini-cart__buttons">
                             <a href="{{ route('cart') }}" class="btn btn-fullwidth btn-style-1">View Cart</a>
                             <a href="{{ route('checkout') }}" class="btn btn-fullwidth btn-style-1">Checkout</a>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </aside>
+
+        <form action="/cart/delete" id="frmDeleteItem" method="POST">
+            @csrf
+            <input type="hidden" name="item_id" required="required" id="hiddenFieldDeleteItemId" />
+        </form>
         <!-- Mini Cart End -->
 
         <!-- Global Overlay Start -->
@@ -681,6 +789,17 @@
         $(".form").submit(function () {
             $(".button_update").attr("disabled", "disabled");
             $(".button_update").html("Please Wait");
+        });
+
+        $(".btn-remove-item").click(function () {
+            if (window.confirm("Are you sure want to remove this product ?")) {
+                $("#hiddenFieldDeleteItemId").val($(this).attr('data-remove-id'));
+                $("#frmDeleteItem").submit();
+                $(this).attr("disabled", "disabled");
+                $(this).html(
+                    '<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">Loading...</span>'
+                );
+            }
         });
 
     </script>

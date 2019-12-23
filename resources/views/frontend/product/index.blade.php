@@ -217,60 +217,56 @@
                                                 <figure class="product-image">
                                                     <div class="product-image--holder">
                                                         <a href="{{ route('product',[$product->slug_url]) }}">
-
-                                                            
-
-                                                                <img src="{!! asset('storage/images/products').'/'.$product->image_url !!}"
+        
+                                                            <img src="{!! asset('storage/images/products').'/'.$product->image_url !!}"
                                                                 alt="Product Image" class="primary-image">
-
-                                                           
-
-                                                                <img src="{!! asset('storage/images/products').'/'.$product->image_url1 !!}"
+        
+                                                            <img src="{!! asset('storage/images/products').'/'.$product->image_url1 !!}"
                                                                 alt="Product Image" class="secondary-image">
                                                         </a>
                                                     </div>
                                                     <div class="airi-product-action">
                                                         <div class="product-action">
-                                                            
+        
                                                             <a class="add_to_cart_btn action-btn" href="{{ route('cart') }}"
-                                                                data-toggle="tooltip" data-placement="top"
-                                                                title="Add to Cart">
-                                                                <i class="fa fa-shopping-cart"></i>
+                                                                data-toggle="tooltip" data-placement="top" title="Add to Cart">
+                                                                <i class="dl-icon-cart29"></i>
                                                             </a>
-                                                            
+        
                                                         </div>
                                                     </div>
                                                 </figure>
                                                 <div class="product-info">
                                                     <h3 class="product-title">
-                                                        <a href="{{ route('product',[$product->slug_url]) }}">{{ $product->title }}</a>
+                                                        <a
+                                                            href="{{ route('product',[$product->slug_url]) }}">{{ $product->title }}</a>
                                                     </h3>
                                                     <div class="product-rating">
                                                         <span>
                                                             @for($i = 1; $i<= $product->rating; $i++)
-                                                            <i class="fa fa-star rated" aria-hidden="true"></i>
-                                                            @endfor
-                                                            @for($i = 1; $i<= 5 - $product->rating; $i++)
-                                                            <i class="fa fa-star-o" aria-hidden="true"></i>
-                                                            @endfor
+                                                                <i class="dl-icon-star rated"></i>
+                                                                @endfor
+                                                                @for($i = 1; $i<= 5 - $product->rating; $i++)
+                                                                    <i class="dl-icon-star"></i>
+                                                                    @endfor
                                                         </span>
                                                     </div>
-                                                    <span class="product-price-wrapper">
-                                                        <span class="money">₹{{ $product->buy_it_now_price }}</span>
-                                                        <span class="product-price-old">
-                                                            <span class="money">₹{{ $product->mrp }}</span>
-                                                        </span>
+                                                    {{-- <span class="product-price-wrapper">
+                                                                <span class="money">₹{{ $product->buy_it_now_price }}</span>
+                                                    <span class="product-price-old">
+                                                        <span class="money">₹{{ $product->mrp }}</span>
                                                     </span>
+                                                    </span> --}}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     @empty
-
+        
                                     <div class="col-md-12">
                                         <h3>No Product Found..</h3>
                                     </div>
-                
+        
                                     @endforelse
                                 </div>
                             </div>
