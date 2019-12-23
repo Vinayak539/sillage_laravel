@@ -35,11 +35,11 @@ class UserResetPassword extends Controller
                 'otp' => $rand_otp,
             ]);
 
-            SMS::send($user->mobile, 'One Time Password (OTP) for Reset Password : ' . $rand_otp . ' Ranayas Store Note: this OTP is case sensitive, Do not Share your otp with anyone !');
+            SMS::send($user->mobile, 'One Time Password (OTP) for Reset Password : ' . $rand_otp . ' The Hatke Store Note: this OTP is case sensitive, Do not Share your otp with anyone !');
 
             Mail::send(['html' => 'backend.mails.password-reset-otp'], ['user' => $user], function ($message) use ($user) {
-                $message->to($user->email)->subject('Ranayas Store, One Time Password(OTP)');
-                $message->from('support@ranayas.com', 'Ranayas Store');
+                $message->to($user->email)->subject('The Hatke Store, One Time Password(OTP)');
+                $message->from('support@thehatkestore.com', 'The Hatke Store');
             });
 
             session()->put('user', $user);
@@ -74,11 +74,11 @@ class UserResetPassword extends Controller
                 'otp' => $rand_otp,
             ]);
 
-            SMS::send($user->mobile, 'One Time Password (OTP) for Reset Password : ' . $rand_otp . ' Ranayas Store Note: this OTP is case sensitive, Do not Share your otp with anyone !');
+            SMS::send($user->mobile, 'One Time Password (OTP) for Reset Password : ' . $rand_otp . ' The Hatke Store Note: this OTP is case sensitive, Do not Share your otp with anyone !');
 
             Mail::send(['html' => 'backend.mails.password-reset-otp'], ['user' => $user], function ($message) use ($user) {
-                $message->to($user->email)->subject('Ranayas Store, One Time Password(OTP)');
-                $message->from('support@ranayas.com', 'Ranayas Store');
+                $message->to($user->email)->subject('The Hatke Store, One Time Password(OTP)');
+                $message->from('support@thehatkestore.com', 'The Hatke Store');
             });
 
             return redirect()->action('UserResetPassword@sendOtp');

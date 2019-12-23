@@ -39,7 +39,7 @@ class ReturnticketController extends Controller
      */
     public function store(Request $request)
     {
-        // 
+        //
     }
 
     /**
@@ -100,16 +100,16 @@ class ReturnticketController extends Controller
                 'description' => $request->description,
                 'status'      => $request->status,
             ]);
-            
+
             if ($ticket->status == false) {
-                
+
                 $ticket->update([
                     'closed_at'   => now(),
                 ]);
 
                 Mail::send(['html' => 'backend.mails.ticket-closed'], ['ticket' => $ticket], function ($message) use ($ticket) {
-                    $message->from('support@ranayas.com', 'Ranayas Store');
-                    $message->to($ticket->email, 'Ranayas');
+                    $message->from('support@thehatkestore.com', 'The Hatke Store');
+                    $message->to($ticket->email, 'The Hatke Store');
                     $message->subject('Closed:' . $ticket->subject . ' Ticket ID : ' . $ticket->id);
                 });
 

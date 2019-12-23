@@ -62,7 +62,7 @@
     <div class="card">
         <div class="card-block">
             @if(count($orders))
-            <div class="card-header pull-right">
+            <div class="card-header">
                 <form action="{{ route('admin.orders.export') }}" method="post">
                     @csrf
                     <button type="submit" class="btn btn-outline-primary btnSubmit">
@@ -71,8 +71,8 @@
                 </form>
             </div>
             @endif
-            <div class="table-responsive dt-responsive">
-                <table class="table table-striped table-bordered nowrap">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" style="width:100%;">
                     <thead>
                         <tr>
                         <tr>

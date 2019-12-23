@@ -177,6 +177,7 @@
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
+                        <th>Image</th>
                         <th>Product Name</th>
                         <th>MRP</th>
                         <th>Quantity</th>
@@ -188,6 +189,12 @@
                     @foreach($order->details as $detail)
 
                     <tr>
+                        <td>
+                            <a href="{{ asset('/storage/images/products/'. $detail->product->image_url) }}"
+                                target="_blank"><img
+                                    src="{{ asset('/storage/images/products/'. $detail->product->image_url) }}"
+                                    alt="{{ $detail->product->title }}" width="50" class="img img-responsive"></a>
+                        </td>
                         <td>{{ $detail->product->title }}</td>
                         <td>{{ $detail->mrp }}</td>
                         <td>{{ $detail->quantity }}</td>
@@ -197,7 +204,7 @@
                     @endforeach
 
                     <tr>
-                        <th colspan="4" class="bg-silver text-right text-uppercase">
+                        <th colspan="5" class="bg-silver text-right text-uppercase">
                             <p>Total Amount : &#8377; {{ $order->tbt }}</p>
                             <p>+ CGST : &#8377; {{ round($order->tax/2, 2) }}</p>
                             <p>+ SGST : &#8377; {{ round($order->tax/2, 2) }}</p>
@@ -220,17 +227,11 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th colspan="4">Order Pickedup Origin : {{ $track_response['Origin'] }}</th>
-                    </tr>
-                    <tr>
-                        <th colspan="4">Order Pickedup Date :
-                            {{ date('d-M-Y h:i A', strtotime($track_response['PickUpDate'])) }}
-                        </th>
-                    </tr>
-                    <tr>
-                        <th colspan="4">Order Delivered :
-                            {{ date('d-M-Y h:i A', strtotime($track_response['Status']['StatusDateTime'])) }}
-                        </th>
+                        <th colspan="4">
+                            <span class="pull-left text-info">Order Pickedup Origin :
+                                {{ $track_response['Origin'] }}</span> <Span class="pull-right text-info">Order Pickedup
+                                Date :
+                                {{ date('d-M-Y h:i A', strtotime($track_response['PickUpDate'])) }}</Span></th>
                     </tr>
 
                     <tr class="thead-dark">
@@ -270,8 +271,8 @@
         <div class="card-header bg-dark text-white-all">
             <h4>Transaction Details</h4>
         </div>
-        <div class="card-body">
-            <table class="table table-bordered">
+        <div class="card-body table-responsive">
+            <table class="table table-striped table-hover" style="width:100%;">
                 <tbody>
                     <tr>
                         <td>Merchant ID</td>

@@ -7,9 +7,11 @@
 <div class="modal" id="addModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header bg-primary">
-                <h3 class="modal-title text-light">Add Review</h3>
-                <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+            <div class="modal-header bg-dark text-white-all">
+                <h5 class="modal-title" id="formModal">Add Review</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
 
             <form method="POST" role="form" class="needs-validation" enctype="multipart/form-data" autocomplete="off">
@@ -67,7 +69,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="review_date">Review Date <span class="text-danger">*</span></label>
-                                <input type="date" name="review_date" id="review_date" class="form-control"
+                                <input type="text" name="review_date" id="review_date" class="form-control datepicker"
                                     placeholder="dd-mm-yyyy" value="{{ old('review_date') }}" required>
                             </div>
                         </div>
@@ -97,120 +99,124 @@
 </div>
 
 {{-- Model End --}}
+<section class="section">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-dark text-white-all">
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="fas fa-home"></i>
+                    Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-list"></i> Review</li>
+            <li class="breadcrumb-item"><a href="#addModal" data-toggle="modal" data-target="#addModal"><i
+                        class="fas fa-plus"></i> Add Review</a></li>
+        </ol>
+    </nav>
 
-<div class="card borderless-card">
-    <div class="card-block inverse-breadcrumb">
-        <div class="breadcrumb-header">
-            <h5>Manage Reviews</h5>
+    <div class="card">
+        <div class="card-header bg-dark text-white-all">
+            <h4>Manage Reviews</h4>
         </div>
-        <div class="page-header-breadcrumb">
-            <ul class="breadcrumb-title">
-                <li class="breadcrumb-item">
-                    <a href="/adrana951">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="#addModal" data-toggle="modal" data-target="#addModal">Add Review</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-block">
-        <div class="table-responsive dt-responsive">
-            <table id="dom-jqry" class="table table-striped table-bordered nowrap">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Product Name</th>
-                        <th>Rating</th>
-                        <th>Status</th>
-                        <th>Reviewed On</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($reviews as $review)
-                    <tr>
-                        <td>{{ $review->id }}</td>
-                        <td>
-                            @if ($review->image_url)
-                            <img src="/storage/images/reviews/{{ $review->image_url }}" alt="{{ $review->name }}"
-                                class="img img-responsive img-circle" width="40px" height="40px" loading="lazy">
-                            @else
-                            <div class="review-alpha1">
-                                <h3>{{ strtoupper(substr($review->name,0,2)) }}</h3>
-                            </div>
-                            @endif
-                        </td>
-                        <td>{{ $review->name }}</td>
-                        <td>{{ str_limit($review->product->title, 20) }}</td>
-                        <td>
-                            @for($i = 1; $i<= $review->rating; $i++)
-                                <i class="fa fa-star"></i>
-                                @endfor
-                                @for($i = 1; $i<= 5 - $review->rating; $i++)
-                                    <i class="fa fa-star-o"></i>
-                                    @endfor
-                        </td>
-                        <td>
-                            {{ $review->status == true ? 'Active' : 'Blocked' }}
-                        </td>
-                        <td>{{ date('d-M-Y', strtotime($review->created_at)) }}</td>
-                        <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-outline-primary dropdown-toggle"
-                                    data-toggle="dropdown">
-                                    Action
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a href="{{ route('admin.reviews.edit', $review->id) }}" class="dropdown-item"
-                                        title="Edit Detail">
-                                        <i class="fa fa-edit text-primary"></i> Edit
-                                    </a>
-                                    <button type="button" data-role="delete-obj" data-obj-id="{{$review->id}}"
-                                        class="dropdown-item delete-object" title="Delete Review">
-                                        <i class="fa fa-trash text-danger"></i> Delete
-                                    </button>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Product Name</th>
+                            <th>Rating</th>
+                            <th>Status</th>
+                            <th>Reviewed On</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($reviews as $review)
+                        <tr>
+                            <td>{{ $review->id }}</td>
+                            <td>
+                                @if ($review->image_url)
+                                <img src="/storage/images/reviews/{{ $review->image_url }}" alt="{{ $review->name }}"
+                                    class="img img-responsive img-circle" width="40px" height="40px" loading="lazy">
+                                @else
+                                <div class="review-alpha1">
+                                    <h3>{{ strtoupper(substr($review->name,0,2)) }}</h3>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr class="text-center">
-                        <td class="text-danger" colspan="9">
-                            <h4>No Record Found..</h4>
-                        </td>
-                    </tr>
-                    @endforelse
-                    <tr class="text-center">
-                        <td colspan="9">
-                            {{ $reviews->links() }}
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>#</th>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Product Name</th>
-                        <th>Rating</th>
-                        <th>Status</th>
-                        <th>Reviewed On</th>
-                        <th>Action</th>
-                    </tr>
-                </tfoot>
-            </table>
+                                @endif
+                            </td>
+                            <td>{{ $review->name }}</td>
+                            <td>{{ Str::limit($review->product->title, 20) }}</td>
+                            <td>
+                                @for($i = 1; $i<= $review->rating; $i++)
+                                    <i class="fa fa-star"></i>
+                                    @endfor
+                                    @for($i = 1; $i<= 5 - $review->rating; $i++)
+                                        <i class="fa fa-star-o"></i>
+                                        @endfor
+                            </td>
+                            <td>
+                                {{ $review->status == true ? 'Active' : 'Blocked' }}
+                            </td>
+                            <td>{{ date('d-M-Y', strtotime($review->created_at)) }}</td>
+                            <td>
+
+                                <div class="dropdown d-inline">
+                                    <button class="btn btn-outline-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        Action
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a href="{{ route('admin.reviews.edit', $review->id) }}"
+                                            class="dropdown-item has-icon" title="Edit Detail">
+                                            <i class="fa fa-edit"></i> Edit
+                                        </a>
+                                        <a href="javascript:void(0)" data-role="delete-obj"
+                                            data-obj-id="{{$review->id}}" class="dropdown-item has-icon delete-object"
+                                            title="Delete Review">
+                                            <i class="fa fa-trash"></i> Delete
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                        @empty
+                        <tr class="text-center">
+                            <td class="text-danger" colspan="9">
+                                <h4>No Record Found..</h4>
+                            </td>
+                        </tr>
+                        @endforelse
+                        @if($reviews->total() > 50)
+                        <tr class="text-center">
+                            <td colspan="9">
+                                {{ $reviews->links() }}
+                            </td>
+                        </tr>
+                        @endif
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Product Name</th>
+                            <th>Rating</th>
+                            <th>Status</th>
+                            <th>Reviewed On</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
-</div>
+
+</section>
 @endsection
-<form id="formDelete" method="POST" action="/adrana951/manage-reviews/delete/">
+<form id="formDelete" method="POST" action="{{ route('admin.reviews.delete') }}">
     @csrf
+    <input type="hidden" name="review_id" id="txtReviewID">
 </form>
 
 @section('extrajs')
@@ -219,8 +225,7 @@
         $(".delete-object").click(function () {
             if (window.confirm(
                     "Are you sure, You want to Delete? ")) {
-                var action = $("#formDelete").attr("action") + $(this).attr("data-obj-id");
-                $("#formDelete").attr("action", action);
+                $("#txtReviewID").val($(this).attr("data-obj-id"));
                 $("#formDelete").submit();
                 $(this).html('wait...');
             }

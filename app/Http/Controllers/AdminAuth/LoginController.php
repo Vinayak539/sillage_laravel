@@ -11,7 +11,7 @@ use Lang;
 class LoginController extends Controller
 {
 
-    protected $redirectTo = '/adhni753';
+    protected $redirectTo = '/adhatke852';
 
     public function __contruct()
     {
@@ -35,15 +35,15 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->remeber)) {
-            return redirect()->intended('/adhni753');
+            return redirect()->intended('/adhatke852');
         }
-        return redirect('/adhni753/login')->withInput($request->only('email', 'remember'))->withErrors(['email' => Lang::get('auth.failed')]);
+        return redirect('/adhatke852/login')->withInput($request->only('email', 'remember'))->withErrors(['email' => Lang::get('auth.failed')]);
     }
 
     public function logout()
     {
         Auth::guard('admin')->logout();
-        return redirect()->intended('/adhni753/login');
+        return redirect()->intended('/adhatke852/login');
     }
 
     public function checkEmail(Request $request)

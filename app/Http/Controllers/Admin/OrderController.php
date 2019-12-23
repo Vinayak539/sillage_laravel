@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exports\OrderExport;
 use App\Http\Controllers\Controller;
+use App\Model\Delivery;
 use App\Model\SMS;
 use App\Model\TxnOrder;
 use App\Model\TxnOrderDetail;
@@ -70,8 +71,15 @@ class OrderController extends Controller
         try {
 
             $order     = TxnOrder::where('id', $id)->with('details', 'user', 'transaction', 'shipping')->firstOrFail();
-            $shippings = TxnShipping::where('status', true)->orderBy('name')->get();
-            return view('backend.admin.orders.show', compact('order', 'shippings'));
+            $res = Delivery::orderTrack($order->id);
+            $result = json_decode($res, true);
+            if (array_key_exists('Error', $result)) {
+                $track_response = [];
+            } else {
+                $track_response = $result['ShipmentData'][0]['Shipment'];
+            }
+
+            return view('backend.admin.orders.show', compact('order', 'track_response'));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
@@ -133,7 +141,7 @@ class OrderController extends Controller
                 'status' => $request->status,
             ]);
 
-            // SMS::send($order->user->mobile, 'Ranayas Store - Your Order ID : ' . $order->id . ', has been ' . $order->status . ',  Login for more detail on http://ranayas.com/myaccount');
+            // SMS::send($order->user->mobile, 'The Hatke Store - Your Order ID : ' . $order->id . ', has been ' . $order->status . ',  Login for more detail on http://thehatkestore.com/myaccount');
 
             if ($request->filled('status') && $request->status == 'delivered') {
 
@@ -161,9 +169,9 @@ class OrderController extends Controller
                 $pdf = PDF::loadView('backend.admin.invoices.download', ['invoice' => $order]);
 
                 Mail::send(['html' => 'backend.admin.invoices.empty'], ['invoice' => $order], function ($message) use ($order, $pdf) {
-                    $message->from('order-confirmation@ranayas.com', 'Ranayas Store');
+                    $message->from('order-confirmation@thehatkestore.com', 'The Hatke Store');
                     $message->to($order->user->email, $order->user->name);
-                    $message->subject('Invoice copy of Order No ' . $order->id . ' From Ranayas Store');
+                    $message->subject('Invoice copy of Order No ' . $order->id . ' From The Hatke Store');
                     $message->attachData($pdf->output(), 'invoice_no_' . $order->id . '.pdf');
                 });
 
@@ -197,7 +205,7 @@ class OrderController extends Controller
                 'return_status' => $request->return_status,
             ]);
 
-            SMS::send($order->user->mobile, 'Ranayas Store - Your Order ID : ' . $order->id . ', for Return and Refund is ' . $order->return_status . ',  Login for more detail on http://ranayas.com/myaccount');
+            SMS::send($order->user->mobile, 'The Hatke Store - Your Order ID : ' . $order->id . ', for Return and Refund is ' . $order->return_status . ',  Login for more detail on http://thehatkestore.com/myaccount');
 
             return redirect(route('admin.orders.show', $id))->with('messageSuccess', 'Status has been updated for return & refund to ' . $order->return_status . ' successfully !');
 
@@ -254,7 +262,7 @@ class OrderController extends Controller
             $order = TxnOrder::where('id', $id)->with('shipping')->first();
 
             if ($order->status == 'shipped') {
-                SMS::send($order->user->mobile, 'Ranayas Store - Your Order has been shipped by : ' . $order->shipping->name . ' you can track from ' . $order->shipping->website_url . ' With Tracking No ' . $order->awf_number . ' Expected Delivery date ' . date('d-M-Y', strtotime($order->delivery_date)));
+                SMS::send($order->user->mobile, 'The Hatke Store - Your Order has been shipped by : ' . $order->shipping->name . ' you can track from ' . $order->shipping->website_url . ' With Tracking No ' . $order->awf_number . ' Expected Delivery date ' . date('d-M-Y', strtotime($order->delivery_date)));
             }
 
             return redirect(route('admin.orders.show', $id))->with('messageSuccess', 'Order Assign to ' . $order->shipping->name . ' has been Updated Successfully !');

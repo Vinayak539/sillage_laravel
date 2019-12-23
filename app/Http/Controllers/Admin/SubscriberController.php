@@ -7,6 +7,7 @@ use App\Jobs\SendNewsletterJob;
 use App\Model\Subscriber;
 use App\Model\TxnUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SubscriberController extends Controller
 {
@@ -70,7 +71,7 @@ class SubscriberController extends Controller
         ],
             [
                 'sendEmail.required' => 'Please Select Atleast One Email ID',
-                'sendEmail.exists'   => 'The Email is not Valid',
+                'sendEmail.exists' => 'The Email is not Valid',
             ]);
 
         return view('backend.admin.subscribers.send')->with(['sendEmails' => $request->sendEmail]);
@@ -112,26 +113,33 @@ class SubscriberController extends Controller
 
     public function send(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'sendEmail' => 'required|array',
             'sendEmail' => 'email',
-            'message'   => 'required|string',
+            'message' => 'required|string',
         ],
             [
-                'email.*.exists'   => 'Email is Not Valid',
+                'email.*.exists' => 'Email is Not Valid',
                 'message.required' => 'Please Enter Message',
             ]);
 
+        if ($validator->fails()) {
+            connectify('error', 'Send Newsletter', $validator->errors()->first());
+            return back()->withInput();
+        }
+
         foreach ($request->emails as $email) {
             $data = [
-                'email'       => $email,
+                'email' => $email,
                 'bodyMessage' => $request->message,
             ];
 
             $this->dispatch(new SendNewsletterJob($data));
         }
 
-        return redirect(route('admin.subscribers.all'))->with('messageSuccess', 'Newsletters Send Successfully !');
+        connectify('success', 'Send Newsletter', 'Newsletters Send Successfully !');
+
+        return redirect(route('admin.subscribers.all'));
     }
 
     public function unsubscribe($email)
@@ -141,12 +149,18 @@ class SubscriberController extends Controller
             $newsletter->update([
                 'is_subcribed' => false,
             ]);
-            return redirect(url('/'))->with('messageSuccess1', 'You have been unsubscribed successfully, you can subscribe anytime by putting your email in Newsletter');
+
+            connectify('success', 'Unsubscribed', 'You have been unsubscribed successfully, you can subscribe anytime by putting your email in Newsletter');
+
+            return redirect(url('/'));
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(url('/'))->with('messageDanger1', 'Whoops, Something went wrong !');
+                connectify('success', 'Unsubscribed', 'Whoops, Something went wrong !');
+                return redirect(url('/'));
             } else {
-                return redirect(url('/'))->with('messageDanger1', 'Whoops, Something went wrong from our end !');
+                connectify('success', 'Unsubscribed', 'Whoops, Something went wrong from our end !');
+
+                return redirect(url('/'));
 
             }
         }

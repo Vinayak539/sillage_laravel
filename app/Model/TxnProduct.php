@@ -20,11 +20,6 @@ class TxnProduct extends Model
         return $this->belongsTo(MasterWarranty::class);
     }
 
-    public function side_product()
-    {
-        return $this->belongsTo(SideProduct::class, 'id', 'product_id');
-    }
-
     public function custom_fields()
     {
         return $this->hasMany(TxnCustomField::class, 'product_id', 'id');
@@ -32,12 +27,17 @@ class TxnProduct extends Model
 
     public function color()
     {
-        return $this->belongsTo(MstColor::class);
+        return $this->belongsTo(MstColor::class, 'id', 'product_id');
+    }
+
+    public function colors()
+    {
+        return $this->hasMany(MapColorSize::class, 'product_id', 'id');
     }
 
     public function sizes()
     {
-        return $this->belongsTo(MstSize::class, 'product_id', 'id');
+        return $this->hasMany(MapProductMstSize::class, 'product_id', 'id');
     }
 
     public function images()

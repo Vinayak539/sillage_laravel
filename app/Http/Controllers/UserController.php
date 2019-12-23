@@ -10,10 +10,9 @@ use App\Model\TxnOrder;
 use App\Model\TxnReview;
 use App\Model\TxnUser;
 use App\Model\User;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Barryvdh\DomPDF\Facade as PDF;
-
 
 class UserController extends Controller
 {
@@ -43,10 +42,13 @@ class UserController extends Controller
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect('/')->with('messageDanger1', 'Whoops, Something Went Wrong !');
+                connectify('error', 'Error', 'Whoops, Something Went Wrong !');
+                return redirect('/');
             }
             // return $ex->getMessage();
-            return redirect('/')->with('messageDanger1', 'Whoops, Something went wrong from our end !');
+            connectify('error', 'Error', 'Whoops, Something went wrong from our end !');
+
+            return redirect('/');
         }
 
     }
@@ -60,10 +62,13 @@ class UserController extends Controller
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect('/')->with('messageDanger1', 'Whoops, Something Went Wrong !');
+                connectify('error', 'Error', 'Whoops, Something Went Wrong !');
+                return redirect('/');
             }
             // return $ex->getMessage();
-            return redirect('/')->with('messageDanger1', 'Whoops, Something went wrong from our end !');
+            connectify('error', 'Error', 'Whoops, Something went wrong from our end !');
+
+            return redirect('/');
         }
     }
 
@@ -76,86 +81,97 @@ class UserController extends Controller
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect('/')->with('messageDanger1', 'Whoops, Something Went Wrong !');
+                connectify('error', 'Error', 'Whoops, Something Went Wrong !');
+                return redirect('/');
             }
             // return $ex->getMessage();
-            return redirect('/')->with('messageDanger1', 'Whoops, Something went wrong from our end !');
+            connectify('error', 'Error', 'Whoops, Something went wrong from our end !');
+
+            return redirect('/');
         }
     }
-    
+
     public function showOrder()
     {
         try {
-            $user = TxnUser::where('id', auth('user')->user()->id)->firstOrFail();
-            // $user = TxnUser::where('id', auth('user')->user()->id)->with(['orders' => function ($q) {
-            //     $q->where('status', '<>', 'nc')->orderBy('id', 'DESC')->get();
-            // }])->firstOrFail();
-            //dd($user);
+            $user = TxnUser::where('id', auth('user')->user()->id)->with(['orders' => function ($q) {
+                $q->where('status', '<>', 'nc')->get();
+            }])->firstOrFail();
             return view('frontend.user.orders', compact('user'));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect('/')->with('messageDanger1', 'Whoops, Something Went Wrong !');
+                connectify('error', 'Error', 'Whoops, Something Went Wrong !');
+                return redirect(route('user.dashboard'));
             }
             // return $ex->getMessage();
-            return redirect('/')->with('messageDanger1', 'Whoops, Something went wrong from our end !');
+            connectify('error', 'Error', 'Whoops, Something went wrong from our end !');
+
+            return redirect(route('user.dashboard'));
         }
     }
 
     public function update(Request $request)
     {
         $request->validate([
-            'name'         => 'required|string|max:191',
-            'mobile'       => 'required|digits_between:10,12',
-            'city'         => 'required|string|max:191',
-            'territory'    => 'required|string|max:191',
-            'address'      => 'required|string',
-            'pincode'      => 'required|digits:6',
+            'name' => 'required|string|max:191',
+            'mobile' => 'required|digits_between:10,12',
+            'city' => 'required|string|max:191',
+            'territory' => 'required|string|max:191',
+            'address' => 'required|string',
+            'pincode' => 'required|digits:6',
         ],
             [
-                'name.required'              => 'Please Enter Name',
-                'mobile.required'            => 'Please Enter Mobile Number',
-                'mobile.digits_between'      => 'Mobile Number should be between 10 to 12 digits',
-                'city.required'              => 'Please Enter City',
-                'territory.required'         => 'Please Enter State',
-                'address.required'           => 'Please Enter Address',
-                'pincode.required'           => 'Please Enter Pincode',
-                'pincode.digits'             => 'Pincode should be of 6 digits',
+                'name.required' => 'Please Enter Name',
+                'mobile.required' => 'Please Enter Mobile Number',
+                'mobile.digits_between' => 'Mobile Number should be between 10 to 12 digits',
+                'city.required' => 'Please Enter City',
+                'territory.required' => 'Please Enter State',
+                'address.required' => 'Please Enter Address',
+                'pincode.required' => 'Please Enter Pincode',
+                'pincode.digits' => 'Pincode should be of 6 digits',
             ]);
 
         try {
             $user = TxnUser::where('id', auth('user')->user()->id)->firstOrFail();
 
             $user->update([
-                'name'      => $request->name,
-                'mobile'    => $request->mobile,
-                'city'      => $request->city,
-                'address'   => $request->address,
+                'name' => $request->name,
+                'mobile' => $request->mobile,
+                'city' => $request->city,
+                'address' => $request->address,
                 'territory' => $request->territory,
-                'pincode'   => $request->pincode,
+                'pincode' => $request->pincode,
             ]);
 
-            return redirect(route('user.profile'))->with('messageSuccess1', 'Profile has been updated successfully !');
+            connectify('success', 'Profile Updated', 'Profile has been updated successfully  !');
+
+            return redirect(route('user.profile'));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect('/')->with('messageDanger1', 'Whoops, Something Went Wrong !');
+                connectify('error', 'Error', 'Whoops, Something Went Wrong !');
+                return redirect('/');
             }
-            return redirect('/myaccount')->with('messageDanger1', 'Whopps, Something went wrong from our end, try again later !');
+            // return $ex->getMessage();
+            connectify('error', 'Error', 'Whoops, Something went wrong from our end !');
+
+            return redirect('/');
         }
     }
     public function updateChangePassword(Request $request)
     {
         $request->validate([
-            'password'     => 'required_with:con_password|max:191',
+            'password' => 'required_with:con_password|max:191',
             'con_password' => 'required_with:password|max:191',
         ],
             [
-                'password.required_with'     => 'Please Enter New Password to change password',
+                'password.required_with' => 'Please Enter New Password to change password',
                 'con_password.required_with' => 'Please Enter Old Password to change password',
             ]);
 
         try {
+
             $user = TxnUser::where('id', auth('user')->user()->id)->firstOrFail();
 
             if ($request->filled('password')) {
@@ -164,13 +180,19 @@ class UserController extends Controller
                 ]);
             }
 
-            return redirect(route('user.dashboard'))->with('messageSuccess1', 'Password has been updated successfully !');
+            connectify('success', 'Password Updated', 'Password has been updated successfully  !');
+
+            return redirect(route('user.dashboard'));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect('/')->with('messageDanger1', 'Whoops, Something Went Wrong !');
+                connectify('error', 'Error', 'Whoops, Something Went Wrong !');
+                return redirect('/');
             }
-            return redirect('/myaccount')->with('messageDanger1', 'Whopps, Something went wrong from our end, try again later !');
+            // return $ex->getMessage();
+            connectify('error', 'Error', 'Whoops, Something went wrong from our end !');
+
+            return redirect('/');
         }
     }
 
@@ -183,23 +205,26 @@ class UserController extends Controller
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect('/myaccount')->with('messageDanger1', 'Whoops, Something Went Wrong !');
+                connectify('error', 'Error', 'Whoops, Something Went Wrong !');
+                return redirect('/');
             }
             // return $ex->getMessage();
-            return redirect('/myaccount')->with('messageDanger1', 'Whoops, Something Went Wrong from our end, try again later !');
+            connectify('error', 'Error', 'Whoops, Something went wrong from our end !');
+
+            return redirect('/');
         }
     }
 
     public function returnOrder(Request $request, $id)
     {
         $request->validate([
-            'reason'    => 'required|string|max:191',
+            'reason' => 'required|string|max:191',
             'image_url' => 'nullable|image|max:1024|mimes:jpeg,png',
         ],
             [
                 'reason.required' => 'Please Select Reason',
                 'image_url.image' => 'Please Select Proper Image',
-                'image_url.max'   => 'Please Select Image of Maximum size 1MB',
+                'image_url.max' => 'Please Select Image of Maximum size 1MB',
                 'image_url.mimes' => 'Please Select Image of type JPEG & PNG',
             ]);
 
@@ -209,7 +234,7 @@ class UserController extends Controller
             ],
                 [
                     'other_reason.required' => 'Please Write Reason',
-                    'other_reason.max'      => 'Please Write Reason in 500 characters',
+                    'other_reason.max' => 'Please Write Reason in 500 characters',
                 ]);
         }
 
@@ -225,63 +250,72 @@ class UserController extends Controller
             $order->update([
                 'return_status' => 'Applied',
                 'cancel_reason' => $request->reason,
-                'image_url'     => $request->img,
-                'other_reason'  => $request->other_reason,
+                'image_url' => $request->img,
+                'other_reason' => $request->other_reason,
             ]);
 
             $ticket = Returnticket::create([
-                'email'       => $order->user->email,
-                'subject'     => 'Return & Refund',
-                'open_by'     => auth('user')->user()->name,
-                'status'      => true,
+                'email' => $order->user->email,
+                'subject' => 'Return & Refund',
+                'open_by' => auth('user')->user()->name,
+                'status' => true,
                 'description' => 'Applied for Return and Refund against Order ID : ' . $order->id,
             ]);
 
-            SMS::send($order->user->mobile, 'Ranayas Store - You have applied for Return and Refund against Order ID : ' . $order->id . ', Stay tuned for approval on http://ranayas.com/myaccount');
+            SMS::send($order->user->mobile, 'The Hatke Store - You have applied for Return and Refund against Order ID : ' . $order->id . ', Stay tuned for approval on http://thehatkestore.com/myaccount');
 
             Mail::send(['html' => 'backend.mails.ticket'], ['ticket' => $ticket], function ($message) use ($ticket) {
-                $message->from('support@ranayas.com', 'Ranayas Store');
-                $message->to($ticket->email, 'Ranayas');
-                $message->bcc('support@ranayas.com', 'Ranayas Store');
+                $message->from('support@thehatkestore.com', 'The Hatke Store');
+                $message->to($ticket->email, 'The Hatke Store');
+                $message->bcc('support@thehatkestore.com', 'The Hatke Store');
                 $message->subject('Ranays Store RE:' . $ticket->subject . ' Ticket ID : ' . $ticket->id);
             });
 
-            return redirect('/myaccount')->with('messageSuccess1', 'Order Return applied successfully, stay tuned for approval !');
+            connectify('success', 'Return Order', 'Order Return applied successfully, stay tuned for approval !');
+
+            return redirect('/myaccount');
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect('/myaccount')->with('messageDanger1', 'Whoops, Order Not Found, try again later !');
+                connectify('error', 'Error', 'Whoops, Order Not Found, try again later !');
+                return redirect('/myaccount');
             }
             // return $ex->getMessage();
-            return redirect('/myaccount')->with('messageDanger1', 'Whoops, Something Went Wrong from our end, try again later !');
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
+
+            return redirect('/myaccount');
         }
     }
 
-    public function cancelOrder(Request $request, $id)
+    public function cancelOrder(Request $request)
     {
         try {
 
-            $order = TxnOrder::where('id', $id)->with('user')->firstOrFail();
+            $order = TxnOrder::where('id', $request->order_id)->with('user')->firstOrFail();
 
             $order->update([
                 'status' => 'Order Cancel By Buyer',
             ]);
 
-            SMS::send($order->user->mobile, 'Ranayas Store - Your Order ID : ' . $order->id . ', has been cancelled successfully,  Login for more detail on http://ranayas.com/');
+            // SMS::send($order->user->mobile, 'The Hatke Store - Your Order ID : ' . $order->id . ', has been cancelled successfully,  Login for more detail on http://thehatkestore.com/');
 
             Mail::send(['html' => 'backend.mails.order-cancel'], ['order' => $order], function ($message) use ($order) {
-                $message->to('support@ranayas.com')->subject('Order has been Cancelled ! [order id : ' . $order->id . ']');
-                $message->from('support@ranayas.com', 'Ranayas Store');
+                $message->to('support@thehatkestore.com')->subject('Order has been Cancelled ! [order id : ' . $order->id . ']');
+                $message->from('support@thehatkestore.com', 'The Hatke Store');
             });
+            connectify('success', 'Order Cancel', 'Order Cancelled Successfully !');
 
-            return redirect(route('user.order', $id))->with('messageSuccess1', 'Order Cancelled Successfully !');
+            return redirect(route('user.order', $request->order_id));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect('/myaccount')->with('messageDanger1', 'Whoops, Order Not Found, try again later !');
+                connectify('error', 'Error', 'Whoops, Order Not Found, try again later !');
+                return redirect('/myaccount');
             }
             return $ex->getMessage();
-            return redirect('/myaccount')->with('messageDanger1', 'Whoops, Something Went Wrong from our end, try again later !');
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
+
+            return redirect('/myaccount');
         }
     }
 
@@ -298,28 +332,33 @@ class UserController extends Controller
             $order = TxnOrder::where('id', $id)->with('user')->firstOrFail();
 
             $ticket = Ticket::create([
-                'email'       => $order->user->email,
-                'subject'     => 'Order By : ' . $order->id,
+                'email' => $order->user->email,
+                'subject' => 'Order By : ' . $order->id,
                 'description' => $request->description,
-                'open_by'     => auth('user')->user()->name . ' - Customer',
-                'status'      => true,
+                'open_by' => auth('user')->user()->name . ' - Customer',
+                'status' => true,
             ]);
 
             Mail::send(['html' => 'backend.mails.ticket'], ['ticket' => $ticket], function ($message) use ($ticket) {
-                $message->from('support@ranayas.com', 'Ranayas Store');
-                $message->to($ticket->email, 'Ranayas');
-                $message->bcc('support@ranayas.com', 'Ranayas Store');
+                $message->from('support@thehatkestore.com', 'The Hatke Store');
+                $message->to($ticket->email, 'The Hatke Store');
+                $message->bcc('support@thehatkestore.com', 'The Hatke Store');
                 $message->subject('Ranays Store' . $ticket->subject . ' Ticket ID : ' . $ticket->id);
             });
 
-            return redirect(route('user.order', $id))->with('messageSuccess1', 'Your query has been sent successfully, our expert will get in touch with you soon, stay tuned !');
+            connectify('success', 'Need Help', 'Your query has been sent successfully, our expert will get in touch with you soon, stay tuned !');
+
+            return redirect(route('user.order', $id));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect('/myaccount')->with('messageDanger1', 'Whoops, Order Not Found, try again later !');
+                connectify('error', 'Error', 'Whoops, Order Not Found, try again later !');
+                return redirect('/myaccount');
             }
-            return $ex->getMessage();
-            return redirect('/myaccount')->with('messageDanger1', 'Whoops, Something Went Wrong from our end, try again later !');
+            // return $ex->getMessage();
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
+
+            return redirect('/myaccount');
         }
     }
 
@@ -327,13 +366,13 @@ class UserController extends Controller
     {
         $request->validate([
             'product_id' => 'required|integer|exists:txn_products,id',
-            'rating'     => 'required|integer|max:5|min:1',
-            'comment'    => 'required|string',
+            'rating' => 'required|integer|max:5|min:1',
+            'comment' => 'required|string',
         ],
             [
                 'product_id.required' => 'Please Select Product',
-                'product_id.integer'  => 'Invalid data provided',
-                'product_id.exists'   => 'Product Not Found !',
+                'product_id.integer' => 'Invalid data provided',
+                'product_id.exists' => 'Product Not Found !',
             ]);
 
         try {
@@ -341,56 +380,34 @@ class UserController extends Controller
             $user = TxnUser::where('id', auth('user')->user()->id)->firstOrFail();
 
             TxnReview::updateOrCreate([
-                'user_id'    => $user->id,
+                'user_id' => $user->id,
                 'product_id' => $request->product_id,
             ],
                 [
-                    'user_id'    => $user->id,
-                    'name'       => $user->name,
-                    'email'      => $user->email,
+                    'user_id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
                     'product_id' => $request->product_id,
-                    'rating'     => $request->rating,
-                    'comment'    => $request->comment,
-                    'status'     => false,
+                    'rating' => $request->rating,
+                    'comment' => $request->comment,
+                    'status' => false,
                 ]
             );
 
-            return redirect('/myaccount')->with('messageSuccess1', 'Thank you for Reviwing our product !');
+            connectify('success', 'Review Added', 'Thank you for Reviwing our product !');
+
+            return back();
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect('/myaccount')->with('Whoops, Something Went Wrong !');
+                connectify('error', 'Error', 'Whoops, Order Not Found, try again later !');
+                return redirect('/myaccount');
             }
-            return redirect('/myaccount')->with('Whoops, Something Went Wrong from our end !');
+            // return $ex->getMessage();
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
+
+            return redirect('/myaccount');
         }
-    }
-
-    public function verifyCoupon(Request $request)
-    {
-        $orders = TxnOrder::where('user_id', auth('user')->user()->id)->where('status', '<>', 'nc')->count();
-
-        $oddRanayas     = false;
-        $welcomeRanayas = false;
-
-        if ($orders == 0) {
-            $welcomeRanayas = true;
-            $oddRanayas     = true;
-        }
-
-        if ($orders > 0 && $request->coupon == 'odd') {
-            $welcomeRanayas = false;
-            if (($orders % 2) != 0 && ($orders % 2) <= 5) {
-                $oddRanayas = true;
-            }
-        }
-
-        if ($welcomeRanayas || $oddRanayas) {
-            $request->session()->put('coupon', true);
-            return response()->json(['success' => 'You have applied ' . $request->coupon . ' Ranayas Coupon Successfully !'], 200);
-        }
-
-        return response()->json(['error' => 'Can\'t Apply ' . $request->coupon . ' Ranayas Coupon !'], 200);
-
     }
 
     public function downloadInvoice($id)
@@ -407,9 +424,13 @@ class UserController extends Controller
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect('/myaccount')->with('messageDanger', 'Whoops, Order Not Found !');
+                connectify('error', 'Error', 'Whoops, Order Not Found, try again later !');
+                return redirect('/myaccount');
             }
-            return redirect('/myaccount')->with('messageDanger', 'Error, ' . $ex->getMessage());
+            // return $ex->getMessage();
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
+
+            return redirect('/myaccount');
         }
     }
 

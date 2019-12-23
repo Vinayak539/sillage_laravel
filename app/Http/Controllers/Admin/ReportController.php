@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exports\OrderReportExport;
+use App\Exports\OrderExport;
 use App\Http\Controllers\Controller;
 use App\Model\TxnOrder;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
@@ -40,9 +39,9 @@ class ReportController extends Controller
                     break;
             }
         }
-        
+
         $orders = $orders->paginate(50);
-        
+
         return view('backend.admin.reports.index', compact('orders'))->with('dates', ['from_date' => null, 'to_date' => null, 'filter' => $request->filter]);
     }
 
@@ -170,6 +169,6 @@ class ReportController extends Controller
 
     public function exportGeneratedReport(Request $request)
     {
-        return Excel::download(new OrderReportExport, 'Report_on_' . \Carbon\Carbon::parse(now())->format('d_m_Y_h_i_s') . '.xlsx');
+        return Excel::download(new OrderExport, 'Report_on_' . \Carbon\Carbon::parse(now())->format('d_m_Y_h_i_s') . '.xlsx');
     }
 }

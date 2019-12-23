@@ -4,10 +4,9 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MapColorSize extends Model
+class MapProductMstSize extends Model
 {
     protected $guarded = ['id'];
-
 
     public function product()
     {

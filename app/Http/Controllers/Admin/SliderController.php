@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Model\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class SliderController extends Controller
@@ -18,7 +20,7 @@ class SliderController extends Controller
      */
     public function index()
     {
-        $sliders = Slider::orderBy('sort_index')->where('status', true)->paginate(50);
+        $sliders = Slider::orderBy('sort_index')->paginate(50);
         return view('backend.admin.sliders.index', compact('sliders'));
     }
 
@@ -40,21 +42,29 @@ class SliderController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'image_url'   => 'required|image|mimes:jpg,jpeg,png|max:1024',
-            'sort_index'  => 'required|integer',
-            'title'       => 'nullable|string|max:191',
-            'subtitle'    => 'nullable|string|max:191',
-            'description' => 'nullable|string',
-            'url'         => 'nullable|url|max:191',
-        ],
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'image_url'   => 'required|image|mimes:jpg,jpeg,png|max:1024',
+                'sort_index'  => 'required|integer',
+                'title'       => 'nullable|string|max:191',
+                'subtitle'    => 'nullable|string|max:191',
+                'description' => 'nullable|string',
+                'url'         => 'nullable|url|max:191',
+            ],
             [
                 'image_url.max'       => 'Please Choose image of Maximum 1MB Size..',
                 'image_url.required'  => 'Please Choose Atleast One Image',
                 'image_url.image'     => 'Please Choose Only Image',
                 'sort_index.required' => 'Please Enter Slider Position',
                 'url.url'             => 'Please Enter Proper Url',
-            ]);
+            ]
+        );
+
+        if ($validator->fails()) {
+            connectify('error', 'Add Slider', $validator->errors()->first());
+            return redirect(route('admin.sliders.all'))->withInput();
+        }
 
         if ($request->hasFile('image_url')) {
             $request['img'] = uniqid() . '.' . pathinfo($request->image_url->getClientOriginalName(), PATHINFO_EXTENSION);
@@ -71,7 +81,9 @@ class SliderController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect(route('admin.sliders.all'))->with('messageSuccess', 'New Slider has been added successfully !');
+        connectify('success', 'slider Added', 'slider has been added successfully !');
+
+        return redirect(route('admin.sliders.all'));
     }
 
     /**
@@ -96,12 +108,21 @@ class SliderController extends Controller
         try {
             $slider = Slider::where('id', $slider)->firstOrFail();
             return view('backend.admin.sliders.edit', compact('slider'));
-
         } catch (\Exception $ex) {
-            return redirect(route('admin.sliders.all'))->with('messageDanger', 'Whoops, Slider Not Found !');
-        }
 
-        return redirect(route('admin.sliders.all'))->with('messageDanger', 'Error , ' . $ex->getMessage());
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+
+                connectify('error', 'Slider Edit', 'Whoops, Slider Not Found !');
+
+                return redirect(route('admin.sliders.all'));
+            }
+
+            Log::error(['Edit Slider' => $ex->getMessage()]);
+
+            connectify('error', 'Slider Update', 'Whoops, Something Went Wrong from our end !');
+
+            return redirect(route('admin.sliders.all'));
+        }
     }
 
     /**
@@ -111,41 +132,68 @@ class SliderController extends Controller
      * @param  \App\Model\Slider  $slider
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Slider $slider)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'image_url'   => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
-            'sort_index'  => 'required|integer',
-            'title'       => 'nullable|string|max:191',
-            'subtitle'    => 'nullable|string|max:191',
-            'description' => 'nullable|string',
-            'url'         => 'nullable|url|max:191',
-        ],
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'image_url'   => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
+                'sort_index'  => 'required|integer',
+                'title'       => 'nullable|string|max:191',
+                'subtitle'    => 'nullable|string|max:191',
+                'description' => 'nullable|string',
+                'url'         => 'nullable|url|max:191',
+            ],
             [
                 'image_url.image'     => 'Please Choose Only image..',
                 'image_url.mimes'     => 'Please Choose Only image of type JPG,JPEG,PNG..',
                 'image_url.max'       => 'Please Choose Only image of Maximum 1MB Size..',
                 'sort_index.required' => 'Please Enter Sort Index',
                 'url.url'             => 'Please Enter Proper Url',
-            ]);
+            ]
+        );
 
-        if ($request->hasFile('image_url')) {
-            $old_image = "/storage/images/sliders/" . $slider->image_url;
-            Storage::delete($old_image);
-            $request->image_url->storeAs('public/images/sliders', $slider->image_url);
-
+        if ($validator->fails()) {
+            connectify('error', 'Update Slider', $validator->errors()->first());
+            return redirect(route('admin.sliders.edit', $id))->withInput();
         }
 
-        $slider->update([
-            'status'      => $request->status,
-            'sort_index'  => $request->sort_index,
-            'title'       => $request->title,
-            'subtitle'    => $request->subtitle,
-            'url'         => $request->url,
-            'description' => $request->description,
-        ]);
+        try {
 
-        return redirect(route('admin.sliders.edit', $slider->id))->with('messageSuccess', 'Slider has been updated successfully !');
+            $slider = Slider::where('id', $id)->firstOrFail();
+
+            if ($request->hasFile('image_url')) {
+                $old_image = "/storage/images/sliders/" . $slider->image_url;
+                Storage::delete($old_image);
+                $request->image_url->storeAs('public/images/sliders', $slider->image_url);
+            }
+
+            $slider->update([
+                'status'      => $request->status,
+                'sort_index'  => $request->sort_index,
+                'title'       => $request->title,
+                'subtitle'    => $request->subtitle,
+                'url'         => $request->url,
+                'description' => $request->description,
+            ]);
+
+            connectify('success', 'Slider Updated', 'slider has been Updated successfully !');
+
+            return redirect(route('admin.sliders.all'));
+        } catch (\Exception $ex) {
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+
+                connectify('error', 'Slider Update', 'Whoops, Slider Not Found !');
+
+                return redirect(route('admin.sliders.all'));
+            }
+
+            Log::error(['Update Slider' => $ex->getMessage()]);
+
+            connectify('error', 'Slider Update', 'Whoops, Something Went Wrong from our end !');
+
+            return redirect(route('admin.sliders.all'));
+        }
     }
 
     /**
@@ -154,15 +202,36 @@ class SliderController extends Controller
      * @param  \App\Model\Slider  $slider
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Slider $slider)
+    public function destroy(Request $request)
     {
-        $old_image = public_path("/storage/images/sliders/" . $slider->image_url);
-        if (File::exists($old_image)) {
-            File::delete($old_image);
+        try {
+
+            $slider = Slider::where('id', $request->slider_id)->firstOrFail();
+
+            $old_image = public_path("/storage/images/sliders/" . $slider->image_url);
+            if (File::exists($old_image)) {
+                File::delete($old_image);
+            }
+
+            $slider->delete();
+
+            connectify('success', 'Slider Deleted', 'Slider has been Deleted successfully !');
+
+            return redirect(route('admin.sliders.all'));
+        } catch (\Exception $ex) {
+
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+
+                connectify('error', 'Slider Delete', 'Whoops, Slider Not Found !');
+
+                return redirect(route('admin.sliders.all'));
+            }
+
+            Log::error(['Delete Slider' => $ex->getMessage()]);
+
+            connectify('error', 'Slider Delete', 'Whoops, Something Went Wrong from our end !');
+
+            return redirect(route('admin.sliders.all'));
         }
-
-        $slider->delete();
-        return redirect(route('admin.sliders.all'))->with('messageSuccess', 'Slider Image has been Deleted successfully !');
     }
-
 }

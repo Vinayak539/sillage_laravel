@@ -13,16 +13,16 @@
 
 Route::GET('/', 'MainController@index')->name('index');
 Route::view('/about', 'frontend.about')->name('about');
-// Route::view('/all-product', 'frontend.all-product')->name('all-product');
-// Route::view('/product-detail', 'frontend.product-detail')->name('product-detail');
-// Route::view('/compare', 'frontend.compare')->name('compare');
-Route::view('/cart', 'frontend.cart')->name('cart');
+// Route::view('/contact', 'frontend.contact')->name('contact');
+Route::view('/all-product', 'frontend.all-product')->name('all-product');
+Route::view('/product-detail', 'frontend.product-detail')->name('product-detail');
+Route::view('/compare', 'frontend.compare')->name('compare');
 Route::view('/checkout', 'frontend.checkout')->name('checkout');
-Route::view('/terms-condition', 'frontend.policy.terms-condition')->name('terms-condition');
-Route::view('/privacy', 'frontend.policy.privacy')->name('privacy');
-Route::view('/cancellation', 'frontend.policy.cancellation')->name('cancellation');
-Route::view('/refund-return', 'frontend.policy.refund-return')->name('refund-return');
-Route::view('/shipping', 'frontend.policy.shipping')->name('shipping');
+Route::view('/terms-condition', 'frontend.terms-condition')->name('terms-condition');
+Route::view('/privacy', 'frontend.privacy')->name('privacy');
+Route::view('/cancellation', 'frontend.cancellation')->name('cancellation');
+Route::view('/refund-return', 'frontend.refund-return')->name('refund-return');
+Route::view('/shipping', 'frontend.shipping')->name('shipping');
 Route::view('/faq', 'frontend.faq')->name('faq');
 Route::view('/myaccount/login', 'frontend.login')->name('user.login');
 Route::view('/team', 'frontend.team')->name('team');
@@ -41,9 +41,28 @@ Route::POST('/contact', 'EnquiryController@store');
 // product routes
 Route::GET('/product/{slug}', 'MainController@getProduct')->name('product');
 Route::GET('/category/{slug}', 'MainController@getCategoryProducts')->name('cate');
-Route::GET('/search', 'MainController@search');
+Route::GET('/search', 'MainController@search')->name('search');
+Route::POST('/get-sizes', 'MainController@getSizes');
 
-Route::prefix('adhni753')->group(function () {
+// Start Socialite
+
+Route::GET('auth/{provider}', 'SocialiteManageController@redirectToProvider');
+Route::GET('auth/{provider}/callback', 'SocialiteManageController@handleProviderCallback');
+
+// End Socialite
+
+// Cart & Checkout
+
+Route::post('/cart', 'CartController@store');
+Route::get('/cart', 'CartController@index')->name('cart');
+Route::POST('/cart/delete', 'CartController@destroy');
+Route::POST('/cart/update', 'CartController@update')->name('cart.update');
+Route::get('/checkout', 'OrderController@index')->name('checkout');
+Route::POST('/checkout', 'OrderController@checkout')->name('order.checkout');
+Route::POST('/transaction-callback', 'OrderController@handleCallbackFromPaytm')->name('paytm.callback');
+Route::POST('/pincode', 'MainController@verifyPincode');
+
+Route::prefix('adhatke852')->group(function () {
 
     Route::middleware(['guest:admin'])->group(function () {
         Route::GET('/login', 'AdminAuth\LoginController@showLoginForm')->name('login');
@@ -58,9 +77,9 @@ Route::prefix('adhni753')->group(function () {
 
     Route::group(['middleware' => 'auth:admin'], function () {
         Route::GET('/', 'AdminController@index')->name('admin.dashboard');
-        Route::GET('/profile', 'AdminController@profile');
+        Route::GET('/profile', 'AdminController@profile')->name('admin.profile');
         Route::POST('/profile', 'AdminController@update');
-        Route::POST('/logout', 'AdminAuth\LoginController@logout');
+        Route::POST('/logout', 'AdminAuth\LoginController@logout')->name('admin.logout');
         Route::GET('/add-users', 'AdminController@addUserForm')->name('admin.add.user');
         Route::POST('/add-users', 'AdminController@addUser');
 
@@ -93,17 +112,9 @@ Route::prefix('adhni753')->group(function () {
         Route::prefix('/manage-sliders')->group(function () {
             Route::GET('/', 'Admin\SliderController@index')->name('admin.sliders.all');
             Route::POST('/', 'Admin\SliderController@store');
-            Route::GET('/edit/{slider}', 'Admin\SliderController@edit')->name('admin.sliders.edit');
-            Route::POST('/edit/{slider}', 'Admin\SliderController@update');
-            Route::POST('/delete/{slider}', 'Admin\SliderController@destroy');
-        });
-        
-        Route::prefix('/manage-home-offer-sliders')->group(function () {
-            Route::GET('/', 'Admin\HomeOfferSliderController@index')->name('admin.home-offer-sliders.all');
-            Route::POST('/', 'Admin\HomeOfferSliderController@store');
-            Route::GET('/edit/{slider}', 'Admin\HomeOfferSliderController@edit')->name('admin.home-offer-sliders.edit');
-            Route::POST('/edit/{slider}', 'Admin\HomeOfferSliderController@update');
-            Route::POST('/delete/{slider}', 'Admin\HomeOfferSliderController@destroy');
+            Route::GET('/edit/{id}', 'Admin\SliderController@edit')->name('admin.sliders.edit');
+            Route::POST('/edit/{id}', 'Admin\SliderController@update');
+            Route::POST('/delete', 'Admin\SliderController@destroy')->name('admin.sliders.delete');
         });
 
         Route::prefix('/manage-categories')->group(function () {
@@ -123,15 +134,19 @@ Route::prefix('adhni753')->group(function () {
             Route::POST('/edit/{id}', 'Admin\ProductController@update');
             Route::GET('/questions/{id}', 'Admin\ProductController@getQuestions')->name('admin.products.questions');
             Route::POST('/add-product-custom-field/{id}', 'Admin\ProductController@addCustomField')->name('admin.products.add.custom.field');
-            Route::POST('/update-product-custom-field/{id}', 'Admin\ProductController@updateCustomField')->name('admin.products.update.custom.field');
-            Route::POST('/delete-product-custom-field/{id}', 'Admin\ProductController@destroyCustomField')->name('admin.products.delete.custom.field');
+            Route::POST('/add-product-color/{id}', 'Admin\ProductController@addColor')->name('admin.products.add.color');
+            Route::POST('/update-product-custom-field', 'Admin\ProductController@updateCustomField')->name('admin.products.update.custom.field');
+            Route::POST('/delete-product-custom-field', 'Admin\ProductController@destroyCustomField')->name('admin.products.delete.custom.field');
+            Route::POST('/update-product-color', 'Admin\ProductController@updateColor')->name('admin.products.update.color');
+            Route::POST('/delete-product-color', 'Admin\ProductController@destroyColor')->name('admin.products.delete.color');
             Route::POST('/update-stock/{id}', 'Admin\ProductController@updateStock')->name('admin.products.update.stock');
             Route::POST('/update-price/{id}', 'Admin\ProductController@updatePrice')->name('admin.products.update.price');
             Route::POST('/add-product-images/{id}', 'Admin\ProductController@addImages')->name('admin.products.add.images');
-            Route::POST('/delete-image/{id}', 'Admin\ProductController@deleteImage')->name('admin.products.delete.images');
+            Route::POST('/delete-image', 'Admin\ProductController@deleteImage')->name('admin.products.delete.images');
             Route::GET('/edit/question/{id}', 'Admin\ProductController@getQuestion')->name('admin.product-faqs.edit');
             Route::POST('/edit/question/{id}', 'Admin\ProductController@updateQuestion')->name('admin.product-faqs.edit');
             Route::POST('/delete/question/{id}', 'Admin\ProductController@deleteQuestion')->name('admin.product-faqs.delete');
+            Route::POST('/add/size/{id}', 'Admin\ProductController@addSizes')->name('admin.products.add.sizes');
         });
 
         Route::prefix('/manage-brands')->group(function () {
@@ -202,24 +217,12 @@ Route::prefix('adhni753')->group(function () {
             Route::POST('/delete/{id}', 'Admin\MasterSectionController@destroy');
         });
 
-        Route::prefix('/manage-topsections')->group(function () {
-            Route::GET('/', 'Admin\TopMasterSectionController@index')->name('admin.topsections.all');
-            Route::POST('/', 'Admin\TopMasterSectionController@store');
-            Route::GET('/edit/{id}', 'Admin\TopMasterSectionController@edit')->name('admin.topsections.edit');
-            Route::GET('/assign/{id}', 'Admin\TopMasterSectionController@assignPage')->name('admin.topsections.assign');
-            Route::POST('/assign/{id}', 'Admin\TopMasterSectionController@assign');
-            Route::GET('/view/assign/{id}', 'Admin\TopMasterSectionController@viewAssign')->name('admin.topsections.viewAssign');
-            Route::POST('/view/assign/{id}', 'Admin\TopMasterSectionController@removeAssign');
-            Route::POST('/edit/{id}', 'Admin\TopMasterSectionController@update');
-            Route::POST('/delete/{id}', 'Admin\TopMasterSectionController@destroy');
-        });
-
         Route::prefix('/manage-reviews')->group(function () {
             Route::GET('/', 'Admin\ReviewController@index')->name('admin.reviews.all');
             Route::POST('/', 'Admin\ReviewController@store');
             Route::GET('/edit/{id}', 'Admin\ReviewController@edit')->name('admin.reviews.edit');
             Route::POST('/edit/{id}', 'Admin\ReviewController@update');
-            Route::POST('/delete/{id}', 'Admin\ReviewController@destroy');
+            Route::POST('/delete', 'Admin\ReviewController@destroy')->name('admin.reviews.delete');
         });
 
         Route::prefix('/manage-tickets')->group(function () {
@@ -284,9 +287,17 @@ Route::prefix('adhni753')->group(function () {
             Route::POST('/edit/{id}', 'Admin\AboutController@update');
             Route::POST('/delete/{id}', 'Admin\AboutController@destroy');
         });
+
+        Route::prefix('/manage-home-offer-sliders')->group(function () {
+            Route::GET('/', 'Admin\HomeOfferSliderController@index')->name('admin.home-offer-sliders.all');
+            Route::POST('/', 'Admin\HomeOfferSliderController@store');
+            Route::GET('/edit/{slider}', 'Admin\HomeOfferSliderController@edit')->name('admin.home-offer-sliders.edit');
+            Route::POST('/edit/{slider}', 'Admin\HomeOfferSliderController@update');
+            Route::POST('/delete/{slider}', 'Admin\HomeOfferSliderController@destroy');
+        });
+
     });
 });
-
 
 // User
 Route::prefix('myaccount')->group(function () {
@@ -294,10 +305,10 @@ Route::prefix('myaccount')->group(function () {
     Route::middleware(['guest:user'])->group(function () {
         Route::GET('/login', 'UserAuth\LoginController@showLoginForm')->name('user.login');
         Route::GET('/login/otp', 'UserAuth\LoginController@showOtpLoginForm')->name('user.login.otp');
-        Route::POST('/login/otp', 'UserAuth\LoginController@otpLogin');
-        Route::POST('/login', 'UserAuth\LoginController@login');
+        Route::POST('/login/otp', 'UserAuth\LoginController@otpLogin')->name('user.login.otp');
+        Route::POST('/login', 'UserAuth\LoginController@login')->name('user.login');
         Route::GET('/register', 'UserAuth\LoginController@create')->name('user.register');
-        Route::POST('/register', 'UserAuth\LoginController@store');
+        Route::POST('/register', 'UserAuth\LoginController@store')->name('user.register');
         Route::GET('/otp', 'UserAuth\LoginController@otp')->name('user.otp');
         Route::POST('/otp/resend', 'UserAuth\LoginController@resendOtp')->name('user.otp.resend');
         Route::POST('/otp/verify', 'UserAuth\LoginController@verifyOtp')->name('user.otp.verify');
@@ -312,7 +323,7 @@ Route::prefix('myaccount')->group(function () {
 
     Route::group(['middleware' => 'auth:user'], function () {
 
-        Route::POST('/logout', 'UserAuth\LoginController@logout');
+        Route::POST('/logout', 'UserAuth\LoginController@logout')->name('user.logout');
         Route::GET('/', 'UserController@index')->name('user.dashboard');
         Route::GET('/profile', 'UserController@showMyAccount')->name('user.profile');
         Route::GET('/change-password', 'UserController@showChangePassword')->name('user.change-password');
@@ -323,7 +334,7 @@ Route::prefix('myaccount')->group(function () {
         Route::GET('/order/{id}', 'UserController@getOrder')->name('user.order');
         Route::POST('/order/return/{id}', 'UserController@returnOrder')->name('user.orders.return');
         Route::POST('/order/help/{id}', 'UserController@orderHelp')->name('user.orders.help');
-        Route::POST('/order/cancel/{id}', 'UserController@cancelOrder');
+        Route::POST('/order/cancel', 'UserController@cancelOrder')->name('user.orders.cancel');
         Route::GET('/download/{id}', 'UserController@downloadInvoice')->name('user.invoices.download');
     });
 });
