@@ -150,10 +150,10 @@
                             @if($prod)
                             <span>
                                 @for($i = 1; $i<= $prod->rating; $i++)
-                                    <i class="dl-icon-star rated"></i>
+                                    <i class="fa fa-star rated" aria-hidden="true"></i>
                                     @endfor
                                     @for($i = 1; $i<= 5 - $prod->rating; $i++)
-                                        <i class="dl-icon-star"></i>
+                                        <i class="fa fa-star-o" aria-hidden="true"></i>
                                         @endfor
                             </span>
                             @if($prod->total_rating)
@@ -162,11 +162,11 @@
                             @endif
                             @else
                             <span>
-                                <i class="dl-icon-star"></i>
-                                <i class="dl-icon-star"></i>
-                                <i class="dl-icon-star"></i>
-                                <i class="dl-icon-star"></i>
-                                <i class="dl-icon-star"></i>
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
                             </span>
                             @endif
 
@@ -364,10 +364,10 @@
                                                     <div class="product-rating float-right">
                                                         <span>
                                                             @for($i = 1; $i<= $review->rating; $i++)
-                                                                <i class="dl-icon-star rated"></i>
+                                                                <i class="fa fa-star rated" aria-hidden="true"></i>
                                                                 @endfor
                                                                 @for($i = 1; $i<= 5 - $review->rating; $i++)
-                                                                    <i class="dl-icon-star"></i>
+                                                                    <i class="fa fa-star-o" aria-hidden="true"></i>
                                                                     @endfor
                                                         </span>
                                                     </div>
@@ -489,7 +489,7 @@
                                                 <div class="product-action">
                                                     <a class="add_to_cart_btn action-btn" href="{{ route('cart') }}"
                                                         data-toggle="tooltip" data-placement="top" title="Add to Cart">
-                                                        <i class="dl-icon-cart29"></i>
+                                                        <i class="fa fa-shopping-cart"></i>
                                                     </a>
 
                                                 </div>
@@ -504,10 +504,10 @@
                                             <div class="product-rating">
                                                 <span>
                                                     @for($i = 1; $i<= $rproduct->rating; $i++)
-                                                        <i class="dl-icon-star rated"></i>
+                                                        <i class="fa fa-star rated" aria-hidden="true"></i>
                                                         @endfor
                                                         @for($i = 1; $i<= 5 - $rproduct->rating; $i++)
-                                                            <i class="dl-icon-star"></i>
+                                                            <i class="fa fa-star-o" aria-hidden="true"></i>
                                                             @endfor
                                                 </span>
                                             </div>
