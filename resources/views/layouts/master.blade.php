@@ -105,6 +105,7 @@
         .searchform-3 .searchform__submit {
             padding-top: 0;
         }
+
     </style>
 </head>
 
@@ -211,133 +212,89 @@
                             </div>
                             <div class="col-8">
                                 <ul class="header-toolbar text-right">
-                                    <li
-                                        class="header-toolbar__item user-info-menu-btn"
-                                    >
+                                    <li class="header-toolbar__item user-info-menu-btn">
                                         <a href="#">
-                                            <i
-                                                class="fa fa-user-circle-o toolbar-btn-cls"
-                                            ></i>
+                                            <i class="fa fa-user-circle-o toolbar-btn-cls text-black"></i>
                                         </a>
                                         <ul class="user-info-menu">
                                             @if(auth('user')->check())
                                             <li>
-                                                <a
-                                                    href="javascript:void(0);"
-                                                >
-                                                    <i
-                                                        class="fa fa-user-circle-o"
-                                                    ></i>
-                                                    {{ Str::limit(auth('user')->user()->name,8,'') }}</a
-                                                >
+                                                <a href="javascript:void(0);">
+                                                    <i class="fa fa-user-circle-o text-black"></i>
+                                                    {{ Str::limit(auth('user')->user()->name,8,'') }}</a>
                                             </li>
                                             <li>
-                                                <a
-                                                    href="{{
+                                                <a href="{{
                                                         route(
                                                             'user.dashboard'
                                                         )
-                                                    }}"
-                                                >
+                                                    }}">
                                                     Dashboard
                                                 </a>
                                             </li>
                                             <li>
-                                                <a
-                                                    href="{{
+                                                <a href="{{
                                                         route(
                                                             'user.profile'
                                                         )
-                                                    }}"
-                                                    >My Account</a
-                                                >
+                                                    }}">My Account</a>
                                             </li>
                                             <li>
-                                                <a
-                                                    href="{{
+                                                <a href="{{
                                                         route(
                                                             'user.showOrder'
                                                         )
-                                                    }}"
-                                                    >Orders</a
-                                                >
+                                                    }}">Orders</a>
                                             </li>
 
                                             <!-- <li><a href="#">Download</a></li> -->
                                             <li>
-                                                <a
-                                                    href="{{
+                                                <a href="{{
                                                         route(
                                                             'user.change-password'
                                                         )
-                                                    }}"
-                                                    >Change Password</a
-                                                >
+                                                    }}">Change Password</a>
                                             </li>
 
                                             <li>
-                                                <a
-                                                    href="javascript:void(0)"
+                                                <a href="javascript:void(0)"
                                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                                    title="Logout"
-                                                >
+                                                    title="Logout">
                                                     Logout
                                                 </a>
-                                                <form
-                                                    id="logout-form"
-                                                    action="/myaccount/logout"
-                                                    method="POST"
-                                                    style="display: none;"
-                                                >
+                                                <form id="logout-form" action="/myaccount/logout" method="POST"
+                                                    style="display: none;">
                                                     @csrf
                                                 </form>
                                             </li>
                                             @else
                                             <li>
-                                                <a
-                                                    href="{{
+                                                <a href="{{
                                                         route('user.login')
-                                                    }}"
-                                                    >Login</a
-                                                >
+                                                    }}">Login</a>
                                             </li>
                                             <li>
-                                                <a
-                                                    href="{{
+                                                <a href="{{
                                                         route(
                                                             'user.register'
                                                         )
-                                                    }}"
-                                                    >Register</a
-                                                >
+                                                    }}">Register</a>
                                             </li>
                                             @endif
                                         </ul>
                                     </li>
                                     <li class="header-toolbar__item">
-                                        <a
-                                            href="#miniCart"
-                                            class="mini-cart-btn toolbar-btn"
-                                        >
-                                            <i
-                                                class="dl-icon-cart3 toolbar-btn-cls"
-                                            ></i>
-                                            <sup class="mini-cart-count"
-                                                >2</sup
-                                            >
+                                        <a href="#miniCart" class="mini-cart-btn toolbar-btn">
+                                            <i class="fa fa-shopping-cart toolbar-btn-cls text-black" aria-hidden="true"></i>
+                                            <sup class="mini-cart-count">2</sup>
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item">
-                                        <a
-                                            href="#searchForm"
-                                            class="search-btn toolbar-btn"
-                                        >
-                                        <i class="fa fa-search toolbar-btn-cls" aria-hidden="true"></i>
+                                        <a href="#searchForm" class="search-btn toolbar-btn">
+                                            <i class="fa fa-search toolbar-btn-cls text-black" aria-hidden="true"></i>
                                         </a>
                                     </li>
-                                    <li
-                                        class="header-toolbar__item d-lg-none"
-                                    >
+                                    <li class="header-toolbar__item d-lg-none">
                                         <a href="#" class="menu-btn"></a>
                                     </li>
                                 </ul>
@@ -532,7 +489,7 @@
                     </datalist>
 
                     <button type="submit" class="searchform__submit">
-                        <i class="dl-icon-search10"></i>
+                        <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                 </form>
             </div>
