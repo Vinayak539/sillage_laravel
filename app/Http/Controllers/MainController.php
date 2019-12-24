@@ -11,6 +11,7 @@ use App\Model\Testimonial;
 use App\Model\TxnCategory;
 use App\Model\TxnCondition;
 use App\Model\TxnProduct;
+use App\Model\HomeOfferSlider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -20,11 +21,12 @@ class MainController extends Controller
     public function index()
     {
         $sliders = Slider::where('status', true)->orderBy('sort_index')->get();
+        $homeOfferSliders  = HomeOfferSlider::where('status', true)->orderBy('sort_index')->get();
         $testimonials = Testimonial::where('status', true)->orderBy('sort_index')->get();
         // $side_products = SideProduct::with('product')->orderBy('sort_index')->limit(2)->get();
         $sections = MsSection::where('status', true)->with('msections')->get();
         // dd($sections);
-        return view('frontend.index', compact('sliders', 'sections', 'testimonials'));
+        return view('frontend.index', compact('sliders', 'sections', 'testimonials','homeOfferSliders'));
         // return view('frontend.index', compact('sliders', 'testimonials', 'sections', 'side_products'));
     }
 
