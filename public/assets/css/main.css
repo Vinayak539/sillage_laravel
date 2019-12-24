@@ -18207,8 +18207,8 @@ span,
 }
 
 .menu-btn:after {
-    content: "\64";
-    font-family: "dl-icon";
+    content: "\f0c9";
+    font-family: "FontAwesome";
     font-size: 1.8rem;
     color: #000 !important;
     /* color: #fff !important; */
