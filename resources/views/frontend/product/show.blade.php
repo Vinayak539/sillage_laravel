@@ -69,7 +69,7 @@
                                                 ]'>
                                         <figure class="product-gallery__thumb--single">
 
-                                            <img src="/storage/images/products/{{ $product->image_url }}"
+                                            <img src="{!! asset('storage/images/products').'/'.$product->image_url !!}"
                                                 alt="Products">
 
                                         </figure>
@@ -78,7 +78,7 @@
                                         @foreach($product->images as $image)
                                         <figure class="product-gallery__thumb--single">
 
-                                            <img src="/storage/images/multi-products/{{ $image->image_url }}"
+                                            <img src="{!! asset('storage/images/multi-products').'/'.$image->image_url !!}"
                                                 alt="Products">
 
                                         </figure>
@@ -101,7 +101,7 @@
                                                     }'>
                                             <figure class="product-gallery__image zoom">
 
-                                                <img src="/storage/images/products/{{ $product->image_url }}"
+                                                <img src="{!! asset('storage/images/products').'/'.$product->image_url !!}"
                                                     alt="Product">
 
                                             </figure>
@@ -110,7 +110,7 @@
                                             @foreach($product->images as $image)
                                             <figure class="product-gallery__image zoom">
 
-                                                <img src="/storage/images/multi-products/{{ $image->image_url }}"
+                                                <img src="{!! asset('storage/images/multi-products').'/'.$image->image_url !!}"
                                                     alt="Product">
 
                                             </figure>
