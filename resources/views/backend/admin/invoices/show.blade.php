@@ -172,7 +172,7 @@
         <div>
             <a href="{{ url('/') }}/">
                 <!-- <img src="{{ url('/') }}/images/hni_logo.png" alt="Ranayas" /> -->
-                <h3>The Hatke Store</h3>
+                <h3>HNI LIFESTYLE</h3>
             </a>
         </div>
         <div class="row">

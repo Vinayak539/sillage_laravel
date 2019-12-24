@@ -163,7 +163,7 @@
     <div class="container">
         <div>
             <a href="{{ url('/') }}">
-                <img src="{{ url('/') }}/assets/img/logo/logo.png" alt="Ranayas Store" />
+                <img src="{{ url('/') }}/assets/img/logo/logo.png" alt="HNI LIFESTYLE" />
             </a>
         </div>
         <div class="row">
@@ -254,7 +254,7 @@
                         <th>QTY</th>
                         <th>AMOUNT (&#8377;)</th>
                     </tr>
-                    
+
                     @foreach($order->details as $detail)
                     <tr>
                         <td>{{ $detail->product->title}}</td>
@@ -267,9 +267,9 @@
                     <tr>
                         <th colspan="12" class="bg-silver text-right text-uppercase">
                             <p>Total Amount : &#8377; {{ $order->tbt }}</p>
-                            <p>+ CGST : &#8377; {{ $order->tax/2 }}</p>
-                            <p>+ SGST : &#8377; {{ $order->tax/2 }}</p>
-                            <p>- Discount : &#8377; {{ $order->discount }}</p>
+                            <p>+ CGST : &#8377; {{ round($order->tax/2, 2) }}</p>
+                            <p>+ SGST : &#8377; {{ round($order->tax/2, 2) }}</p>
+                           @if($order->discount) <p>- Discount : &#8377; {{ $order->discount }}</p>@endif
                             <p>Grand Total : &#8377; {{ $order->total }}</p>
                         </th>
                     </tr>

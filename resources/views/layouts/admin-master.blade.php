@@ -101,6 +101,23 @@
                             </ul>
                         </li>
                         <li class="dropdown">
+                            <a href="#" class="menu-toggle nav-link has-dropdown">
+                                <i data-feather="smartphone"></i><span>Orders</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="{{ route('admin.orders.all') }}">Search Order</a></li>
+                                <li><a class="nav-link" href="{{ route('admin.invoices.all') }}">Manage Invoice</a></li>
+                                <li><a class="nav-link" href="{{ route('admin.reports.all') }}">Manage Reports</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="{{ route('admin.users.all') }}" class="nav-link"><i
+                                    data-feather="users"></i><span>Users</span></a>
+                        </li>
+
+                        <li class="dropdown">
                             <a href="{{ route('admin.sliders.all') }}" class="nav-link"><i
                                     data-feather="monitor"></i><span>Slider</span></a>
                         </li>
@@ -109,16 +126,35 @@
                                     data-feather="monitor"></i><span>Home Offer Slider</span></a>
                         </li>
                         <li class="dropdown">
+                            <a href="{{ route('admin.reviews.all') }}" class="nav-link"><i
+                                    data-feather="star"></i><span>Reviews</span></a>
+                        </li>
+
+                        <li class="dropdown">
                             <a href="{{ route('admin.enquiries.all') }}" class="nav-link"><i
-                                    data-feather="monitor"></i><span>Enquiries</span></a>
+                                    data-feather="mail"></i><span>Enquiries</span></a>
                         </li>
                         <li class="dropdown">
                             <a href="{{ route('admin.faqs.all') }}" class="nav-link"><i
-                                    data-feather="monitor"></i><span>FAQ's</span></a>
+                                    data-feather="message-square"></i><span>FAQ's</span></a>
                         </li>
                         <li class="dropdown">
                             <a href="{{ route('admin.subscribers.all') }}" class="nav-link"><i
-                                    data-feather="monitor"></i><span>Subscribers</span></a>
+                                    data-feather="users"></i><span>Subscribers</span></a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="{{ route('admin.tickets.all') }}" class="nav-link">
+                                <i data-feather="credit-card"></i>
+                                <span>Raise Tickets</span>
+                            </a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="{{ route('admin.return-tickets.all') }}" class="nav-link">
+                                <i data-feather="credit-card"></i>
+                                <span>Return & Refund Tickets</span>
+                            </a>
                         </li>
                     </ul>
                 </aside>

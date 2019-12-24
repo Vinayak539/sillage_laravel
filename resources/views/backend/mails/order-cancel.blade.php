@@ -163,7 +163,7 @@
     <div class="container">
         <div>
             <a href="{{ url('/') }}">
-                <img src="{{ url('/') }}/assets/img/logo/logo.png" alt="Ranayas Store" />
+                <img src="{{ url('/') }}/assets/img/logo/logo.png" alt="HNI LIFESTYLE" />
             </a>
         </div>
         <div class="row">
@@ -256,7 +256,7 @@
                         <th>QTY</th>
                         <th>AMOUNT (&#8377;)</th>
                     </tr>
-                    
+
                     @foreach($order->details as $detail)
                     <tr>
                         <td>{{ $detail->product->title}}</td>

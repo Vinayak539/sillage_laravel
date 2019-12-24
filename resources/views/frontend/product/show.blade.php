@@ -138,10 +138,10 @@
                             @if($prod)
                             <span>
                                 @for($i = 1; $i<= $prod->rating; $i++)
-                                    <i class="fa fa-star rated" aria-hidden="true"></i>
+                                    <i class="dl-icon-star rated"></i>
                                     @endfor
                                     @for($i = 1; $i<= 5 - $prod->rating; $i++)
-                                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                                        <i class="dl-icon-star"></i>
                                         @endfor
                             </span>
                             @if($prod->total_rating)
@@ -150,15 +150,17 @@
                             @endif
                             @else
                             <span>
-                                <i class="fa fa-star-o" aria-hidden="true"></i>
-                                <i class="fa fa-star-o" aria-hidden="true"></i>
-                                <i class="fa fa-star-o" aria-hidden="true"></i>
-                                <i class="fa fa-star-o" aria-hidden="true"></i>
-                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                <i class="dl-icon-star"></i>
+                                <i class="dl-icon-star"></i>
+                                <i class="dl-icon-star"></i>
+                                <i class="dl-icon-star"></i>
+                                <i class="dl-icon-star"></i>
                             </span>
                             @endif
 
                         </div>
+                        <a href="#" data-toggle="modal" data-target="#bulk-order"
+                            class="btn btn-sm float-right bulk-order-btn">Bulk Order</a>
 
                         <div class="clearfix"></div>
                         <h3 class="product-titles">{{ $product->title }}</h3>
@@ -282,10 +284,10 @@
                                                 <div class="product-rating float-right">
                                                     <span>
                                                         @for($i = 1; $i<= $review->rating; $i++)
-                                                            <i class="fa fa-star rated" aria-hidden="true"></i>
+                                                            <i class="dl-icon-star rated"></i>
                                                             @endfor
                                                             @for($i = 1; $i<= 5 - $review->rating; $i++)
-                                                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                                <i class="dl-icon-star"></i>
                                                                 @endfor
                                                     </span>
                                                 </div>
@@ -352,7 +354,7 @@
                                             <div class="product-action">
                                                 <a class="add_to_cart_btn action-btn" href="{{ route('cart') }}"
                                                     data-toggle="tooltip" data-placement="top" title="Add to Cart">
-                                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                                    <i class="dl-icon-cart29"></i>
                                                 </a>
 
                                             </div>
@@ -367,10 +369,10 @@
                                         <div class="product-rating">
                                             <span>
                                                 @for($i = 1; $i<= $rproduct->rating; $i++)
-                                                    <i class="fa fa-star rated" aria-hidden="true"></i>
+                                                    <i class="dl-icon-star rated"></i>
                                                     @endfor
                                                     @for($i = 1; $i<= 5 - $rproduct->rating; $i++)
-                                                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                        <i class="dl-icon-star"></i>
                                                         @endfor
                                             </span>
                                         </div>
@@ -396,6 +398,46 @@
     </div>
 </div>
 <!-- Main Content Wrapper Start -->
+<!-- The Modal -->
+<div class="modal fade" id="bulk-order">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Enquire For Bulk Order</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="ptb--30 plr--30">
+                    <form class="form" action="#" id="contact-form">
+                        <div class="form__group mb--20">
+                            <input type="text" name="name" class="form__input form__input--2" placeholder="Your name*">
+                        </div>
+                        <div class="form__group mb--20">
+                            <input type="email" name="email" class="form__input form__input--2"
+                                placeholder="Email Address*">
+                        </div>
+                        <div class="form__group mb--20">
+                            <input type="text" name="contact" class="form__input form__input--2"
+                                placeholder="Your Phone*">
+                        </div>
+                        <div class="form__group mb--20">
+                            <textarea class="form__input form__input--textarea" name="message"
+                                placeholder="Message*"></textarea>
+                        </div>
+                        <div class="form__group text-center">
+                            <input type="submit" value="Send" class="btn btn-submit btn-style-1">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <form action="/cart" method="post" id="cartForm">
@@ -408,6 +450,14 @@
 @endsection
 
 @section('extracss')
+<style>
+    .bulk-order-btn {
+        padding: 2px 10px;
+        font-size: 12px;
+    }
+
+</style>
+
 <script type='text/javascript'
     src='https://platform-api.sharethis.com/js/sharethis.js#property=5ccc480d0ff462001290decd&product=inline-share-buttons&cms=website'
     async='async'></script>
@@ -453,6 +503,11 @@
             $('#nav-description-tab').removeClass('active');
             $('#nav-reviews-tab').addClass('active');
             $('#nav-reviews').addClass('active show');
+        });
+
+        $('.popup-close').on('click', function (e) {
+            e.preventDefault();
+            $('#bulk-order').fadeOut('slow');
         });
 
         $('.product-color-swatch-btn').click(function (e) {

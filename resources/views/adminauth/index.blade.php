@@ -3,114 +3,79 @@
 @section('content')
 <section class="section">
     <div class="row ">
+
         <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="card">
-                <div class="card-statistic-4">
-                    <div class="align-items-center justify-content-between">
-                        <div class="row ">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                                <div class="card-content">
-                                    <h5 class="font-15">New Booking</h5>
-                                    <h2 class="mb-3 font-18">{{ $orders }}</h2>
-                                    <!-- <p class="mb-0"><span class="col-green">10%</span> Increase</p> -->
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                                <div class="banner-img">
-                                    <img src="{!! asset('admin/img/banner/1.png') !!}" alt="">
-                                </div>
-                            </div>
-                        </div>
+            <div class="card bg">
+                <div class="card-body">
+                    <span class="info-box-icon bg-transparent pull-right">
+                        <i class="fa fa-shopping-cart fa-fw fa-3x theme-color"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <h6 class="info-box-text text-dark"> New Orders</h6>
+                        <h1 class="text-dark">{{ $orders }}</h1>
                     </div>
+                </div>
+                <div class="card-footer bg-dark text-white-all">
+                    <a href="{{ route('admin.orders.all') }}" title="View Details">
+                        View Details <i class="fa fa-angle-double-right"></i>
+                    </a>
                 </div>
             </div>
         </div>
+
         <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="card">
-                <div class="card-statistic-4">
-                    <div class="align-items-center justify-content-between">
-                        <div class="row ">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                                <div class="card-content">
-                                    <h5 class="font-15"> Customers</h5>
-                                    <h2 class="mb-3 font-18">{{ $users }}</h2>
-                                    <!-- <p class="mb-0"><span class="col-orange">09%</span> Decrease</p> -->
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                                <div class="banner-img">
-                                    <img src="{!! asset('admin/img/banner/2.png') !!}" alt="">
-                                </div>
-                            </div>
-                        </div>
+            <div class="card bg">
+                <div class="card-body">
+                    <span class="info-box-icon bg-transparent pull-right">
+                        <i class="fa fa-users fa-fw fa-3x theme-color"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <h6 class="info-box-text text-dark">New Customers</h6>
+                        <h1 class="text-dark">{{ $today_users }}</h1>
                     </div>
+                </div>
+                <div class="card-footer bg-dark text-white-all">
+                    <a href="{{ route('admin.users.all') }}" title="View Details">
+                        View Details <i class="fa fa-angle-double-right"></i>
+                    </a>
                 </div>
             </div>
         </div>
+
         <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="card">
-                <div class="card-statistic-4">
-                    <div class="align-items-center justify-content-between">
-                        <div class="row ">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                                <div class="card-content">
-                                    <h5 class="font-15">No. Of New Customers</h5>
-                                    <h2 class="mb-3 font-18">{{ $today_users }}</h2>
-                                    <!-- <p class="mb-0"><span class="col-green">18%</span>
-                                        Increase</p> -->
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                                <div class="banner-img">
-                                    <img src="{!! asset('admin/img/banner/2.png') !!}" alt="">
-                                </div>
-                            </div>
-                        </div>
+            <div class="card bg">
+                <div class="card-body">
+                    <span class="info-box-icon bg-transparent pull-right">
+                        <i class="fa fa-credit-card fa-fw fa-3x theme-color"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <h6 class="info-box-text text-dark">Today Sale</h6>
+                        <h1 class="text-dark">₹ {{ $todays_sales }}</h1>
                     </div>
+                </div>
+                <div class="card-footer bg-dark text-white-all">
+                    <a href="{{ route('admin.orders.all') }}" title="View Details">
+                        View Details <i class="fa fa-angle-double-right"></i>
+                    </a>
                 </div>
             </div>
         </div>
+
         <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="card">
-                <div class="card-statistic-4">
-                    <div class="align-items-center justify-content-between">
-                        <div class="row ">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                                <div class="card-content">
-                                    <h5 class="font-15">Today Sale</h5>
-                                    <h2 class="mb-3 font-18">₹ {{ $todays_sales }}</h2>
-                                    <!-- <p class="mb-0"><span class="col-green">42%</span> Increase</p> -->
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                                <div class="banner-img">
-                                    <img src="{!! asset('admin/img/banner/4.png') !!}" alt="">
-                                </div>
-                            </div>
-                        </div>
+            <div class="card bg">
+                <div class="card-body">
+                    <span class="info-box-icon bg-transparent pull-right">
+                        <i class="fa fa-newspaper fa-fw fa-3x theme-color"></i>
+                    </span>
+                    <div class="info-box-content">
+                        <h6 class="info-box-text text-dark">Total Subscribers</h6>
+                        <h1 class="text-dark">{{ $subscribers }}</h1>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="card">
-                <div class="card-statistic-4">
-                    <div class="align-items-center justify-content-between">
-                        <div class="row ">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                                <div class="card-content">
-                                    <h5 class="font-15">No. of Subscribers</h5>
-                                    <h2 class="mb-3 font-18">{{ $subscribers }}</h2>
-                                    <!-- <p class="mb-0"><span class="col-green">10%</span> Increase</p> -->
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                                <div class="banner-img">
-                                    <img src="{!! asset('admin/img/banner/1.png') !!}" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="card-footer bg-dark text-white-all">
+                    <a href="{{ route('admin.orders.all') }}" title="View Details">
+                        View Details <i class="fa fa-angle-double-right"></i>
+                    </a>
                 </div>
             </div>
         </div>

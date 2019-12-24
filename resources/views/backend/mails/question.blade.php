@@ -156,10 +156,10 @@
 </head>
 
 <body>
-    
+
     <div class="container">
         <div>
-            <h3>Ranayas Store</h3>
+            <h3>HNI LIFESTYLE</h3>
         </div>
         <div class="row">
             <div class="col-sm-12">

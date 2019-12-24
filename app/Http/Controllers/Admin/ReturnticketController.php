@@ -108,8 +108,8 @@ class ReturnticketController extends Controller
                 ]);
 
                 Mail::send(['html' => 'backend.mails.ticket-closed'], ['ticket' => $ticket], function ($message) use ($ticket) {
-                    $message->from('support@thehatkestore.com', 'The Hatke Store');
-                    $message->to($ticket->email, 'The Hatke Store');
+                    $message->from('support@thehatkestore.com', 'HNI LIFESTYLE');
+                    $message->to($ticket->email, 'HNI LIFESTYLE');
                     $message->subject('Closed:' . $ticket->subject . ' Ticket ID : ' . $ticket->id);
                 });
 
