@@ -191,6 +191,7 @@
                     <div class="clearfix"></div>
 
                     <form action="#" class="variation-form mb--35">
+                        @if(count($colorsSizes) > 0)
                         <div class="product-color-variations mb--20">
                             <p class="swatch-label">Color: <strong class="swatch-label"></strong></p>
                             <div class="product-color-swatch variation-wrapper">
@@ -208,7 +209,8 @@
 
                             </div>
                         </div>
-
+                        @endif
+                        @if(count($product->sizes) > 0)
                         <div class="product-size-variations">
                             <p class="swatch-label">Size: <strong class="swatch-label"></strong></p>
                             <div class="product-size-swatch variation-wrapper">
@@ -223,6 +225,7 @@
                                 @endforeach
                             </div>
                         </div>
+                        @endif
                     </form>
                     <form action="#" class="form--action mt--20 mb--30 mb-sm--20">
                         <div class="product-action flex-row align-items-center">
