@@ -332,9 +332,7 @@
                                             href="#searchForm"
                                             class="search-btn toolbar-btn"
                                         >
-                                            <i
-                                                class="dl-icon-search1 toolbar-btn-cls"
-                                            ></i>
+                                        <i class="fa fa-search toolbar-btn-cls" aria-hidden="true"></i>
                                         </a>
                                     </li>
                                     <li

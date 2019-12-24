@@ -230,7 +230,7 @@
         
                                                             <a class="add_to_cart_btn action-btn" href="{{ route('cart') }}"
                                                                 data-toggle="tooltip" data-placement="top" title="Add to Cart">
-                                                                <i class="dl-icon-cart29"></i>
+                                                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                                             </a>
         
                                                         </div>
@@ -244,10 +244,10 @@
                                                     <div class="product-rating">
                                                         <span>
                                                             @for($i = 1; $i<= $product->rating; $i++)
-                                                                <i class="dl-icon-star rated"></i>
+                                                                <i class="fa fa-star rated" aria-hidden="true"></i>
                                                                 @endfor
                                                                 @for($i = 1; $i<= 5 - $product->rating; $i++)
-                                                                    <i class="dl-icon-star"></i>
+                                                                    <i class="fa fa-star-o" aria-hidden="true"></i>
                                                                     @endfor
                                                         </span>
                                                     </div>

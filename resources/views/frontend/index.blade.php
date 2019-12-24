@@ -67,8 +67,8 @@
                             "slidesToShow": 4,
                             "slidesToScroll": 1,
                             "arrows": true,
-                            "prevArrow": "dl-icon-left",
-                            "nextArrow": "dl-icon-right"
+                            "prevArrow": "fa fa-angle-left",
+                            "nextArrow": "fa fa-angle-right"
                             }' data-slick-responsive='[
                                 {"breakpoint":1200, "settings": {"slidesToShow": 3} },
                                 {"breakpoint":991, "settings": {"slidesToShow": 2} },
@@ -106,7 +106,7 @@
                                                 <a class="add_to_cart_btn action-btn add-cart" href="javascript:void(0);"
                                                     title="add to cart" data-obj-id="{{ $product->id }}" data-toggle="tooltip"
                                                     data-placement="top" title="Add to Cart">
-                                                    <i class="dl-icon-cart29"></i>
+                                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                                 </a>
             
                                             </div>
@@ -119,10 +119,10 @@
                                         <div class="product-rating">
                                             <span>
                                                 @for($i = 1; $i<= $product->rating; $i++)
-                                                    <i class="dl-icon-star rated"></i>
+                                                    <i class="fa fa-star rated" aria-hidden="true"></i>
                                                     @endfor
                                                     @for($i = 1; $i<= 5 - $product->rating; $i++)
-                                                        <i class="dl-icon-star"></i>
+                                                        <i class="fa fa-star-o" aria-hidden="true"></i>
                                                         @endfor
                                             </span>
                                         </div>

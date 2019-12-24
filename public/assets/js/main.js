@@ -562,8 +562,8 @@
 	$('.product-gallery-image-carousel').slick({
 		slidesToShow: 1,
 		arrows: true,
-		prevArrow: '<span class="slick-btn slick-prev"><i class="dl-icon-left"></i></span>',
-		nextArrow: '<span class="slick-btn slick-next"><i class="dl-icon-right"></i></span>',
+		prevArrow: '<span class="slick-btn slick-prev"><i class="fa fa-angle-left"></i></span>',
+		nextArrow: '<span class="slick-btn slick-next"><i class="fa fa-angle-right"></i></span>',
 	});
 
 

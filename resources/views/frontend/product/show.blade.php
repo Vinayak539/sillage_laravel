@@ -119,8 +119,7 @@
                                             @endif
                                         </div>
                                         <div class="product-gallery__actions">
-                                            <button class="action-btn btn-zoom-popup"><i
-                                                    class="dl-icon-zoom-in"></i></button>
+                                            <button class="action-btn btn-zoom-popup"><i class="fa fa-search-plus" aria-hidden="true"></i></button>
                                             <!-- <a href="https://www.youtube.com/watch?v=Rp19QD2XIGM"
                                                     class="action-btn video-popup"><i class="dl-icon-format-video"></i></a> -->
                                         </div>
@@ -138,10 +137,10 @@
                             @if($prod)
                             <span>
                                 @for($i = 1; $i<= $prod->rating; $i++)
-                                    <i class="dl-icon-star rated"></i>
+                                    <i class="fa fa-star rated" aria-hidden="true"></i>
                                     @endfor
                                     @for($i = 1; $i<= 5 - $prod->rating; $i++)
-                                        <i class="dl-icon-star"></i>
+                                        <i class="fa fa-star-o" aria-hidden="true"></i>
                                         @endfor
                             </span>
                             @if($prod->total_rating)
@@ -150,11 +149,11 @@
                             @endif
                             @else
                             <span>
-                                <i class="dl-icon-star"></i>
-                                <i class="dl-icon-star"></i>
-                                <i class="dl-icon-star"></i>
-                                <i class="dl-icon-star"></i>
-                                <i class="dl-icon-star"></i>
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                <i class="fa fa-star-o" aria-hidden="true"></i>
                             </span>
                             @endif
 
@@ -284,10 +283,10 @@
                                                 <div class="product-rating float-right">
                                                     <span>
                                                         @for($i = 1; $i<= $review->rating; $i++)
-                                                            <i class="dl-icon-star rated"></i>
+                                                            <i class="fa fa-star rated" aria-hidden="true"></i>
                                                             @endfor
                                                             @for($i = 1; $i<= 5 - $review->rating; $i++)
-                                                                <i class="dl-icon-star"></i>
+                                                                <i class="fa fa-star-o" aria-hidden="true"></i>
                                                                 @endfor
                                                     </span>
                                                 </div>
@@ -329,8 +328,8 @@
                                         "slidesToShow": 4,
                                         "slidesToScroll": 1,
                                         "arrows": true,
-                                        "prevArrow": "dl-icon-left",
-                                        "nextArrow": "dl-icon-right"
+                                        "prevArrow": "fa fa-angle-left",
+                                        "nextArrow": "fa fa-angle-right"
                                         }' data-slick-responsive='[
                                             {"breakpoint":1200, "settings": {"slidesToShow": 3} },
                                             {"breakpoint":991, "settings": {"slidesToShow": 2} },
@@ -354,7 +353,7 @@
                                             <div class="product-action">
                                                 <a class="add_to_cart_btn action-btn" href="{{ route('cart') }}"
                                                     data-toggle="tooltip" data-placement="top" title="Add to Cart">
-                                                    <i class="dl-icon-cart29"></i>
+                                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                                 </a>
 
                                             </div>
@@ -369,10 +368,10 @@
                                         <div class="product-rating">
                                             <span>
                                                 @for($i = 1; $i<= $rproduct->rating; $i++)
-                                                    <i class="dl-icon-star rated"></i>
+                                                    <i class="fa fa-star rated" aria-hidden="true"></i>
                                                     @endfor
                                                     @for($i = 1; $i<= 5 - $rproduct->rating; $i++)
-                                                        <i class="dl-icon-star"></i>
+                                                        <i class="fa fa-star-o" aria-hidden="true"></i>
                                                         @endfor
                                             </span>
                                         </div>
