@@ -299,7 +299,7 @@ Route::prefix('adhni753')->group(function () {
             Route::POST('/', 'Admin\HomeOfferSliderController@store');
             Route::GET('/edit/{slider}', 'Admin\HomeOfferSliderController@edit')->name('admin.home-offer-sliders.edit');
             Route::POST('/edit/{slider}', 'Admin\HomeOfferSliderController@update');
-            Route::POST('/delete/{slider}', 'Admin\HomeOfferSliderController@destroy');
+            Route::POST('/delete', 'Admin\HomeOfferSliderController@destroy')->name('admin.home-offer-sliders.delete');
         });
     });
 });

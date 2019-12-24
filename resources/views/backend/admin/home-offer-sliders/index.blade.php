@@ -14,7 +14,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" role="form" class="needs-validation" enctype="multipart/form-data">
+                <form method="POST" role="form" class="needs-validation" enctype="multipart/form-data" 
+                id="formAddSlider">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
@@ -159,8 +160,10 @@
 
 
 @endsection
-<form id="formDelete" method="POST" action="/adhni753/home-offer-sliders/delete/">
+
+<form id="formDelete" method="POST" action="{{ route('admin.home-offer-sliders.delete') }}">
     @csrf
+    <input type="hidden" name="slider_id" id="txtSliderID">
 </form>
 
 @section('extrajs')
@@ -168,10 +171,38 @@
     $(document).ready(function () {
         $(".delete-object").click(function () {
             if (window.confirm("Are you sure, You want to Delete ? ")) {
-                var action = $("#formDelete").attr("action") + $(this).attr("data-obj-id");
-                $("#formDelete").attr("action", action);
+                $("#txtSliderID").val($(this).attr("data-obj-id"));
                 $("#formDelete").submit();
                 $(this).html('wait...');
+            }
+        });
+
+        $("#formAddSlider").validate({
+            rules: {
+
+                sort_index: {
+                    required: true
+                },
+
+                image_url: {
+                    required: true
+                },
+
+            },
+
+            messages: {
+                sort_index: {
+                    required: "Please Enter Sort Index"
+                },
+                image_url: {
+                    required: "Please Choose Image"
+                },
+
+            },
+            submitHandler: function (form) {
+                $('.btnSubmit').attr('disabled', 'disabled');
+                $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+                form.submit();
             }
         });
     });

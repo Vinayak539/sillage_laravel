@@ -146,14 +146,46 @@ class HomeOfferSliderController extends Controller
      * @param  \App\Model\HomeOfferSlider  $homeOfferSlider
      * @return \Illuminate\Http\Response
      */
-    public function destroy(HomeOfferSlider $homeOfferSlider)
-    {
-        $old_image = public_path("/storage/images/home-offer-sliders/" . $homeOfferSlider->image_url);
-        if (File::exists($old_image)) {
-            File::delete($old_image);
-        }
+    // public function destroy(HomeOfferSlider $homeOfferSlider)
+    // {
+    //     $old_image = public_path("/storage/images/home-offer-sliders/" . $homeOfferSlider->image_url);
+    //     if (File::exists($old_image)) {
+    //         File::delete($old_image);
+    //     }
 
-        $homeOfferSlider->delete();
-        return redirect(route('admin.home-offer-sliders.all'))->with('messageSuccess', 'Slider Image has been Deleted successfully !');
+    //     $homeOfferSlider->delete();
+    //     return redirect(route('admin.home-offer-sliders.all'))->with('messageSuccess', 'Slider Image has been Deleted successfully !');
+    // }
+    public function destroy(Request $request)
+    {
+        try {
+
+            $homeOfferSlider = HomeOfferSlider::where('id', $request->slider_id)->firstOrFail();
+
+            $old_image = public_path("/storage/images/home-offer-sliders/" . $homeOfferSlider->image_url);
+            if (File::exists($old_image)) {
+                File::delete($old_image);
+            }
+
+            $homeOfferSlider->delete();
+
+            connectify('success', 'Home Offer Slider Deleted', 'Home Offer Slider has been Deleted successfully !');
+
+            return redirect(route('admin.home-offer-sliders.all'));
+        } catch (\Exception $ex) {
+
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+
+                connectify('error', 'Home Offer Slider Delete', 'Whoops, Slider Not Found !');
+
+                return redirect(route('admin.home-offer-sliders.all'));
+            }
+
+            Log::error(['Delete Home Offer Slider' => $ex->getMessage()]);
+
+            connectify('error', 'Home Offer Slider Delete', 'Whoops, Something Went Wrong from our end !');
+
+            return redirect(route('admin.home-offer-sliders.all'));
+        }
     }
 }
