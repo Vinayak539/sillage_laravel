@@ -7,10 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Model\Delivery;
 use App\Model\SMS;
 use App\Model\TxnOrder;
-use App\Model\TxnOrderDetail;
-use App\Model\TxnShipping;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -70,7 +69,7 @@ class OrderController extends Controller
     {
         try {
 
-            $order     = TxnOrder::where('id', $id)->with('details', 'user', 'transaction', 'shipping')->firstOrFail();
+            $order = TxnOrder::where('id', $id)->with('details', 'user', 'transaction')->firstOrFail();
             $res = Delivery::orderTrack($order->id);
             $result = json_decode($res, true);
             if (array_key_exists('Error', $result)) {
@@ -83,9 +82,16 @@ class OrderController extends Controller
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.orders.all'))->with('messageDanger', 'Whoops, Order Not Found !');
+
+                connectify('error', 'Error', 'Whoops, Order Not Found !');
+
+                return redirect(route('admin.orders.all'));
             }
-            return redirect(route('admin.orders.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+            Log::info(['Show Order' => $ex->getMessage()]);
+
+            connectify('error', 'Error', 'Whoops, Something went wrong from our end !');
+
+            return redirect(route('admin.orders.all'));
         }
     }
 
@@ -103,9 +109,15 @@ class OrderController extends Controller
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.orders.all'))->with('messageDanger', 'Whoops, Order Not Found !');
+
+                connectify('error', 'Error', 'Whoops, Order Not Found !');
+
+                return redirect(route('admin.orders.all'));
             }
-            return redirect(route('admin.orders.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something went wrong from our end !');
+
+            return redirect(route('admin.orders.all'));
         }
     }
 
@@ -141,7 +153,7 @@ class OrderController extends Controller
                 'status' => $request->status,
             ]);
 
-            // SMS::send($order->user->mobile, 'HNI LIFESTYLE - Your Order ID : ' . $order->id . ', has been ' . $order->status . ',  Login for more detail on http://thehatkestore.com/myaccount');
+            // SMS::send($order->user->mobile, 'The Hatke Store - Your Order ID : ' . $order->id . ', has been ' . $order->status . ',  Login for more detail on http://thehatkestore.com/myaccount');
 
             if ($request->filled('status') && $request->status == 'delivered') {
 
@@ -169,21 +181,29 @@ class OrderController extends Controller
                 $pdf = PDF::loadView('backend.admin.invoices.download', ['invoice' => $order]);
 
                 Mail::send(['html' => 'backend.admin.invoices.empty'], ['invoice' => $order], function ($message) use ($order, $pdf) {
-                    $message->from('order-confirmation@thehatkestore.com', 'HNI LIFESTYLE');
+                    $message->from('order-confirmation@thehatkestore.com', 'The Hatke Store');
                     $message->to($order->user->email, $order->user->name);
-                    $message->subject('Invoice copy of Order No ' . $order->id . ' From HNI LIFESTYLE');
+                    $message->subject('Invoice copy of Order No ' . $order->id . ' From The Hatke Store');
                     $message->attachData($pdf->output(), 'invoice_no_' . $order->id . '.pdf');
                 });
 
             }
 
-            return redirect(route('admin.orders.show', $id))->with('messageSuccess', 'Status has been updated to ' . $order->status);
+            connectify('success', 'Order Updated', 'Status has been updated to ' . $order->status);
+
+            return redirect(route('admin.orders.show', $id));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.orders.all'))->with('messageDanger', "No Such Order Found !!");
+
+                connectify('error', 'Error', "No Such Order Found !");
+
+                return redirect(route('admin.orders.all'));
             }
-            return redirect(route('admin.orders.all'))->with('messageDanger', "Error, " . $ex->getMessage());
+
+            connectify('error', 'Error', "Whoops, Something went wrong from our end !");
+
+            return redirect(route('admin.orders.all'));
         }
     }
 
@@ -205,15 +225,23 @@ class OrderController extends Controller
                 'return_status' => $request->return_status,
             ]);
 
-            SMS::send($order->user->mobile, 'HNI LIFESTYLE - Your Order ID : ' . $order->id . ', for Return and Refund is ' . $order->return_status . ',  Login for more detail on http://thehatkestore.com/myaccount');
+            SMS::send($order->user->mobile, 'The Hatke Store - Your Order ID : ' . $order->id . ', for Return and Refund is ' . $order->return_status . ',  Login for more detail on http://thehatkestore.com/myaccount');
 
-            return redirect(route('admin.orders.show', $id))->with('messageSuccess', 'Status has been updated for return & refund to ' . $order->return_status . ' successfully !');
+            connectify('success', 'Status Updated', 'Status has been updated for return & refund to ' . $order->return_status . ' successfully !');
+
+            return redirect(route('admin.orders.show', $id));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.orders.all'))->with('messageDanger', "No Such Order Found !!");
+
+                connectify('error', 'Error', "No Such Order Found !");
+
+                return redirect(route('admin.orders.all'));
             }
-            return redirect(route('admin.orders.all'))->with('messageDanger', "Error, " . $ex->getMessage());
+
+            connectify('error', 'Error', "Whoops, Something Went Wrong from our end !");
+
+            return redirect(route('admin.orders.all'));
         }
     }
 
@@ -227,91 +255,6 @@ class OrderController extends Controller
     public function export()
     {
         return Excel::download(new OrderExport, 'orders.xlsx');
-    }
-
-    public function assignShipment(Request $request, $id)
-    {
-
-        $request->validate([
-            'awf_number'    => 'required|string|max:15',
-            'status'        => 'required|string',
-            'shipping_id'   => 'required|numeric|exists:txn_shippings,id',
-            'delivery_date' => 'nullable|date_format:Y-m-d',
-        ],
-            [
-                'awf_number.required'       => 'Please Enter Awf Number',
-                'awf_number.max'            => 'Please Enter Awf Number less than 15 character',
-                'status.required'           => 'Please Choose Order Status',
-                'shipping_id.required'      => 'Please Select Shipping Company',
-                'shipping_id.numeric'       => 'invalid Shipping Data Provided',
-                'shipping_id.exists'        => 'Shipping Partner does not exists',
-                'delivery_date.date_format' => 'Please Enter delivery data in dd-mm-yyyy format',
-            ]);
-
-        try {
-
-            $order = TxnOrder::where('id', $id)->with('shipping')->firstOrFail();
-
-            $order->update([
-                'awf_number'    => $request->awf_number,
-                'status'        => $request->status,
-                'shipping_id'   => $request->shipping_id,
-                'delivery_date' => $request->delivery_date,
-            ]);
-
-            $order = TxnOrder::where('id', $id)->with('shipping')->first();
-
-            if ($order->status == 'shipped') {
-                SMS::send($order->user->mobile, 'HNI LIFESTYLE - Your Order has been shipped by : ' . $order->shipping->name . ' you can track from ' . $order->shipping->website_url . ' With Tracking No ' . $order->awf_number . ' Expected Delivery date ' . date('d-M-Y', strtotime($order->delivery_date)));
-            }
-
-            return redirect(route('admin.orders.show', $id))->with('messageSuccess', 'Order Assign to ' . $order->shipping->name . ' has been Updated Successfully !');
-
-        } catch (\Exception $ex) {
-            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.orders.all'))->with('messageDanger', 'Whoops, Order Not Found !');
-            }
-            return redirect(route('admin.orders.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
-        }
-    }
-
-    public function updateCharges(Request $request)
-    {
-
-        $request->validate([
-            'packing_price'    => 'required|numeric',
-            'other_charges'    => 'required|numeric',
-            'shipping_charges' => 'required|numeric',
-        ],
-            [
-                'packing_price.numeric'    => 'invalid Packing Data Provided',
-                'other_charges.numeric'    => 'invalid Other Charges Data Provided',
-                'shipping_charges.numeric' => 'invalid Shipping Charges Data Provided',
-            ]);
-
-        try {
-
-            $orderDetail = TxnOrderDetail::where('id', $request->order_details_id)->firstOrFail();
-
-            $total = $orderDetail->total - ($orderDetail->packing_price + $orderDetail->other_charges + $orderDetail->shipping_charges);
-
-            $pnl = ($orderDetail->product->starting_price * $orderDetail->quantity) < $total ? 'Profit' : 'Loss';
-
-            $orderDetail->update([
-                'packing_price'    => $request->packing_price,
-                'other_charges'    => $request->other_charges,
-                'shipping_charges' => $request->shipping_charges,
-                'pnl'              => $pnl,
-            ]);
-
-            return redirect(route('admin.orders.show', $orderDetail->order_id))->with('messageSuccess', 'Order has been Updated Successfully !');
-
-        } catch (\Exception $ex) {
-            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.orders.all'))->with('messageDanger', 'Whoops, Order Not Found !');
-            }
-            return redirect(route('admin.orders.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
-        }
     }
 
 }

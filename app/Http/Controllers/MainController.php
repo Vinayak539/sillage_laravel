@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Model\Delivery;
+use App\Model\HomeOfferSlider;
+use App\Model\MapColorSize;
 use App\Model\MsSection;
 use App\Model\ProductFaq;
 use App\Model\Slider;
@@ -10,8 +12,8 @@ use App\Model\Subscriber;
 use App\Model\Testimonial;
 use App\Model\TxnCategory;
 use App\Model\TxnCondition;
+use App\Model\TxnImage;
 use App\Model\TxnProduct;
-use App\Model\HomeOfferSlider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -20,13 +22,13 @@ class MainController extends Controller
 {
     public function index()
     {
-        $sliders = Slider::where('status', true)->orderBy('sort_index')->get();
-        $homeOfferSliders  = HomeOfferSlider::where('status', true)->orderBy('sort_index')->get();
+        $sliders      = Slider::where('status', true)->orderBy('sort_index')->get();
         $testimonials = Testimonial::where('status', true)->orderBy('sort_index')->get();
+        $homeOfferSliders  = HomeOfferSlider::where('status', true)->orderBy('sort_index')->get();
         // $side_products = SideProduct::with('product')->orderBy('sort_index')->limit(2)->get();
         $sections = MsSection::where('status', true)->with('msections')->get();
         // dd($sections);
-        return view('frontend.index', compact('sliders', 'sections', 'testimonials','homeOfferSliders'));
+        return view('frontend.index', compact('sliders', 'sections', 'testimonials', 'homeOfferSliders'));
         // return view('frontend.index', compact('sliders', 'testimonials', 'sections', 'side_products'));
     }
 
@@ -38,17 +40,19 @@ class MainController extends Controller
             ],
             [
                 'email.required' => 'Please Enter Email ID',
-                'email.email' => 'Please Enter Proper Email',
-                'email.unique' => 'Email is already Registered',
+                'email.email'    => 'Please Enter Proper Email',
+                'email.unique'   => 'Email is already Registered',
             ]
         );
 
-        subscriber::create([
-            'email' => $request->email,
+        Subscriber::create([
+            'email'  => $request->email,
             'status' => true,
         ]);
 
-        return redirect('/')->with('messgeSuccess1', 'Thank you for Subscribing with us !');
+        connectify('success', 'Subscribed', 'Thank you for Subscribing with us !');
+
+        return redirect('/');
     }
 
     public function getProduct($slug)
@@ -56,9 +60,11 @@ class MainController extends Controller
 
         try {
             // sizes remove
-            $product = TxnProduct::where('status', true)->where('slug_url', $slug)->with(['images', 'sizes', 'category', 'warranty', 'reviews' => function ($q) {
+            $product = TxnProduct::where('status', true)->where('slug_url', $slug)->with(['images', 'condition', 'sizes', 'colors', 'category', 'warranty', 'reviews' => function ($q) {
                 $q->where('status', true)->get();
             }])->firstOrFail();
+
+            // dd($product->sizes);
 
             $prod = DB::table('txn_products as p')
                 ->select(DB::raw('FLOOR(AVG(txn_reviews.rating)) as rating , COUNT(txn_reviews.id) as total_rating'))
@@ -72,54 +78,63 @@ class MainController extends Controller
                 ->join('mst_colors as c', 'm.color_id', 'c.id')
                 ->join('mst_sizes as s', 'm.size_id', 's.id')
                 ->where('m.product_id', $product->id)
-                ->orderBy('m.id', 'DESC')
                 ->groupBy('c.id')
                 ->get();
 
             $related_products = \DB::table('txn_products as p')
-                ->selectRaw("p.id , p.title , p.slug_url, p.image_url , FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment, c.name as category_name, c.slug_url as category_url")
+                ->selectRaw("p.id as product_id , p.title , p.slug_url, p.image_url , FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment, c.name as category_name, c.slug_url as category_url")
                 ->leftJoin("txn_reviews as r", "r.product_id", "p.id")
                 ->leftJoin("txn_categories as c", "c.id", "p.category_id")
                 ->where('p.status', '=', true)
-                ->where('p.id', '!=', $product->id)
-                ->orWhere('c.id', $product->category_id);
+                ->where('p.id', '<>', $product->id)
+                ->orWhere('c.id', $product->category_id)
+                ->orderBy('p.id', 'DESC')
+                ->groupBy("p.id")
+                ->limit(6)
+                ->get();
 
-            $related_products = $related_products->orderBy('p.id', 'DESC')->groupBy("p.id")->limit(6)->get();
             return view('frontend.product.show', compact('product', 'related_products', 'prod', 'colorsSizes'));
+
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return $ex->getMessage();
-                return redirect('/')->with('messageDanger1', 'Whoops, Product Not Found !');
-            }
-            return $ex->getMessage();
 
-            return redirect('/')->with('messageDanger1', 'Whoops, Something Went Wrong from our End ');
+                connectify('error', 'Error', 'Whoops, Product Not Found !');
+
+                return redirect('/');
+            }
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our End !');
+
+            return redirect('/');
         }
     }
 
     public function getSizes(Request $request)
     {
 
-        // $results = MapColorSize::where('product_id', $request->product_id)->where('color_id', $request->color_id)->get();
+        $results = MapColorSize::where('product_id', $request->product_id)->where('color_id', $request->color_id)->get();
 
-        $results = DB::table('map_color_sizes as m')
-            ->selectRaw('c.title as color_name, s.title as size_name, c.id as color_id, s.id as size_id, m.mrp, m.stock')
-            ->join('mst_colors as c', 'm.color_id', 'c.id')
-            ->join('mst_sizes as s', 'm.size_id', 's.id')
-            ->where('m.product_id', $request->product_id)
-            ->where('m.color_id', $request->color_id)
-            ->orderBy('m.id', 'DESC')
-            ->get();
+        // $results = DB::table('map_color_sizes as m')
+        //     ->selectRaw('c.title as color_name, GROUP_CONCAT(s.title) as size_name, c.id as color_id, GROUP_CONCAT(s.id) as size_id, m.mrp, m.stock, m.id as map_id')
+        //     ->join('mst_colors as c', 'm.color_id', 'c.id')
+        //     ->join('mst_sizes as s', 'm.size_id', 's.id')
+        //     ->where('m.product_id', $request->product_id)
+        //     ->where('m.color_id', $request->color_id)
+        //     ->orderBy('m.id', 'DESC')
+        //     ->groupBy('c.id')
+        //     ->get();
+
+        $color_images = TxnImage::where('product_id', $request->product_id)->where('color_id', $request->color_id)->get();
 
         if ($results) {
-            return response()->json(['success' => $results]);
+            return response()->json(['success' => $results, 'color_images' => $color_images]);
         }
         return response()->json(['error' => []]);
     }
 
     public function verifyPincode(Request $request)
     {
-        $res = Delivery::verify($request->pincode);
+        $res  = Delivery::verify($request->pincode);
         $res1 = json_decode($res, true);
         if (count($res1['delivery_codes'])) {
             session(['pincode' => $request->pincode]);
@@ -147,7 +162,7 @@ class MainController extends Controller
                 ->where('p.status', '=', true);
         }
 
-        $products = $products->orderBy('p.id', 'DESC')->groupBy("p.id")->paginate(50);
+        $products  = $products->orderBy('p.id', 'DESC')->groupBy("p.id")->paginate(50);
         $prodLists = [];
 
         foreach ($products as $prod) {
@@ -201,7 +216,7 @@ class MainController extends Controller
             where   find_in_set(parent_id, @pv) > 0
             and     @pv := concat(@pv, ',', id)"));
 
-        $cateLists = [];
+        $cateLists    = [];
         $cateLists[0] = $category->id;
 
         foreach ($categories as $cate) {
@@ -242,7 +257,7 @@ class MainController extends Controller
             where   find_in_set(parent_id, @pv) > 0
             and     @pv := concat(@pv, ',', id)"));
 
-            $cateLists = [];
+            $cateLists    = [];
             $cateLists[0] = $category->id;
 
             foreach ($categories as $cate) {
@@ -254,26 +269,33 @@ class MainController extends Controller
                 ->leftJoin("txn_reviews as r", "r.product_id", "p.id")
                 ->leftJoin("txn_categories as c", "p.category_id", "c.id")
                 ->where('p.status', true)
-                ->whereIN('p.category_id', $cateLists);
-
-            $products = $products->groupBy("p.id")->paginate(50);
+                ->whereIN('p.category_id', $cateLists)
+                ->groupBy("p.id")
+                ->paginate(50);
 
             $brands = \DB::table('txn_products as p')
                 ->selectRaw("Distinct(b.id) as id, b.brand_name")
                 ->leftJoin("txn_brands as b", "p.brand_id", "b.id")
                 ->where('p.status', true)
-                ->whereIN('p.category_id', $cateLists);
-
-            $brands = $brands->groupBy("p.id")->get();
+                ->whereIN('p.category_id', $cateLists)
+                ->groupBy("p.id")
+                ->get();
 
             $conditions = TxnCondition::where('status', true)->get();
+
             return view('frontend.product.cate-products', compact('products', 'category', 'brands', 'conditions'))->with('input', $request);
+
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect('/')->with('messageDanger1', 'Whoops, Category Not Found !');
+
+                connectify('error', 'Error', 'Whoops, Category Not Found !');
+
+                return redirect('/');
             }
-            return $ex->getMessage();
-            return redirect('/')->with('messageDanger1', 'Whoops, Something Went Wrong from our End ');
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our End  !');
+
+            return redirect('/');
         }
     }
 
@@ -293,24 +315,31 @@ class MainController extends Controller
             $product = TxnProduct::where('id', $id)->firstOrFail();
 
             $qna = ProductFaq::create([
-                'question' => $request->question,
+                'question'   => $request->question,
                 'product_id' => $product->id,
-                'status' => false,
+                'status'     => false,
             ]);
 
             Mail::send(['html' => 'backend.mails.question'], ['qna' => $qna, 'product' => $product], function ($message) {
-                $message->from('support@thehatkestore.com', 'HNI LIFESTYLE');
-                $message->to('support@thehatkestore.com', 'HNI LIFESTYLE');
-                $message->subject('HNI LIFESTYLE - Someone ask question');
+                $message->from('support@thehatkestore.com', 'The Hatke Store');
+                $message->to('support@thehatkestore.com', 'The Hatke Store');
+                $message->subject('The Hatke Store - Someone ask question');
             });
 
             return redirect(route('product', $product->slug_url))->with('messageSuccess1', 'Your question has been submitted successfully ! we\'ll answer your question soon !');
+
         } catch (\Exception $ex) {
+
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return back()->with('messageDanger1', 'Whoops, Category Not Found !');
+
+                connectify('error', 'Error', 'Whoops, Category Not Found !');
+
+                return back();
             }
-            // return $ex->getMessage();
-            return back()->with('messageDanger1', 'Whoops, Something Went Wrong from our End ');
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our End !');
+
+            return back();
         }
     }
 }

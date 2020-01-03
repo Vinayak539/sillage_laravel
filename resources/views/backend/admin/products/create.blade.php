@@ -98,7 +98,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="condition_id">Condition <span class="text-danger">*</span></label>
-                                <select name="condition_id" id="condition_id" class="form-control select2">
+                                <select name="condition_id" id="condition_id" class="form-control select2" required>
                                     <option value="">--Select Condition--</option>
                                     @foreach($conditions as $condition)
                                     <option value="{{ $condition->id }}"
@@ -114,7 +114,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="warranty_id">Warranty <span class="text-danger">*</span></label>
-                                <select name="warranty_id" id="warranty_id" class="form-control select2">
+                                <select name="warranty_id" id="warranty_id" class="form-control select2" required>
                                     <option value="">--Select Warranty--</option>
                                     @foreach($warranties as $warranty)
                                     <option value="{{ $warranty->id }}"
@@ -124,6 +124,23 @@
                                     @endforeach
                                 </select>
                                 <label id="" class="error" for="warranty_id"></label>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="gst_id">Gst <span class="text-danger">*</span></label>
+                                <select name="gst_id" id="gst_id" class="form-control select2" required>
+                                    <option value="">--Select Gst--</option>
+                                    @foreach($gsts as $gst)
+                                    <option value="{{ $gst->id }}" {{ old('gst_id') == $gst->id ? 'selected' : '' }}
+                                        data-value="{{ $gst->gst_value }}">
+                                        {{ $gst->gst_value}}%
+                                    </option>
+                                    @endforeach
+                                </select>
+                                <label id="" class="error" for="gst_id"></label>
 
                             </div>
                         </div>
@@ -256,6 +273,14 @@
                                 <label for="mrp">MRP <span class="text-danger">*</span></label>
                                 <input type="text" name="mrp" id="mrp" class="form-control" value="{{ old('mrp') }}"
                                     placeholder="Enter Mrp" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="starting_price">Selling Price <span class="text-danger">*</span></label>
+                                <input type="number" name="starting_price" id="starting_price" class="form-control"
+                                    value="{{ old('starting_price') }}" placeholder="Enter Selling Price" min="1">
                             </div>
                         </div>
 
@@ -411,39 +436,40 @@
 <script>
     $(document).ready(function () {
 
-        $('#buy_it_now_price').on('keyup', function () {
-            var gst = $('option:selected', '#gst_id').attr('data-value');
-            var gst_value = 1 + (gst / 100);
-            var buy_it_now_price = $(this).val();
-            var before_gst_price = Math.round(buy_it_now_price / gst_value);
-            var gst_amount = Math.round(buy_it_now_price - before_gst_price);
-            $('#starting_price').val(before_gst_price);
-            $('#gst_amount').val(gst_amount);
-        });
-
         $("#formAddProduct").validate({
              rules: {
                 category_id: {
                    required: true
                 },
+
                 title: {
                    required: true
                 },
+
                 brand_id: {
                    required: true
                 },
+
                 material_id: {
                    required: true
                 },
+
                 condition: {
                    required: true
                 },
+
                 warranty_id: {
                    required: true
                 },
+
+                gst_id: {
+                   required: true
+                },
+
                 image_url: {
                    required: true
                 },
+
                 image_url1: {
                    required: true
                 },
@@ -451,56 +477,73 @@
                 is_cod: {
                    required: true
                 },
+
                 description: {
                    required: true
                 },
+
                 keywords: {
                    required: true
                 },
+
                 color_id: {
                    required: true
                 },
+
                 "image_urls[]": {
                    required: true
                 },
+
                 size_id: {
                    required: true
                 },
+
                 mrp: {
                    required: true
                 },
+
                 stock: {
                    required: true
                 },
              },
              messages: {
+
                 category_id: {
                    required: "Please Select Category"
                 },
+
                 title: {
                    required: "Please Enter Product Name"
                 },
+
                 brand_id: {
                    required: "Please Select Brand"
                 },
+
                 material_id: {
                    required: "Please Select Material"
                 },
+
                 condition: {
                    required: "Please Select Condition"
                 },
+
                 warranty_id: {
                    required: "Please Select Warranty"
                 },
+
                 image_url: {
                    required: "Please Upload Front Image"
                 },
+
                 image_url1: {
                    required: "Please Upload Back Image"
                 },
+
                 gst_id: {
                    required: "Please Select GST"
                 },
+
                 color_id: {
                    required: "Please Select Colour"
                 },
@@ -511,18 +554,23 @@
                 is_cod: {
                    required: "Please Select COD Availability"
                 },
+
                 description: {
                    required: "Please Enter Description of Product"
                 },
+
                 keywords: {
                    required: "Please Enter Keywords of Product"
                 },
+
                 mrp: {
                    required: "Please Enter MRP"
                 },
+
                 stock: {
                    required: "Please Enter Stock"
                 },
+
                 "image_urls[]": {
                    required: "Please Upload Colour Images"
                 },

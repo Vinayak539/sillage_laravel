@@ -147,8 +147,9 @@
         </div>
     </div>
 
-    <form id="formResendInvoice" method="POST" action="/adrana951/manage-invoices/resend/">
+    <form id="formResendInvoice" method="POST" action="{{ route('admin.invoices.resend') }}">
         @csrf
+        <input type="hidden" name="order_id" id="txtOrderID">
     </form>
 
 </section>
@@ -158,8 +159,7 @@
     $(document).ready(function () {
         $(".resend-object").click(function () {
             if (window.confirm("Are you sure, You want to Resend Invoice ? ")) {
-                var action = $("#formResendInvoice").attr("action") + $(this).attr("data-obj-id");
-                $("#formResendInvoice").attr("action", action);
+                $("#txtOrderID").val($(this).attr("data-obj-id"));
                 $("#formResendInvoice").submit();
                 $(this).html('wait...');
             }

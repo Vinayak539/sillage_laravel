@@ -141,8 +141,8 @@
 <body>
     <div class="container">
         <div>
-            <a href="{{ url('/') }}" title="HNI LIFESTYLE">
-                <img src="{{ url('/') }}/assets/img/logo/logo.png" alt="HNI LIFESTYLE" />
+            <a href="{{ url('/') }}" title="The Hatke Store">
+                <img src="{{ url('/') }}/assets/img/logo/logo.png" alt="The Hatke Store" />
             </a>
         </div>
         <div class="row">

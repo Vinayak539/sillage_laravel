@@ -4,7 +4,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TxnOrder extends Model 
+class TxnOrder extends Model
 {
 
     protected $table = 'txn_orders';
@@ -21,14 +21,9 @@ class TxnOrder extends Model
         return $this->hasMany(TxnOrderDetail::class, 'order_id', 'id');
     }
 
-    public function shipping()
-    {
-        return $this->belongsTo(TxnShipping::class);
-    }
-
     public function transaction()
     {
-        return $this->belongsTo(Transaction::class,'id','order_id');
+        return $this->belongsTo(Transaction::class, 'id', 'order_id');
     }
 
 }

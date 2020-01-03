@@ -73,10 +73,16 @@
                                                 alt="Products">
 
                                         </figure>
-                                        @if(count($product->images))
+                                        <figure class="product-gallery__thumb--single">
+
+                                            <img src="{!! asset('storage/images/products').'/'.$product->image_url1 !!}"
+                                                alt="Products">
+
+                                        </figure>
+                                        @if(count($product->images) > 0)
 
                                         @foreach($product->images as $image)
-                                        <figure class="product-gallery__thumb--single">
+                                        <figure class="product-gallery__thumb--single multi-images">
 
                                             <img src="{!! asset('storage/images/multi-products').'/'.$image->image_url !!}"
                                                 alt="Products">
@@ -99,12 +105,19 @@
                                                         "arrows": false,
                                                         "asNavFor": ".nav-slider"
                                                     }'>
-                                            <figure class="product-gallery__image zoom">
+                                            <figure class="product-gallery__image zoom image1">
 
                                                 <img src="{!! asset('storage/images/products').'/'.$product->image_url !!}"
                                                     alt="Product">
 
                                             </figure>
+                                            <figure class="product-gallery__image zoom">
+
+                                                <img src="{!! asset('storage/images/products').'/'.$product->image_url1 !!}"
+                                                    alt="Product">
+
+                                            </figure>
+
                                             @if(count($product->images))
 
                                             @foreach($product->images as $image)
@@ -119,7 +132,8 @@
                                             @endif
                                         </div>
                                         <div class="product-gallery__actions">
-                                            <button class="action-btn btn-zoom-popup"><i class="fa fa-search-plus" aria-hidden="true"></i></button>
+                                            <button class="action-btn btn-zoom-popup"><i class="fa fa-search-plus"
+                                                    aria-hidden="true"></i></button>
                                             <!-- <a href="https://www.youtube.com/watch?v=Rp19QD2XIGM"
                                                     class="action-btn video-popup"><i class="dl-icon-format-video"></i></a> -->
                                         </div>
@@ -158,28 +172,38 @@
                             @endif
 
                         </div>
+
                         <a href="#" data-toggle="modal" data-target="#bulk-order"
                             class="btn btn-sm float-right bulk-order-btn">Bulk Order</a>
 
                         <div class="clearfix"></div>
+
                         <h3 class="product-titles">{{ $product->title }}</h3>
-                        <h3 class="product-titles mrp"></h3>
+
+                        <h3 class="product-titles mrp">{{ $product->colors[0]->mrp }}</h3>
+
                         @if($product->category)
                         <a href="{{ route('cate',[$product->category->slug_url]) }}" class="mb--10">
                             <span>{{ $product->category->name }}</span>
                         </a>
                         @endif
+
+                        {{-- 
                         @if($product->stock == 0)
+
                         <span class="product-stock in-stock float-right text-danger">
                             <i class="fa fa-ban" aria-hidden="true"></i>
                             out of stock
                         </span>
+
                         @else
+
                         <span class="product-stock in-stock float-right text-success">
                             <i class="fa fa-check-circle-o" aria-hidden="true"></i>
                             in stock
                         </span>
-                        @endif
+
+                        @endif --}}
 
 
                         {{-- <div class="product-price-wrapper mb--30 mb-md--10">
@@ -193,7 +217,7 @@
                     <form action="#" class="variation-form mb--35">
                         @if(count($colorsSizes) > 0)
                         <div class="product-color-variations mb--20">
-                            <p class="swatch-label">Color: <strong class="swatch-label"></strong></p>
+                            <p class="swatch-label">Color: <strong class="swatch-label color-label"></strong></p>
                             <div class="product-color-swatch variation-wrapper">
                                 @foreach ($colorsSizes as $item)
                                 <div class="swatch-wrapper" style="background: {{ $item->color_name }}">
@@ -201,7 +225,7 @@
                                         data-toggle="tooltip" data-placement="top" title="{{ $item->color_name }}"
                                         data-color-id="{{ $item->color_id }}" data-mrp="{{ $item->mrp }}"
                                         data-stock="{{ $item->stock }}" data-map-id="{{ $item->map_id }}"
-                                        data-product-id="{{ $product->id }}">
+                                        data-product-id="{{ $product->id }}" data-title="{{ $item->color_name }}">
                                         <span class="product-color-swatch-label">{{ $item->color_name }}</span>
                                     </a>
                                 </div>
@@ -212,7 +236,7 @@
                         @endif
                         @if(count($product->sizes) > 0)
                         <div class="product-size-variations">
-                            <p class="swatch-label">Size: <strong class="swatch-label"></strong></p>
+                            <p class="swatch-label">Size: <strong class="swatch-label size_lable"></strong></p>
                             <div class="product-size-swatch variation-wrapper">
                                 @foreach ($product->sizes as $item)
                                 <div class="swatch-wrapper">
@@ -236,12 +260,43 @@
                             <div id="button-box" style="margin-right: 10px;">
                                 <a href="javascript:void(0)" class="button-cls sss add-cart">Add to cart</a>
                             </div>
-                            <div id="button-box">
-                                <a href="{{ route('own-creation') }}" class="button-cls sss">Create Your Own
-                                </a>
-                            </div>
+
                         </div>
                     </form>
+                    @if($product->within_days || $product->wrong_products || $product->faulty_products ||
+                    $product->quality_issue)
+                    <div class="row pt--20 text-center return--policy">
+                        @if($product->within_days == true)
+                        <div class="col-sm-3 col-6">
+                            <span class="badge badge-success"><i class="fa fa-calendar-o"></i> </span>
+                            <p>Within 7 <br /> Days</p>
+                        </div>
+                        @endif
+                        @if($product->wrong_products == true)
+                        <div class="col-sm-3 col-6">
+                            <span class="badge badge-danger"><i class="fa fa-times-circle-o"></i>
+                            </span>
+                            <p>Wrong <br /> Product</p>
+                        </div>
+                        @endif
+                        @if($product->faulty_products == true)
+                        <div class="col-sm-3 col-6">
+                            <span class="badge badge-primary"><i class="fa fa-ban"></i>
+                            </span>
+                            <p> Faulty <br /> Product</p>
+                        </div>
+                        @endif
+                        @if($product->quality_issue == true)
+                        <div class="col-sm-3 col-6">
+                            <span class="badge badge-dark"><i class="fa fa-thumbs-o-down"></i>
+                            </span>
+                            <p>
+                                Quality <br> Issue
+                            </p>
+                        </div>
+                        @endif
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -267,9 +322,69 @@
                         <div class="tab-pane fade show active" id="nav-description" role="tabpanel"
                             aria-labelledby="nav-description-tab">
                             <div class="product-description">
+
                                 <p>
                                     {{ $product->description }}
                                 </p>
+                                <h4>Product Detail</h4>
+                                <table class="table">
+                                    <tbody>
+                                        @if($product->brand)
+                                        <tr>
+                                            <th class="first_child">Brand</th>
+                                            <td>{{ $product->brand->brand_name }}</td>
+                                        </tr>
+                                        @endif
+                                        @if($product->material)
+                                        <tr>
+                                            <th class="first_child">Material</th>
+                                            <td>{{ $product->material->material_name }}</td>
+                                        </tr>
+                                        @endif
+                                        @if($product->condition)
+                                        <tr>
+                                            <th class="first_child">Condition</th>
+                                            <td>{{ $product->condition->condition }}</td>
+                                        </tr>
+                                        @endif
+                                        @if($product->length)
+                                        <tr>
+                                            <th class="first_child">Length</th>
+                                            <td>{{ $product->length }}</td>
+                                        </tr>
+                                        @endif
+                                        @if($product->breadth)
+                                        <tr>
+                                            <th class="first_child">Breadth</th>
+                                            <td>{{ $product->breadth }}</td>
+                                        </tr>
+                                        @endif
+                                        @if($product->height)
+                                        <tr>
+                                            <th class="first_child">Height</th>
+                                            <td>{{ $product->height }}</td>
+                                        </tr>
+                                        @endif
+                                        @if($product->weight)
+                                        <tr>
+                                            <th class="first_child">Weight</th>
+                                            <td>{{ $product->weight }}</td>
+                                        </tr>
+                                        @endif
+                                        @if($product->warranty)
+                                        <tr>
+                                            <th class="first_child">Warranty</th>
+                                            <td>{{ $product->warranty->title }}</td>
+                                        </tr>
+                                        @endif
+                                        @foreach($product->custom_fields as $field)
+                                        <tr>
+                                            <th>{{ $field->field_name }}</th>
+                                            <td>{{ $field->field_value }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="nav-reviews" role="tabpanel" aria-labelledby="nav-reviews-tab">
@@ -352,24 +467,12 @@
                                                     alt="Product Image" class="secondary-image">
                                             </a>
                                         </div>
-                                        <div class="airi-product-action">
-                                            <div class="product-action">
-                                                <a class="add_to_cart_btn action-btn" href="{{ route('cart') }}"
-                                                    data-toggle="tooltip" data-placement="top" title="Add to Cart">
-                                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                                </a>
-
-                                            </div>
-                                        </div>
                                     </figure>
                                     <div class="product-info">
                                         <h3 class="product-title">
                                             <a
-                                                href="{{ route('product',[$rproduct->slug_url]) }}">{{ $rproduct->title }}</a>
-                                        </h3>
-
-                                        <div class="product-rating">
-                                            <span>
+                                                href="{{ route('product',[$rproduct->slug_url]) }}">{{ Str::limit($rproduct->title,15) }}</a>
+                                            <span class="pull-right">
                                                 @for($i = 1; $i<= $rproduct->rating; $i++)
                                                     <i class="fa fa-star rated" aria-hidden="true"></i>
                                                     @endfor
@@ -377,17 +480,13 @@
                                                         <i class="fa fa-star-o" aria-hidden="true"></i>
                                                         @endfor
                                             </span>
-                                        </div>
+                                        </h3>
+
                                         <span class="pull-left">
                                             <a
-                                                href="{{ route('cate',[$product->category->slug_url]) }}">{{$product->category->name}}</a>
+                                                href="{{ route('cate',[$product->category->slug_url]) }}">{{ $product->category->name}}</a>
                                         </span>
-                                        {{-- <span class="product-price-wrapper pull-right">
-                                            <span class="money">₹ {{ $rproduct->buy_it_now_price }}</span>
-                                        <span class="product-price-old">
-                                            <span class="money">₹ {{ $rproduct->starting_price }}</span>
-                                        </span>
-                                        </span> --}}
+
                                     </div>
                                 </div>
                             </div>
@@ -442,11 +541,12 @@
 
 
 
-<form action="/cart" method="post" id="cartForm">
+<form action="{{ route('cart.store') }}" method="post" id="cartForm">
     @csrf
-    <input type="hidden" name="prod_id" id="cart_prod_id">
+    <input type="hidden" name="prod_id" id="cart_prod_id" value="{{ $product->id }}">
     <input type="hidden" name="qty" id="cart_qty">
-    <input type="hidden" name="map_id" id="cart_map_id">
+    <input type="hidden" name="color_id" id="cart_color_id">
+    <input type="hidden" name="size_id" id="cart_size_id">
 </form>
 
 @endsection
@@ -454,10 +554,32 @@
 @section('extracss')
 <style>
     .bulk-order-btn {
-        padding: 2px 10px;
+        padding: 4px 10px 1px;
         font-size: 12px;
     }
 
+    .table th {
+        font-weight: 600;
+
+    }
+
+    .table td,
+    .table th {
+        font-size: 14px !important;
+        padding: 10px 0 10px 5px !important;
+        text-transform: capitalize !important;
+    }
+
+    .disabledClass {
+        cursor: not-allowed;
+        text-decoration-line: line-through;
+        text-decoration-style: solid;
+        color: rgba(0, 0, 0, .6);
+        background-color: #f5f5f5;
+        box-shadow: none;
+        pointer-events: none;
+        border-color: transparent;
+    }
 </style>
 
 <script type='text/javascript'
@@ -469,20 +591,26 @@
 <script>
     $(document).ready(function () {
 
-
+        volume();
         $('.add-cart').click(function () {
 
             var quantity = $('.quantity-input').val();
 
-            var color_id = $('#cart_map_id').val();
+            var color_id = $('#cart_color_id').val();
+
+            var size_id = $('#cart_size_id').val();
 
             if (color_id.length < 1) {
 
-                swal('Add to Cart', 'Please Choose Color & Size', 'error');
+                swal('Add to Cart', 'Please Choose Color', 'error');
 
             } else if (quantity < 1) {
 
-                $('.pincode_error').html('Select Atleast 1 Quantity');
+                swal('Add to Cart', 'Please Choose Atleast One Quantity to add in Cart', 'error');
+
+            } else if (size_id.length < 1) {
+
+                swal('Add to Cart', 'Please Choose Size', 'error');
 
             } else {
 
@@ -491,7 +619,7 @@
                 $('#cartForm').submit();
 
                 $(this).html(
-                    '<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">Loading...</span>'
+                    '<i class="fa fa-spinner fa-pulse fa-fw text-light"></i><span class="sr-only">Loading...</span>'
                 );
             }
         });
@@ -514,8 +642,6 @@
 
         $('.product-color-swatch-btn').click(function (e) {
 
-            e.preventDefault();
-
             var mrp = $(this).attr('data-mrp');
             var product_id = $(this).attr('data-product-id');
             var color_id = $(this).attr('data-color-id');
@@ -532,6 +658,7 @@
 
                 $("#cart_prod_id").val(product_id);
                 $("#cart_map_id").val(map_id);
+                $("#cart_color_id").val(color_id);
                 $('.mrp').html(mrp);
             }
 
@@ -542,27 +669,53 @@
             });
 
             $.ajax({
-                url: '/get-sizes',
+                url: "{{ route('get.sizes') }}",
                 type: 'POST',
                 data: {
-                    product_id: product_id,
+                    product_id: "{{ $product->id }}",
                     color_id: color_id,
                 },
                 success: function (result) {
                     var success = result.success;
+
                     if (success) {
 
                         var html = '';
-                        success.forEach(data => {
-                            html += `<div class="swatch-wrapper"><a class="product-size-swatch-btn variation-btn size_btn" data-toggle="tooltip"
-                                        data-placement="top" title="${data.size_name}" data-size-id="${data.size_id}">
-                                        <span class="product-size-swatch-label">${data.size_name}</span>
-                                    </a>
-                                </div>`
+                        var prodSize = {!! json_encode($product->sizes) !!}
+
+                        console.log(prodSize, success);
+
+
+                        var productSizeObj = {
+
+                        };
+
+                        success.forEach(size => {
+                            if (!productSizeObj[size.size_id]) {
+                                productSizeObj[size.size_id] = {};
+                            }
+                            productSizeObj[size.size_id] = size;
+                        });
+
+                        prodSize.forEach(data => {
+
+                            html += `<div class="swatch-wrapper"><a class="product-size-swatch-btn variation-btn size_btn ${productSizeObj[data.size_id]? (productSizeObj[data.size_id].size_id ? '' : 'disabledClass'): 'disabledClass'}" data-toggle="tooltip"
+                                                data-placement="top" title="${data.title}" data-size-id="${data.size_id}" >
+                                                <span class="product-size-swatch-label">${data.title}</span>
+                                            </a>
+                                        </div>`
+
+
                         });
 
                         $('.product-size-swatch').html(html);
-                    } else {
+
+                        attachClickListener('.size_btn');
+
+                        $(".disabledClass").parents('.swatch-wrapper').css({
+                            "cursor": "no-drop",
+                            "border": "1px solid red"
+                        });
 
                     }
                 }
@@ -570,11 +723,111 @@
 
         });
 
-        $('.size_btn').click(function () {
-            console.log('clicked');
-
-            $(this).attr('data-size-id');
+        $('.product-size-swatch-btn').click(function () {
+            var size_id = $(this).attr('data-size-id');
+            $('#cart_size_id').val(size_id);
         });
+
+
+        function volume() {
+            var color_id = $('.product-color-swatch-btn').attr('data-color-id');
+            var title = $('.product-color-swatch-btn').attr('data-title');
+            $('#cart_color_id').val(color_id);
+            $('.color-label').html(title);
+            console.log(color_id);
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                }
+            });
+
+            $.ajax({
+                url: "{{ route('get.sizes') }}",
+                type: 'POST',
+                data: {
+                    product_id: "{{ $product->id }}",
+                    color_id: color_id,
+                },
+                success: function (result) {
+                    var success = result.success;
+
+                    if (success) {
+
+                        var html = '';
+                        var prodSize = {!! json_encode($product->sizes) !!}
+
+                        console.log(prodSize, success);
+
+
+                        var productSizeObj = {
+
+                        };
+
+                        success.forEach(size => {
+                            if (!productSizeObj[size.size_id]) {
+                                productSizeObj[size.size_id] = {};
+                            }
+                            productSizeObj[size.size_id] = size;
+                        });
+
+                        prodSize.forEach(data => {
+
+                            html += `<div class="swatch-wrapper"><a class="product-size-swatch-btn variation-btn size_btn ${productSizeObj[data.size_id]? (productSizeObj[data.size_id].size_id ? '' : 'disabledClass'): 'disabledClass'}" data-toggle="tooltip"
+                                                data-placement="top" title="${data.title}" data-size-id="${data.size_id}" >
+                                                <span class="product-size-swatch-label">${data.title}</span>
+                                            </a>
+                                        </div>`
+
+
+                        });
+
+                        $('.product-size-swatch').html(html);
+
+                        attachClickListener('.size_btn');
+
+                        $(".disabledClass").parents('.swatch-wrapper').css({
+                            "cursor": "no-drop",
+                            "border": "1px solid red"
+                        });
+
+                    }
+                }
+            });
+        }
+
+        function attachClickListener(elementName) {
+            const elements = $(elementName);
+
+            elements.each((index, element) => {
+                // element.removeEventListener('click', getDataSizeId(element));
+                // console.log('element ', element);
+                element.addEventListener('click', function () {
+                    var size_id = $(element).attr('data-size-id');
+
+                    var title = $(element).attr('title');
+
+                    $('.size_lable').html(title);
+
+                    if ($(this).hasClass('disabledClass')) {
+
+                        $('#cart_size_id').val('')
+
+                        $('.size_lable').html(title + ' ' +
+                            '<strong class="text-danger">Out of Stock</strong>');
+
+                    } else {
+
+                        $('#cart_size_id').val(size_id);
+                    }
+
+                });
+
+            });
+
+        }
+
+
 
     });
 

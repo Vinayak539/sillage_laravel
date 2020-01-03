@@ -61,11 +61,15 @@ class Handler extends ExceptionHandler
         switch ($guard) {
 
             case 'admin':
-                return redirect()->guest('/adhni753/login');
+                return redirect()->guest(route('login'));
                 break;
 
             case 'user':
-                return redirect()->guest('/myaccount/login');
+                return redirect()->guest(route('user.login'));
+                break;
+
+            case 'shop':
+                return redirect()->guest(route('shop.login'));
                 break;
 
             default:

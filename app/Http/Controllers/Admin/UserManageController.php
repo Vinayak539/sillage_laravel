@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Model\TxnUser;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 
 class UserManageController extends Controller
 {
@@ -24,14 +23,23 @@ class UserManageController extends Controller
     {
         try {
 
-            $user = TxnUser::where('id', $id)->with('orders')->firstOrFail();
+            $user = TxnUser::where('id', $id)->with(['orders' => function ($q) {
+                $q->whereNotIn('status', ['nc'])->orderBy('id', 'DESC')->get();
+            }])->firstOrFail();
+
             return view('backend.admin.users.orders', compact('user'));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.users.all'))->with('messageDanger', 'Whoops, User Not Found !');
+
+                connectify('error', 'Error', 'Whoops, User Not Found !');
+
+                return redirect(route('admin.users.all'));
             }
-            return redirect(route('admin.users.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end !');
+
+            return redirect(route('admin.users.all'));
         }
     }
 
@@ -44,9 +52,15 @@ class UserManageController extends Controller
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.users.all'))->with('messageDanger', 'Whoops, User Not Found !');
+
+                connectify('error', 'Error', 'Whoops, User Not Found !');
+
+                return redirect(route('admin.users.all'));
             }
-            return redirect(route('admin.users.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end !');
+
+            return redirect(route('admin.users.all'));
         }
     }
 
@@ -59,16 +73,22 @@ class UserManageController extends Controller
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.users.all'))->with('messageDanger', 'Whoops, User Not Found !');
+
+                connectify('error', 'Error', 'Whoops, User Not Found !');
+
+                return redirect(route('admin.users.all'));
             }
-            return redirect(route('admin.users.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end !');
+
+            return redirect(route('admin.users.all'));
         }
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'status'    => 'required|string|max:191',
+            'status' => 'required|string|max:191',
         ]);
 
         try {
@@ -79,13 +99,23 @@ class UserManageController extends Controller
                 'status' => $request->status,
             ]);
 
-            return redirect(route('admin.users.edit', $user->id))->with('messageSuccess', 'Data has been updated successfully !');
+            $status = $user->status == true ? "Active" : "Blocked";
+
+            connectify('success', 'Status Updated', $user->name . ' Status changed to ' . $status);
+
+            return redirect(route('admin.users.edit', $user->id));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.users.all'))->with('messageDanger', 'Whoops, User Not Found !');
+
+                connectify('error', 'Error', 'Whoops, User Not Found !');
+
+                return redirect(route('admin.users.all'));
             }
-            return redirect(route('admin.users.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end !');
+
+            return redirect(route('admin.users.all'));
         }
     }
 
@@ -98,9 +128,15 @@ class UserManageController extends Controller
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.users.all'))->with('messageDanger', 'Whoops, User Not Found !');
+
+                connectify('error', 'Error', 'Whoops, User Not Found !');
+
+                return redirect(route('admin.users.all'));
             }
-            return redirect(route('admin.users.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end !');
+
+            return redirect(route('admin.users.all'));
         }
     }
 
@@ -115,43 +151,59 @@ class UserManageController extends Controller
         //
     }
 
-    public function block($id)
+    public function block(Request $request)
     {
         try {
 
-            $user = TxnUser::where('id', $id)->firstOrFail();
+            $user = TxnUser::where('id', $request->user_id)->firstOrFail();
 
             $user->update([
                 'status' => false,
             ]);
 
-            return redirect(route('admin.users.all'))->with('messageSuccess', 'You have Blocked user ' . '"' . $user->name . '"');
+            connectify('success', 'Blocked', 'You have Blocked user ' . '"' . $user->name . '"');
+
+            return redirect(route('admin.users.all'));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.users.all'))->with('messageDanger', 'Whoops, User Not Found !');
+
+                connectify('error', 'Error', 'Whoops, User Not Found !');
+
+                return redirect(route('admin.users.all'));
             }
-            return redirect(route('admin.users.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end !');
+
+            return redirect(route('admin.users.all'));
         }
     }
 
-    public function unblock($id)
+    public function unblock(Request $request)
     {
         try {
 
-            $user = TxnUser::where('id', $id)->firstOrFail();
+            $user = TxnUser::where('id', $request->user_id)->firstOrFail();
 
             $user->update([
                 'status' => true,
             ]);
 
-            return redirect(route('admin.users.all'))->with('messageSuccess', 'You have Unblocked user ' . '"' . $user->name . '"');
+            connectify('success', 'Unblocked', 'You have Unblocked user ' . '"' . $user->name . '"');
+
+            return redirect(route('admin.users.all'));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.users.all'))->with('messageDanger', 'Whoops, User Not Found !');
+
+                connectify('error', 'Error', 'Whoops, User Not Found !');
+
+                return redirect(route('admin.users.all'));
             }
-            return redirect(route('admin.users.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end !');
+
+            return redirect(route('admin.users.all'));
         }
     }
 }

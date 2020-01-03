@@ -51,6 +51,11 @@ return [
             'provider' => 'users',
         ],
 
+        'shop'  => [
+            'driver'   => 'session',
+            'provider' => 'shops',
+        ],
+
         'api'   => [
             'driver'   => 'token',
             'provider' => 'users',
@@ -91,6 +96,11 @@ return [
             'model'  => App\Model\TxnUser::class,
         ],
 
+        'shops'  => [
+            'driver' => 'eloquent',
+            'model'  => App\Model\Shop::class,
+        ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -122,6 +132,13 @@ return [
 
         'users'  => [
             'provider' => 'users',
+            'table'    => 'password_resets',
+            'expire'   => 60,
+            'throttle' => 60,
+        ],
+
+        'shops'  => [
+            'provider' => 'shops',
             'table'    => 'password_resets',
             'expire'   => 60,
             'throttle' => 60,

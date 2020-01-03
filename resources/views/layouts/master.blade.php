@@ -16,7 +16,8 @@
     <link rel="apple-touch-icon" sizes="144x144" href="{!! asset('assets/img/logo/favicon/apple-icon-144x144.png') !!}">
     <link rel="apple-touch-icon" sizes="152x152" href="{!! asset('assets/img/logo/favicon/apple-icon-152x152.png') !!}">
     <link rel="apple-touch-icon" sizes="180x180" href="{!! asset('assets/img/logo/favicon/apple-icon-180x180.png') !!}">
-    <link rel="icon" type="image/png" sizes="192x192"  href="{!! asset('assets/img/logo/favicon/android-icon-192x192.png') !!}">
+    <link rel="icon" type="image/png" sizes="192x192"
+        href="{!! asset('assets/img/logo/favicon/android-icon-192x192.png') !!}">
     <link rel="icon" type="image/png" sizes="32x32" href="{!! asset('assets/img/logo/favicon/favicon-32x32.png') !!}">
     <link rel="icon" type="image/png" sizes="96x96" href="{!! asset('assets/img/logo/favicon/favicon-96x96.png') !!}">
     <link rel="icon" type="image/png" sizes="16x16" href="{!! asset('assets/img/logo/favicon/favicon-16x16.png') !!}">
@@ -27,7 +28,7 @@
     <!-- Favicons -->
 
     <!-- Title -->
-
+    @notifyCss
     <title>@yield('title') || Hnilifestyle</title>
 
     <!-- ************************* CSS Files ************************* -->
@@ -55,10 +56,7 @@
     ============================================ -->
     <script src="{!! asset('assets/js/vendor/modernizr-2.8.3.min.js') !!}"></script>
 
-    <!--[if lt IE 9]>
-            <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-            <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
+
     @yield('extracss')
     <style>
         .pop-message-body {
@@ -300,7 +298,8 @@
                                     </li>
                                     <li class="header-toolbar__item">
                                         <a href="#miniCart" class="mini-cart-btn toolbar-btn">
-                                            <i class="fa fa-shopping-cart toolbar-btn-cls text-black" aria-hidden="true"></i>
+                                            <i class="fa fa-shopping-cart toolbar-btn-cls text-black"
+                                                aria-hidden="true"></i>
                                             <sup class="mini-cart-count">2</sup>
                                         </a>
                                     </li>
@@ -682,63 +681,17 @@
 
     <script src="{!! asset('assets/js/revoulation/extensions/revolution.extension.video.min.js') !!}"></script>
 
+    <script src="{!! asset('admin/bundles/sweetalert/sweetalert.min.js') !!}"></script>
+
+    <script src="{!! asset('admin/js/jquery.validate.min.js') !!}"></script>
+
     <!-- REVOLUTION ACTIVE JS FILES -->
 
     <script src="{!! asset('assets/js/revoulation.js') !!}"></script>
 
     @yield('extrajs')
-    @if(Session::has('messageSuccess1'))
-    <div class="pop-message-body">
-        <div class="flex-container">
-            <div id="successSnackbar">{{Session::get('messageSuccess1')}}</div>
-        </div>
-    </div>
-    <script>
-        $(document).ready(function (e) {
-            var x = document.getElementById("successSnackbar");
-            x.className = "show";
-            setTimeout(function () {
-                x.className = x.className.replace("show", "show1");
-            }, 5000);
-        });
-
-    </script>
-    @endif
-    @if(Session::has('messageDanger1'))
-    <div class="pop-message-body">
-        <div class="flex-container">
-            <div id="dangerSnackbar">{{Session::get('messageDanger1')}}</div>
-        </div>
-    </div>
-    <script>
-        var x = document.getElementById("dangerSnackbar");
-        x.className = "show";
-        setTimeout(function () {
-            x.className = x.className.replace("show", "show1");
-        }, 5000);
-
-    </script>
-    @endif
-    @if($errors->any())
-    <div class="pop-message-body">
-        <div class="flex-container">
-            <ul id="dangerSnackbar">
-                @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-    <script>
-        var x = document.getElementById("dangerSnackbar");
-        x.className = "show";
-        setTimeout(function () {
-            x.className = x.className.replace("show", "show1");
-        }, 7000);
-
-    </script>
-    @endif
-
+    @include('notify::messages')
+    @notifyJs
     <script>
         $("#search-box").on("input", function () {
             if ($(this).val()) {

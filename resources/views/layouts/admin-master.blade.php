@@ -55,12 +55,13 @@
                                 <i class="far fa-user"></i> Profile
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="/adhni753/logout"
+                            <a href="{{ route(admin.logout) }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                 class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
                                 Logout
                             </a>
-                            <form id="logout-form" action="/adhni753/logout" method="POST" style="display: none;">
+                            <form id="logout-form" action="{{ route(admin.logout) }}" method="POST"
+                                style="display: none;">
                                 @csrf
                             </form>
                         </div>
@@ -82,7 +83,8 @@
                             <a href="{{ route('admin.dashboard') }}" class="nav-link"><i
                                     data-feather="monitor"></i><span>Dashboard</span></a>
                         </li>
-                        <li class="dropdown active">
+
+                        <li class="dropdown">
                             <a href="#" class="menu-toggle nav-link has-dropdown">
                                 <i data-feather="layers"></i><span>Main catalogue</span>
                             </a>
@@ -100,6 +102,7 @@
                                 <li><a class="nav-link" href="{{ route('admin.sections.all') }}">Sections</a></li>
                             </ul>
                         </li>
+
                         <li class="dropdown">
                             <a href="#" class="menu-toggle nav-link has-dropdown">
                                 <i data-feather="smartphone"></i><span>Orders</span>
@@ -119,12 +122,14 @@
 
                         <li class="dropdown">
                             <a href="{{ route('admin.sliders.all') }}" class="nav-link"><i
-                                    data-feather="monitor"></i><span>Slider</span></a>
+                                    data-feather="link-2"></i><span>Slider</span></a>
                         </li>
+
                         <li class="dropdown">
                             <a href="{{ route('admin.home-offer-sliders.all') }}" class="nav-link"><i
                                     data-feather="monitor"></i><span>Home Offer Slider</span></a>
                         </li>
+
                         <li class="dropdown">
                             <a href="{{ route('admin.reviews.all') }}" class="nav-link"><i
                                     data-feather="star"></i><span>Reviews</span></a>
@@ -134,13 +139,20 @@
                             <a href="{{ route('admin.enquiries.all') }}" class="nav-link"><i
                                     data-feather="mail"></i><span>Enquiries</span></a>
                         </li>
+
                         <li class="dropdown">
                             <a href="{{ route('admin.faqs.all') }}" class="nav-link"><i
                                     data-feather="message-square"></i><span>FAQ's</span></a>
                         </li>
+
                         <li class="dropdown">
                             <a href="{{ route('admin.subscribers.all') }}" class="nav-link"><i
                                     data-feather="users"></i><span>Subscribers</span></a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="{{ route('admin.shops.all') }}" class="nav-link"><i
+                                    data-feather="home"></i><span>Shops</span></a>
                         </li>
 
                         <li class="dropdown">
@@ -156,7 +168,9 @@
                                 <span>Return & Refund Tickets</span>
                             </a>
                         </li>
+
                     </ul>
+
                 </aside>
             </div>
             <!-- Main Content -->

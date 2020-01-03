@@ -162,7 +162,6 @@
             color: #337ab7;
             text-decoration: none;
         }
-
     </style>
 
 </head>
@@ -172,7 +171,7 @@
         <div>
             <a href="{{ url('/') }}/">
                 <!-- <img src="{{ url('/') }}/images/hni_logo.png" alt="Ranayas" /> -->
-                <h3>HNI LIFESTYLE</h3>
+                <h3>The Hatke Store</h3>
             </a>
         </div>
         <div class="row">
@@ -276,6 +275,7 @@
 
                     <tr>
                         <th>Product Name</th>
+                        <th>Colour & Size</th>
                         <th>MRP (Rs)</th>
                         <th>QTY</th>
                         <th>AMOUNT (Rs)</th>
@@ -283,6 +283,8 @@
                     @foreach($invoice->details as $detail)
                     <tr>
                         <td>{{ $detail->product->title }}</td>
+                        <td>{{ $detail->size ? 'Size: ' . $detail->size->title : '' }} <br>
+                            {{ $detail->color ? 'Colour: ' . $detail->color->title : '' }}</td>
                         <td>{{ $detail->mrp }}</td>
                         <td>{{ $detail->quantity }}</td>
                         <td>{{ $detail->mrp * $detail->quantity }}</td>

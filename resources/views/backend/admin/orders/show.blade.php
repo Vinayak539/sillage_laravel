@@ -61,13 +61,7 @@
                     </tr>
                     <tr>
                         <th>Order Date</th>
-                        <td>{{ date('d/m/Y h:i A' , strtotime($order->created_at)) }}</td>
-                    </tr>
-                    <tr>
-                        <th>Discount</th>
-                        <td>
-                            {{ $order->discount ? $order->discount : "0.00" }}
-                        </td>
+                        <td>{{ date('d-M-Y h:i A' , strtotime($order->created_at)) }}</td>
                     </tr>
                     <tr>
                         <th>Payment Status</th>
@@ -75,7 +69,6 @@
                             {{ $order->payment_status }}
                         </td>
                     </tr>
-
                     <tr>
                         <th>Payment Mode</th>
                         <td class="text-capitalize">
@@ -83,10 +76,17 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <th>Order Status</th>
+                        <td>
+                            {{ $order->status }}
+                        </td>
+                    </tr>
+
                     @if($order->status === 'Delivered' && $order->delivery_date)
                     <tr>
                         <th>Delivered At</th>
-                        <td>{{ date('d/m/Y h:i A' , strtotime($order->delivery_date)) }}</td>
+                        <td>{{ date('d-M-Y h:i A' , strtotime($order->delivery_date)) }}</td>
                     </tr>
                     @endif
 
@@ -179,6 +179,7 @@
                     <tr>
                         <th>Image</th>
                         <th>Product Name</th>
+                        <th>Colour & Size</th>
                         <th>MRP</th>
                         <th>Quantity</th>
                         <th>Total</th>
@@ -196,6 +197,10 @@
                                     alt="{{ $detail->product->title }}" width="50" class="img img-responsive"></a>
                         </td>
                         <td>{{ $detail->product->title }}</td>
+                        <td>
+                            {{ $detail->size ? 'Size: ' . $detail->size->title : '' }} <br>
+                            {{ $detail->color ? 'Colour: ' . $detail->color->title : '' }}
+                        </td>
                         <td>{{ $detail->mrp }}</td>
                         <td>{{ $detail->quantity }}</td>
                         <td>{{ $detail->mrp * $detail->quantity }}</td>
@@ -204,7 +209,7 @@
                     @endforeach
 
                     <tr>
-                        <th colspan="5" class="bg-silver text-right text-uppercase">
+                        <th colspan="6" class="bg-silver text-right text-uppercase">
                             <p>Total Amount : &#8377; {{ $order->tbt }}</p>
                             <p>+ CGST : &#8377; {{ round($order->tax/2, 2) }}</p>
                             <p>+ SGST : &#8377; {{ round($order->tax/2, 2) }}</p>

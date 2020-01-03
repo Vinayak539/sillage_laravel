@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Model\Order;
 use App\Model\TxnOrder;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class InvoiceController extends Controller
 {
@@ -19,7 +18,7 @@ class InvoiceController extends Controller
      */
     public function index(Request $request)
     {
-        $orders = TxnOrder::orderBy('id', 'DESC');
+        $orders = TxnOrder::whereNotIn('status', ['nc'])->orderBy('id', 'DESC');
 
         if ($request->filled('order_id')) {
             $orders = $orders->where('id', $request->order_id);
@@ -77,9 +76,15 @@ class InvoiceController extends Controller
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.invoices.all'))->with('messageDanger', 'Whoops, Order Not Found !');
+
+                connectify('error', 'Error', 'Whoops, Order Not Found !');
+
+                return redirect(route('admin.invoices.all'));
             }
-            return redirect(route('admin.invoices.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something went wrong from our end !');
+
+            return redirect(route('admin.invoices.all'));
         }
     }
 
@@ -124,42 +129,55 @@ class InvoiceController extends Controller
             $invoice = TxnOrder::where('id', $id)->with('details', 'user', 'transaction')->firstOrFail();
 
             // return view('backend.admin.invoices.download', compact('invoice'));
-            
+
             $pdf = PDF::loadView('backend.admin.invoices.download', ['invoice' => $invoice]);
 
             // Storage::put('public/pdf/order_no_' . $id . '.pdf', $pdf->output());
 
-            
             return $pdf->download('order_no_' . $id . '.pdf');
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.invoices.all'))->with('messageDanger', 'Whoops, Order Not Found !');
+
+                connectify('error', 'Error', 'Whoops, Order Not Found !');
+
+                return redirect(route('admin.invoices.all'));
             }
-            return redirect(route('admin.invoices.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end !');
+
+            return redirect(route('admin.invoices.all'));
         }
     }
 
-    public function resendInvoice($id)
+    public function resendInvoice(Request $request)
     {
         try {
 
-            $invoice = TxnOrder::where('id', $id)->with('details', 'user', 'transaction')->firstOrFail();
-            $pdf     = PDF::loadView('backend.admin.invoices.download', ['invoice' => $invoice]);
-            Mail::send(['html' => 'backend.admin.invoices.show'], ['invoice' => $invoice], function ($message) use($invoice,$pdf) {
-                $message->from('contact@thehatkestore.com', 'HNI LIFESTYLE');
+            $invoice = TxnOrder::where('id', $request->order_id)->with('details', 'user', 'transaction')->firstOrFail();
+            $pdf = PDF::loadView('backend.admin.invoices.download', ['invoice' => $invoice]);
+            Mail::send(['html' => 'backend.admin.invoices.empty'], ['invoice' => $invoice], function ($message) use ($invoice, $pdf) {
+                $message->from('contact@thehatkestore.com', 'The Hatke Store');
                 $message->to($invoice->user->email, $invoice->user->name);
-                $message->subject('Invoice copy of Order No ' . $invoice->id . ' From HNI LIFESTYLE');
+                $message->subject('Invoice copy of Order No ' . $invoice->id . ' From The Hatke Store');
                 $message->attachData($pdf->output(), 'order_no_' . $invoice->id . '.pdf');
             });
 
-            return redirect(route('admin.invoices.all'))->with('messageSuccess', 'Invoice Sent Successfully !');
+            connectify('success', 'invoice Sent', 'Invoice Sent Successfully !');
+
+            return redirect(route('admin.invoices.all'));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.invoices.all'))->with('messageDanger', 'Whoops, Order Not Found !');
+
+                connectify('error', 'Error', 'Whoops, Order Not Found !');
+
+                return redirect(route('admin.invoices.all'));
             }
-            return redirect(route('admin.invoices.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end !');
+
+            return redirect(route('admin.invoices.all'));
         }
     }
 }

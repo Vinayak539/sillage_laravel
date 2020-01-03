@@ -11,8 +11,6 @@ use Lang;
 class LoginController extends Controller
 {
 
-    protected $redirectTo = '/adhni753';
-
     public function __contruct()
     {
         $this->middleware('guard:admin')->except('logout');
@@ -31,19 +29,19 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $this->validate($request, [
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required',
         ]);
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->remeber)) {
-            return redirect()->intended('/adhni753');
+            return redirect()->intended(url()->previous());
         }
-        return redirect('/adhni753/login')->withInput($request->only('email', 'remember'))->withErrors(['email' => Lang::get('auth.failed')]);
+        return redirect(route('admin.login'))->withInput($request->only('email', 'remember'))->withErrors(['email' => Lang::get('auth.failed')]);
     }
 
     public function logout()
     {
         Auth::guard('admin')->logout();
-        return redirect()->intended('/adhni753/login');
+        return redirect()->intended(route('admin.login'));
     }
 
     public function checkEmail(Request $request)

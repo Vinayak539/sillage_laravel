@@ -42,31 +42,31 @@ Route::view('/shipping', 'frontend.shipping')->name('shipping');
 
 // contact us
 Route::GET('/contact', 'EnquiryController@create')->name('contact');
-Route::POST('/contact', 'EnquiryController@store'); 
+Route::POST('/contact', 'EnquiryController@store');
 
 // product routes
 Route::GET('/product/{slug}', 'MainController@getProduct')->name('product');
 Route::GET('/category/{slug}', 'MainController@getCategoryProducts')->name('cate');
 Route::GET('/search', 'MainController@search')->name('search');
-Route::POST('/get-sizes', 'MainController@getSizes');
+Route::POST('/get-sizes', 'MainController@getSizes')->name('get.sizes');
 
 // Start Socialite
 
-Route::GET('auth/{provider}', 'SocialiteManageController@redirectToProvider');
-Route::GET('auth/{provider}/callback', 'SocialiteManageController@handleProviderCallback');
+Route::GET('auth/{provider}', 'SocialiteManageController@redirectToProvider')->name('user.auth.socialite');
+Route::GET('auth/{provider}/callback', 'SocialiteManageController@handleProviderCallback')->name('user.auth.socialite.callback');
 
 // End Socialite
 
 // Cart & Checkout
 
-Route::post('/cart', 'CartController@store');
+Route::post('/cart', 'CartController@store')->name('cart.store');
 Route::get('/cart', 'CartController@index')->name('cart');
-Route::POST('/cart/delete', 'CartController@destroy');
+Route::POST('/cart/delete', 'CartController@destroy')->name('cart.delete');
 Route::POST('/cart/update', 'CartController@update')->name('cart.update');
 Route::get('/checkout', 'OrderController@index')->name('checkout');
 Route::POST('/checkout', 'OrderController@checkout')->name('order.checkout');
 Route::POST('/transaction-callback', 'OrderController@handleCallbackFromPaytm')->name('paytm.callback');
-Route::POST('/pincode', 'MainController@verifyPincode');
+Route::POST('/pincode', 'MainController@verifyPincode')->name('verify.pincode');
 
 Route::prefix('adhni753')->group(function () {
 
@@ -111,8 +111,8 @@ Route::prefix('adhni753')->group(function () {
             Route::POST('/edit/{id}', 'Admin\UserManageController@update');
             Route::GET('/orders/{id}', 'Admin\UserManageController@orders')->name('admin.users.orders');
             Route::GET('/reviews/{id}', 'Admin\UserManageController@reviews')->name('admin.users.reviews');
-            Route::POST('/block/{id}', 'Admin\UserManageController@block');
-            Route::POST('/unblock/{id}', 'Admin\UserManageController@unblock');
+            Route::POST('/block', 'Admin\UserManageController@block')->name('admin.users.block');
+            Route::POST('/unblock', 'Admin\UserManageController@unblock')->name('admin.users.unblock');
         });
 
         Route::prefix('/manage-sliders')->group(function () {
@@ -272,7 +272,7 @@ Route::prefix('adhni753')->group(function () {
             Route::GET('/', 'Admin\InvoiceController@index')->name('admin.invoices.all');
             Route::GET('/show/{id}', 'Admin\InvoiceController@show')->name('admin.invoices.show');
             Route::GET('/download/{id}', 'Admin\InvoiceController@downloadInvoice')->name('admin.invoices.download');
-            Route::POST('/resend/{id}', 'Admin\InvoiceController@resendInvoice');
+            Route::POST('/resend', 'Admin\InvoiceController@resendInvoice')->name('admin.invoices.resend');
         });
 
         Route::prefix('/manage-enquiries')->group(function () {
@@ -292,6 +292,18 @@ Route::prefix('adhni753')->group(function () {
             Route::POST('/', 'Admin\AboutController@store');
             Route::POST('/edit/{id}', 'Admin\AboutController@update');
             Route::POST('/delete/{id}', 'Admin\AboutController@destroy');
+        });
+
+        Route::prefix('/manage-shops')->group(function () {
+            Route::GET('/', 'Admin\ShopController@index')->name('admin.shops.all');
+            Route::POST('/', 'Admin\ShopController@store');
+            Route::GET('{id}/edit', 'Admin\ShopController@edit')->name('admin.shops.edit');
+            Route::GET('{id}/coupons', 'Admin\ShopController@coupons')->name('admin.shops.coupons');
+            Route::POST('{id}/edit', 'Admin\ShopController@update');
+            Route::POST('{id}/download/pdf', 'Admin\ShopController@downloadPdf')->name('admin.shops.download.pdf');
+            Route::POST('{id}/download/excel', 'Admin\ShopController@downloadExcel')->name('admin.shops.download.excel');
+            Route::POST('/delete', 'Admin\ShopController@destroy')->name('admin.shops.delete');
+            Route::POST('/generate-coupon/{id}', 'Admin\ShopController@generateCoupon');
         });
 
         Route::prefix('/manage-home-offer-sliders')->group(function () {
@@ -342,4 +354,28 @@ Route::prefix('myaccount')->group(function () {
         Route::POST('/order/cancel', 'UserController@cancelOrder')->name('user.orders.cancel');
         Route::GET('/download/{id}', 'UserController@downloadInvoice')->name('user.invoices.download');
     });
+});
+
+// Shop 
+
+Route::prefix('hnishop')->group(function () {
+
+    Route::middleware(['guest:shop'])->group(function () {
+        Route::GET('/login', 'ShopAuth\LoginController@showLoginForm')->name('shop.login');
+        Route::POST('/login', 'ShopAuth\LoginController@login')->name('shop.login');
+    });
+
+    Route::group(['middleware' => 'auth:shop'], function () {
+
+        Route::GET('/', 'ShopController@index')->name('shop.dashboard');
+        
+        Route::POST('/profile', 'ShopController@update')->name('shop.update');
+
+        Route::POST('/logout', 'ShopAuth\LoginController@logout')->name('shop.logout');
+
+        Route::prefix('/orders')->group(function () {
+            Route::get('/', 'ShopController@getOrders')->name('shop.orders');
+        });
+    });
+
 });

@@ -34,7 +34,14 @@ class CreateTxnUsersTable extends Migration
             $table->string('provider')->nullable();
             $table->string('provider_id')->nullable();
             $table->string('image_url')->nullable();
-            $table->string('remember_token')->nullable();
+            $table->char('promocode', 12)->nullable()->unique();
+            $table->date('date_of_birth')->nullable();
+            $table->text('company_name')->nullable();
+            $table->date('sales_start_date')->nullable();
+            $table->date('sales_end_date')->nullable();
+            $table->string('total_sales')->nullable();
+            $table->boolean('elite')->default(false);
+            $table->rememberToken();
             $table->timestamps();
         });
     }

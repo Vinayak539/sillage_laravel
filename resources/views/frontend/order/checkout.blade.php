@@ -30,9 +30,9 @@
                     <div class="checkout-title mt--10">
                         <h2>Billing Details</h2>
                     </div>
-                <form action="{{ route('order.checkout') }}" method="POST" class="form form--checkout"
-                    id="formCheckout">
-                    @csrf
+                    <form action="{{ route('order.checkout') }}" method="POST" class="form form--checkout"
+                        id="formCheckout">
+                        @csrf
 
                         <div class="checkout-form">
 
@@ -142,79 +142,79 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xl-5 offset-xl-1 col-lg-6 mt-md--40">
-                        <div class="order-details">
-                            <div class="checkout-title mt--10">
-                                <h2>Your Order</h2>
-                            </div>
-                            <div class="table-content table-responsive mb--30">
-                                <table class="table order-table order-table-2">
-                                    <thead>
-                                        <tr>
-                                            <th>Product</th>
-                                            <th class="text-right">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (Cart::getContent() as $item)
-                                        <tr>
-                                            <th>{{ $item->name }}
-                                                <strong><span>&#10005;</span>1</strong>
-                                            </th>
-                                            <td class="text-right">₹{{ $item->price }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr class="cart-subtotal">
-                                            <th>Subtotal</th>
-                                            <td class="text-right">₹{{ Cart::getTotal() }}</td>
-                                        </tr>
-                                        <tr class="shipping">
-                                            <th>Shipping</th>
-                                            <td class="text-right">
-                                                <span> ₹0</span>
-                                            </td>
-                                        </tr>
-                                        <tr class="order-total">
-                                            <th>Order Total</th>
-                                            <td class="text-right"><span
-                                                    class="order-total-ammount">₹{{ Cart::gettotal() }}</span>
-                                            </td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <div class="checkout-payment">
-                                <div class="payment-group mb--10">
-                                    <div class="payment-radio">
-                                        <input type="radio" value="paytm" name="payment_mode" id="paytm" checked>
-                                        <label class="payment-label" for="paytm">DABIT/CREDIT/NETBANKING/PAYTM</label>
-                                    </div>
+                </div>
+                <div class="col-xl-5 offset-xl-1 col-lg-6 mt-md--40">
+                    <div class="order-details">
+                        <div class="checkout-title mt--10">
+                            <h2>Your Order</h2>
+                        </div>
+                        <div class="table-content table-responsive mb--30">
+                            <table class="table order-table order-table-2">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th class="text-right">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (Cart::getContent() as $item)
+                                    <tr>
+                                        <th>{{ $item->name }}
+                                            <strong><span>&#10005;</span>{{ $item->quantity }}</strong>
+                                        </th>
+                                        <td class="text-right">₹{{ $item->price }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr class="cart-subtotal">
+                                        <th>Subtotal</th>
+                                        <td class="text-right">₹{{ Cart::getTotal() }}</td>
+                                    </tr>
+                                    <tr class="shipping">
+                                        <th>Shipping</th>
+                                        <td class="text-right">
+                                            <span> ₹0</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="order-total">
+                                        <th>Order Total</th>
+                                        <td class="text-right"><span
+                                                class="order-total-ammount">₹{{ Cart::gettotal() }}</span>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="checkout-payment">
+                            <div class="payment-group mb--10">
+                                <div class="payment-radio">
+                                    <input type="radio" value="paytm" name="payment_mode" id="paytm" checked>
+                                    <label class="payment-label" for="paytm">DABIT/CREDIT/NETBANKING/PAYTM</label>
                                 </div>
+                            </div>
 
-                                <div class="payment-group mb--10">
-                                    <div class="payment-radio">
-                                        <input type="radio" value="cod" name="payment_mode" id="cod">
-                                        <label class="payment-label" for="cod">
-                                            CASH ON DELIVERY
-                                        </label>
-                                    </div>
-                                    <div class="payment-info cash hide-in-default" data-method="cash">
-                                        <p>Pay with cash upon delivery.</p>
-                                    </div>
+                            <div class="payment-group mb--10">
+                                <div class="payment-radio">
+                                    <input type="radio" value="cod" name="payment_mode" id="cod">
+                                    <label class="payment-label" for="cod">
+                                        CASH ON DELIVERY
+                                    </label>
                                 </div>
-                                <div class="payment-group mt--20">
-                                    <p class="mb--15">Your personal data will be used to process your order,
-                                        support your experience throughout this website, and for other purposes
-                                        described in our privacy policy.</p>
-                                    <button type="submit" class="btn btn-fullwidth btn-style-1 order_place">Place
-                                        Order</button>
+                                <div class="payment-info cash hide-in-default" data-method="cash">
+                                    <p>Pay with cash upon delivery.</p>
                                 </div>
+                            </div>
+                            <div class="payment-group mt--20">
+                                <p class="mb--15">Your personal data will be used to process your order,
+                                    support your experience throughout this website, and for other purposes
+                                    described in our privacy policy.</p>
+                                <button type="submit" class="btn btn-fullwidth btn-style-1 order_place">Place
+                                    Order</button>
                             </div>
                         </div>
                     </div>
+                </div>
                 </form>
                 @else
                 <!-- Checkout Area End -->

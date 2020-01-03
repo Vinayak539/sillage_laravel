@@ -111,10 +111,10 @@
                         <tr>
                             <td>{{ $slider->sort_index }}</td>
                             <td>
-                                <a href="/storage/images/sliders/{{ $slider->image_url }}" target="_blank"
+                                <a href="{{ asset('storage/images/sliders/' . $slider->image_url) }}" target="_blank"
                                     title="Slider Image">
-                                    <img src="/storage/images/sliders/{{ $slider->image_url }}" alt="Slider Image"
-                                        width="50px">
+                                    <img src="{{ asset('storage/images/sliders/' . $slider->image_url) }}"
+                                        alt="Slider Image" width="50px">
                                 </a>
                             </td>
                             <td>{{ $slider->title ? Str::limit($slider->title, 20) : 'N/A' }}</td>

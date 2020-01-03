@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Model\Admin;
-use App\Model\Staff;
-use App\Model\TxnLogistic;
 use App\Model\TxnOrder;
-use App\Model\TxnShipping;
 use App\Model\TxnUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -31,15 +28,15 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $admins = Admin::count();
-        $users = TxnUser::count();
-        $subscribers = TxnUser::where('is_subcribed', true)->count();
-        $today_users = TxnUser::whereDate('created_at', \Carbon\Carbon::today())->count();
-        $todays_sales = TxnOrder::where('status', 'Booked')->whereDate('created_at', \Carbon\Carbon::today())->sum('total');
+        $admins            = Admin::count();
+        $users             = TxnUser::count();
+        $subscribers       = TxnUser::where('is_subcribed', true)->count();
+        $today_users       = TxnUser::whereDate('created_at', \Carbon\Carbon::today())->count();
+        $todays_sales      = TxnOrder::where('status', 'Booked')->whereDate('created_at', \Carbon\Carbon::today())->sum('total');
         $pending_shippings = TxnOrder::where('status', 'Booked')->count();
-        $orders = TxnOrder::whereNotIn('status', ['nc', 'pending', 'returned'])->count();
+        $orders            = TxnOrder::whereNotIn('status', ['nc', 'pending', 'returned'])->count();
         // $month_orders  = TxnOrder::where('status', 'Booked')->whereMonth('created_at', \Carbon\Carbon::today())->sum('total');
-        return view('adminauth.index', compact(['admins', 'pending_shippings', 'todays_sales', 'users', 'today_users',  'orders', 'subscribers']));
+        return view('adminauth.index', compact(['admins', 'pending_shippings', 'todays_sales', 'users', 'today_users', 'orders', 'subscribers']));
     }
 
     public function profile()
@@ -50,18 +47,20 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:191',
-            'email' => 'required|email|max:191',
+            'name'     => 'required|string|max:191',
+            'email'    => 'required|email|max:191',
             'password' => 'required|string|max:191',
         ]);
 
         Admin::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name'     => $request->name,
+            'email'    => $request->email,
             'password' => bcrypt($request->password),
         ]);
 
-        return redirect(route('admin.admins.all'))->with('messageSuccess', 'Admin has been added successfully 1');
+        connectify('success', 'Admin Added', 'Admin has been added successfully 1');
+
+        return redirect(route('admin.admins.all'));
     }
 
     public function edit($id)
@@ -74,9 +73,15 @@ class AdminController extends Controller
         } catch (\Exception $ex) {
 
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.admins.all'))->with('messageDanger', 'Whoops, Admin Not Found with id : ' . $id);
+
+                connectify('error', 'Error', 'Whoops, Account Not Found !');
+
+                return redirect(route('admin.admins.all'));
             }
-            return redirect(route('admin.admins.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end');
+
+            return redirect(route('admin.admins.all'));
         }
     }
 
@@ -114,13 +119,22 @@ class AdminController extends Controller
                 'name' => $request->name,
             ]);
 
-            return redirect(route('admin.admins.edit', $admin->id))->with('messageSuccess', 'Profile has been updated successfully !');
+            connectify('success', 'Profile Updated', 'Profile has been updated successfully !');
+
+            return redirect(route('admin.admins.edit', $admin->id));
 
         } catch (\Exception $ex) {
+
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.admins.edit', $admin->id))->with('messageDanger', 'Whoops, Something Went Wrong !');
+
+                connectify('error', 'Error', 'Whoops, Account Not Found !');
+
+                return redirect(route('admin.admins.all'));
             }
-            return redirect(route('admin.admins.edit', $admin->id))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end');
+
+            return redirect(route('admin.admins.all'));
         }
     }
 
@@ -148,86 +162,23 @@ class AdminController extends Controller
 
             $admin->delete();
 
-            return redirect(route('admin.admins.all'))->with('messageSuccess', 'Admin has been removed successfully !');
+            connectify('success', 'Admin Delete', 'Admin has been removed successfully !');
+
+            return redirect(route('admin.admins.all'));
 
         } catch (\Exception $ex) {
+
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.admins.all'))->with('messageDanger', 'Whoops, Soething Went Wrong !');
+
+                connectify('error', 'Error', 'Whoops, Account Not Found !');
+
+                return redirect(route('admin.admins.all'));
             }
-            return redirect(route('admin.admins.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end');
+
+            return redirect(route('admin.admins.all'));
         }
     }
 
-    public function addUserForm()
-    {
-        return view('backend.admin.users.add-user');
-    }
-
-    public function addUser(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:191',
-            'email' => 'required|email|max:191',
-            'password' => 'required|string|max:191',
-            'user_type' => 'required|string',
-        ],
-            [
-                'name.required' => 'Please Enter Name',
-                'email.required' => 'Please Enter Email ID',
-                'email.email' => 'Please Enter Proper Email ID',
-                'email.unique' => $request->email . ' Already Registered',
-                'password.required' => 'Please Enter Password',
-                'user_type.required' => 'Please Select user type ',
-            ]);
-
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'status' => true,
-            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-            'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
-        ];
-
-        switch ($request->user_type) {
-            case 'admin':
-                $request->validate([
-                    'email' => 'unique:admins,email',
-                ],
-                    [
-                        'email.unique' => $request->email . ' Already Registered',
-
-                    ]);
-                Admin::insert($data);
-                break;
-
-            case 'manager':
-                $request->validate([
-                    'email' => 'unique:staff,email',
-                ],
-                    [
-                        'email.unique' => $request->email . ' Already Registered',
-
-                    ]);
-                Staff::insert($data);
-                break;
-
-            case 'logistic':
-                $request->validate([
-                    'email' => 'unique:txn_logistics,email',
-                ],
-                    [
-                        'email.unique' => $request->email . ' Already Registered',
-
-                    ]);
-                TxnLogistic::insert($data);
-                break;
-
-            default:
-                return redirect(route('admin.add.user'))->with('messageDanger', 'Can Not Add user, try again later');
-                break;
-        }
-
-        return redirect(route('admin.add.user'))->with('messageSuccess', $request->user_type . ' has been added successfully');
-    }
 }

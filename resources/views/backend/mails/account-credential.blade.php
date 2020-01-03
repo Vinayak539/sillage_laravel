@@ -112,9 +112,9 @@
 <body>
     <div class="container">
         <div>
-            <a href="{{ url('/') }}" title="HNI LIFESTYLE">
-                <img src="{{ url('/') }}/assets/img/logo/logo.png" alt="HNI LIFESTYLE" />
-                {{-- HNI LIFESTYLE --}}
+            <a href="{{ url('/') }}" title="The Hatke Store">
+                <img src="{{ url('/') }}/assets/img/logo/logo.png" alt="The Hatke Store" />
+                {{-- The Hatke Store --}}
             </a>
         </div>
         <div class="row">
@@ -127,7 +127,7 @@
 
                 <hr>
                 <div class="heading">
-                    <h3>Your One Time Password(OTP) is : <span>{{ $user['otp'] }}</span><br> for more details please <a href="{{ url('/') }}/reach-us" title="HNI LIFESTYLE">Reach Us</a></h3>
+                    <h3>Your One Time Password(OTP) is : <span>{{ $user['otp'] }}</span><br> for more details please <a href="{{ url('/') }}/reach-us" title="The Hatke Store">Reach Us</a></h3>
                 </div>
 
                 <hr>

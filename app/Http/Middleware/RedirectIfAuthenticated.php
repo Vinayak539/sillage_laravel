@@ -21,13 +21,19 @@ class RedirectIfAuthenticated
         switch ($guard) {
             case 'admin':
                 if (Auth::guard($guard)->check()) {
-                    return redirect()->intended('/adhni753');
+                    return redirect()->intended(route('admin.dashboard'));
                 }
                 break;
 
             case 'user':
                 if (Auth::guard($guard)->check()) {
-                    return redirect()->intended('/myaccount');
+                    return redirect()->intended(route('user.dashboard'));
+                }
+                break;
+
+            case 'shop':
+                if (Auth::guard($guard)->check()) {
+                    return redirect()->intended(route('shop.dashboard'));
                 }
                 break;
 

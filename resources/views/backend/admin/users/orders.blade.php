@@ -2,69 +2,74 @@
 @section('title', 'Customer Order History')
 @section('content')
 
-<div class="card borderless-card">
-    <div class="card-block inverse-breadcrumb">
-        <div class="breadcrumb-header">
-            <h5>Customer Order History</h5>
+<section class="section">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-dark text-white-all">
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.dashboard') }}"><i class="fas fa-home"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-list"></i>User Detail</li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.users.all') }}"> All Users</a></li>
+        </ol>
+    </nav>
+
+
+    <div class="card">
+        <div class="card-header bg-dark text-white-all">
+            <h4>Customer Information</h4>
         </div>
-        <div class="page-header-breadcrumb">
-            <ul class="breadcrumb-title">
-                <li class="breadcrumb-item">
-                    <a href="/adrana951">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="{{ route('admin.users.all') }}">All Users</a>
-                </li>
-            </ul>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 bg-white pt-20">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th>Customer Name</th>
+                                <td>{{ $user->name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email ID</th>
+                                <td>{{ $user->email }}</td>
+                            </tr>
+                            <tr>
+                                <th>Mobile Number</th>
+                                <td>{{ $user->mobile }}</td>
+                            </tr>
+                            <tr>
+                                <th>Address</th>
+                                <td>{{ $user->address }}</td>
+                            </tr>
+                            <tr>
+                                <th>Landmark</th>
+                                <td>{{ $user->landmark }}</td>
+                            </tr>
+                            <tr>
+                                <th>City</th>
+                                <td>{{ $user->city }}</td>
+                            </tr>
+                            <tr>
+                                <th>Territory</th>
+                                <td>{{ $user->territory }}</td>
+                            </tr>
+                            <tr>
+                                <th>Pincode</th>
+                                <td>{{ $user->pincode }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="card">
-    <div class="card-body">
-        <div class="row">
+    <div class="card">
+        <div class="card-header bg-dark text-white-all">
+            <h4>Order Information</h4>
+        </div>
+        <div class="card-body">
             <div class="col-md-12 bg-white pt-20">
-                <h2 class="text-dark mb-30">Customer Information</h2>
-                <table class="table table-bordered">
-                    <tbody>
-                        <tr>
-                            <th>Customer Name</th>
-                            <td>{{ $user->name }}</td>
-                        </tr>
-                        <tr>
-                            <th>Email ID</th>
-                            <td>{{ $user->email }}</td>
-                        </tr>
-                        <tr>
-                            <th>Mobile Number</th>
-                            <td>{{ $user->mobile }}</td>
-                        </tr>
-                        <tr>
-                            <th>Address</th>
-                            <td>{{ $user->address }}</td>
-                        </tr>
-                        <tr>
-                            <th>Landmark</th>
-                            <td>{{ $user->landmark }}</td>
-                        </tr>
-                        <tr>
-                            <th>City</th>
-                            <td>{{ $user->city }}</td>
-                        </tr>
-                        <tr>
-                            <th>Territory</th>
-                            <td>{{ $user->territory }}</td>
-                        </tr>
-                        <tr>
-                            <th>Pincode</th>
-                            <td>{{ $user->pincode }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="col-md-12 bg-white pt-20">
-                <h2 class="text-dark mb-30">Order Information</h2>
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
@@ -95,7 +100,7 @@
                             <td>
                                 <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-outline-primary"
                                     title="View Detail">
-                                    <i class="fa fa-eye text-primary"></i>
+                                    <i class="fa fa-eye"></i>
                                 </a>
                             </td>
                         </tr>
@@ -112,6 +117,7 @@
             </div>
         </div>
     </div>
-</div>
+
+</section>
 
 @endsection

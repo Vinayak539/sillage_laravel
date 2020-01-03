@@ -56,7 +56,8 @@
                         <tr>
                             <td colspan="2">
                                 Payment Status :
-                                <mark class="lead">{{ $order->payment_mode == 'cod' ? 'Cash On Delivery' : 'Paid' }}</mark>
+                                <mark
+                                    class="lead">{{ $order->payment_mode == 'cod' ? 'Cash On Delivery' : 'Paid' }}</mark>
                             </td>
                         </tr>
                     </table>
@@ -69,7 +70,7 @@
 
                         <tr>
                             <th>Product Name</th>
-                            <th>Volume</th>
+                            <th>Colour & Size</th>
                             <th>MRP (&#8377;)</th>
                             <th>QTY</th>
                             <th>AMOUNT (&#8377;)</th>
@@ -79,8 +80,9 @@
                         @php $total += $product->quantity*$product->mrp; @endphp
                         <tr>
                             <td>{{ $product->title }}</td>
-                            <td>{{ $product->volume }} mL</td>
-                            <td>{{ $product->mrp != Null ? $product->mrp : 'Free'  }}</td>
+                            <td>{{ $product->size ? 'Size: ' . $product->size->title : '' }} <br>
+                                {{ $product->color ? 'Colour: ' . $product->color->title : '' }} </td>
+                            <td>{{ $product->mrp }}</td>
                             <td>{{ $product->quantity }}</td>
                             <td>{{ $product->quantity * $product->mrp }}</td>
                         </tr>
@@ -88,10 +90,9 @@
                         <tr>
                             <th colspan="12" class="bg-silver text-right text-uppercase">
                                 <p>Total Amount : &#8377; {{ $order->tbt }}</p>
-                                <p>CGST(9%) : &#8377; {{ round($order->tax / 2, 2)  }}</p>
-                                <p>SGST(9%) : &#8377; {{ round($order->tax / 2, 2)  }}</p>
-                                <p>Shipping Amt : &#8377; {{ $total >= 400 ? '0' : '50'  }}</p>
-                                @if($order->discount) <p>Discount : &#8377; {{ $order->discount }}</p>@endif
+                                <p>+ CGST : &#8377; {{ round($order->tax / 2, 2)  }}</p>
+                                <p>+ SGST : &#8377; {{ round($order->tax / 2, 2)  }}</p>
+                                @if($order->discount) <p>- Discount : &#8377; {{ $order->discount }}</p>@endif
                                 <p>Grand Total : &#8377; {{ $order->total }}</p>
                             </th>
                         </tr>
@@ -111,6 +112,7 @@
         body * {
             visibility: hidden;
         }
+
         /* .button-visibility {
             display: none;
         } */
@@ -123,20 +125,24 @@
         .div-visible * {
             visibility: visible;
         }
+
         .div-visible {
             position: absolute;
             top: 0;
         }
+
         table.table tr td,
         table.table.table-lg tr th {
             padding: 5px 0 5px 5px;
         }
+
         .table>tbody>tr>th,
         .table>tfoot>tr>th {
             padding: 5px 0 5px 30px;
             font-weight: 100;
         }
     }
+
     .btn-print {
         background: #ed2024;
         width: 100px;
@@ -146,5 +152,6 @@
         padding: 5px 15px;
         margin: 0 0 10px 0;
     }
+
 </style>
 @endsection

@@ -172,15 +172,15 @@
     <hr>
     <div class="container">
         <div>
-            <a href="{{ url('/') }}" title="HNI LIFESTYLE">
-                <img src="{{ url('/') }}/assets/img/logo/logo.png" alt="HNI LIFESTYLE" />
+            <a href="{{ url('/') }}" title="The Hatke Store">
+                <img src="{{ url('/') }}/assets/img/logo/logo.png" alt="The Hatke Store" />
             </a>
         </div>
         <div class="row">
             <div class="col-sm-12">
                 <hr>
                 <div class="heading">
-                    <h2>Hello! HNI LIFESTYLE Team</h2>
+                    <h2>Hello! The Hatke Store Team</h2>
                     <p>
                         You are receiving this email because we received a password reset request for your account.
                     </p>

@@ -203,7 +203,6 @@
         .fw-600 {
             font-weight: 900;
         }
-
     </style>
 
 </head>
@@ -216,7 +215,7 @@
                     <tr class="pb-20">
                         <td colspan="2">
                             <div class="text-center">
-                                <p class="company_title text-center"> HNI LIFESTYLE </p>
+                                <p class="company_title text-center"> The Hatke Store </p>
                                 <p class="company_address"> Unit no.112, 1st Floor, Bldg no.A6,
                                     Harihar Complex, Dapode,Thane- 421302.</p>
                             </div>
@@ -290,7 +289,11 @@
                     </tr>
                     @foreach($invoice->details as $detail)
                     <tr>
-                        <td>{{ $detail->product->title }}</td>
+                        <td>
+                            {{ $detail->product->title }} <br>
+                            {{ $detail->size ? 'Size: ' . $detail->size->title : '' }} <br>
+                            {{ $detail->color ? 'Colour: ' . $detail->color->title : '' }}
+                        </td>
                         <td>{{ $detail->mrp }}</td>
                         <td>{{ $detail->quantity }}</td>
                         <td>{{ $detail->mrp * $detail->quantity }}</td>

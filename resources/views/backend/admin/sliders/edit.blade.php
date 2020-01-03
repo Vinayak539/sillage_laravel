@@ -87,7 +87,7 @@
                             <div>
                                 <label>Existing Image </label>
                             </div>
-                            <img src="/storage/images/sliders/{{ $slider->image_url }}" alt="Slider Title"
+                            <img src="{{ asset('storage/images/sliders/' . $slider->image_url) }}" alt="Slider Title"
                                 class="img img-responsive img-thumbnail" width="350px">
                         </div>
                     </div>

@@ -15,6 +15,7 @@ class CreateTxnOrdersTable extends Migration
             $table->double('tbt')->nullable();
             $table->double('tax')->nullable();
             $table->double('total')->nullable();
+            $table->char('promocode', 12)->nullable();
             $table->double('discount')->nullable();
             $table->string('payment_mode', 255)->nullable();
             $table->string('status', 255)->nullable();
@@ -31,6 +32,7 @@ class CreateTxnOrdersTable extends Migration
             $table->string('cancel_reason')->nullable();
             $table->text('other_reason')->nullable();
             $table->string('image_url')->nullable();
+            $table->boolean('is_discount')->default(false);
             $table->bigInteger('reward_points')->nullable();
             $table->string('return_status')->nullable();
             $table->timestamps();

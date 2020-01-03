@@ -214,7 +214,7 @@
                     <tr class="pb-20">
                         <td colspan="2">
                             <p class="text-center">
-                                <p class="company_title text-center"> HNI LIFESTYLE </p>
+                                <p class="company_title text-center"> The Hatke Store </p>
                             </p>
                         </td>
                     </tr>

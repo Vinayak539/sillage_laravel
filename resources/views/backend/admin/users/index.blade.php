@@ -39,8 +39,7 @@
                             </td>
                             @else
                             <td>
-                                <img src="/admin/assets/images/admin2.png" alt="{{ $user->name }}"
-                                    class="img-responsive img-circle" width="40">
+                                <i class="fa fa-user-circle fa-3x" aria-hidden="true"></i>
                             </td>
                             @endif
                             <td>{{ $user->name }}</td>
@@ -80,8 +79,8 @@
                                         @if($user->status == true)
 
                                         <a href="javascript:void(0)" class="dropdown-item has-icon block-object"
-                                            title="Order History">
-                                            <i class="fa fa-close"></i> Block
+                                            title="Order History" data-obj-id="{{ $user->id }}">
+                                            <i class=" fa fa-times"></i> Block
                                         </a>
 
                                         @else
@@ -95,26 +94,7 @@
 
                                     </div>
                                 </div>
-                                <div class="dropdown">
-                                    <button type="button" class="btn btn-outline-primary dropdown-toggle"
-                                        data-toggle="dropdown">
-                                        Action
-                                    </button>
-                                    <div class="dropdown-menu">
 
-                                        @if($user->status == true)
-                                        <button type="button" data-obj-id="{{ $user->id }}"
-                                            class="dropdown-item block-object" title="Block User">
-                                            <i class="fa fa-close text-danger"></i> Block
-                                        </button>
-                                        @else
-                                        <button type="button" data-obj-id="{{ $user->id }}"
-                                            class="dropdown-item unblock-object" title="Unblock User">
-                                            <i class="fa fa-check text-success"></i> Unblock
-                                        </button>
-                                        @endif
-                                    </div>
-                                </div>
                             </td>
                         </tr>
                         @empty
@@ -148,11 +128,13 @@
         </div>
     </div>
 
-    <form id="formBlock" method="POST" action="/adrana951/manage-users/block/">
+    <form id="formBlock" method="POST" action="{{ route('admin.users.block') }}">
         @csrf
+        <input type="hidden" name="user_id" id="txtBlockUserID">
     </form>
-    <form id="formUnblock" method="POST" action="/adrana951/manage-users/unblock/">
+    <form id="formUnblock" method="POST" action="{{ route('admin.users.unblock') }}">
         @csrf
+        <input type="hidden" name="user_id" id="txtUnblockUserID">
     </form>
 
 </section>
@@ -161,11 +143,10 @@
 @section('extrajs')
 <script>
     $(document).ready(function () {
-      
+
         $(".block-object").click(function () {
             if (window.confirm("Are you sure, You want to Block ? ")) {
-                var action = $("#formBlock").attr("action") + $(this).attr("data-obj-id");
-                $("#formBlock").attr("action", action);
+                $("#txtBlockUserID").val($(this).attr("data-obj-id"));
                 $("#formBlock").submit();
                 $(this).html('wait...');
             }
@@ -173,8 +154,7 @@
 
         $(".unblock-object").click(function () {
             if (window.confirm("Are you sure, You want to Unblock ? ")) {
-                var action = $("#formUnblock").attr("action") + $(this).attr("data-obj-id");
-                $("#formUnblock").attr("action", action);
+                $("#txtUnblockUserID").val($(this).attr("data-obj-id"));
                 $("#formUnblock").submit();
                 $(this).html('wait...');
             }

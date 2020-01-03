@@ -135,9 +135,9 @@
 <body>
     <div class="container">
         <div>
-            <a href="{{ url('/') }}" title="HNI LIFESTYLE">
-                <img src="{{ url('/') }}/assets/img/logo/logo.png" alt="HNI LIFESTYLE" />
-                {{-- HNI LIFESTYLE --}}
+            <a href="{{ url('/') }}" title="The Hatke Store">
+                <img src="{{ url('/') }}/assets/img/logo/logo.png" alt="The Hatke Store" />
+                {{-- The Hatke Store --}}
             </a>
         </div>
         <div class="row">
@@ -162,7 +162,7 @@
                     <hr />
                     <pre>
                     Thank you & Ragards,
-                                    <a href="https://thehatkestore.com">HNI LIFESTYLE Team</a>
+                                    <a href="https://thehatkestore.com">The Hatke Store Team</a>
                     </pre>
 
                 </div>

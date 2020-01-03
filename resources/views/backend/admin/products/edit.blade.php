@@ -42,7 +42,7 @@
 {{-- Model End --}}
 
 {{-- Model --}}
-
+<!-- 
 <div class="modal" id="addSizesModal">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -76,7 +76,7 @@
             </form>
         </div>
     </div>
-</div>
+</div> -->
 
 {{-- Model End --}}
 
@@ -149,8 +149,8 @@
                         <label for="size_id">Sizes <span class="text-danger">*</span></label>
                         <select name="size_id" id="size_id" class="form-control" required>
                             <option value="">--Select Sizes--</option>
-                            @foreach($product->sizes as $size)
-                            <option value="{{ $size->size_id }}" {{ old('size_id') == $size->size_id ? 'selected' : '' }}>
+                            @foreach($sizes as $size)
+                            <option value="{{ $size->id }}" {{ old('size_id') == $size->id ? 'selected' : '' }}>
                                 {{ $size->title }}
                             </option>
                             @endforeach
@@ -168,6 +168,12 @@
                         <label for="stock">Stock <span class="text-danger">*</span></label>
                         <input type="number" name="stock" id="stock" class="form-control" value="{{ old('stock') }}"
                             min="0" placeholder="Enter Stock" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="starting_price">Selling Price <span class="text-danger">*</span></label>
+                        <input type="number" name="starting_price" id="starting_price" class="form-control"
+                            value="{{ old('starting_price') }}" placeholder="Enter Selling Price" min="1" required>
                     </div>
 
                     <div class="form-group">
@@ -206,8 +212,8 @@
                     More Images</a></li>
             <li class="breadcrumb-item"><a href="#addColorModal" data-toggle="modal" data-target="#addColorModal"> Add
                     More Color & Sizes</a></li>
-            <li class="breadcrumb-item"><a href="#addSizesModal" data-toggle="modal" data-target="#addSizesModal"> Add
-                    Sizes</a></li>
+            <!-- <li class="breadcrumb-item"><a href="#addSizesModal" data-toggle="modal" data-target="#addSizesModal"> Add
+                    Sizes</a></li> -->
         </ol>
     </nav>
 
@@ -314,6 +320,22 @@
                                 </option>
                                 @endforeach
                             </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="gst_id">Gst <span class="text-danger">*</span></label>
+                            <select name="gst_id" id="gst_id" class="form-control select2" required>
+                                <option value="">--Select Gst--</option>
+                                @foreach($gsts as $gst)
+                                <option value="{{ $gst->id }}" {{ $product->gst_id == $gst->id ? 'selected' : '' }}>
+                                    {{ $gst->gst_value}}%
+                                </option>
+                                @endforeach
+                            </select>
+                            <label id="" class="error" for="gst_id"></label>
+
                         </div>
                     </div>
 
@@ -461,7 +483,7 @@
                                 <div class="form-group">
                                     <label>Existing Front Image</label>
                                     <div>
-                                        <img src="/storage/images/products/{{ $product->image_url }}"
+                                        <img src="{{ asset('storage/images/products/' . $product->image_url) }}"
                                             alt="{{ $product->title }}" width="100">
                                     </div>
                                 </div>
@@ -471,7 +493,7 @@
                                 <div class="form-group">
                                     <label>Existing Back Image</label>
                                     <div>
-                                        <img src="/storage/images/products/{{ $product->image_url1 }}"
+                                        <img src="{{ asset('/storage/images/products/' . $product->image_url1) }}"
                                             alt="{{ $product->title }}" width="100">
                                     </div>
                                 </div>
@@ -485,7 +507,7 @@
                         <div class="row">
                             @foreach($product->images as $image)
                             <div class="col-md-2">
-                                <img src="/storage/images/multi-products/{{ $image->image_url }}"
+                                <img src="{{ asset('/storage/images/multi-products/' . $image->image_url) }}"
                                     alt="{{ $product->title }}" width="100">
                                 <div class="m-l-80 m-t-10">
                                     <button type="button" class="btn btn-outline-danger image-delete"
@@ -523,8 +545,8 @@
                     More Images</a></li>
             <li class="breadcrumb-item"><a href="#addColorModal" data-toggle="modal" data-target="#addColorModal"> Add
                     More Color & Sizes</a></li>
-                    <li class="breadcrumb-item"><a href="#addSizesModal" data-toggle="modal" data-target="#addSizesModal"> Add
-                        Sizes</a></li>
+            <!-- <li class="breadcrumb-item"><a href="#addSizesModal" data-toggle="modal" data-target="#addSizesModal"> Add
+                    Sizes</a></li> -->
         </ol>
     </nav>
 
@@ -556,6 +578,9 @@
                             <label for="stock">Stock</label>
                         </th>
                         <th>
+                            <label for="selling_price">Selling Price</label>
+                        </th>
+                        <th>
                             Action
                         </th>
                     </tr>
@@ -566,8 +591,8 @@
 
                     <tr>
                         <td>
-                            <input type="number" name="map_id[{{ $key }}]" value="{{ $cf->map_id }}" class="form-control"
-                               disabled>
+                            <input type="number" name="map_id[{{ $key }}]" value="{{ $cf->map_id }}"
+                                class="form-control" disabled>
                         </td>
 
                         <td>
@@ -585,7 +610,8 @@
                             <select name="size_id[{{ $key }}]" class="form-control" required>
                                 <option value="">--Select Sizes--</option>
                                 @foreach($product->sizes as $size)
-                                <option value="{{ $size->size_id }}" {{ $cf->size_id === $size->size_id ? 'selected' : '' }}>
+                                <option value="{{ $size->size_id }}"
+                                    {{ $cf->size_id === $size->size_id ? 'selected' : '' }}>
                                     {{ $size->title }}
                                 </option>
                                 @endforeach
@@ -603,16 +629,29 @@
                         </td>
 
                         <td>
+                            <input type="text" name="starting_price[{{ $key }}]"
+                                value="{{ $cf->starting_price ? $cf->starting_price : 0 }}" class="form-control"
+                                id="selling_price">
+                        </td>
 
-                            <a href="javascript:void(0)" title="Update Data"
-                                class="btn btn-primary text-white update-color-object" data-object-index="{{ $key }}">
-                                <i class="fa fa-save"></i>
-                            </a>
+                        <td>
 
-                            <a href="javascript:void(0)" data-obj-id="{{ $cf->map_id }}" title="Delete"
-                                class="btn btn-danger text-white delete-color-object">
-                                <i class="fa fa-trash"></i>
-                            </a>
+                            <div class="dropdown d-inline">
+                                <a href="javascript:void(0)" class="dropdown-toggle" id="dropdownMenuButton2"
+                                    data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
+                                    <i data-feather="more-vertical"></i>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="javascript:void(0)" class="dropdown-item has-icon update-color-object"
+                                        data-object-index="{{ $key }}" title="Update Detail">
+                                        <i class="fa fa-save"></i> Update
+                                    </a>
+                                    <a href="javascript:void(0)" class="dropdown-item has-icon delete-color-object"
+                                        title="Delete">
+                                        <i class="fa fa-trash text-danger"></i> Delete
+                                    </a>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     @endforeach
@@ -713,6 +752,7 @@
     <input type="hidden" name="size_id" id="txtSizeIDUpdate" />
     <input type="hidden" name="mrp" id="txtMrpUpdate" />
     <input type="hidden" name="stock" id="txtStockUpdate" />
+    <input type="hidden" name="starting_price" id="txtStartingPriceUpdate" />
     <input type="hidden" name="map_id" id="txtUpdateMapID" />
 </form>
 
@@ -756,7 +796,7 @@
             $("#txtFieldID").val(field_id);
             $("#formUpdate").submit();
             $(this).attr('disabled', 'disabled');
-                $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+            $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
 
         });
 
@@ -766,22 +806,13 @@
             $("#txtColorIDUpdate").val($("select[name='colour_id[" + key + "]']").val());
             $("#txtSizeIDUpdate").val($("select[name='size_id[" + key + "]']").val());
             $("#txtMrpUpdate").val($("input[name='mrp[" + key + "]']").val());
+            $("#txtStartingPriceUpdate").val($("input[name='starting_price[" + key + "]']").val());
             $("#txtStockUpdate").val($("input[name='stock[" + key + "]']").val());
             $("#txtUpdateMapID").val(id);
             $("#formColorUpdate").submit();
             $(this).attr('disabled', 'disabled');
             $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
 
-        });
-
-        $('#buy_it_now_price').on('keyup', function () {
-            var gst = $('option:selected', '#gst_id').attr('data-value');
-            var gst_value = 1 + (gst / 100);
-            var buy_it_now_price = $(this).val();
-            var before_gst_price = Math.round(buy_it_now_price / gst_value);
-            var gst_amount = Math.round(buy_it_now_price - before_gst_price)
-            $('#starting_price').val(before_gst_price);
-            $('#gst_amount').val(gst_amount);
         });
 
         $("#formupdateProduct").validate({
@@ -802,6 +833,9 @@
                     required: true
                 },
                 warranty_id: {
+                    required: true
+                },
+                gst_id: {
                     required: true
                 },
 
@@ -834,6 +868,9 @@
                 },
                 warranty_id: {
                     required: "Please Select Warranty"
+                },
+                gst_id: {
+                    required: "Please Select Gst"
                 },
 
                 is_cod: {
@@ -876,12 +913,17 @@
                 stock: {
                     required: true
                 },
+
+                starting_price: {
+                    required: true
+                },
             },
             messages: {
 
                 color_id: {
                     required: "Please Select Colour"
                 },
+
                 size_id: {
                     required: "Please Select Sizes"
                 },
@@ -889,9 +931,15 @@
                 mrp: {
                     required: "Please Enter MRP"
                 },
+
                 stock: {
                     required: "Please Enter Stock"
                 },
+
+                starting_price: {
+                    required: "Please Enter Selling Price"
+                },
+
                 "image_urls[]": {
                     required: "Please Upload Colour Images"
                 },
@@ -930,27 +978,6 @@
             }
         });
 
-        $("#formAddSizes").validate({
-            rules: {
-
-                size_id: {
-                    required: true
-                },
-
-            },
-            messages: {
-
-                size_id: {
-                    required: "Please Select Size"
-                },
-
-            },
-            submitHandler: function (form) {
-                $('.btnSubmit').attr('disabled', 'disabled');
-                $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
-                form.submit();
-            }
-        });
     });
 
 </script>

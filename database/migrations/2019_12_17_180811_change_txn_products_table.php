@@ -15,6 +15,8 @@ class ChangeTxnProductsTable extends Migration
     {
         Schema::table('txn_products', function (Blueprint $table) {
             $table->string('image_url1')->nullable()->after('image_url');
+            $table->unsignedBigInteger('gst_id')->nullable()->after('brand_id');
+            $table->foreign('gst_id')->references('id')->on('txn_master_gsts')->onDelete('restrict');
         });
     }
 

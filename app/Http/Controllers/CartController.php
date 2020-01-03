@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\MapColorSize;
+use App\Model\MstSize;
 use App\Model\TxnProduct;
 use Cart;
 use Illuminate\Http\Request;
@@ -20,47 +21,68 @@ class CartController extends Controller
         try {
 
             $product = TxnProduct::where('id', $request->prod_id)->firstOrFail();
-            // $size    = MapColorSize::where('color_id', $request->color_id)->where('size_id', $request->size_id)->first();
-            $size = MapColorSize::where('id', $request->map_id)->first();
 
-            if ($size->stock < 0 || $request->qty > $size->stock) {
-                return back()->with('messageDanger1', $size->stock . ' Product Left in stock, stay tuned !');
+            $sizeColor = MapColorSize::where('color_id', $request->color_id)->where('product_id', $request->prod_id)->with('color')->first();
+
+            $prodsizeColor = MapColorSize::where('color_id', $request->color_id)->where('product_id', $request->prod_id)->where('size_id', $request->size_id)->with('color')->first();
+
+            $size = MstSize::where('id', $request->size_id)->first();
+
+            if ($prodsizeColor->stock <= 0) {
+
+                connectify('error', 'Product Out Of Stock', 'Product is Out Of Stock, stay tuned !');
+
+                return back();
+
+            } elseif ($request->qty > $prodsizeColor->stock) {
+
+                connectify('error', 'Product Out Of Stock', $prodsizeColor->stock . ' Product Left in stock, stay tuned !');
+
+                return back();
             }
 
             Cart::add(array(
-                'id' => $size->id,
-                'name' => $product->title,
-                'price' => $size->mrp,
-                'quantity' => $request->qty,
+                'id'         => $size->title . '_' . $sizeColor->id,
+                'name'       => $product->title,
+                'price'      => $sizeColor->mrp,
+                'quantity'   => $request->qty,
                 'attributes' => array(
-                    'size_id' => $size->size_id,
-                    'color_id' => $size->color_id,
-                    'image_url' => $product->image_url,
-                    'slug_url' => $product->slug_url,
-                    'product_id' => $product->id,
+                    'size_id'     => $size->id,
+                    'color_id'    => $request->color_id,
+                    'color_name'  => $sizeColor->color->title,
+                    'size_name'   => $size->title,
+                    'image_url'   => $product->image_url,
+                    'slug_url'    => $product->slug_url,
+                    'product_id'  => $product->id,
                     'category_id' => $product->category_id,
-                    'stock' => $size->stock,
-                ),
-            ));
-            Cart::update($size->id, array(
-                'quantity' => array(
-                    'relative' => false,
-                    'value' => $request->qty,
+                    'stock'       => $prodsizeColor->stock,
+                    'map_id'      => $sizeColor->id,
                 ),
             ));
 
-            connectify('success', 'Cart', $product->title . ' has been added to your cart !');
+            Cart::update($size->title . '_' . $sizeColor->id, array(
+                'quantity' => array(
+                    'relative' => false,
+                    'value'    => $request->qty,
+                ),
+            ));
+
+            connectify('success', 'Cart', '"' . $product->title . '"' . ' has been added to your cart !');
 
             return redirect(route('cart'));
 
-            return redirect('/cart')->with('messageSuccess1', 'Product has been added to your cart !');
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return back()->with("messageDanger1", "It seems that the Product you're searching for doesn't exists !");
+
+                connectify('error', 'Cart', "It seems that the Product you're searching for doesn't exists !");
+
+                return back();
             } else {
                 \Log::info($ex->getMessage());
-                // return back()->with("messageDanger1", "Oops, Something went wrong at our end !");
-                return back()->with("messageDanger1", "Error, " . $ex->getMessage());
+
+                connectify('error', 'Cart', "Oops, Something went wrong at our end !");
+
+                return back();
             }
         }
     }
@@ -71,15 +93,15 @@ class CartController extends Controller
 
         $product = TxnProduct::where('id', $cart->attributes->product_id)->first();
 
-        $size = MapColorSize::where('id', $cart->id)->first();
+        $size = MapColorSize::where('product_id', $product->id)->where('size_id', $cart->attributes->size_id)->where('color_id', $cart->attributes->color_id)->first();
 
         $validator = Validator::make($request->all(), [
             'quantity' => 'required|numeric|min:1|max:' . $size->stock,
         ],
             [
                 'quantity.required' => 'Please enter quantity',
-                'quantity.min' => 'Quantity must be greater than 1',
-                'quantity.max' => 'Only ' . $size->stock . ' Quantity left in stock',
+                'quantity.min'      => 'Quantity must be greater than 1',
+                'quantity.max'      => 'Only ' . $size->stock . ' Quantity left in stock',
             ]);
 
         if ($validator->fails()) {
@@ -88,25 +110,29 @@ class CartController extends Controller
         }
 
         Cart::update($request->itemid, array(
-            'quantity' => array(
+
+            'quantity'   => array(
                 'relative' => false,
-                'value' => $request->quantity,
+                'value'    => $request->quantity,
             ),
 
             'attributes' => array(
-                'size_id' => $size->size_id,
-                'color_id' => $size->color_id,
-                'image_url' => $product->image_url,
-                'slug_url' => $product->slug_url,
-                'product_id' => $product->id,
+                'size_id'     => $cart->attributes->size_id,
+                'color_id'    => $size->color_id,
+                'color_name'  => $cart->attributes->color_name,
+                'size_name'   => $cart->attributes->size_name,
+                'map_id'      => $cart->attributes->map_id,
+                'image_url'   => $product->image_url,
+                'slug_url'    => $product->slug_url,
+                'product_id'  => $product->id,
                 'category_id' => $product->category_id,
-                'stock' => $size->stock,
+                'stock'       => $size->stock,
             ),
         ));
 
         connectify('success', 'Cart Updated', 'Cart has been updated successfully !');
 
-        return response()->json(['success' => 'Cart has been updated successfully !']);
+        return response()->json(['success' => 'Cart has been updated successfully !', 'size' => $size]);
     }
 
     public function destroy(Request $request)
