@@ -313,6 +313,15 @@ Route::prefix('adhni753')->group(function () {
             Route::POST('/edit/{slider}', 'Admin\HomeOfferSliderController@update');
             Route::POST('/delete', 'Admin\HomeOfferSliderController@destroy')->name('admin.home-offer-sliders.delete');
         });
+
+        
+        Route::prefix('/manage-offers')->group(function () {
+            Route::GET('/', 'Admin\OfferController@index')->name('admin.offers.all');
+            Route::POST('/', 'Admin\OfferController@store');
+            Route::GET('/edit/{id}', 'Admin\OfferController@edit')->name('admin.offers.edit');
+            Route::POST('/edit/{id}', 'Admin\OfferController@update');
+            Route::POST('/delete/{id}', 'Admin\OfferController@destroy')->name('admin.offers.delete');
+        });
     });
 });
 

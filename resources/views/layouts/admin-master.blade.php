@@ -169,6 +169,13 @@
                             </a>
                         </li>
 
+                        <li class="dropdown">
+                            <a href="{{ route('admin.offers.all') }}" class="nav-link">
+                                <i data-feather="credit-card"></i>
+                                <span>Offers</span>
+                            </a>
+                        </li>
+
                     </ul>
 
                 </aside>
