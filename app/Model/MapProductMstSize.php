@@ -12,4 +12,9 @@ class MapProductMstSize extends Model
     {
         return $this->belongsTo(TxnProduct::class);
     }
+
+    public function size()
+    {
+        return $this->belongsTo(MstSize::class);
+    }
 }

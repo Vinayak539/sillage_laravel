@@ -434,6 +434,20 @@
                         </div>
                     </div>
 
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="offer_id">Offer </label>
+                            <select name="offer_id" id="offer_id" class="form-control" required>
+                                <option value="">--Select Offer--</option>
+                                @foreach($offers as $ofr)
+                                <option value="{{ $ofr->id }}" {{ $ofr->product_id == $product->id ? 'selected' : '' }}>
+                                    {{ $ofr->mst_offer->title }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="col-md-8 mb-3">
                         <label>Return Policy <span class="text-danger">*</span></label> <br>
                         <div class="form-check form-check-inline">

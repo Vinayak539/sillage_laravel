@@ -321,6 +321,10 @@ Route::prefix('adhni753')->group(function () {
             Route::GET('/edit/{id}', 'Admin\OfferController@edit')->name('admin.offers.edit');
             Route::POST('/edit/{id}', 'Admin\OfferController@update');
             Route::POST('/delete', 'Admin\OfferController@destroy')->name('admin.offers.delete');
+            Route::POST('/get/products', 'Admin\OfferController@getProducts')->name('admin.offers.getProduct');
+            Route::POST('/get/colours', 'Admin\OfferController@getColors')->name('admin.offers.getColors');
+            Route::POST('/add/offer', 'Admin\OfferController@mapOfferProduct')->name('admin.offers.map.offer');
+            Route::GET('/offer/edit/{id}', 'Admin\OfferController@editOffer')->name('admin.offers.map.edit');
         });
     });
 });

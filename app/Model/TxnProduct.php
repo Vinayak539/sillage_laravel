@@ -89,4 +89,9 @@ class TxnProduct extends Model
     {
         return $this->hasMany(MapProductSection::class, 'product_id', 'id');
     }
+
+    public function offers()
+    {
+        return $this->hasMany(MapMstOfferProduct::class, 'offer_product_id', 'id');
+    }
 }
