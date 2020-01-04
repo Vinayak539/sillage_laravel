@@ -55,12 +55,12 @@
                                 <i class="far fa-user"></i> Profile
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="{{ route(admin.logout) }}"
+                            <a href="{{ route('admin.logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                 class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
                                 Logout
                             </a>
-                            <form id="logout-form" action="{{ route(admin.logout) }}" method="POST"
+                            <form id="logout-form" action="{{ route('admin.logout') }}" method="POST"
                                 style="display: none;">
                                 @csrf
                             </form>
@@ -156,6 +156,13 @@
                         </li>
 
                         <li class="dropdown">
+                            <a href="{{ route('admin.offers.all') }}" class="nav-link">
+                                <i data-feather="gift"></i>
+                                <span>Offers</span>
+                            </a>
+                        </li>
+
+                        <li class="dropdown">
                             <a href="{{ route('admin.tickets.all') }}" class="nav-link">
                                 <i data-feather="credit-card"></i>
                                 <span>Raise Tickets</span>
@@ -166,13 +173,6 @@
                             <a href="{{ route('admin.return-tickets.all') }}" class="nav-link">
                                 <i data-feather="credit-card"></i>
                                 <span>Return & Refund Tickets</span>
-                            </a>
-                        </li>
-
-                        <li class="dropdown">
-                            <a href="{{ route('admin.offers.all') }}" class="nav-link">
-                                <i data-feather="credit-card"></i>
-                                <span>Offers</span>
                             </a>
                         </li>
 

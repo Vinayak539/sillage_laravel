@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Model\Offer;
+use App\Model\TxnCategory;
+use App\Model\TxnProduct;
 use Illuminate\Http\Request;
 
 class OfferController extends Controller
@@ -15,7 +17,10 @@ class OfferController extends Controller
      */
     public function index()
     {
-        //
+        $offers     = Offer::orderBy('id', 'DESC')->get();
+        $categories = TxnCategory::where('status', true)->get();
+        $products   = TxnProduct::where('status', true)->get();
+        return view('backend.admin.offers.index', compact('offers', 'categories', 'products'));
     }
 
     /**
@@ -56,7 +61,7 @@ class OfferController extends Controller
      * @param  \App\Model\Offer  $offer
      * @return \Illuminate\Http\Response
      */
-    public function edit(Offer $offer)
+    public function edit($id)
     {
         //
     }
@@ -68,7 +73,7 @@ class OfferController extends Controller
      * @param  \App\Model\Offer  $offer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Offer $offer)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -79,7 +84,7 @@ class OfferController extends Controller
      * @param  \App\Model\Offer  $offer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Offer $offer)
+    public function destroy(Request $request)
     {
         //
     }

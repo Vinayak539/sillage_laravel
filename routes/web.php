@@ -320,7 +320,7 @@ Route::prefix('adhni753')->group(function () {
             Route::POST('/', 'Admin\OfferController@store');
             Route::GET('/edit/{id}', 'Admin\OfferController@edit')->name('admin.offers.edit');
             Route::POST('/edit/{id}', 'Admin\OfferController@update');
-            Route::POST('/delete/{id}', 'Admin\OfferController@destroy')->name('admin.offers.delete');
+            Route::POST('/delete', 'Admin\OfferController@destroy')->name('admin.offers.delete');
         });
     });
 });
