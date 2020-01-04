@@ -388,7 +388,8 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#" data-toggle="modal" data-target="#seleted-offer" class="selectedOfferBtn">View Selected Offer <i class="fa fa-angle-double-right"></i></a>
+                        <a href="#" data-toggle="modal" data-target="#seleted-offer" class="selectedOfferBtn">View
+                            Selected Offer <i class="fa fa-angle-double-right"></i></a>
                     </div>
 
                     <form action="#" class="form--action mt--20 mb--30 mb-sm--20">
