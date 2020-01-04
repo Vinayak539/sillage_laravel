@@ -29699,3 +29699,46 @@ a:hover {
 .text-black{
     color: #000
 }
+
+/* show product start */
+.return--policy span{
+    border-radius: 50%;
+    line-height: 26px;
+    height: 50px;
+    width: 50px;
+}
+.return--policy span i{
+    font-size: 18px;
+}
+.return--policy p{
+    margin-top: 10px;
+    line-height: 1.5;
+    color: #282828;
+}
+.offerSection p{
+    font-size: 12px;
+    color: #282828;
+    text-transform: uppercase;
+    margin-top: 20px;
+}
+
+.offerSection .selectedOfferBtn{
+    font-size: 12px;
+    /* background-color: #172337; */
+    /* border: 1px solid #172337; */
+    text-decoration: underline;
+    margin-top: 20px;
+    color: #172337;
+    cursor: pointer;
+}
+
+.offerSection .selectedOfferBtn:hover{
+    /* background-color: #fff; */
+    /* border: 1px solid #d7ae00; */
+    color: #d7ae00;
+}
+
+.offerModal .quantity {
+    margin-right: -3rem;
+}
+/* show product end */
