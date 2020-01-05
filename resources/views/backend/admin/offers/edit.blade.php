@@ -22,10 +22,10 @@
                                 <label for="category_id">Categories <span class="text-danger">*</span></label>
                                 <select name="category_id" class="form-control" id="category_id" required>
                                     <option value=""> --Select Category--</option>
-                                    @foreach($categories as $category)
-                                    <option value="{{ $category->id }}"
-                                        {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name }}</option>
+                                    @foreach($categories as $cate)
+                                    <option value="{{ $cate->id }}"
+                                        {{ old('category_id') == $cate->id ? 'selected' : '' }}>
+                                        {{ $cate->pcategory ? $cate->pcategory->name . ' > ' . $cate->name : $cate->name }}</option>
                                     @endforeach
                                 </select>
                             </div>

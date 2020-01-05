@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TxnProduct extends Model
 {
 
-    protected $table   = 'txn_products';
+    protected $table = 'txn_products';
     protected $guarded = ['id'];
 
     public function category()
@@ -93,5 +93,10 @@ class TxnProduct extends Model
     public function offers()
     {
         return $this->hasMany(MapMstOfferProduct::class, 'offer_product_id', 'id');
+    }
+
+    public function offer()
+    {
+        return $this->belongsTo(MapOfferProduct::class, 'id', 'product_id');
     }
 }

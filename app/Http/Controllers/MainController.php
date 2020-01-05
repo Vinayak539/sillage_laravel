@@ -22,9 +22,9 @@ class MainController extends Controller
 {
     public function index()
     {
-        $sliders      = Slider::where('status', true)->orderBy('sort_index')->get();
+        $sliders = Slider::where('status', true)->orderBy('sort_index')->get();
         $testimonials = Testimonial::where('status', true)->orderBy('sort_index')->get();
-        $homeOfferSliders  = HomeOfferSlider::where('status', true)->orderBy('sort_index')->get();
+        $homeOfferSliders = HomeOfferSlider::where('status', true)->orderBy('sort_index')->get();
         // $side_products = SideProduct::with('product')->orderBy('sort_index')->limit(2)->get();
         $sections = MsSection::where('status', true)->with('msections')->get();
         // dd($sections);
@@ -40,13 +40,13 @@ class MainController extends Controller
             ],
             [
                 'email.required' => 'Please Enter Email ID',
-                'email.email'    => 'Please Enter Proper Email',
-                'email.unique'   => 'Email is already Registered',
+                'email.email' => 'Please Enter Proper Email',
+                'email.unique' => 'Email is already Registered',
             ]
         );
 
         Subscriber::create([
-            'email'  => $request->email,
+            'email' => $request->email,
             'status' => true,
         ]);
 
@@ -73,6 +73,15 @@ class MainController extends Controller
                 ->where('txn_reviews.status', true)
                 ->first();
 
+            $offers = DB::table('txn_products as p')
+                ->selectRaw('p.title as product_name, p.id as product_id, map.map_offer_id, p.image_url, map.purchase_quantity, map.offered_quantity, m.color_id, m.size_id, c.title as color_name, s.title as size_name')
+                ->leftJoin("map_offer_products as map", "map.product_id", "p.id")
+                ->leftJoin("map_mst_offer_products as m", "map.map_offer_id", "m.offer_id")
+                ->leftJoin("mst_colors as c", "m.color_id", "c.id")
+                ->leftJoin("mst_sizes as s", "m.size_id", "s.id")
+                ->where('map.product_id', $product->id)
+                ->get();
+
             $colorsSizes = DB::table('map_color_sizes as m')
                 ->selectRaw('DISTINCT(c.title) as color_name, s.title as size_name, c.id as color_id, s.id as size_id, m.mrp, m.stock, m.id as map_id')
                 ->join('mst_colors as c', 'm.color_id', 'c.id')
@@ -93,7 +102,7 @@ class MainController extends Controller
                 ->limit(6)
                 ->get();
 
-            return view('frontend.product.show', compact('product', 'related_products', 'prod', 'colorsSizes'));
+            return view('frontend.product.show', compact('product', 'related_products', 'prod', 'colorsSizes', 'offers'));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
@@ -102,6 +111,8 @@ class MainController extends Controller
 
                 return redirect('/');
             }
+
+            return $ex->getMessage();
 
             connectify('error', 'Error', 'Whoops, Something Went Wrong from our End !');
 
@@ -134,7 +145,7 @@ class MainController extends Controller
 
     public function verifyPincode(Request $request)
     {
-        $res  = Delivery::verify($request->pincode);
+        $res = Delivery::verify($request->pincode);
         $res1 = json_decode($res, true);
         if (count($res1['delivery_codes'])) {
             session(['pincode' => $request->pincode]);
@@ -162,7 +173,7 @@ class MainController extends Controller
                 ->where('p.status', '=', true);
         }
 
-        $products  = $products->orderBy('p.id', 'DESC')->groupBy("p.id")->paginate(50);
+        $products = $products->orderBy('p.id', 'DESC')->groupBy("p.id")->paginate(50);
         $prodLists = [];
 
         foreach ($products as $prod) {
@@ -216,7 +227,7 @@ class MainController extends Controller
             where   find_in_set(parent_id, @pv) > 0
             and     @pv := concat(@pv, ',', id)"));
 
-        $cateLists    = [];
+        $cateLists = [];
         $cateLists[0] = $category->id;
 
         foreach ($categories as $cate) {
@@ -257,7 +268,7 @@ class MainController extends Controller
             where   find_in_set(parent_id, @pv) > 0
             and     @pv := concat(@pv, ',', id)"));
 
-            $cateLists    = [];
+            $cateLists = [];
             $cateLists[0] = $category->id;
 
             foreach ($categories as $cate) {
@@ -315,9 +326,9 @@ class MainController extends Controller
             $product = TxnProduct::where('id', $id)->firstOrFail();
 
             $qna = ProductFaq::create([
-                'question'   => $request->question,
+                'question' => $request->question,
                 'product_id' => $product->id,
-                'status'     => false,
+                'status' => false,
             ]);
 
             Mail::send(['html' => 'backend.mails.question'], ['qna' => $qna, 'product' => $product], function ($message) {

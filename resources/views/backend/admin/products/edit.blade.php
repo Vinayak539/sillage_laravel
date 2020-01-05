@@ -42,7 +42,7 @@
 {{-- Model End --}}
 
 {{-- Model --}}
-<!-- 
+<!--
 <div class="modal" id="addSizesModal">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -232,10 +232,10 @@
                             <label for="category_id">Category <span class="text-danger">*</span></label>
                             <select name="category_id" id="category_id" class="form-control" required>
                                 <option value="">--Select Category--</option>
-                                @foreach($categories as $category)
-                                <option value="{{ $category->id }}"
-                                    {{ $category->id == $product->category_id ? 'selected' : '' }}>
-                                    {{ $category->name }}
+                                @foreach($categories as $cate)
+                                <option value="{{ $cate->id }}"
+                                    {{ $cate->id == $product->category_id ? 'selected' : '' }}>
+                                    {{ $cate->pcategory ? $cate->pcategory->name . ' > ' . $cate->name : $cate->name }}
                                 </option>
                                 @endforeach
                             </select>
@@ -421,7 +421,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="is_cod">Cod Available <span class="text-danger">*</span></label>
                             <select name="is_cod" id="is_cod" class="form-control" required>
@@ -434,17 +434,38 @@
                         </div>
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label for="offer_id">Offer </label>
-                            <select name="offer_id" id="offer_id" class="form-control" required>
+                            <label for="offer_id">Offer <span class="text-warning">( Select Any if want to give offer
+                                    )</span></label>
+                            <select name="offer_id" id="offer_id" class="form-control" >
                                 <option value="">--Select Offer--</option>
                                 @foreach($offers as $ofr)
-                                <option value="{{ $ofr->id }}" {{ $ofr->product_id == $product->id ? 'selected' : '' }}>
+
+                                <option value="{{ $ofr->id }}"
+                                    {{ $product->offer ? $product->offer->product_id == $product->id ? 'selected' : '' : '' }}>
                                     {{ $ofr->mst_offer->title }}
                                 </option>
                                 @endforeach
                             </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 offer_div">
+                        <div class="form-group">
+                            <label for="purchase_quantity">Purchase Quantity <span class="text-danger">*</span></label>
+                            <input type="text" name="purchase_quantity" id="purchase_quantity" class="form-control"
+                                value="{{ $product->offer ? $product->offer->product_id == $product->id ? $product->offer->purchase_quantity : '' : '' }}"
+                                placeholder="Enter Purchase Quantity">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 offer_div">
+                        <div class="form-group">
+                            <label for="offered_quantity">Offered Quantity <span class="text-danger">*</span></label>
+                            <input type="text" name="offered_quantity" id="offered_quantity" class="form-control"
+                                value="{{ $product->offer ? $product->offer->product_id == $product->id ? $product->offer->offered_quantity : '' : '' }}"
+                                placeholder="Enter Offered Quantity">
                         </div>
                     </div>
 
@@ -531,6 +552,9 @@
                             @endforeach
                         </div>
                     </div>
+
+
+
                     @endif
 
                     <div class="col-md-12 text-danger mt-5">
@@ -775,6 +799,15 @@
 @section('extrajs')
 <script>
     $(document).ready(function () {
+
+            var offer_id = $('#offer_id').val();
+            if(offer_id.length > 0){
+                $('.offer_div').show();
+            }else{
+
+                $('.offer_div').hide();
+            }
+
         $(".delete-object").click(function () {
             if (window.confirm("Are you sure to delete this Custom Field ?")) {
                 $('#txtCustID').val($(this).attr("data-obj-id"));
@@ -829,6 +862,16 @@
 
         });
 
+        $("#offer_id").change(function(){
+            var offer_id = $(this).val();
+            if(offer_id.length > 0){
+                $('.offer_div').show();
+            }else{
+
+                $('.offer_div').hide();
+            }
+        });
+
         $("#formupdateProduct").validate({
             rules: {
                 category_id: {
@@ -860,6 +903,12 @@
                     required: true
                 },
                 keywords: {
+                    required: true
+                },
+                purchase_quantity: {
+                    required: true
+                },
+                offered_quantity: {
                     required: true
                 },
 
@@ -895,6 +944,12 @@
                 },
                 keywords: {
                     required: "Please Enter Keywords of Product"
+                },
+                purchase_quantity: {
+                    required: "Please Enter Purchase Quantity"
+                },
+                offered_quantity: {
+                    required: "Please Enter Offered Quantity"
                 },
 
             },

@@ -29,10 +29,11 @@
                                 <label for="category_id">Select Category <span class="text-danger">*</span></label>
                                 <select name="category_id" class="form-control select2" id="category_id" required>
                                     <option value=""> --Select Category--</option>
-                                    @foreach($categories as $category)
-                                    <option value="{{ $category->id }}"
-                                        {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name }}</option>
+                                    @foreach($categories as $cate)
+                                    <option value="{{ $cate->id }}"
+                                        {{ old('category_id') == $cate->id ? 'selected' : '' }}>
+                                        {{ $cate->pcategory ? $cate->pcategory->name . ' > ' . $cate->name : $cate->name }}
+                                    </option>
                                     @endforeach
                                 </select>
                                 <label id="" class="error" for="category_id"></label>
@@ -75,22 +76,6 @@
                                     @endforeach
                                 </select>
                                 <label id="" class="error" for="material_id"></label>
-
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="weight_id">Unit </label>
-                                <select name="weight_id" id="weight_id" class="form-control select2">
-                                    <option value="">--Select Unit--</option>
-                                    @foreach($units as $unit)
-                                    <option value="{{ $unit->id }}"
-                                        {{ old('weight_id') == $unit->id ? 'selected' : '' }}>
-                                        {{ $unit->unit }}</option>
-                                    @endforeach
-                                </select>
-                                <label id="" class="error" for="weight_id"></label>
 
                             </div>
                         </div>
@@ -214,6 +199,22 @@
                                 <label for="width">Width </label>
                                 <input type="text" name="width" id="width" class="form-control"
                                     value="{{ old('width') }}" placeholder="Enter width">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="weight_id">Unit </label>
+                                <select name="weight_id" id="weight_id" class="form-control select2">
+                                    <option value="">--Select Unit--</option>
+                                    @foreach($units as $unit)
+                                    <option value="{{ $unit->id }}"
+                                        {{ old('weight_id') == $unit->id ? 'selected' : '' }}>
+                                        {{ $unit->unit }}</option>
+                                    @endforeach
+                                </select>
+                                <label id="" class="error" for="weight_id"></label>
+
                             </div>
                         </div>
 

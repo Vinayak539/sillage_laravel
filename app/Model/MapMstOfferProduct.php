@@ -10,6 +10,6 @@ class MapMstOfferProduct extends Model
 
     public function mst_offer()
     {
-        return $this->belongsTo(MstOffer::class);
+        return $this->belongsTo(MstOffer::class, 'offer_id', 'id');
     }
 }

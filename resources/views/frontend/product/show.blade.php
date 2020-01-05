@@ -188,7 +188,7 @@
                         </a>
                         @endif
 
-                        {{-- 
+                        {{--
                         @if($product->stock == 0)
 
                         <span class="product-stock in-stock float-right text-danger">
@@ -268,125 +268,30 @@
                                             {"breakpoint":450, "settings": {"slidesToShow": 4} }
                                         ]'>
 
-                            <div class="airi-product" data-toggle="modal" data-target="#offer-product">
+                            @foreach($offers as $offer)
+                            <div class="airi-product offer_product" data-product-name="{{ $offer->product_name }}"
+                                data-color="{{ $offer->color_name }}" data-size="{{ $offer->size_name }}">
                                 <div class="product-inner">
                                     <figure class="product-image">
                                         <div class="product-image--holder">
-                                            <a href="#">
-                                                <img src="http://192.168.0.112:8000/storage/images/products/front_code-striped-slim-fi-3.jpg"
+                                            <a href="javascript:void(0)">
+                                                <img src="{!! asset('storage/images/products/' .$offer->image_url) !!}"
                                                     alt="Product Image">
                                             </a>
                                         </div>
                                     </figure>
                                     <div class="product-info">
                                         <h3 class="product-title">
-                                            <a href="#">Superman T-shirts</a>
+                                            <a href="javascript:void(0)">{{ $offer->product_name }}</a>
                                         </h3>
+                                        <p class="product-title">
+                                            <a
+                                                href="javascript:void(0)">{{ $offer->color_name . '[' . $offer->size_name . ']' }}</a>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="airi-product">
-                                <div class="product-inner">
-                                    <figure class="product-image">
-                                        <div class="product-image--holder">
-                                            <a href="#">
-                                                <img src="http://192.168.0.112:8000/storage/images/products/front_code-striped-slim-fi-3.jpg"
-                                                    alt="Product Image">
-                                            </a>
-                                        </div>
-                                    </figure>
-                                    <div class="product-info">
-                                        <h3 class="product-title">
-                                            <a href="#">Superman T-shirts</a>
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="airi-product">
-                                <div class="product-inner">
-                                    <figure class="product-image">
-                                        <div class="product-image--holder">
-                                            <a href="#">
-                                                <img src="http://192.168.0.112:8000/storage/images/products/front_code-striped-slim-fi-3.jpg"
-                                                    alt="Product Image">
-                                            </a>
-                                        </div>
-                                    </figure>
-                                    <div class="product-info">
-                                        <h3 class="product-title">
-                                            <a href="#">Superman T-shirts</a>
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="airi-product">
-                                <div class="product-inner">
-                                    <figure class="product-image">
-                                        <div class="product-image--holder">
-                                            <a href="#">
-                                                <img src="http://192.168.0.112:8000/storage/images/products/front_code-striped-slim-fi-3.jpg"
-                                                    alt="Product Image">
-                                            </a>
-                                        </div>
-                                    </figure>
-                                    <div class="product-info">
-                                        <h3 class="product-title">
-                                            <a href="#">Superman T-shirts</a>
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="airi-product">
-                                <div class="product-inner">
-                                    <figure class="product-image">
-                                        <div class="product-image--holder">
-                                            <a href="#">
-                                                <img src="http://192.168.0.112:8000/storage/images/products/front_code-striped-slim-fi-3.jpg"
-                                                    alt="Product Image">
-                                            </a>
-                                        </div>
-                                    </figure>
-                                    <div class="product-info">
-                                        <h3 class="product-title">
-                                            <a href="#">Superman T-shirts</a>
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="airi-product">
-                                <div class="product-inner">
-                                    <figure class="product-image">
-                                        <div class="product-image--holder">
-                                            <a href="#">
-                                                <img src="http://192.168.0.112:8000/storage/images/products/front_code-striped-slim-fi-3.jpg"
-                                                    alt="Product Image">
-                                            </a>
-                                        </div>
-                                    </figure>
-                                    <div class="product-info">
-                                        <h3 class="product-title">
-                                            <a href="#">Superman T-shirts</a>
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="airi-product">
-                                <div class="product-inner">
-                                    <figure class="product-image">
-                                        <div class="product-image--holder">
-                                            <a href="#">
-                                                <img src="http://192.168.0.112:8000/storage/images/products/front_code-striped-slim-fi-3.jpg"
-                                                    alt="Product Image">
-                                            </a>
-                                        </div>
-                                    </figure>
-                                    <div class="product-info">
-                                        <h3 class="product-title">
-                                            <a href="#">Superman T-shirts</a>
-                                        </h3>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                         <a href="#" data-toggle="modal" data-target="#seleted-offer" class="selectedOfferBtn">View
                             Selected Offer <i class="fa fa-angle-double-right"></i></a>
@@ -862,7 +767,6 @@
     .modal-header .close {
         padding: 1.5rem 2rem;
     }
-
 </style>
 
 <script type='text/javascript'
@@ -875,6 +779,19 @@
     $(document).ready(function () {
 
         volume();
+
+        $('.offer_product').click(function (){
+            var pname = $(this).attr('data-product-name');
+            var pcolor = $(this).attr('data-color');
+            var psize = $(this).attr('data-size');
+            console.log(pname, pcolor, psize);
+            // Store
+            sessionStorage.setItem("lastname", "Smith");
+            // Retrieve
+            document.getElementById("result").innerHTML = sessionStorage.getItem("lastname");
+
+        });
+
         $('.add-cart').click(function () {
 
             var quantity = $('.quantity-input').val();
@@ -964,12 +881,7 @@
                     if (success) {
 
                         var html = '';
-                        var prodSize = {
-                            !!json_encode($product - > sizes) !!
-                        }
-
-                        console.log(prodSize, success);
-
+                        var prodSize = {!! json_encode($product->sizes) !!}
 
                         var productSizeObj = {
 
@@ -1019,7 +931,6 @@
             var title = $('.product-color-swatch-btn').attr('data-title');
             $('#cart_color_id').val(color_id);
             $('.color-label').html(title);
-            console.log(color_id);
 
             $.ajaxSetup({
                 headers: {
@@ -1040,12 +951,7 @@
                     if (success) {
 
                         var html = '';
-                        var prodSize = {
-                            !!json_encode($product - > sizes) !!
-                        }
-
-                        console.log(prodSize, success);
-
+                        var prodSize = {!! json_encode($product->sizes) !!}
 
                         var productSizeObj = {
 

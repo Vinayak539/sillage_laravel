@@ -314,7 +314,6 @@ Route::prefix('adhni753')->group(function () {
             Route::POST('/delete', 'Admin\HomeOfferSliderController@destroy')->name('admin.home-offer-sliders.delete');
         });
 
-        
         Route::prefix('/manage-offers')->group(function () {
             Route::GET('/', 'Admin\OfferController@index')->name('admin.offers.all');
             Route::POST('/', 'Admin\OfferController@store');
@@ -369,7 +368,7 @@ Route::prefix('myaccount')->group(function () {
     });
 });
 
-// Shop 
+// Shop
 
 Route::prefix('hnishop')->group(function () {
 
@@ -381,7 +380,7 @@ Route::prefix('hnishop')->group(function () {
     Route::group(['middleware' => 'auth:shop'], function () {
 
         Route::GET('/', 'ShopController@index')->name('shop.dashboard');
-        
+
         Route::POST('/profile', 'ShopController@update')->name('shop.update');
 
         Route::POST('/logout', 'ShopAuth\LoginController@logout')->name('shop.logout');

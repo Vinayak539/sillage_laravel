@@ -80,7 +80,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'category_name' => 'required|string|unique:txn_categories,name',
+            'category_name' => 'required|string',
         ],
             [
                 'category_name.required' => 'Please Enter Category Name',
@@ -92,14 +92,22 @@ class CategoryController extends Controller
             return redirect(route('admin.categories.create'))
                 ->withInput();
         }
-        
+
         $request['txtCategoryID'] = $request->txtCategoryID == null ? '0' : $request->txtCategoryID;
+
+        $cate = TxnCategory::where('id', $request->txtCategoryID)->first();
+
+        if ($cate) {
+            $request['slug_url'] = Str::slug($cate->name . '-' . $request->category_name, '-');
+        } else {
+            $request['slug_url'] = Str::slug($request->category_name, '-');
+        }
 
         TxnCategory::create([
             'parent_id' => $request->txtCategoryID,
             'name' => $request->category_name,
             'status' => true,
-            'slug_url' => Str::slug($request->category_name, '-'),
+            'slug_url' => $request->slug_url,
         ]);
 
         connectify('success', 'Added Category', 'Category has been added successfully');
@@ -185,11 +193,17 @@ class CategoryController extends Controller
 
             $category = TxnCategory::where('id', $id)->firstOrFail();
 
+            if ($category) {
+                $request['slug_url'] = Str::slug($category->name . '-' . $request->name, '-');
+            } else {
+                $request['slug_url'] = Str::slug($request->name, '-');
+            }
+
             $category->update([
                 'name' => $request->name,
                 'parent_id' => $request->parent_id,
                 'status' => $request->status,
-                'slug_url' => Str::slug($request->name, '-'),
+                'slug_url' => $request->slug_url,
             ]);
 
             connectify('success', 'Updated Category', 'Category has been Updated successfully');
