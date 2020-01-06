@@ -223,7 +223,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
-                                    <p class="price">&#8377; {{ $detail->mrp }}</p>
+                                    <p class="price">&#8377; {{ $detail->mrp*$detail->quantity }}</p>
                                 </div>
                                 <div class="col-sm-5">
                                     @if($order->delivery_date)
@@ -267,12 +267,7 @@
                                             <p class="mb-0"><strong>Payment Mode </strong></p>
                                             <p class="text-capitalize"> {{ $order->payment_mode }}</p>
                                         </div>
-                                        @if($order->used_royalty_points)
-                                        <div class="col-sm-12 mb-15">
-                                            <p class="mb-0"><strong>Used Ranayas Coins </strong></p>
-                                            <p> {{ $order->used_royalty_points}} </p>
-                                        </div>
-                                        @endif
+
                                         @if($order->status === 'delivered' && $order->delivery_date)
                                         <div class="col-sm-12 mb-15">
                                             <p class="mb-0"><strong>Delivered At </strong></p>
@@ -308,6 +303,10 @@
                                                 <td> &#8377; {{ $order->discount }} </td>
                                             </tr>
                                             @ENDIF
+                                             <tr>
+                                                <th> + Shipping Charges </th>
+                                                <td> &#8377; 50 </td>
+                                            </tr>
                                             <tr>
                                                 <th> <strong>Grand Total</strong> </th>
                                                 <td> <strong>&#8377; {{ round($order->total, 2) }}</strong> </td>

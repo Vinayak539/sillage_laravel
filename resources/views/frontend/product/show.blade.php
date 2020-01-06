@@ -253,7 +253,8 @@
                     </form>
 
                     <div class="offerSection">
-                        <p> Choose Offer </p>
+                        <p> Choose Any {{ $offers[0]->offered_quantity }} Offer On Purchase of
+                            {{ $offers[0]->purchase_quantity }} </p>
                         <div class="airi-element-carousel product-carousel nav-vertical-center offer"
                             data-slick-options='{
                                         "spaceBetween": 30,
@@ -268,9 +269,12 @@
                                             {"breakpoint":450, "settings": {"slidesToShow": 4} }
                                         ]'>
 
-                            @foreach($offers as $offer)
+                            @foreach($offers as $key => $offer)
                             <div class="airi-product offer_product" data-product-name="{{ $offer->product_name }}"
-                                data-color="{{ $offer->color_name }}" data-size="{{ $offer->size_name }}">
+                                data-color="{{ $offer->color_name }}" data-size="{{ $offer->size_name }}"
+                                data-index="{{ $key }}" data-purchase-quantity="{{ $offer->purchase_quantity }}"
+                                data-offered-quantity="{{ $offer->offered_quantity }}"
+                                data-offered-id="{{ $offer->offer_id }}" data-map-id="{{ $offer->map_id }}">
                                 <div class="product-inner">
                                     <figure class="product-image">
                                         <div class="product-image--holder">
@@ -293,7 +297,7 @@
                             </div>
                             @endforeach
                         </div>
-                        <a href="#" data-toggle="modal" data-target="#seleted-offer" class="selectedOfferBtn">View
+                        <a href="javascript:void(0)" class="selectedOfferBtn">View
                             Selected Offer <i class="fa fa-angle-double-right"></i></a>
                     </div>
 
@@ -598,12 +602,9 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="ptb--10 plr--10">
-                    <div class="col-md-6">
+                    <div class="col-md-12 offer_section">
                         <div class="selected-offer">
-                            <h6>Name : Superman Tshirt</h6>
-                            <h6>Color : red</h6>
-                            <h6>Size : XL</h6>
-                            <h6>Quantity : 2</h6>
+                            <h6 class="text-danger">No Offer Selected</h6>
                         </div>
                     </div>
                 </div>
@@ -699,6 +700,8 @@
     <input type="hidden" name="qty" id="cart_qty">
     <input type="hidden" name="color_id" id="cart_color_id">
     <input type="hidden" name="size_id" id="cart_size_id">
+    <input type="hidden" name="offers" id="cart_offer">
+    <input type="hidden" name="map_ids" id="cart_map_id">
 </form>
 
 @endsection
@@ -780,15 +783,68 @@
 
         volume();
 
+        var offers = JSON.parse(sessionStorage.getItem('offers')) || {};
+
         $('.offer_product').click(function (){
+
             var pname = $(this).attr('data-product-name');
             var pcolor = $(this).attr('data-color');
             var psize = $(this).attr('data-size');
-            console.log(pname, pcolor, psize);
-            // Store
-            sessionStorage.setItem("lastname", "Smith");
-            // Retrieve
-            document.getElementById("result").innerHTML = sessionStorage.getItem("lastname");
+            var index = $(this).attr('data-index');
+            var offer_id = $(this).attr('data-offered-id');
+            var map_id = $(this).attr('data-map-id');
+            var pquantity = $(this).attr('data-purchase-quantity');
+            var oquantity = $(this).attr('data-offered-quantity');
+            var quantity = $('.quantity-input').val();
+
+            if(quantity >= pquantity){
+
+                if(!offers[index] ){
+                    offers[index] = {};
+                    offers[index] = {
+                        'name': pname,
+                        'color': pcolor,
+                        'size': psize,
+                        'offer_id': offer_id,
+                        'map_id': map_id,
+                    };
+                } else  {
+                    delete offers[index];
+                }
+
+                sessionStorage.setItem("offers", JSON.stringify(offers));
+
+
+                // Offer Designing goes here
+            } else{
+                swal('Invalid', 'On Purchase of ' + pquantity + ' Choose Any ' + oquantity, 'error');
+            }
+
+
+        });
+
+        $('.selectedOfferBtn').click(function(){
+
+            $('#seleted-offer').modal('show');
+
+            var offers = JSON.parse(sessionStorage.getItem("offers"));
+
+            var html = '';
+
+            if(offers){
+
+                for (let key in offers) {
+
+                    html += ` <div class="selected-offer">
+                        <h6>Name : ${offers[key].name} </h6>
+                        <h6>Color : ${offers[key].color}</h6>
+                        <h6>Size : ${offers[key].size}</h6>
+                    </div>`;
+                }
+
+                $('.offer_section').html(html);
+
+            }
 
         });
 
@@ -815,6 +871,25 @@
             } else {
 
                 $('#cart_qty').val(quantity);
+
+                offer_ids = [];
+                map_ids = [];
+
+                if(offers){
+
+                   var offer = JSON.parse(sessionStorage.getItem("offers"))
+
+                     for (let key in offers) {
+
+                            offer_ids.push(offers[key].offer_id);
+                            map_ids.push(offers[key].map_id);
+
+                        }
+
+                   $('#cart_offer').val(offer_ids);
+                   $('#cart_map_id').val(map_ids);
+
+                }
 
                 $('#cartForm').submit();
 
@@ -1023,6 +1098,13 @@
 
 
     });
+
+function isOfferExists(key){
+    if(sessionStorage.getItem('offers') && sessionStorage.getItem('offers')[key]){
+        return true;
+    }
+    return false;
+}
 
 </script>
 @endsection

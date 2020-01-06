@@ -34,25 +34,25 @@ class OrderController extends Controller
         $total_rewards = auth('user')->user()->total_rewards;
 
         $validator = Validator::make($request->all(), [
-            'address'      => 'required|string|max:1000',
-            'name'         => 'required|string|max:191',
-            'mobile'       => 'required|digits:10',
-            'city'         => 'required|string|max:191',
-            'territory'    => 'required|string|max:191',
-            'landmark'     => 'nullable|string|max:191',
+            'address' => 'required|string|max:1000',
+            'name' => 'required|string|max:191',
+            'mobile' => 'required|digits:10',
+            'city' => 'required|string|max:191',
+            'territory' => 'required|string|max:191',
+            'landmark' => 'nullable|string|max:191',
             'payment_mode' => 'required',
-            'pincode'      => 'required|digits:6',
+            'pincode' => 'required|digits:6',
         ],
             [
                 'payment_mode.required' => 'Please Select Any of the Payment Mode !',
-                'address.required'      => 'Please Enter Address',
-                'name.required'         => 'Please Enter Name',
-                'city.required'         => 'Please Enter City',
-                'territory.required'    => 'Please Enter Territory/State',
-                'pincode.required'      => 'Please Enter Pincode',
-                'pincode.digits'        => 'Pincode should be of 6 digits',
-                'mobile.required'       => 'Please Enter Mobile Number',
-                'mobile.digits'         => 'Mobile Number should be of 10 digits',
+                'address.required' => 'Please Enter Address',
+                'name.required' => 'Please Enter Name',
+                'city.required' => 'Please Enter City',
+                'territory.required' => 'Please Enter Territory/State',
+                'pincode.required' => 'Please Enter Pincode',
+                'pincode.digits' => 'Pincode should be of 6 digits',
+                'mobile.required' => 'Please Enter Mobile Number',
+                'mobile.digits' => 'Mobile Number should be of 10 digits',
             ]);
 
         if ($request->filled('reward_points')) {
@@ -68,25 +68,25 @@ class OrderController extends Controller
 
         $cartTotalQuantity = Cart::getTotalQuantity();
 
-        $total              = 0;
-        $user               = auth('user')->user();
-        $cod                = false;
-        $totalGst           = 0;
-        $promocode          = null;
+        $total = 0;
+        $user = auth('user')->user();
+        $cod = false;
+        $totalGst = 0;
+        $promocode = null;
         $is_valid_promocode = false;
-        $is_discount        = false;
+        $is_discount = false;
 
         if ($request->session()->has('promocode')) {
             // $a = $request->session()->get('promocode');
             $a = $request->session()->pull('promocode', 'default');
             if ($a['promocode']) {
-                $promo     = TxnUser::select('promocode')->where('promocode', $a['promocode'])->first();
+                $promo = TxnUser::select('promocode')->where('promocode', $a['promocode'])->first();
                 $promocode = $promo['promocode'];
             } elseif ($a['shop_code']) {
-                $promo              = Shop::select('shop_code')->where('shop_code', $a['shop_code'])->where('status', true)->first();
-                $promocode          = $promo['shop_code'];
+                $promo = Shop::select('shop_code')->where('shop_code', $a['shop_code'])->where('status', true)->first();
+                $promocode = $promo['shop_code'];
                 $is_valid_promocode = true;
-                $is_discount        = true;
+                $is_discount = true;
             }
         }
 
@@ -127,44 +127,46 @@ class OrderController extends Controller
         $request['total'] = round($total - $request->discount, 2);
 
         $order = TxnOrder::create([
-            'total'          => $request->total,
-            'status'         => $request->status,
-            'user_id'        => $user->id,
-            'user_name'      => $user->name,
-            'promocode'      => $promocode,
-            'discount'       => $request->discount,
-            'address'        => $request->address,
-            'pincode'        => $request->pincode,
-            'city'           => $request->city,
-            'territory'      => $request->territory,
-            'landmark'       => $request->landmark,
-            'tbt'            => $request->tbt,
-            'tax'            => $totalGst,
-            'payment_mode'   => $request->payment_mode,
+            'total' => $request->total,
+            'status' => $request->status,
+            'user_id' => $user->id,
+            'user_name' => $user->name,
+            'promocode' => $promocode,
+            'discount' => $request->discount,
+            'address' => $request->address,
+            'pincode' => $request->pincode,
+            'city' => $request->city,
+            'territory' => $request->territory,
+            'landmark' => $request->landmark,
+            'tbt' => $request->tbt,
+            'tax' => $totalGst,
+            'payment_mode' => $request->payment_mode,
             'payment_status' => "Pending",
-            'is_discount'    => $is_discount,
+            'is_discount' => $is_discount,
         ]);
 
         $user->update([
-            'address'   => $request->address,
-            'city'      => $request->city,
+            'address' => $request->address,
+            'city' => $request->city,
             'territory' => $request->territory,
-            'landmark'  => $request->landmark,
-            'pincode'   => $request->pincode,
-            'name'      => $request->name,
-            'mobile'    => $request->mobile,
+            'landmark' => $request->landmark,
+            'pincode' => $request->pincode,
+            'name' => $request->name,
+            'mobile' => $request->mobile,
         ]);
 
         foreach (Cart::getContent() as $item) {
+
             TxnOrderDetail::create([
-                'title'      => $item->name,
-                'map_id'     => $item->attributes->map_id,
-                'mrp'        => $item->price,
-                'quantity'   => $item->quantity,
+                'title' => $item->name,
+                'map_id' => $item->attributes->map_id,
+                'mrp' => $item->price,
+                'quantity' => $item->quantity,
                 'product_id' => $item->attributes->product_id,
-                'order_id'   => $order->id,
-                'size_id'    => $item->attributes->size_id,
-                'color_id'   => $item->attributes->color_id,
+                'order_id' => $order->id,
+                'size_id' => $item->attributes->size_id,
+                'color_id' => $item->attributes->color_id,
+                'offers' => json_encode($item->attributes->offers),
             ]);
         }
 
@@ -176,7 +178,7 @@ class OrderController extends Controller
 
             $order->update([
                 'reward_points' => $request->reward_points,
-                'status'        => 'Booked',
+                'status' => 'Booked',
             ]);
 
             // SMS::send($order->user->mobile, 'Hni Life Style - Your Order has been placed successfully, Your Order No : ' . $order->id . ' Login for more detail on https://hnilifestyle.com');
@@ -198,19 +200,19 @@ class OrderController extends Controller
             return redirect(route('user.showOrder'));
 
         } elseif ($request->payment_mode == 'paytm') {
-            $paytm                         = new Paytm();
-            $paramList                     = [];
-            $paramList["MID"]              = env('PAYTM_MERCHANT_MID');
-            $paramList["ORDER_ID"]         = $order->id;
-            $paramList["CUST_ID"]          = 'CUST' . $user->id;
+            $paytm = new Paytm();
+            $paramList = [];
+            $paramList["MID"] = env('PAYTM_MERCHANT_MID');
+            $paramList["ORDER_ID"] = $order->id;
+            $paramList["CUST_ID"] = 'CUST' . $user->id;
             $paramList["INDUSTRY_TYPE_ID"] = env('INDUSTRY_TYPE_ID');
-            $paramList["CHANNEL_ID"]       = 'WEB';
-            $paramList["MOBILE_NO"]        = $user->mobile;
-            $paramList["EMAIL"]            = $user->email;
-            $paramList["TXN_AMOUNT"]       = $request->total;
-            $paramList["WEBSITE"]          = env('PAYTM_MERCHANT_WEBSITE');
-            $paramList["CALLBACK_URL"]     = route('paytm.callback');
-            $paramList["CHECKSUMHASH"]     = $paytm->getChecksumFromArray($paramList, env('PAYTM_MERCHANT_KEY'));
+            $paramList["CHANNEL_ID"] = 'WEB';
+            $paramList["MOBILE_NO"] = $user->mobile;
+            $paramList["EMAIL"] = $user->email;
+            $paramList["TXN_AMOUNT"] = $request->total;
+            $paramList["WEBSITE"] = env('PAYTM_MERCHANT_WEBSITE');
+            $paramList["CALLBACK_URL"] = route('paytm.callback');
+            $paramList["CHECKSUMHASH"] = $paytm->getChecksumFromArray($paramList, env('PAYTM_MERCHANT_KEY'));
 
             $request->session()->put("reward_points", $request->reward_points);
 
@@ -220,10 +222,10 @@ class OrderController extends Controller
 
     public function handleCallbackFromPaytm(Request $request)
     {
-        $paramList       = $request->all();
+        $paramList = $request->all();
         $isValidChecksum = "FALSE";
-        $paytmChecksum   = $request->CHECKSUMHASH;
-        $paytm           = new Paytm();
+        $paytmChecksum = $request->CHECKSUMHASH;
+        $paytm = new Paytm();
         $isValidChecksum = $paytm->verifychecksum_e($paramList, env('PAYTM_MERCHANT_KEY'), $paytmChecksum);
         if ($isValidChecksum == "TRUE") {
             if ($paramList["STATUS"] == "TXN_SUCCESS") {
@@ -241,24 +243,24 @@ class OrderController extends Controller
                     $reward = $request->session()->get("reward_points");
 
                     $order->update([
-                        'status'         => 'Booked',
+                        'status' => 'Booked',
                         'payment_status' => 'Paid',
-                        'reward_points'  => $reward,
+                        'reward_points' => $reward,
                     ]);
 
                     $transaction = Transaction::create([
-                        'order_id'     => $paramList['ORDERID'],
-                        'MID'          => $paramList['MID'],
-                        'TXNID'        => $paramList['TXNID'],
-                        'TXNAMOUNT'    => $paramList['TXNAMOUNT'],
-                        'PAYMENTMODE'  => $paramList['PAYMENTMODE'],
-                        'CURRENCY'     => $paramList['CURRENCY'],
-                        'TXNDATE'      => $paramList['TXNDATE'],
-                        'STATUS'       => $paramList['STATUS'],
-                        'RESPCODE'     => $paramList['RESPCODE'],
-                        'RESPMSG'      => $paramList['RESPMSG'],
-                        'GATEWAYNAME'  => $paramList['GATEWAYNAME'],
-                        'BANKTXNID'    => $paramList['BANKTXNID'],
+                        'order_id' => $paramList['ORDERID'],
+                        'MID' => $paramList['MID'],
+                        'TXNID' => $paramList['TXNID'],
+                        'TXNAMOUNT' => $paramList['TXNAMOUNT'],
+                        'PAYMENTMODE' => $paramList['PAYMENTMODE'],
+                        'CURRENCY' => $paramList['CURRENCY'],
+                        'TXNDATE' => $paramList['TXNDATE'],
+                        'STATUS' => $paramList['STATUS'],
+                        'RESPCODE' => $paramList['RESPCODE'],
+                        'RESPMSG' => $paramList['RESPMSG'],
+                        'GATEWAYNAME' => $paramList['GATEWAYNAME'],
+                        'BANKTXNID' => $paramList['BANKTXNID'],
                         'CHECKSUMHASH' => $paramList['CHECKSUMHASH'],
                     ]);
 

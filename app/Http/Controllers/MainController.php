@@ -74,7 +74,7 @@ class MainController extends Controller
                 ->first();
 
             $offers = DB::table('txn_products as p')
-                ->selectRaw('p.title as product_name, p.id as product_id, map.map_offer_id, p.image_url, map.purchase_quantity, map.offered_quantity, m.color_id, m.size_id, c.title as color_name, s.title as size_name')
+                ->selectRaw('p.title as product_name, p.id as product_id, map.id as map_id, map.map_offer_id, p.image_url, map.purchase_quantity, map.offered_quantity, m.color_id, m.size_id, c.title as color_name, s.title as size_name, m.id as offer_id')
                 ->leftJoin("map_offer_products as map", "map.product_id", "p.id")
                 ->leftJoin("map_mst_offer_products as m", "map.map_offer_id", "m.offer_id")
                 ->leftJoin("mst_colors as c", "m.color_id", "c.id")

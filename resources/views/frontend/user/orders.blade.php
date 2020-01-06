@@ -156,6 +156,7 @@
                                     class="download-btn float-right">Download Invoice</a>
                             </div>
                             @php $statusBoolean = true @endphp
+                            @php $priceBoolean = true @endphp
 
                             @foreach($order->details as $detail)
                             <div class="col-md-12 mt-10">
@@ -182,11 +183,15 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @if($priceBoolean)
+                                        @php $priceBoolean = false @endphp
                                         <div class="col-md-4">
                                             <p class="price">
-                                                &#8377; {{ $order->total }}
+                                             Total Price:
+                                                <h4>&#8377; {{ $order->total }}</h4>
                                             </p>
                                         </div>
+                                        @endif
                                         <div class="col-md-4">
                                             @if($order->delivery_date)
                                             <p class="delivery">
