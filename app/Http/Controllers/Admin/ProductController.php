@@ -296,9 +296,7 @@ class ProductController extends Controller
             $warranties = MasterWarranty::where('status', true)->get();
             $keywords = $allkeywords->implode('keyword', ',');
 
-            $offers = MapMstOfferProduct::where('offer_product_id', $product->id)->with('mst_offer')->get();
-
-            // dd($offers);
+            $offers = MapMstOfferProduct::with('mst_offer')->get();
 
             $product_details = DB::table('map_color_sizes as m')
                 ->selectRaw("m.id as map_id, m.mrp, m.stock, m.starting_price, s.title as size_name, s.id as size_id, c.title as color_name, c.id as color_id")
@@ -835,6 +833,8 @@ class ProductController extends Controller
 
                 return redirect(route('admin.products.all'));
             } else {
+
+                return $ex->getMessage();
                 \Log::error(['Product Delete Color & Size' => $ex->getMessage()]);
 
                 connectify('error', 'Error Delete Color & Size', 'Whoops Something Went Wrong from our end !');
@@ -920,6 +920,8 @@ class ProductController extends Controller
 
                 return redirect(route('admin.products.all'));
             } else {
+
+                return $ex->getMessage();
                 \Log::error(['Product Update Color & Size' => $ex->getMessage()]);
 
                 connectify('error', 'Error Update Color & Size', 'Whoops Something Went Wrong from our end !');

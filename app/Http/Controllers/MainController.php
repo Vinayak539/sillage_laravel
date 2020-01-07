@@ -7,6 +7,7 @@ use App\Model\HomeOfferSlider;
 use App\Model\MapColorSize;
 use App\Model\MsSection;
 use App\Model\ProductFaq;
+use App\Model\Shop;
 use App\Model\Slider;
 use App\Model\Subscriber;
 use App\Model\Testimonial;
@@ -14,6 +15,7 @@ use App\Model\TxnCategory;
 use App\Model\TxnCondition;
 use App\Model\TxnImage;
 use App\Model\TxnProduct;
+use App\Model\TxnUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -22,8 +24,8 @@ class MainController extends Controller
 {
     public function index()
     {
-        $sliders = Slider::where('status', true)->orderBy('sort_index')->get();
-        $testimonials = Testimonial::where('status', true)->orderBy('sort_index')->get();
+        $sliders          = Slider::where('status', true)->orderBy('sort_index')->get();
+        $testimonials     = Testimonial::where('status', true)->orderBy('sort_index')->get();
         $homeOfferSliders = HomeOfferSlider::where('status', true)->orderBy('sort_index')->get();
         // $side_products = SideProduct::with('product')->orderBy('sort_index')->limit(2)->get();
         $sections = MsSection::where('status', true)->with('msections')->get();
@@ -40,13 +42,13 @@ class MainController extends Controller
             ],
             [
                 'email.required' => 'Please Enter Email ID',
-                'email.email' => 'Please Enter Proper Email',
-                'email.unique' => 'Email is already Registered',
+                'email.email'    => 'Please Enter Proper Email',
+                'email.unique'   => 'Email is already Registered',
             ]
         );
 
         Subscriber::create([
-            'email' => $request->email,
+            'email'  => $request->email,
             'status' => true,
         ]);
 
@@ -64,8 +66,6 @@ class MainController extends Controller
                 $q->where('status', true)->get();
             }])->firstOrFail();
 
-            // dd($product->sizes);
-
             $prod = DB::table('txn_products as p')
                 ->select(DB::raw('FLOOR(AVG(txn_reviews.rating)) as rating , COUNT(txn_reviews.id) as total_rating'))
                 ->leftJoin("txn_reviews", "txn_reviews.product_id", "p.id")
@@ -74,13 +74,16 @@ class MainController extends Controller
                 ->first();
 
             $offers = DB::table('txn_products as p')
-                ->selectRaw('p.title as product_name, p.id as product_id, map.id as map_id, map.map_offer_id, p.image_url, map.purchase_quantity, map.offered_quantity, m.color_id, m.size_id, c.title as color_name, s.title as size_name, m.id as offer_id')
-                ->leftJoin("map_offer_products as map", "map.product_id", "p.id")
-                ->leftJoin("map_mst_offer_products as m", "map.map_offer_id", "m.offer_id")
-                ->leftJoin("mst_colors as c", "m.color_id", "c.id")
-                ->leftJoin("mst_sizes as s", "m.size_id", "s.id")
-                ->where('map.product_id', $product->id)
+                ->selectRaw('p.title as product_name, p.id as product_id, p.image_url, m.color_id, m.size_id, c.title as color_name, s.title as size_name, m.id as offer_id, mop.purchase_quantity, mop.offered_quantity, mop.id as map_id, mop.map_offer_id')
+                ->join("map_mst_offer_products as m", "m.offer_product_id", "p.id")
+                ->join("mst_colors as c", "m.color_id", "c.id")
+                ->join("mst_sizes as s", "m.size_id", "s.id")
+                ->join("map_offer_products as mop", "mop.map_offer_id", "m.offer_id")
+                ->groupBy('m.offer_product_id', 'm.color_id', 'm.size_id')
+                ->where('mop.product_id', $product->id)
                 ->get();
+
+            // dd($offers);
 
             $colorsSizes = DB::table('map_color_sizes as m')
                 ->selectRaw('DISTINCT(c.title) as color_name, s.title as size_name, c.id as color_id, s.id as size_id, m.mrp, m.stock, m.id as map_id')
@@ -145,7 +148,7 @@ class MainController extends Controller
 
     public function verifyPincode(Request $request)
     {
-        $res = Delivery::verify($request->pincode);
+        $res  = Delivery::verify($request->pincode);
         $res1 = json_decode($res, true);
         if (count($res1['delivery_codes'])) {
             session(['pincode' => $request->pincode]);
@@ -173,7 +176,7 @@ class MainController extends Controller
                 ->where('p.status', '=', true);
         }
 
-        $products = $products->orderBy('p.id', 'DESC')->groupBy("p.id")->paginate(50);
+        $products  = $products->orderBy('p.id', 'DESC')->groupBy("p.id")->paginate(50);
         $prodLists = [];
 
         foreach ($products as $prod) {
@@ -227,7 +230,7 @@ class MainController extends Controller
             where   find_in_set(parent_id, @pv) > 0
             and     @pv := concat(@pv, ',', id)"));
 
-        $cateLists = [];
+        $cateLists    = [];
         $cateLists[0] = $category->id;
 
         foreach ($categories as $cate) {
@@ -268,7 +271,7 @@ class MainController extends Controller
             where   find_in_set(parent_id, @pv) > 0
             and     @pv := concat(@pv, ',', id)"));
 
-            $cateLists = [];
+            $cateLists    = [];
             $cateLists[0] = $category->id;
 
             foreach ($categories as $cate) {
@@ -326,9 +329,9 @@ class MainController extends Controller
             $product = TxnProduct::where('id', $id)->firstOrFail();
 
             $qna = ProductFaq::create([
-                'question' => $request->question,
+                'question'   => $request->question,
                 'product_id' => $product->id,
-                'status' => false,
+                'status'     => false,
             ]);
 
             Mail::send(['html' => 'backend.mails.question'], ['qna' => $qna, 'product' => $product], function ($message) {
@@ -353,4 +356,20 @@ class MainController extends Controller
             return back();
         }
     }
+
+    public function verifyPromocode(Request $request)
+    {
+        $promo = [];
+        if ($request->filled('promocode')) {
+            $promo = TxnUser::select('promocode')->where('elite', true)->where('promocode', $request->promocode)->first();
+        } elseif ($request->filled('discountcode')) {
+            $promo = Shop::select('shop_code')->where('shop_code', strtolower($request->discountcode))->first();
+        }
+        if (!empty($promo)) {
+            session(['promocode' => $promo]);
+            return response()->json(['success' => 'Promocode Applied Successfully !', 'status' => 200], 200);
+        }
+        return response()->json(['error' => 'Please Enter Valid Promocode', 'status' => 200], 200);
+    }
+
 }

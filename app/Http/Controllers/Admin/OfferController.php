@@ -239,7 +239,7 @@ class OfferController extends Controller
     public function getProducts(Request $request)
     {
 
-        $category = TxnCategory::where('id', $request->cate_id)->where('status', true)->firstOrFail();
+        $category = TxnCategory::where('id', $request->cate_id)->firstOrFail();
 
         $categories = \DB::select(\DB::raw("select  id
             from    (select * from txn_categories
@@ -255,8 +255,7 @@ class OfferController extends Controller
             array_push($cateLists, $cate->id);
         }
 
-        $products = TxnProduct::where('status', '=', true)
-            ->whereIN('category_id', $cateLists)
+        $products = TxnProduct::whereIN('category_id', $cateLists)
             ->get();
 
         return response()->json(['products' => $products], 200);

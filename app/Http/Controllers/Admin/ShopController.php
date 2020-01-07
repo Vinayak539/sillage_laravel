@@ -8,6 +8,7 @@ use App\Model\Coupon;
 use App\Model\Shop;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -72,7 +73,7 @@ class ShopController extends Controller
         $rand_number = str_pad(rand(0, 9), 4, '0', STR_PAD_LEFT);
         $dis_code    = $subname . $rand_number . date('d') . date('m');
 
-        Shop::create([
+        $shop = Shop::create([
             'name'      => strtolower($request->name),
             'city'      => $request->city,
             'address'   => $request->address,
@@ -82,6 +83,12 @@ class ShopController extends Controller
             'password'  => bcrypt($request->password),
             'status'    => true,
         ]);
+
+        Mail::send(['html' => 'backend.mails.shop'], ['shop' => $shop, 'password' => $request->password], function ($message) use ($shop) {
+            $message->from('support@hnilifestyle.com', 'Hni Lifestyle');
+            $message->to($shop->email, $shop->name);
+            $message->subject('Hni Lifestyle - Shop Credentials');
+        });
 
         connectify('success', 'Shop Added', 'Shop has been added successfully !');
 

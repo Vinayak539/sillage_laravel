@@ -438,7 +438,7 @@
                         <div class="form-group">
                             <label for="offer_id">Offer <span class="text-warning">( Select Any if want to give offer
                                     )</span></label>
-                            <select name="offer_id" id="offer_id" class="form-control" >
+                            <select name="offer_id" id="offer_id" class="form-control">
                                 <option value="">--Select Offer--</option>
                                 @foreach($offers as $ofr)
 
@@ -647,9 +647,8 @@
                         <td>
                             <select name="size_id[{{ $key }}]" class="form-control" required>
                                 <option value="">--Select Sizes--</option>
-                                @foreach($product->sizes as $size)
-                                <option value="{{ $size->size_id }}"
-                                    {{ $cf->size_id === $size->size_id ? 'selected' : '' }}>
+                                @foreach($sizes as $size)
+                                <option value="{{ $size->id }}" {{ $cf->size_id === $size->id ? 'selected' : '' }}>
                                     {{ $size->title }}
                                 </option>
                                 @endforeach
@@ -685,7 +684,7 @@
                                         <i class="fa fa-save"></i> Update
                                     </a>
                                     <a href="javascript:void(0)" class="dropdown-item has-icon delete-color-object"
-                                        title="Delete">
+                                        title="Delete" data-object-index="{{ $key }}">
                                         <i class="fa fa-trash text-danger"></i> Delete
                                     </a>
                                 </div>
@@ -819,7 +818,10 @@
 
         $(".delete-color-object").click(function () {
             if (window.confirm("Are you sure to delete this Color & Size ?")) {
-                $('#txtMapID').val($(this).attr("data-obj-id"));
+                
+                var key = $(this).attr("data-object-index");
+                var id = $("input[name='map_id[" + key + "]']").val();
+                $('#txtMapID').val(id);
                 $("#formColorDelete").submit();
                 $(this).attr('disabled', 'disabled');
                 $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');

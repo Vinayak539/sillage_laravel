@@ -174,13 +174,13 @@
                                     <tr class="shipping">
                                         <th>Shipping</th>
                                         <td class="text-right">
-                                            <span> ₹0</span>
+                                            <span> ₹60</span>
                                         </td>
                                     </tr>
                                     <tr class="order-total">
                                         <th>Order Total</th>
                                         <td class="text-right"><span
-                                                class="order-total-ammount">₹{{ Cart::gettotal() }}</span>
+                                                class="order-total-ammount">₹{{ Cart::gettotal() + 60 }}</span>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -190,20 +190,110 @@
                             <div class="payment-group mb--10">
                                 <div class="payment-radio">
                                     <input type="radio" value="paytm" name="payment_mode" id="paytm" checked>
-                                    <label class="payment-label" for="paytm">DABIT/CREDIT/NETBANKING/PAYTM</label>
+                                    <label class="payment-label" for="paytm">DEBIT/CREDIT/NETBANKING/PAYTM</label>
                                 </div>
                             </div>
 
                             <div class="payment-group mb--10">
-                                <div class="payment-radio">
+                                <!-- <div class="payment-radio">
                                     <input type="radio" value="cod" name="payment_mode" id="cod">
                                     <label class="payment-label" for="cod">
                                         CASH ON DELIVERY
                                     </label>
-                                </div>
+                                </div> -->
                                 <div class="payment-info cash hide-in-default" data-method="cash">
                                     <p>Pay with cash upon delivery.</p>
                                 </div>
+                                <div class="promocode-checkout">
+                                    <div class="faq-tab-wrapper-three">
+                                        <div class="faq-panel">
+                                            <div class="panel-group theme-accordion" id="accordion">
+                                                <div class="panel">
+                                                    <div class="panel-heading active-panel">
+                                                        <h6 class="panel-title">
+                                                            <a data-toggle="collapse" data-parent="#accordion"
+                                                                href="#collapse1">
+                                                                Enter Promo Code</a>
+                                                        </h6>
+                                                    </div>
+                                                    <div id="collapse1" class="panel-collapse collapse show">
+                                                        <div class="panel-body">
+                                                            <div class="check">
+                                                                <div class="input-group">
+                                                                    <input type="text" name="promocode" id="promocode"
+                                                                        class="single-input-wrapper check-availibility promocode"
+                                                                        placeholder="enter code here!"
+                                                                        style="border-right: none;margin-bottom: 0;">
+                                                                    <div class="input-group-append">
+                                                                        <button type="button"
+                                                                            class="verify_promo check-availibility theme-button-three  mr-0">
+                                                                            Apply
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- <div class="form-group">
+                                                                <input id="promocode" type="text"
+                                                                    name="promocode" class="promocode"
+                                                                    placeholder="enter code here!">
+                                                            </div> -->
+                                                            <div class="acType-content mt-10">
+                                                                <ul class="acType-list">
+                                                                    @foreach($promocodes as $promo)
+                                                                    <li>
+                                                                        <div>
+                                                                            <input type="radio" name="promo"
+                                                                                class="promo"
+                                                                                value="{{ $promo->promocode }}">
+                                                                            <label
+                                                                                for="{{ $promo->promocode }}">{{ $promo->promocode }}</label>
+                                                                        </div>
+                                                                    </li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel">
+                                                    <div class="panel-heading">
+                                                        <h6 class="panel-title">
+                                                            <a data-toggle="collapse" data-parent="#accordion"
+                                                                href="#collapse2">
+                                                                Enter Shop Name!</a>
+                                                        </h6>
+                                                    </div>
+                                                    <div id="collapse2" class="panel-collapse collapse">
+                                                        <div class="panel-body">
+                                                            <div class="check">
+                                                                <div class="input-group">
+                                                                    <input type="text" name="discountcode"
+                                                                        id="discountcode"
+                                                                        class="single-input-wrapper check-availibility discountcode"
+                                                                        placeholder="Enter Shop Name"
+                                                                        style="border-right: none;margin-bottom: 0;">
+                                                                    <div class="input-group-append">
+                                                                        <button type="button"
+                                                                            class="verify_promo check-availibility theme-button-three  mr-0">
+                                                                            Apply
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group text-center">
+                                            <div class="promo_success text-success mt-3"></div>
+                                            <div class="promo_error text-danger mt-3"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
                             </div>
                             <div class="payment-group mt--20">
                                 <p class="mb--15">Your personal data will be used to process your order,
@@ -266,6 +356,9 @@
                                                 <li class="col-12"><a href="/auth/google" class="gmail"><i
                                                             class="fa fa-envelope-o" aria-hidden="true"></i>
                                                         Gmail</a></li>
+                                                <!-- <li class="col-12"><a href="/auth/facebook" class="gmail"><i
+                                                            class="fa fa-facebook" aria-hidden="true"></i>
+                                                        Facebook</a></li> -->
 
                                             </ul>
                                         </div> <!-- /.sign-up-form-wrapper -->
@@ -443,6 +536,46 @@
                 $(".order_place").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
                 form.submit();
             }
+        });
+
+        $('.verify_promo').click(function (e) {
+            e.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('input[name="_token"]').val()
+                }
+            });
+            $(this).html('Wait...');
+            $(this).attr('disabled', 'disabled');
+            $.ajax({
+                url: "{{ route('verify.promocode') }}",
+                method: 'POST',
+                data: {
+                    promocode: $('.promocode').val(),
+                    discountcode: $('#discountcode').val(),
+                },
+                success: function (result) {
+                    if (result.success) {
+                        $('.promo_success').html(result.success);
+                        $('.verify_promo').html('Apply');
+                        $('.verify_promo').removeAttr('disabled', 'disabled');
+                        $('.promo_error').hide();
+                        $('.promo_success').show();
+                        setTimeout(function () {
+                            $('.promo_success').fadeOut();
+                        }, 4000);
+                    } else {
+                        $('.promo_success').hide();
+                        $('.promo_error').show();
+                        $('.promo_error').html(result.error);
+                        $('.verify_promo').html('Apply');
+                        $('.verify_promo').removeAttr('disabled', 'disabled');
+                        setTimeout(function () {
+                            $('.promo_error').fadeOut();
+                        }, 4000);
+                    }
+                }
+            });
         });
 
     });

@@ -70,30 +70,30 @@ class CartController extends Controller
             }
 
             Cart::add(array(
-                'id' => $size->title . '_' . $sizeColor->id,
-                'name' => $product->title,
-                'price' => $sizeColor->mrp,
-                'quantity' => $request->qty,
+                'id'         => $size->title . '_' . $sizeColor->id,
+                'name'       => $product->title,
+                'price'      => $sizeColor->mrp,
+                'quantity'   => $request->qty,
                 'attributes' => array(
-                    'size_id' => $size->id,
-                    'color_id' => $request->color_id,
-                    'color_name' => $sizeColor->color->title,
-                    'size_name' => $size->title,
-                    'image_url' => $product->image_url,
-                    'slug_url' => $product->slug_url,
-                    'product_id' => $product->id,
-                    'category_id' => $product->category_id,
-                    'stock' => $prodsizeColor->stock,
-                    'map_id' => $sizeColor->id,
+                    'size_id'      => $size->id,
+                    'color_id'     => $request->color_id,
+                    'color_name'   => $sizeColor->color->title,
+                    'size_name'    => $size->title,
+                    'image_url'    => $product->image_url,
+                    'slug_url'     => $product->slug_url,
+                    'product_id'   => $product->id,
+                    'category_id'  => $product->category_id,
+                    'stock'        => $prodsizeColor->stock,
+                    'map_id'       => $sizeColor->id,
                     'offer_map_id' => $exp_offer[0],
-                    'offers' => $request->offers,
+                    'offers'       => json_encode($request->offers),
                 ),
             ));
 
             Cart::update($size->title . '_' . $sizeColor->id, array(
                 'quantity' => array(
                     'relative' => false,
-                    'value' => $request->qty,
+                    'value'    => $request->qty,
                 ),
             ));
 
@@ -132,8 +132,8 @@ class CartController extends Controller
         ],
             [
                 'quantity.required' => 'Please enter quantity',
-                'quantity.min' => 'Quantity must be greater than 1',
-                'quantity.max' => 'Only ' . $size->stock . ' Quantity left in stock',
+                'quantity.min'      => 'Quantity must be greater than 1',
+                'quantity.max'      => 'Only ' . $size->stock . ' Quantity left in stock',
             ]);
 
         if ($validator->fails()) {
@@ -143,24 +143,24 @@ class CartController extends Controller
 
         Cart::update($request->itemid, array(
 
-            'quantity' => array(
+            'quantity'   => array(
                 'relative' => false,
-                'value' => $request->quantity,
+                'value'    => $request->quantity,
             ),
 
             'attributes' => array(
-                'size_id' => $cart->attributes->size_id,
-                'color_id' => $size->color_id,
-                'color_name' => $cart->attributes->color_name,
-                'size_name' => $cart->attributes->size_name,
-                'map_id' => $cart->attributes->map_id,
-                'image_url' => $product->image_url,
-                'slug_url' => $product->slug_url,
-                'product_id' => $product->id,
-                'category_id' => $product->category_id,
-                'stock' => $size->stock,
+                'size_id'      => $cart->attributes->size_id,
+                'color_id'     => $size->color_id,
+                'color_name'   => $cart->attributes->color_name,
+                'size_name'    => $cart->attributes->size_name,
+                'map_id'       => $cart->attributes->map_id,
+                'image_url'    => $product->image_url,
+                'slug_url'     => $product->slug_url,
+                'product_id'   => $product->id,
+                'category_id'  => $product->category_id,
+                'stock'        => $size->stock,
                 'offer_map_id' => $cart->attributes->offer_map_id,
-                'offers' => $cart->attributes->offers,
+                'offers'       => $cart->attributes->offers,
             ),
         ));
 

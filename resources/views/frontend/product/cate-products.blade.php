@@ -225,7 +225,7 @@
                                                         alt="Product Image" class="secondary-image">
                                                 </a>
                                             </div>
-                                            <div class="airi-product-action">
+                                            <!-- <div class="airi-product-action">
                                                 <div class="product-action">
 
                                                     <a class="add_to_cart_btn action-btn" href="{{ route('cart') }}"
@@ -234,7 +234,7 @@
                                                     </a>
 
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </figure>
                                         <div class="product-info">
                                             <h3 class="product-title">

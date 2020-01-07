@@ -49,7 +49,7 @@ Route::GET('/product/{slug}', 'MainController@getProduct')->name('product');
 Route::GET('/category/{slug}', 'MainController@getCategoryProducts')->name('cate');
 Route::GET('/search', 'MainController@search')->name('search');
 Route::POST('/get-sizes', 'MainController@getSizes')->name('get.sizes');
-
+Route::POST('/verify-promocode', 'MainController@verifyPromocode')->name('verify.promocode');
 // Start Socialite
 
 Route::GET('auth/{provider}', 'SocialiteManageController@redirectToProvider')->name('user.auth.socialite');

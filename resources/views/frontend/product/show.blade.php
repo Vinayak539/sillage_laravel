@@ -253,7 +253,7 @@
                     </form>
 
                     <div class="offerSection">
-                        <p> Choose Any {{ $offers[0]->offered_quantity }} Offer On Purchase of
+                        @if(count($offers))<p> Choose Any {{ $offers[0]->offered_quantity }} Offer On Purchase of
                             {{ $offers[0]->purchase_quantity }} </p>
                         <div class="airi-element-carousel product-carousel nav-vertical-center offer"
                             data-slick-options='{
@@ -269,7 +269,9 @@
                                             {"breakpoint":450, "settings": {"slidesToShow": 4} }
                                         ]'>
 
+
                             @foreach($offers as $key => $offer)
+
                             <div class="airi-product offer_product" data-product-name="{{ $offer->product_name }}"
                                 data-color="{{ $offer->color_name }}" data-size="{{ $offer->size_name }}"
                                 data-index="{{ $key }}" data-purchase-quantity="{{ $offer->purchase_quantity }}"
@@ -279,7 +281,7 @@
                                     <figure class="product-image">
                                         <div class="product-image--holder">
                                             <a href="javascript:void(0)">
-                                                <img src="{!! asset('storage/images/products/' .$offer->image_url) !!}"
+                                                <img src="{!! asset('storage/images/products/' . $offer->image_url) !!}"
                                                     alt="Product Image">
                                             </a>
                                         </div>
@@ -296,9 +298,11 @@
                                 </div>
                             </div>
                             @endforeach
+
                         </div>
                         <a href="javascript:void(0)" class="selectedOfferBtn">View
                             Selected Offer <i class="fa fa-angle-double-right"></i></a>
+                        @endif
                     </div>
 
                     <form action="#" class="form--action mt--20 mb--30 mb-sm--20">
@@ -783,23 +787,26 @@
 
         volume();
 
+        sessionStorage.clear();
+
         var offers = JSON.parse(sessionStorage.getItem('offers')) || {};
 
-        $('.offer_product').click(function (){
+        $('.offer_product').click(function () {
 
             var pname = $(this).attr('data-product-name');
             var pcolor = $(this).attr('data-color');
             var psize = $(this).attr('data-size');
             var index = $(this).attr('data-index');
             var offer_id = $(this).attr('data-offered-id');
+
             var map_id = $(this).attr('data-map-id');
             var pquantity = $(this).attr('data-purchase-quantity');
             var oquantity = $(this).attr('data-offered-quantity');
             var quantity = $('.quantity-input').val();
 
-            if(quantity >= pquantity){
+            if (quantity >= pquantity) {
 
-                if(!offers[index] ){
+                if (!offers[index]) {
                     offers[index] = {};
                     offers[index] = {
                         'name': pname,
@@ -808,7 +815,7 @@
                         'offer_id': offer_id,
                         'map_id': map_id,
                     };
-                } else  {
+                } else {
                     delete offers[index];
                 }
 
@@ -816,14 +823,14 @@
 
 
                 // Offer Designing goes here
-            } else{
+            } else {
                 swal('Invalid', 'On Purchase of ' + pquantity + ' Choose Any ' + oquantity, 'error');
             }
 
 
         });
 
-        $('.selectedOfferBtn').click(function(){
+        $('.selectedOfferBtn').click(function () {
 
             $('#seleted-offer').modal('show');
 
@@ -831,7 +838,7 @@
 
             var html = '';
 
-            if(offers){
+            if (offers) {
 
                 for (let key in offers) {
 
@@ -875,19 +882,19 @@
                 offer_ids = [];
                 map_ids = [];
 
-                if(offers){
+                if (offers) {
 
-                   var offer = JSON.parse(sessionStorage.getItem("offers"))
+                    var offer = JSON.parse(sessionStorage.getItem("offers"))
 
-                     for (let key in offers) {
+                    for (let key in offers) {
 
-                            offer_ids.push(offers[key].offer_id);
-                            map_ids.push(offers[key].map_id);
+                        offer_ids.push(offers[key].offer_id);
+                        map_ids.push(offers[key].map_id);
 
-                        }
+                    }
 
-                   $('#cart_offer').val(offer_ids);
-                   $('#cart_map_id').val(map_ids);
+                    $('#cart_offer').val(offer_ids);
+                    $('#cart_map_id').val(map_ids);
 
                 }
 
@@ -958,9 +965,7 @@
                         var html = '';
                         var prodSize = {!! json_encode($product->sizes) !!}
 
-                        var productSizeObj = {
-
-                        };
+                        var productSizeObj = {};
 
                         success.forEach(size => {
                             if (!productSizeObj[size.size_id]) {
@@ -1028,9 +1033,7 @@
                         var html = '';
                         var prodSize = {!! json_encode($product->sizes) !!}
 
-                        var productSizeObj = {
-
-                        };
+                        var productSizeObj = {};
 
                         success.forEach(size => {
                             if (!productSizeObj[size.size_id]) {
@@ -1099,12 +1102,12 @@
 
     });
 
-function isOfferExists(key){
-    if(sessionStorage.getItem('offers') && sessionStorage.getItem('offers')[key]){
-        return true;
+    function isOfferExists(key) {
+        if (sessionStorage.getItem('offers') && sessionStorage.getItem('offers')[key]) {
+            return true;
+        }
+        return false;
     }
-    return false;
-}
 
 </script>
 @endsection
