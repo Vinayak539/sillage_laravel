@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Model\Address;
 use App\Model\Returnticket;
 use App\Model\SMS;
 use App\Model\Ticket;
@@ -13,6 +14,7 @@ use App\Model\User;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class UserController extends Controller
 {
@@ -431,6 +433,278 @@ class UserController extends Controller
             connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
 
             return redirect('/myaccount');
+        }
+    }
+
+    public function getAddresses()
+    {
+        try {
+
+            $user = TxnUser::where('id', auth('user')->user()->id)->with('addresses')->firstOrFail();
+            return view('frontend.user.addresses', compact('user'));
+
+        } catch (\Exception $ex) {
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+                connectify('error', 'Error', 'Whoops, User Not Found, try again later !');
+                return redirect(route('user.dashboard'));
+            }
+            return $ex->getMessage();
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
+            return redirect(route('user.dashboard'));
+        }
+    }
+
+    public function editAddress($id)
+    {
+        try {
+
+            $add = Address::where('id', $id)->firstOrFail();
+            return view('frontend.user.edit-address', compact('add'));
+
+        } catch (\Exception $ex) {
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+                connectify('error', 'Error', 'Whoops, User Not Found, try again later !');
+                return redirect(route('user.dashboard'));
+            }
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
+            return redirect(route('user.dashboard'));
+        }
+    }
+
+    public function fEditAddress(Request $request)
+    {
+        try {
+
+            $add = Address::where('id', $request->address_id)->firstOrFail();
+
+            if (!empty($add)) {
+
+                return response()->json(['data' => $add], 200);
+            }
+
+            return response()->json(['error' => []], 200);
+
+        } catch (\Exception $ex) {
+
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+                return response()->json(['error' => []], 200);
+
+            }
+            \Log::error(['feditAddress' => $ex->getMessage()]);
+            return response()->json(['error' => []], 200);
+
+        }
+    }
+
+    public function UpdateAddress(Request $request, $id)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'address' => 'required|string|max:1000',
+            'city' => 'required|string|max:191',
+            'territory' => 'required|string|max:191',
+            'landmark' => 'nullable|string|max:191',
+            'pincode' => 'required|digits:6',
+            'type_of_address' => 'required|numeric|min:0|max:1',
+        ],
+            [
+                'payment_mode.required' => 'Please Select Any of the Payment Mode !',
+                'address.required' => 'Please Enter Address',
+                'city.required' => 'Please Enter City',
+                'territory.required' => 'Please Enter Territory/State',
+                'pincode.required' => 'Please Enter Pincode',
+                'pincode.digits' => 'Pincode should be of 6 digits',
+                'type_of_address.required' => 'Please Select Type of Address',
+                'type_of_address.numeric' => 'Invalid data provided',
+                'type_of_address.min' => 'Invalid data provided',
+                'type_of_address.max' => 'Invalid data provided',
+            ]);
+
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return back()->withInput();
+        }
+
+        try {
+
+            $add = Address::where('id', $id)->firstOrFail();
+
+            $add->update([
+                'city' => $request->city,
+                'territory' => $request->territory,
+                'address' => $request->address,
+                'landmark' => $request->landmark,
+                'pincode' => $request->pincode,
+                'type_of_address' => $request->type_of_address,
+                'name' => $request->name,
+            ]);
+
+            connectify('success', 'Address Updated', 'Address has been updated successfully !');
+            return back();
+
+        } catch (\Exception $ex) {
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+                connectify('error', 'Error', 'Whoops, User Not Found, try again later !');
+                return back();
+            }
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
+            return back();
+        }
+    }
+
+    public function deleteAddress(Request $request)
+    {
+        try {
+
+            $address = Address::where('id', $request->address_id)->with('user')->firstOrFail();
+
+            $address->user->update([
+                'address_id' => null,
+            ]);
+
+            $address->delete();
+
+            connectify('success', 'Address Deleted', 'Address has been successfully removed from your list !');
+
+            return back();
+
+        } catch (\Exception $ex) {
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+                connectify('error', 'Error', 'Whoops, Address Not Found, try again later !');
+                return back();
+            }
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
+            return back();
+        }
+    }
+
+    public function storeAddress(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'address' => 'required|string|max:1000',
+            'city' => 'required|string|max:191',
+            'territory' => 'required|string|max:191',
+            'landmark' => 'nullable|string|max:191',
+            'pincode' => 'required|digits:6',
+            'mobile' => 'required|digits:10',
+            'type_of_address' => 'required|numeric|min:0|max:1',
+        ],
+            [
+                'payment_mode.required' => 'Please Select Any of the Payment Mode !',
+                'address.required' => 'Please Enter Address',
+                'city.required' => 'Please Enter City',
+                'territory.required' => 'Please Enter Territory/State',
+                'pincode.required' => 'Please Enter Pincode',
+                'pincode.digits' => 'Pincode should be of 6 digits',
+                'mobile.required' => 'Please Enter Mobile Number',
+                'mobile.digits' => 'Mobile number should be of 10 digits',
+                'type_of_address.required' => 'Please Select Type of Address',
+                'type_of_address.numeric' => 'Invalid data provided',
+                'type_of_address.min' => 'Invalid data provided',
+                'type_of_address.max' => 'Invalid data provided',
+            ]);
+
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return back()->withInput();
+        }
+
+        try {
+
+            $user = TxnUser::where('id', auth('user')->user()->id)->firstOrFail();
+
+            $request['country'] = $request->country ? $request->country : 'India';
+            $request['name'] = $request->name ? $request->name : $user->name;
+
+            Address::create([
+                'city' => $request->city,
+                'territory' => $request->territory,
+                'address' => $request->address,
+                'landmark' => $request->landmark,
+                'country' => $request->country,
+                'pincode' => $request->pincode,
+                'type_of_address' => $request->type_of_address,
+                'user_id' => $user->id,
+                'name' => $request->name,
+                'mobile' => $request->mobile,
+            ]);
+
+            connectify('success', 'Address Saved', 'New Address has been added to your list !');
+            return back();
+
+        } catch (\Exception $ex) {
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+                connectify('error', 'Error', 'Whoops, User Not Found, try again later !');
+                return back();
+            }
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
+            return back();
+        }
+    }
+
+    public function fUpdateAddress(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'address' => 'required|string|max:1000',
+            'city' => 'required|string|max:191',
+            'territory' => 'required|string|max:191',
+            'landmark' => 'nullable|string|max:191',
+            'pincode' => 'required|digits:6',
+            'mobile' => 'required|digits:10',
+            'type_of_address' => 'required|numeric|min:0|max:1',
+        ],
+            [
+                'payment_mode.required' => 'Please Select Any of the Payment Mode !',
+                'address.required' => 'Please Enter Address',
+                'city.required' => 'Please Enter City',
+                'territory.required' => 'Please Enter Territory/State',
+                'pincode.required' => 'Please Enter Pincode',
+                'pincode.digits' => 'Pincode should be of 6 digits',
+                'type_of_address.required' => 'Please Select Type of Address',
+                'type_of_address.numeric' => 'Invalid data provided',
+                'type_of_address.min' => 'Invalid data provided',
+                'type_of_address.max' => 'Invalid data provided',
+                'mobile.required' => 'Please Enter Mobile Number',
+                'mobile.digits' => 'Mobile number should be of 10 digits',
+            ]);
+
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return back()->withInput();
+        }
+
+        try {
+
+            $add = Address::where('id', $request->address_id)->firstOrFail();
+
+            $add->update([
+                'city' => $request->city,
+                'territory' => $request->territory,
+                'address' => $request->address,
+                'landmark' => $request->landmark,
+                'pincode' => $request->pincode,
+                'type_of_address' => $request->type_of_address,
+                'name' => $request->name,
+                'mobile' => $request->mobile,
+            ]);
+
+            connectify('success', 'Address Updated', 'Address has been updated successfully !');
+            return back();
+
+        } catch (\Exception $ex) {
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+                connectify('error', 'Error', 'Whoops, User Not Found, try again later !');
+                return back();
+            }
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
+            return back();
         }
     }
 

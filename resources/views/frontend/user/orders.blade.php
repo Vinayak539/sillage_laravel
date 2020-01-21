@@ -148,29 +148,33 @@
             <div class="row ptb--40 ptb-md--30 ptb-sm--20">
                 <div class="col-lg-12 mb-sm--25">
                     @forelse($user->orders as $order)
-                    <div class="order-bordered mb-20">
+                    <div class="order-bordered mt-5 mb-20">
                         <div class="row">
                             <div class="col-md-12">
-                                <a href="/myaccount/order/{{ $order->id }}" class="order-btn">{{ $order->id }}</a>
+                                <a href="{{ route('user.order', $order->id) }}" class="order-btn">{{ $order->id }}</a>
                                 <a href="{{ route('user.invoices.download', $order->id) }}"
                                     class="download-btn float-right">Download Invoice</a>
                             </div>
                             @php $statusBoolean = true @endphp
-                            @php $priceBoolean = true @endphp
 
                             @foreach($order->details as $detail)
-                            <div class="col-md-12 mt-10">
+                            <div class="col-md-12 mt--10">
                                 <div class="order_sec">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="pro_sec">
                                                 <div class="img">
-                                                    <img src="/storage/images/products/{{ $detail->product->image_url }}"
+                                                    <img class="lazy" data-original="{!! asset('storage/images/products/'.$detail->product->image_url) !!}"
                                                         alt="{{ $detail->product->title }}" />
                                                 </div>
                                                 <div class="content">
                                                     <p class="title">
                                                         {{ $detail->product->title }}
+
+                                                    </p>
+                                                    <p>
+                                                        {{ $detail->size ? 'Size: ' . $detail->size->title : '' }} <br>
+                                                        {{ $detail->color ? 'Colour: ' . $detail->color->title : '' }}
                                                     </p>
                                                     <p>
                                                         Price :
@@ -183,15 +187,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @if($priceBoolean)
-                                        @php $priceBoolean = false @endphp
                                         <div class="col-md-4">
                                             <p class="price">
-                                             Total Price:
-                                                <h4>&#8377; {{ $order->total }}</h4>
+                                                &#8377; {{ $detail->mrp * $detail->quantity }}
                                             </p>
                                         </div>
-                                        @endif
                                         <div class="col-md-4">
                                             @if($order->delivery_date)
                                             <p class="delivery">
@@ -203,9 +203,9 @@
                                             @if($statusBoolean)
                                             @php $statusBoolean = false @endphp
                                             <p class="padding10">
-                                                Order Status: <h4>
-                                                    {{ $order->status != 'Order Cancel By Buyer' ? $order->status  : 'Order Cancelled by you' }}
-                                                </h4>
+                                                Order Status: <strong>
+                                                    {{ $order->status }}
+                                                </strong>
                                             </p>
                                             @endif
                                         </div>
@@ -214,7 +214,7 @@
                             </div>
                             @endforeach
                             <div class="col-md-12">
-                                <div class="review-sec mt-20">
+                                <div class="review-sec mt--20">
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <p class="date" style="line-height: 20px;">
@@ -224,7 +224,7 @@
                                         </div>
                                         @if($order->return_status === null &&
                                         $order->status === 'delivered' &&
-                                        $order->status !== 'Order Cancel By Buyer')
+                                        $order->status !== 'Cancelled')
                                         <div class="col-sm-3">
                                             <a href="javascript:void(0)" class="return-btn"
                                                 data-obj-id="{{ $order->id }}">
@@ -234,7 +234,7 @@
                                         </div>
                                         @endif @if($order->return_status ===
                                         null && $order->status != 'delivered' &&
-                                        $order->status != 'Order Cancel By Buyer') @if($order->status != 'shipped')
+                                        $order->status != 'Cancelled') @if($order->status != 'shipped')
                                         <a href="javascript:void(0);" class="cancelBtn" data-obj-id="{{ $order->id }}">
                                             <i class="fa fa-times" aria-hidden="true"></i>
                                             Cancel

@@ -85,6 +85,7 @@ class CartController extends Controller
                     'category_id'  => $product->category_id,
                     'stock'        => $prodsizeColor->stock,
                     'map_id'       => $sizeColor->id,
+                    'isCodAvailable'=> $product->isCodAvailable,
                     'offer_map_id' => $exp_offer[0],
                     'offers'       => json_encode($request->offers),
                 ),

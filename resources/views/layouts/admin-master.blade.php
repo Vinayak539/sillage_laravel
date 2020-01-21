@@ -98,7 +98,6 @@
                                 <li><a class="nav-link" href="{{ route('admin.gsts.all') }}">GST</a></li>
                                 <li><a class="nav-link" href="{{ route('admin.sizes.all') }}">Sizes</a></li>
                                 <li><a class="nav-link" href="{{ route('admin.warranties.all') }}">Warranties</a></li>
-                                <li><a class="nav-link" href="{{ route('admin.products.all') }}">Products</a></li>
                                 <li><a class="nav-link" href="{{ route('admin.sections.all') }}">Sections</a></li>
                             </ul>
                         </li>
@@ -113,6 +112,11 @@
                                 <li><a class="nav-link" href="{{ route('admin.reports.all') }}">Manage Reports</a></li>
 
                             </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="{{ route('admin.products.all') }}" class="nav-link"><i
+                                    data-feather="smartphone"></i><span>Products</span></a>
                         </li>
 
                         <li class="dropdown">
@@ -299,7 +303,18 @@
     <script src="{!! asset('admin/bundles/select2/dist/js/select2.full.min.js') !!}"></script>
     <script src="{!! asset('admin/js/scripts.js') !!}"></script>
     <script src="{!! asset('admin/bundles/bootstrap-daterangepicker/daterangepicker.js') !!}"></script>
+    <script src="{!! asset('assets/js/jquery.lazyload.js') !!}"></script>
+    <script src="{!! asset('admin/bundles/summernote/summernote-bs4.js') !!}"></script>
 
+    <script>
+        $(document).ready(function () {
+
+            $(".lazy").lazyload({
+                effect: "fadeIn",
+            });
+        });
+
+    </script>
     @yield('extrajs')
     @include('notify::messages')
     @notifyJs

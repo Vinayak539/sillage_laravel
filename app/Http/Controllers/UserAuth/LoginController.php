@@ -187,18 +187,23 @@ class LoginController extends Controller
 
     public function otpLogin(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email|exists:txn_users,email',
+        $validator = Validator::make($request->all(), [
+            'mobile' => 'required|digits:10|exists:txn_users,mobile',
         ],
             [
-                'email.required' => 'Please Enter Email ID',
-                'email.email' => 'Please Enter Proper Email ID',
-                'email.exists' => 'Email Not exists in our database !',
+                'mobile.required' => 'Please Enter Mobile Number',
+                'mobile.digits' => 'Please Enter 10 digits Mobile Number',
+                'mobile.exists' => 'Mobile Number does Not exists in our records !',
             ]);
+
+        if ($validator->fails()) {
+            connectify('error', 'Otp Login', $validator->errors()->first());
+            return back()->withInput();
+        }
 
         try {
 
-            $user = TxnUser::where('email', $request->email)->firstOrFail();
+            $user = TxnUser::where('mobile', $request->mobile)->firstOrFail();
 
             $rand_otp = rand(100000, 999999);
 

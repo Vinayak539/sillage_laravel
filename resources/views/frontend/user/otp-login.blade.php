@@ -1,40 +1,28 @@
 @extends('layouts.master') @section('title','Login') @section('content')
 
-
-<div class="breadcrumb-area bg--white-6 pt--60 pb--70 pt-lg--40 pb-lg--50 pt-md--30 pb-md--40">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h1 class="page-title">OTP</h1>
-                <ul class="breadcrumb justify-content-center">
-                    <li><a href="{{ route('index') }}">Home</a></li>
-                    <li class="current"><span>OTP</span></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="signUp-page signUp-minimal">
+<div class="signUp-page signUp-minimal pt--70">
     <div class="signin-form-wrapper">
         <div class="title-area text-center">
-            <h3>Login with otp.</h3>
+            <h3>Login with otp</h3>
         </div> <!-- /.title-area -->
         <form id="login-form" action="{{ route('user.login.otp') }}" method="POST" autocomplete="off" class="login">
             @csrf
             <div class="row">
                 <div class="col-12">
                     <div class="input-group">
-                        <input type="text" name="email" value="{{ old('email') }}" required>
-                        <label>Email *</label>
-                    </div> <!-- /.input-group -->
+                        <input type="number" name="mobile" value="{{ old('mobile') }}" min="0" required>
+                        <label>Enter 10 digit Mobile Number *</label>
+                    </div>
+                    <div>
+                        <label for="mobile" class="error"></label>
+                    </div>
+                    <!-- /.input-group -->
                 </div> <!-- /.col- -->
             </div> <!-- /.row -->
             <div class="agreement-checkbox d-flex justify-content-end align-items-center">
-                <a href="{{ route('user.password.request') }}">Forget Password?</a>
+                <a href="{{ route('user.password.request') }}">Forgot Password?</a>
             </div>
-            <button type="submit" class="line-button-one button-rose button_update_login">Login</button>
+            <button type="submit" class="line-button-one button-rose btnSubmit" tabindex="1">Login</button>
         </form>
         <p class="signUp-text text-center">Don’t have any account? <a href="/myaccount/register">Sign up</a> now. & <a
                 href="{{ route('user.login') }}"> Login</a></p>
@@ -51,16 +39,44 @@
 @endsection @section('extrajs')
 <script>
     $(document).ready(function () {
-        $('.login').submit(function () {
-            $('.button_update_login').attr('disabled', 'disabled');
-            $('.button_update_login').html('Please Wait');
+       
+        $("#login-form").validate({
+            rules: {
+
+                mobile: {
+                    required: true,
+                    number:true,
+                    minlength: 10,
+                    maxlength: 10,
+                },
+
+            },
+            messages: {
+                mobile: {
+                    required: "Please Enter Mobile Number",
+                    number: "Please Enter Valid Mobile Number",
+                    minlength: "Mobile Number should be of 10 digits",
+                    maxlength: "Mobile Number should be of 10 digits",
+                },
+              
+            },
+            submitHandler: function (form) {
+                $('.btnSubmit').attr('disabled', 'disabled');
+                $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+                form.submit();
+            }
         });
+
     });
 
 </script>
 @endsection @section('extracss')
 
 <style>
+    .error {
+        color: rgb(238, 53, 53);
+    }
+
     .signUp-page {
         position: relative;
         min-height: 70vh;
@@ -68,7 +84,6 @@
         padding-top: 50px;
         padding-bottom: 50px;
     }
-
 </style>
 
 @endsection

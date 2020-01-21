@@ -119,6 +119,30 @@ class UserManageController extends Controller
         }
     }
 
+    
+    public function addresses($id)
+    {
+        try {
+
+            $user = TxnUser::where('id', $id)->with('addresses')->firstOrFail();
+
+            return view('backend.admin.users.addresses', compact('user'));
+
+        } catch (\Exception $ex) {
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+
+                connectify('error', 'Error', 'Whoops, User Not Found !');
+
+                return redirect(route('admin.users.all'));
+            }
+
+            return $ex->getMessage();
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end !');
+
+            return redirect(route('admin.users.all'));
+        }
+    }
+
     public function reviews($id)
     {
         try {

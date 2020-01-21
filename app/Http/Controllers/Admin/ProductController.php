@@ -84,9 +84,8 @@ class ProductController extends Controller
                 'material_id' => 'required|integer|exists:txn_materials,id',
                 'weight_id' => 'nullable|integer|exists:txn_weights,id',
                 'condition_id' => 'required|integer|exists:txn_conditions,id',
-                'warranty_id' => 'required|integer|exists:master_warranties,id',
+                'warranty_id' => 'nullable|integer|exists:master_warranties,id',
                 'gst_id' => 'required|integer|exists:txn_master_gsts,id',
-                'expiry_date' => 'required|date_format:Y-m-d',
                 'breadth' => 'nullable|string|max:191',
                 'height' => 'nullable|string|max:191',
                 'weight' => 'nullable|string|max:191',
@@ -95,6 +94,7 @@ class ProductController extends Controller
                 'keywords' => 'required|string',
                 'is_cod' => 'required|numeric|max:1',
                 'mrp' => 'required|numeric|min:1',
+                'starting_price' => 'required|numeric|min:1',
                 'stock' => 'required|numeric|min:1',
             ],
             [
@@ -119,7 +119,6 @@ class ProductController extends Controller
                 'gst_id.exists' => 'GST Not Exists',
                 'warranty_id.required' => 'Please Select Warranty',
                 'warranty_id.exists' => 'Warranty Not Exists',
-                'expiry_date.date_format' => 'Please Enter date in DD-MM-YYYY format',
                 'starting_price.required' => 'Please Select Starting Price',
                 'buy_it_now_price.required' => 'Please Select Buying Price',
                 'reserve_price.required' => 'Please Select Reserve Price',
@@ -133,8 +132,8 @@ class ProductController extends Controller
                 'keywords.required' => 'Please Enter Atleast One Keyword of the Product',
                 'is_cod.required' => 'Please Select Cod Availability',
                 'is_cod.min' => 'Invalid data provided in cod availability',
-                'mrp.required' => 'Please Enter Mrp',
                 'mrp.min' => 'Mrp Should be More than 1',
+                'starting_price.min' => 'Starting Price Should be More than 1',
                 'stock.required' => 'Please Enter Stock',
                 'stock.min' => 'Stock Should be More than 1',
             ]
@@ -155,8 +154,6 @@ class ProductController extends Controller
             $request->image_url1->storeAs('public/images/products', $request->img1);
         }
 
-        $request['expiry_date'] = $request->expiry_date == null ? null : $request->expiry_date;
-
         $category = TxnCategory::where('id', $request->category_id)->first();
 
         $product = TxnProduct::create([
@@ -172,7 +169,6 @@ class ProductController extends Controller
             'weight' => $request->weight,
             'width' => $request->width,
             'upc' => $request->upc,
-            'expiry_date' => $request->expiry_date,
             'category_id' => $request->category_id,
             'warranty_id' => $request->warranty_id,
             'gst_id' => $request->gst_id,
@@ -344,13 +340,13 @@ class ProductController extends Controller
                 'condition_id' => 'required|integer|exists:txn_conditions,id',
                 'category_id' => 'required|integer|exists:txn_categories,id',
                 'gst_id' => 'required|integer|exists:txn_master_gsts,id',
-                'expiry_date' => 'nullable|date_format:Y-m-d',
+                // 'expiry_date' => 'nullable|date_format:Y-m-d',
                 'length' => 'nullable|string|max:191',
                 'breadth' => 'nullable|string|max:191',
                 'height' => 'nullable|string|max:191',
                 'weight' => 'nullable|string|max:191',
                 'keywords' => 'required|string',
-                'warranty_id' => 'required|integer|exists:master_warranties,id',
+                'warranty_id' => 'nullable|integer|exists:master_warranties,id',
                 'is_cod' => 'required|numeric|max:1',
             ],
             [
@@ -425,7 +421,7 @@ class ProductController extends Controller
                 'weight' => $request->weight,
                 'width' => $request->width,
                 'upc' => $request->upc,
-                'expiry_date' => $request->expiry_date,
+                // 'expiry_date' => $request->expiry_date,
                 'status' => $request->status,
                 'warranty_id' => $request->warranty_id,
                 'gst_id' => $request->gst_id,
@@ -512,19 +508,24 @@ class ProductController extends Controller
 
             $product = TxnProduct::where('id', $id)->firstOrFail();
 
-            foreach ($request->image_urls as $images) {
-                $request['image'] = uniqid() . '.' . pathinfo($images->getClientOriginalName(), PATHINFO_EXTENSION);
-                $images->storeAs('public/images/multi-products', $request->image);
+            if ($request->hasFile('image_urls')) {
+                foreach ($request->image_urls as $images) {
 
-                TxnImage::create([
-                    'product_id' => $product->id,
-                    'image_url' => $request->image,
-                ]);
+                    $request['image'] = uniqid() . '.' . pathinfo($images->getClientOriginalName(), PATHINFO_EXTENSION);
+                    $images->storeAs('public/images/multi-products', $request->image);
+
+                    TxnImage::create([
+                        'product_id' => $product->id,
+                        'image_url' => $request->image,
+                        'color_id' => $request->color_id ? $request->color_id : null,
+                    ]);
+                }
             }
 
             connectify('success', 'Images Added', 'Images has been added successfully !');
 
-            return redirect(route('admin.products.edit', $product->slug_url));
+            return back();
+
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
 
@@ -557,7 +558,8 @@ class ProductController extends Controller
 
             connectify('success', 'Image Added', 'Image has been Deleted Successfully !');
 
-            return redirect(route('admin.products.edit', $image->product->slug_url));
+            return back();
+
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
 
@@ -724,6 +726,101 @@ class ProductController extends Controller
                 \Log::error(['Add Color & Size' => $ex->getMessage()]);
 
                 connectify('error', 'Add Color & Size', 'Whoops Something Went Wrong from our end !');
+
+                return redirect(route('admin.products.edit', $product->slug_url));
+            }
+        }
+    }
+
+    public function editColor($id)
+    {
+        try {
+
+            $cl = MapColorSize::where('id', $id)->with('product')->firstOrFail();
+
+            $product = TxnProduct::where('id', $cl->product_id)->with('sizes')->firstOrFail();
+
+            $colors = MstColor::where('status', true)->get();
+
+            $images = TxnImage::where('color_id', $cl->color_id)->where('product_id', $cl->product_id)->orderBy('id', 'ASC')->get();
+
+            return view('backend.admin.products.color-edit', compact('cl', 'colors', 'product', 'images'));
+
+        } catch (\Exception $ex) {
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+
+                connectify('error', 'Error Update Custom Field', 'Whoops Custom Field Not found !');
+
+                return redirect(route('admin.products.all'));
+
+            } else {
+
+                \Log::error(['Product Update Custom field' => $ex->getMessage()]);
+
+                connectify('error', 'Error Update Custom Field', 'Whoops Something Went Wrong from our end !');
+
+                return redirect(route('admin.products.edit', $product->slug_url));
+            }
+        }
+    }
+
+    public function updateColorSize(Request $request, $id)
+    {
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'size_id' => 'required|exists:mst_sizes,id',
+                'mrp' => 'required|numeric|min:1',
+                'stock' => 'required|numeric|min:0',
+                'starting_price' => 'required|numeric|min:1',
+            ],
+            [
+                'size_id.required' => 'Please Select Sizes',
+                'size_id.exists' => 'Size does not exists',
+                'mrp.required' => 'Please Enter Mrp',
+                'mrp.min' => 'Mrp Should be More than 1',
+                'stock.required' => 'Please Enter Stock',
+                'stock.min' => 'Stock Should be More than 1',
+                'starting_price.required' => 'Please Enter Selling Price',
+                'starting_price.min' => 'Selling Price Should be More than 1',
+            ]
+        );
+
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return redirect(route('admin.products.color.edit', $id))->withInput();
+        }
+
+        try {
+
+            $cl = MapColorSize::where('id', $id)->with('color')->firstOrFail();
+
+            $product = TxnProduct::where('id', $cl->product_id)->firstOrFail();
+
+            $cl->update([
+                'size_id' => $request->size_id,
+                'mrp' => $request->mrp,
+                'stock' => $request->stock,
+                'starting_price' => $request->starting_price,
+            ]);
+
+            connectify('success', 'Color & Size Added', 'Data has been Updated Successfully !');
+
+            return redirect(route('admin.products.color.edit', $id));
+
+        } catch (\Exception $ex) {
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+
+                connectify('error', 'Error Update Custom Field', 'Whoops Custom Field Not found !');
+
+                return redirect(route('admin.products.all'));
+
+            } else {
+
+                \Log::error(['Product Update Custom field' => $ex->getMessage()]);
+
+                connectify('error', 'Error Update Custom Field', 'Whoops Something Went Wrong from our end !');
 
                 return redirect(route('admin.products.edit', $product->slug_url));
             }

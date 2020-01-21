@@ -3,14 +3,14 @@
 @section('content')
 
 <!-- Breadcrumb area Start -->
-<div class="breadcrumb-area bg--white-6 pt--60 pb--70 pt-lg--40 pb-lg--50 pt-md--30 pb-md--40">
+<div class="breadcrumb-area pt--70 pt-md--25">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 text-center">
-                <h1 class="page-title">Cart</h1>
-                <ul class="breadcrumb justify-content-center">
+            <div class="col-12">
+                <ul class="breadcrumb">
                     <li><a href="{{ route('index') }}">Home</a></li>
-                    <li class="current"><span>Cart</span></li>
+
+                    <li class="current"><span> Cart </span></li>
                 </ul>
             </div>
         </div>
@@ -26,24 +26,26 @@
             <div class="row">
                 <div class="col-md-12 mb-50 mt-50">
                     <div class="alert alert-warning text-center">
-                        <h4>Your cart is empty... You can add some product from <a href="/search">here</a></h4>
+                        <h4>Your cart is empty... You can add some product from <a href="{{ route('search') }}">here</a>
+                        </h4>
                     </div>
                 </div>
             </div>
             @else
 
-            <div class="row pt--80 pb--80 pt-md--45 pt-sm--25 pb-md--60 pb-sm--40">
+            <div class="row pt--30 pb--80 pt-md--45 pt-sm--25 pb-md--60 pb-sm--40">
                 <div class="col-lg-8 mb-md--30">
                     <form class="cart-form" action="#">
                         <div class="row no-gutters">
                             <div class="col-12">
                                 <div class="table-content table-responsive">
                                     <table class="table text-center">
-                                        <thead>
+                                        <thead style="background-color: #f2f2f2;">
                                             <tr>
                                                 <th>&nbsp;</th>
                                                 <th>&nbsp;</th>
                                                 <th class="text-left">Product</th>
+                                                <th class="text-left">Colour & Size</th>
                                                 <th>price</th>
                                                 <th>quantity</th>
                                                 <th>total</th>
@@ -51,11 +53,11 @@
                                         </thead>
                                         <tbody>
                                             @foreach (Cart::getContent() as $item)
-
                                             <tr>
                                                 <td class="product-remove text-left">
-                                                    <a href="javascript:void(0)" class="btn-remove-item" data-remove-id="{{ $item->id }}">
-                                                        <i class="dl-icon-close"></i>
+                                                    <a href="javascript:void(0)" class="btn-remove-item"
+                                                        data-remove-id="{{ $item->id }}">
+                                                        <i class="fa fa-times" aria-hidden="true"></i></i>
                                                     </a>
                                                 </td>
 
@@ -65,8 +67,15 @@
                                                 </td>
                                                 <td class="product-name text-left wide-column">
                                                     <h3>
-                                                        <a href="{{ route('product', $item->attributes->slug_url) }}">{{ $item->name }}</a>
+                                                        <a href="{{ route('product', $item->attributes->slug_url) }}">{{ $item->name }}
+                                                        </a>
                                                     </h3>
+                                                </td>
+                                                <td class="product-price text-left">
+                                                    <span class="product-price-wrapper">
+                                                        <span class="money">{{ $item->attributes->color_name }} &
+                                                            {{ $item->attributes->size_name }}</span>
+                                                    </span>
                                                 </td>
                                                 <td class="product-price">
                                                     <span class="product-price-wrapper">
@@ -76,12 +85,16 @@
                                                 <td class="product-quantity">
                                                     <div class="quantity">
                                                         <input type="number" class="quantity-input" name="qty"
-                                                             value="{{ $item->quantity }}" min="1" max="{{ $item->attributes->stock }}" data-index="{{ $item->id }}" autofocus>
+                                                            value="{{ $item->quantity }}" min="1"
+                                                            max="{{ $item->attributes->stock }}"
+                                                            data-index="{{ $item->id }}"
+                                                            data-stock="{{ $item->attributes->stock }}" autofocus>
                                                     </div>
                                                 </td>
                                                 <td class="product-total-price">
                                                     <span class="product-price-wrapper">
-                                                        <span class="money"><strong>₹{{ $item->price * $item->quantity }}</strong></span>
+                                                        <span
+                                                            class="money"><strong>₹{{ $item->price * $item->quantity }}</strong></span>
                                                     </span>
                                                 </td>
                                             </tr>
@@ -133,53 +146,54 @@
 
 @section('extrajs')
 <script>
-
     $('.quantity-input').change(function (e) {
-        console.log('clicked');
-
         e.preventDefault();
-        var quantity = $(this).val();
+
+        var quantity = parseInt($(this).val());
         var itemid = $(this).attr('data-index');
+        var stock = parseInt($(this).attr('data-stock'));
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': "{{ csrf_token() }}"
-            }
-        });
-
-        $(this).attr('disabled', 'disabled');
-
-        $(this).html(
-            '<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">Loading...</span>'
-        );
-
-        $.ajax({
-            url: "{{ route('cart.update') }}",
-            type: 'POST',
-            data: {
-                quantity: quantity,
-                itemid: itemid,
-            },
-
-            success: function (result) {
-                var success = result.success;
-                if (success) {
-
-                    // swal('Updated Cart', 'your cart updated successfully !', 'success');
-
-                    $('.quantity-input').removeAttr('disabled', 'disabled');
-
-                } else {
-
-                    // swal('Update Cart', 'Whoops Something Went Wrong !', 'error');
-
-                    $('.quantity-input').removeAttr('disabled')
+        if (quantity > stock) {
+            swal('Out Of Stock', 'Product is Currently Out of Stock, Stay Tuned !', 'error');
+        } else {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 }
+            });
 
-                location.reload(true);
+            $(this).attr('disabled', 'disabled');
 
-            }
-        });
+            $(this).html(
+                '<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">Loading...</span>'
+            );
+
+            $.ajax({
+                url: "{{ route('cart.update') }}",
+                type: 'POST',
+                data: {
+                    quantity: quantity,
+                    itemid: itemid,
+                },
+
+                success: function (result) {
+                    var success = result.success;
+
+                    console.log('size', result.size);
+                    if (success) {
+
+                        $('.quantity-input').removeAttr('disabled', 'disabled');
+
+                    } else {
+
+                        $('.quantity-input').removeAttr('disabled')
+                    }
+
+                    location.reload(true);
+
+                }
+            });
+        }
 
     });
 

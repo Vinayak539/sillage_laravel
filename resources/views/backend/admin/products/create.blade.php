@@ -98,8 +98,8 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="warranty_id">Warranty <span class="text-danger">*</span></label>
-                                <select name="warranty_id" id="warranty_id" class="form-control select2" required>
+                                <label for="warranty_id">Warranty </label>
+                                <select name="warranty_id" id="warranty_id" class="form-control select2">
                                     <option value="">--Select Warranty--</option>
                                     @foreach($warranties as $warranty)
                                     <option value="{{ $warranty->id }}"
@@ -159,14 +159,6 @@
                                 <label for="upc">UPC </label>
                                 <input type="text" name="upc" id="upc" class="form-control" value="{{ old('upc') }}"
                                     placeholder="Enter UPC">
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="expiry_date">Expiry Date </label>
-                                <input type="text" name="expiry_date" id="expiry_date" class="form-control datepicker"
-                                    value="{{ old('expiry_date') }}" placeholder="Select Expiry Date">
                             </div>
                         </div>
 
@@ -271,17 +263,17 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="mrp">MRP <span class="text-danger">*</span></label>
+                                <label for="mrp">Selling Price <span class="text-danger">*</span></label>
                                 <input type="text" name="mrp" id="mrp" class="form-control" value="{{ old('mrp') }}"
-                                    placeholder="Enter Mrp" required>
+                                    placeholder="Enter Selling Price" required>
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="starting_price">Selling Price <span class="text-danger">*</span></label>
+                                <label for="starting_price">Mrp <span class="text-danger">*</span></label>
                                 <input type="number" name="starting_price" id="starting_price" class="form-control"
-                                    value="{{ old('starting_price') }}" placeholder="Enter Selling Price" min="1">
+                                    value="{{ old('starting_price') }}" placeholder="Enter Mrp" min="1">
                             </div>
                         </div>
 
@@ -455,12 +447,8 @@
                    required: true
                 },
 
-                condition: {
-                   required: true
-                },
-
-                warranty_id: {
-                   required: true
+                condition_id: {
+                    required: true
                 },
 
                 gst_id: {
@@ -503,6 +491,10 @@
                    required: true
                 },
 
+                 starting_price: {
+                    required: true
+                },
+
                 stock: {
                    required: true
                 },
@@ -525,12 +517,8 @@
                    required: "Please Select Material"
                 },
 
-                condition: {
+                condition_id: {
                    required: "Please Select Condition"
-                },
-
-                warranty_id: {
-                   required: "Please Select Warranty"
                 },
 
                 image_url: {
@@ -566,6 +554,10 @@
 
                 mrp: {
                    required: "Please Enter MRP"
+                },
+
+                starting_price: {
+                    required: "Please Enter MRP"
                 },
 
                 stock: {

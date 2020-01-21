@@ -57,6 +57,11 @@ Route::GET('auth/{provider}/callback', 'SocialiteManageController@handleProvider
 
 // End Socialite
 
+// Subscriber
+
+Route::POST('/subscriber', 'MainController@subscribers')->name('subscribe');
+Route::GET('/unsubscriber/{email}', 'Admin\SubscriberController@unsubscribe')->name('unsubscribe');
+
 // Cart & Checkout
 
 Route::post('/cart', 'CartController@store')->name('cart.store');
@@ -97,13 +102,6 @@ Route::prefix('adhni753')->group(function () {
             Route::POST('/delete/{id}', 'AdminController@destroy');
         });
 
-        Route::prefix('/manage-shipments')->group(function () {
-            Route::GET('/', 'Admin\ShipmentController@index')->name('admin.shipments.all');
-            Route::POST('/', 'Admin\ShipmentController@store');
-            Route::GET('/edit/{id}', 'Admin\ShipmentController@edit')->name('admin.shipments.edit');
-            Route::POST('/edit/{id}', 'Admin\ShipmentController@update');
-        });
-
         Route::prefix('/manage-users')->group(function () {
             Route::GET('/', 'Admin\UserManageController@index')->name('admin.users.all');
             Route::GET('/edit/{id}', 'Admin\UserManageController@edit')->name('admin.users.edit');
@@ -111,8 +109,11 @@ Route::prefix('adhni753')->group(function () {
             Route::POST('/edit/{id}', 'Admin\UserManageController@update');
             Route::GET('/orders/{id}', 'Admin\UserManageController@orders')->name('admin.users.orders');
             Route::GET('/reviews/{id}', 'Admin\UserManageController@reviews')->name('admin.users.reviews');
+            Route::GET('/addresses/{id}', 'Admin\UserManageController@addresses')->name('admin.users.addresses');
             Route::POST('/block', 'Admin\UserManageController@block')->name('admin.users.block');
             Route::POST('/unblock', 'Admin\UserManageController@unblock')->name('admin.users.unblock');
+            Route::POST('/export', 'Admin\UserManageController@export')->name('admin.users.exports');
+
         });
 
         Route::prefix('/manage-sliders')->group(function () {
@@ -140,19 +141,24 @@ Route::prefix('adhni753')->group(function () {
             Route::POST('/edit/{id}', 'Admin\ProductController@update');
             Route::GET('/questions/{id}', 'Admin\ProductController@getQuestions')->name('admin.products.questions');
             Route::POST('/add-product-custom-field/{id}', 'Admin\ProductController@addCustomField')->name('admin.products.add.custom.field');
-            Route::POST('/add-product-color/{id}', 'Admin\ProductController@addColor')->name('admin.products.add.color');
             Route::POST('/update-product-custom-field', 'Admin\ProductController@updateCustomField')->name('admin.products.update.custom.field');
             Route::POST('/delete-product-custom-field', 'Admin\ProductController@destroyCustomField')->name('admin.products.delete.custom.field');
-            Route::POST('/update-product-color', 'Admin\ProductController@updateColor')->name('admin.products.update.color');
-            Route::POST('/delete-product-color', 'Admin\ProductController@destroyColor')->name('admin.products.delete.color');
-            Route::POST('/update-stock/{id}', 'Admin\ProductController@updateStock')->name('admin.products.update.stock');
-            Route::POST('/update-price/{id}', 'Admin\ProductController@updatePrice')->name('admin.products.update.price');
-            Route::POST('/add-product-images/{id}', 'Admin\ProductController@addImages')->name('admin.products.add.images');
-            Route::POST('/delete-image', 'Admin\ProductController@deleteImage')->name('admin.products.delete.images');
             Route::GET('/edit/question/{id}', 'Admin\ProductController@getQuestion')->name('admin.product-faqs.edit');
             Route::POST('/edit/question/{id}', 'Admin\ProductController@updateQuestion')->name('admin.product-faqs.edit');
             Route::POST('/delete/question/{id}', 'Admin\ProductController@deleteQuestion')->name('admin.product-faqs.delete');
+        });
+
+        Route::prefix('/manage-color-sizes')->group(function () {
+
+            Route::POST('/add-product-color/{id}', 'Admin\ProductController@addColor')->name('admin.products.add.color');
+            Route::POST('/update-product-color', 'Admin\ProductController@updateColor')->name('admin.products.update.color');
+            Route::POST('/delete-product-color', 'Admin\ProductController@destroyColor')->name('admin.products.delete.color');
             Route::POST('/add/size/{id}', 'Admin\ProductController@addSizes')->name('admin.products.add.sizes');
+            Route::GET('/edit/color/{id}', 'Admin\ProductController@editColor')->name('admin.products.color.edit');
+            Route::POST('/edit/color/{id}', 'Admin\ProductController@updateColorSize')->name('admin.products.color.update');
+            Route::POST('/add-product-images/{id}', 'Admin\ProductController@addImages')->name('admin.products.add.images');
+            Route::POST('/delete-image', 'Admin\ProductController@deleteImage')->name('admin.products.delete.images');
+
         });
 
         Route::prefix('/manage-brands')->group(function () {
@@ -365,6 +371,13 @@ Route::prefix('myaccount')->group(function () {
         Route::POST('/order/help/{id}', 'UserController@orderHelp')->name('user.orders.help');
         Route::POST('/order/cancel', 'UserController@cancelOrder')->name('user.orders.cancel');
         Route::GET('/download/{id}', 'UserController@downloadInvoice')->name('user.invoices.download');
+        Route::GET('/addresses', 'UserController@getAddresses')->name('user.addresses');
+        Route::POST('/addresses/add', 'UserController@storeAddress')->name('user.addresses.add');
+        Route::GET('/addresses/edit/{id}', 'UserController@editAddress')->name('user.addresses.edit');
+        Route::POST('/addresses/edit/{id}', 'UserController@UpdateAddress')->name('user.addresses.update');
+        Route::POST('/addresses/delete', 'UserController@deleteAddress')->name('user.addresses.delete');
+        Route::POST('/addresses/edit', 'UserController@fEditAddress')->name('user.addresses.fedit');
+        Route::POST('/addresses/update', 'UserController@fUpdateAddress')->name('user.addresses.fupdate');
     });
 });
 
@@ -388,6 +401,7 @@ Route::prefix('hnishop')->group(function () {
         Route::prefix('/orders')->group(function () {
             Route::get('/', 'ShopController@getOrders')->name('shop.orders');
         });
+
     });
 
 });

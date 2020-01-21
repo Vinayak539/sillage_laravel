@@ -64,10 +64,10 @@
                                             class="dropdown-item has-icon" title="Edit Detail">
                                             <i class="fa fa-edit"></i> Edit
                                         </a>
-                                        <a href="{{ route('admin.products.questions', $product->slug_url) }}"
-                                            class="dropdown-item has-icon" title="Questions">
-                                            <i class="fa fa-question-circle"></i> Questions
-                                        </a>
+                                        {{-- <a href="{{ route('admin.products.questions', $product->slug_url) }}"
+                                        class="dropdown-item has-icon" title="Questions">
+                                        <i class="fa fa-question-circle"></i> Questions
+                                        </a> --}}
                                     </div>
                                 </div>
                             </td>

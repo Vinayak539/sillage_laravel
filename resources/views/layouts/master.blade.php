@@ -118,7 +118,6 @@
         .searchform-3 .searchform__submit {
             padding-top: 0;
         }
-
     </style>
 </head>
 
@@ -179,7 +178,8 @@
                                     <li class="header-toolbar__item">
                                         <div class="header-component__item header-component__search-form">
                                             <div class="header-search-form-wrap">
-                                                <form action="/v2/search" method="GET" class="searchform searchform-3">
+                                                <form action="{{ route('search') }}" method="GET"
+                                                    class="searchform searchform-3">
                                                     <input name="q" type="text" value="{{ Request::get('q') }}"
                                                         list="suggestion" id="search-box" class="searchform__input"
                                                         autocomplete="off" placeholder="Search products..." />
@@ -236,37 +236,26 @@
                                                     <i class="fa fa-user-circle-o text-black"></i>
                                                     {{ Str::limit(auth('user')->user()->name,8,'') }}</a>
                                             </li>
+
                                             <li>
-                                                <a href="{{
-                                                        route(
-                                                            'user.dashboard'
-                                                        )
-                                                    }}">
-                                                    Dashboard
-                                                </a>
+                                                <a href="{{ route('user.dashboard') }}">Dashboard</a>
                                             </li>
+
                                             <li>
-                                                <a href="{{
-                                                        route(
-                                                            'user.profile'
-                                                        )
-                                                    }}">My Account</a>
+                                                <a href="{{ route('user.profile') }}">My Account</a>
                                             </li>
+
                                             <li>
-                                                <a href="{{
-                                                        route(
-                                                            'user.showOrder'
-                                                        )
-                                                    }}">Orders</a>
+                                                <a href="{{ route('user.showOrder') }}">Orders</a>
                                             </li>
 
                                             <!-- <li><a href="#">Download</a></li> -->
                                             <li>
-                                                <a href="{{
-                                                        route(
-                                                            'user.change-password'
-                                                        )
-                                                    }}">Change Password</a>
+                                                <a href="{{ route('user.change-password') }}">Change Password</a>
+                                            </li>
+
+                                            <li>
+                                                <a href="{{ route('user.addresses') }}">Manage Addresses</a>
                                             </li>
 
                                             <li>
@@ -492,7 +481,7 @@
             <a href="#" class="btn-close"><i class="fa fa-times" aria-hidden="true"></i></a>
             <div class="searchform__body">
                 <p>Start typing and press Enter to search</p>
-                <form class="searchform" action="/v2/search" method="GET">
+                <form class="searchform" action="{{ route('search') }}" method="GET">
                     <input name="q" placeholder="Search entire store here ..." type="text"
                         value="{{ Request::get('q') }}" id="search-box1" class="searchform__input" autocomplete="off" />
                     <datalist id="suggestion1">
@@ -524,9 +513,7 @@
                                     {{ Str::limit(auth('user')->user()->name,8,'') }}</a>
                             </li>
                             <li>
-                                <a href="{{ route('user.dashboard') }}">
-                                    Dashboard
-                                </a>
+                                <a href="{{ route('user.dashboard') }}">Dashboard</a>
                             </li>
                             <li>
                                 <a href="{{ route('user.profile') }}">My Account</a>
@@ -537,9 +524,11 @@
 
                             <!-- <li><a href="#">Download</a></li> -->
                             <li>
-                                <a href="{{
-                                            route('user.change-password')
-                                        }}">Change Password</a>
+                                <a href="{{ route('user.change-password') }}">Change Password</a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('user.addresses') }}">Manage Addresses</a>
                             </li>
 
                             <li>
@@ -688,43 +677,72 @@
     <!-- REVOLUTION ACTIVE JS FILES -->
 
     <script src="{!! asset('assets/js/revoulation.js') !!}"></script>
+    <script src="{!! asset('assets/js/jquery.lazyload.js') !!}"></script>
 
     @yield('extrajs')
     @include('notify::messages')
     @notifyJs
     <script>
-        $("#search-box").on("input", function () {
-            if ($(this).val()) {
-                $(this).attr("list", "suggestion");
-            } else {
-                $(this).removeAttr("list");
-            }
-        });
+        $(document).ready(function () {
 
-        $("#search-box1").on("input", function () {
-            if ($(this).val()) {
-                $(this).attr("list", "suggestion1");
-            } else {
-                $(this).removeAttr("list");
-            }
-        });
+            $(".lazy").lazyload({
+                effect: "fadeIn",
+            });
 
-        $(".form").submit(function () {
-            $(".button_update").attr("disabled", "disabled");
-            $(".button_update").html("Please Wait");
-        });
+            $("#search-box").on("input", function () {
+                if ($(this).val()) {
+                    $(this).attr("list", "suggestion");
+                } else {
+                    $(this).removeAttr("list");
+                }
+            });
 
-        $(".btn-remove-item").click(function () {
-            if (window.confirm("Are you sure want to remove this product ?")) {
-                $("#hiddenFieldDeleteItemId").val($(this).attr('data-remove-id'));
-                $("#frmDeleteItem").submit();
-                $(this).attr("disabled", "disabled");
-                $(this).html(
-                    '<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">Loading...</span>'
-                );
-            }
-        });
+            $("#search-box1").on("input", function () {
+                if ($(this).val()) {
+                    $(this).attr("list", "suggestion1");
+                } else {
+                    $(this).removeAttr("list");
+                }
+            });
 
+            $(".btn-remove-item").click(function () {
+                if (window.confirm("Are you sure want to remove this product ?")) {
+                    $("#hiddenFieldDeleteItemId").val($(this).attr('data-remove-id'));
+                    $("#frmDeleteItem").submit();
+                    $(this).attr("disabled", "disabled");
+                    $(this).html(
+                        '<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">Loading...</span>'
+                    );
+                }
+            });
+
+            $("#formSubscribe").validate({
+                rules: {
+
+                    EMAIL: {
+                        required: true,
+                        email: true
+                    },
+                },
+
+                messages: {
+
+                    EMAIL: {
+                        required: "Please Enter Email",
+                        email: "Please Enter Proper Email ID"
+                    },
+
+                },
+
+                submitHandler: function (form) {
+                    $('.btnSubscribe').attr('disabled', 'disabled');
+                    $(".btnSubscribe").html(
+                        '<span class="fa fa-spinner fa-spin"></span> Loading...');
+                    form.submit();
+                }
+            });
+
+        });
     </script>
 </body>
 

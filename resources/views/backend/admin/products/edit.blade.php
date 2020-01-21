@@ -41,75 +41,36 @@
 
 {{-- Model End --}}
 
-{{-- Model --}}
-<!--
-<div class="modal" id="addSizesModal">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header bg-dark text-white-all">
-                <h5 class="modal-title" id="formModal">Add Sizes of {{ $product->title }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="{{ route('admin.products.add.sizes', $product->id) }}" method="POST" class="needs-validation"
-                id="formAddSizes">
-                @csrf
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="size_id">Size</label>
-                        <select name="size_id" id="size_id" class="form-control" required>
-                            <option value="">--Select Size--</option>
-                            @foreach($sizes as $size)
-                            <option value="{{ $size->id }}" {{ old('size_id') ? 'selected' : '' }}>
-                                {{ $size->title }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btnSubmit">
-                        <i class="fa fa-plus"></i> Add Size
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> -->
-
-{{-- Model End --}}
-
 {{-- Image Model --}}
 
-<div class="modal" id="addImageModal">
+{{-- <div class="modal" id="addImageModal">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white-all">
                 <h5 class="modal-title" id="formModal">Add More Images of {{ $product->title }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="{{ route('admin.products.add.images', $product->id) }}" method="POST" class="needs-validation"
-                enctype="multipart/form-data">
-                @csrf
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="image_urls"> Images <span class="text-danger">*</span></label>
-                        <input type="file" required="required" name="image_urls[]" class="form-control" id="image_urls"
-                            accept="image/jpeg, image/png" multiple>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btnSubmit">
-                        <i class="fa fa-plus"></i> Add Images
-                    </button>
-                </div>
-            </form>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
+</div>
+<form action="{{ route('admin.products.add.images', $product->id) }}" method="POST" class="needs-validation"
+    enctype="multipart/form-data">
+    @csrf
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="image_urls"> Images <span class="text-danger">*</span></label>
+            <input type="file" required="required" name="image_urls[]" class="form-control" id="image_urls"
+                accept="image/jpeg, image/png" multiple>
         </div>
     </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary btnSubmit">
+            <i class="fa fa-plus"></i> Add Images
+        </button>
+    </div>
+</form>
 </div>
+</div>
+</div> --}}
 
 {{-- Model End --}}
 
@@ -159,21 +120,21 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="mrp">MRP <span class="text-danger">*</span></label>
+                        <label for="mrp">Selling Price <span class="text-danger">*</span></label>
                         <input type="text" name="mrp" id="mrp" class="form-control" value="{{ old('mrp') }}"
-                            placeholder="Enter Mrp" required>
+                            placeholder="Enter Selling Price" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="starting_price">MRP <span class="text-danger">*</span></label>
+                        <input type="number" name="starting_price" id="starting_price" class="form-control"
+                            value="{{ old('starting_price') }}" placeholder="Enter MRP" min="1" required>
                     </div>
 
                     <div class="form-group">
                         <label for="stock">Stock <span class="text-danger">*</span></label>
                         <input type="number" name="stock" id="stock" class="form-control" value="{{ old('stock') }}"
                             min="0" placeholder="Enter Stock" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="starting_price">Selling Price <span class="text-danger">*</span></label>
-                        <input type="number" name="starting_price" id="starting_price" class="form-control"
-                            value="{{ old('starting_price') }}" placeholder="Enter Selling Price" min="1" required>
                     </div>
 
                     <div class="form-group">
@@ -185,6 +146,7 @@
                         </div>
                         <label id="" class="error" for="image_urls"></label>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary btnSubmit">
@@ -208,8 +170,8 @@
             <li class="breadcrumb-item"><a href="{{ route('admin.products.all') }}">All Products</a></li>
             <li class="breadcrumb-item"><a href="#addModal" data-toggle="modal" data-target="#addModal"> Add More Custom
                     Fields</a></li>
-            <li class="breadcrumb-item"><a href="#addImageModal" data-toggle="modal" data-target="#addImageModal"> Add
-                    More Images</a></li>
+            {{-- <li class="breadcrumb-item"><a href="#addImageModal" data-toggle="modal" data-target="#addImageModal"> Add
+                    More Images</a></li> --}}
             <li class="breadcrumb-item"><a href="#addColorModal" data-toggle="modal" data-target="#addColorModal"> Add
                     More Color & Sizes</a></li>
             <!-- <li class="breadcrumb-item"><a href="#addSizesModal" data-toggle="modal" data-target="#addSizesModal"> Add
@@ -281,20 +243,6 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="weight_id">Unit </label>
-                            <select name="weight_id" id="weight_id" class="form-control">
-                                <option value="">--Select Unit--</option>
-                                @foreach($units as $unit)
-                                <option value="{{ $unit->id }}"
-                                    {{ $unit->id == $product->weight_unit ? 'selected' : '' }}>{{ $unit->unit }}
-                                </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
                             <label for="condition_id">Condition <span class="text-danger">*</span></label>
                             <select name="condition_id" id="condition_id" class="form-control" required>
                                 <option value="">--Select Condition--</option>
@@ -307,11 +255,10 @@
                         </div>
                     </div>
 
-
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="warranty_id">Warranty <span class="text-danger">*</span></label>
-                            <select name="warranty_id" id="warranty_id" class="form-control" required>
+                            <label for="warranty_id">Warranty</label>
+                            <select name="warranty_id" id="warranty_id" class="form-control">
                                 <option value="">--Select Warranty--</option>
                                 @foreach($warranties as $warranty)
                                 <option value="{{ $warranty->id }}"
@@ -360,14 +307,14 @@
                                 placeholder="Enter UPC">
                         </div>
                     </div>
-
+                    <!--
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="expiry_date">Expiry Date</label>
                             <input type="date" name="expiry_date" id="expiry_date" class="form-control"
                                 value="{{ $product->expiry_date }}" placeholder="Select Expiry Date">
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="col-md-4">
                         <div class="form-group">
@@ -390,6 +337,20 @@
                             <label for="height">height </label>
                             <input type="text" name="height" id="height" class="form-control"
                                 value="{{ $product->height }}" placeholder="Enter height">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="weight_id">Unit </label>
+                            <select name="weight_id" id="weight_id" class="form-control">
+                                <option value="">--Select Unit--</option>
+                                @foreach($units as $unit)
+                                <option value="{{ $unit->id }}"
+                                    {{ $unit->id == $product->weight_unit ? 'selected' : '' }}>{{ $unit->unit }}
+                                </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
@@ -433,6 +394,7 @@
                             </select>
                         </div>
                     </div>
+
 
                     <div class="col-md-4">
                         <div class="form-group">
@@ -509,11 +471,10 @@
                                     <label for="keywords">Keywords </span><span class="text-danger">*</span> <span
                                             class="text-warning">(Use Comma "," to seperate
                                             keywords)</label>
-                                    <textarea name="keywords" id="keywords" rows="8"
-                                        class="form-control">{{ $keywords }}</textarea>
+                                    <textarea name="keywords" id="keywords" rows="8" class="form-control"
+                                        required>{{ $keywords }}</textarea>
                                 </div>
                             </div>
-
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Existing Front Image</label>
@@ -542,8 +503,8 @@
                         <div class="row">
                             @foreach($product->images as $image)
                             <div class="col-md-2">
-                                <img src="{{ asset('/storage/images/multi-products/' . $image->image_url) }}"
-                                    alt="{{ $product->title }}" width="100">
+                                <img data-original="{{ asset('/storage/images/multi-products/' . $image->image_url) }}"
+                                    alt="{{ $product->title }}" width="100" class="lazy">
                                 <div class="m-l-80 m-t-10">
                                     <button type="button" class="btn btn-outline-danger image-delete"
                                         data-delete-id="{{ $image->id }}"><i class="fa fa-trash"></i></button>
@@ -552,9 +513,6 @@
                             @endforeach
                         </div>
                     </div>
-
-
-
                     @endif
 
                     <div class="col-md-12 text-danger mt-5">
@@ -579,8 +537,8 @@
             <li class="breadcrumb-item"><a href="{{ route('admin.products.all') }}">All Products</a></li>
             <li class="breadcrumb-item"><a href="#addModal" data-toggle="modal" data-target="#addModal"> Add More Custom
                     Fields</a></li>
-            <li class="breadcrumb-item"><a href="#addImageModal" data-toggle="modal" data-target="#addImageModal"> Add
-                    More Images</a></li>
+            {{-- <li class="breadcrumb-item"><a href="#addImageModal" data-toggle="modal" data-target="#addImageModal"> Add
+                    More Images</a></li> --}}
             <li class="breadcrumb-item"><a href="#addColorModal" data-toggle="modal" data-target="#addColorModal"> Add
                     More Color & Sizes</a></li>
             <!-- <li class="breadcrumb-item"><a href="#addSizesModal" data-toggle="modal" data-target="#addSizesModal"> Add
@@ -610,13 +568,13 @@
                             <label for="size_id">Size</label>
                         </th>
                         <th>
-                            <label for="mrp">MRP</label>
+                            <label for="mrp">Selling Price</label>
                         </th>
                         <th>
                             <label for="stock">Stock</label>
                         </th>
                         <th>
-                            <label for="selling_price">Selling Price</label>
+                            <label for="selling_price">Mrp</label>
                         </th>
                         <th>
                             Action
@@ -647,8 +605,9 @@
                         <td>
                             <select name="size_id[{{ $key }}]" class="form-control" required>
                                 <option value="">--Select Sizes--</option>
-                                @foreach($sizes as $size)
-                                <option value="{{ $size->id }}" {{ $cf->size_id === $size->id ? 'selected' : '' }}>
+                                @foreach($product->sizes as $size)
+                                <option value="{{ $size->size_id }}"
+                                    {{ $cf->size_id === $size->size_id ? 'selected' : '' }}>
                                     {{ $size->title }}
                                 </option>
                                 @endforeach
@@ -679,14 +638,18 @@
                                     <i data-feather="more-vertical"></i>
                                 </a>
                                 <div class="dropdown-menu">
+                                    <a href="{{ route('admin.products.color.edit', $cf->map_id) }}"
+                                        class="dropdown-item has-icon" title="Update Detail">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
                                     <a href="javascript:void(0)" class="dropdown-item has-icon update-color-object"
                                         data-object-index="{{ $key }}" title="Update Detail">
                                         <i class="fa fa-save"></i> Update
                                     </a>
-                                    <a href="javascript:void(0)" class="dropdown-item has-icon delete-color-object"
+                                    {{-- <a href="javascript:void(0)" class="dropdown-item has-icon delete-color-object"
                                         title="Delete" data-object-index="{{ $key }}">
-                                        <i class="fa fa-trash text-danger"></i> Delete
-                                    </a>
+                                    <i class="fa fa-trash text-danger"></i> Delete
+                                    </a> --}}
                                 </div>
                             </div>
                         </td>
@@ -799,6 +762,7 @@
 <script>
     $(document).ready(function () {
 
+        
             var offer_id = $('#offer_id').val();
             if(offer_id.length > 0){
                 $('.offer_div').show();
@@ -818,10 +782,11 @@
 
         $(".delete-color-object").click(function () {
             if (window.confirm("Are you sure to delete this Color & Size ?")) {
-                
+
                 var key = $(this).attr("data-object-index");
                 var id = $("input[name='map_id[" + key + "]']").val();
                 $('#txtMapID').val(id);
+
                 $("#formColorDelete").submit();
                 $(this).attr('disabled', 'disabled');
                 $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
@@ -864,7 +829,7 @@
 
         });
 
-        $("#offer_id").change(function(){
+         $("#offer_id").change(function(){
             var offer_id = $(this).val();
             if(offer_id.length > 0){
                 $('.offer_div').show();
@@ -891,9 +856,7 @@
                 condition: {
                     required: true
                 },
-                warranty_id: {
-                    required: true
-                },
+
                 gst_id: {
                     required: true
                 },
@@ -931,9 +894,7 @@
                 condition: {
                     required: "Please Select Condition"
                 },
-                warranty_id: {
-                    required: "Please Select Warranty"
-                },
+
                 gst_id: {
                     required: "Please Select Gst"
                 },
@@ -988,6 +949,8 @@
                 starting_price: {
                     required: true
                 },
+
+
             },
             messages: {
 
@@ -1000,7 +963,7 @@
                 },
 
                 mrp: {
-                    required: "Please Enter MRP"
+                    required: "Please Enter Selling Price"
                 },
 
                 stock: {
@@ -1008,12 +971,13 @@
                 },
 
                 starting_price: {
-                    required: "Please Enter Selling Price"
+                    required: "Please Enter MRP"
                 },
 
                 "image_urls[]": {
                     required: "Please Upload Colour Images"
                 },
+                
             },
             submitHandler: function (form) {
                 $('.btnSubmit').attr('disabled', 'disabled');

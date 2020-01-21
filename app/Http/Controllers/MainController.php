@@ -66,12 +66,33 @@ class MainController extends Controller
                 $q->where('status', true)->get();
             }])->firstOrFail();
 
+            // dd($product->sizes);
+
             $prod = DB::table('txn_products as p')
                 ->select(DB::raw('FLOOR(AVG(txn_reviews.rating)) as rating , COUNT(txn_reviews.id) as total_rating'))
                 ->leftJoin("txn_reviews", "txn_reviews.product_id", "p.id")
                 ->where('p.id', $product->id)
                 ->where('txn_reviews.status', true)
                 ->first();
+
+            $colorsSizes = DB::table('map_color_sizes as m')
+                ->selectRaw('DISTINCT(c.title) as color_name, s.title as size_name, c.id as color_id, s.id as size_id, m.mrp, m.stock, m.starting_price, m.id as map_id')
+                ->join('mst_colors as c', 'm.color_id', 'c.id')
+                ->join('mst_sizes as s', 'm.size_id', 's.id')
+                ->where('m.product_id', $product->id)
+                ->groupBy('c.id')
+                ->get();
+
+            $related_products = \DB::table('txn_products as p')
+                ->selectRaw("p.id as product_id , p.title , p.slug_url, p.image_url, p.image_url1, p.status , FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment, c.name as category_name, c.slug_url as category_url")
+                ->leftJoin("txn_reviews as r", "r.product_id", "p.id")
+                ->leftJoin("txn_categories as c", "c.id", "p.category_id")
+                ->where('p.status', true)
+                ->where('p.id', '<>', $product->id)
+                ->orWhere('c.id', $product->category_id)
+                ->orderBy('p.id', 'DESC')
+                ->limit(6)
+                ->get();
 
             $offers = DB::table('txn_products as p')
                 ->selectRaw('p.title as product_name, p.id as product_id, p.image_url, m.color_id, m.size_id, c.title as color_name, s.title as size_name, m.id as offer_id, mop.purchase_quantity, mop.offered_quantity, mop.id as map_id, mop.map_offer_id')
@@ -83,27 +104,6 @@ class MainController extends Controller
                 ->where('mop.product_id', $product->id)
                 ->get();
 
-            // dd($offers);
-
-            $colorsSizes = DB::table('map_color_sizes as m')
-                ->selectRaw('DISTINCT(c.title) as color_name, s.title as size_name, c.id as color_id, s.id as size_id, m.mrp, m.stock, m.id as map_id')
-                ->join('mst_colors as c', 'm.color_id', 'c.id')
-                ->join('mst_sizes as s', 'm.size_id', 's.id')
-                ->where('m.product_id', $product->id)
-                ->groupBy('c.id')
-                ->get();
-
-            $related_products = \DB::table('txn_products as p')
-                ->selectRaw("p.id as product_id , p.title , p.slug_url, p.image_url , FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment, c.name as category_name, c.slug_url as category_url")
-                ->leftJoin("txn_reviews as r", "r.product_id", "p.id")
-                ->leftJoin("txn_categories as c", "c.id", "p.category_id")
-                ->where('p.status', '=', true)
-                ->where('p.id', '<>', $product->id)
-                ->orWhere('c.id', $product->category_id)
-                ->orderBy('p.id', 'DESC')
-                ->groupBy("p.id")
-                ->limit(6)
-                ->get();
 
             return view('frontend.product.show', compact('product', 'related_products', 'prod', 'colorsSizes', 'offers'));
 
