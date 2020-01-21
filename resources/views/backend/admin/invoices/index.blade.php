@@ -13,6 +13,9 @@
     </nav>
 
     <div class="card">
+        <div class="card-header bg-dark text-white-all">
+            <h4>Search Invoices</h4>
+        </div>
         <form class="needs-validation" autocomplete="off" method="GET">
             <div class="card-body">
                 <div class="row">
@@ -59,9 +62,12 @@
     </div>
 
     <div class="card">
-        <div class="card-block">
-            <div class="table-responsive dt-responsive">
-                <table class="table table-striped table-bordered nowrap">
+        <div class="card-header bg-dark text-white-all">
+            <h4>Manage Invoices</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" style="width:100%;">
                     <thead>
                         <tr>
                         <tr>

@@ -12,7 +12,7 @@
     </nav>
     <div class="card">
         <div class="card-header bg-dark text-white-all">
-            <h4>Manage Orders</h4>
+            <h4>Search Orders</h4>
         </div>
         <form class="needs-validation" autocomplete="off" method="GET">
             <div class="card-body">
@@ -60,17 +60,18 @@
     </div>
 
     <div class="card">
-        <div class="card-block">
+        <div class="card-header bg-dark text-white-all">
+            <h4>Manage Orders</h4>
             @if(count($orders))
-            <div class="card-header">
-                <form action="{{ route('admin.orders.export') }}" method="post">
-                    @csrf
-                    <button type="submit" class="btn btn-outline-primary btnSubmit">
-                        <i class="fa fa-file-excel-o"></i> Export Excel
-                    </button>
-                </form>
-            </div>
+            <form action="{{ route('admin.orders.export') }}" method="post">
+                @csrf
+                <button type="submit" class="btn btn-primary btnSubmit">
+                    <i class="fa fa-file-excel-o"></i> Export Excel
+                </button>
+            </form>
             @endif
+        </div>
+        <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-striped table-hover" style="width:100%;">
                     <thead>

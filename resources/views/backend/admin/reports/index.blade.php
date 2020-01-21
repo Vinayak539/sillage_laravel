@@ -13,6 +13,9 @@
     </nav>
 
     <div class="card">
+        <div class="card-header bg-dark text-white-all">
+            <h4>Manage Order Reports</h4>
+        </div>
         <form class="needs-validation" autocomplete="off" method="POST">
             @csrf
             <div class="card-body">
@@ -74,7 +77,7 @@
     </div>
 
     <div class="card">
-        <div class="card-header">
+        <div class="card-header bg-dark">
             <form action="{{ route('admin.reports.all') }}" method="get" class="needs-validation">
                 <div class="row">
                     <div class="col-md-12 form-inline">
@@ -98,9 +101,10 @@
                 </div>
             </form>
         </div>
-        <div class="card-block">
-            <div class="table table-responsive">
-                <table class="table table-striped table-bordered">
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" style="width:100%;">
                     <thead>
                         <tr>
                             <th>Order ID</th>
@@ -133,11 +137,13 @@
                             </td>
                         </tr>
                         @endforelse
+                        @if($orders->total() > 50)
                         <tr class="text-center">
                             <td colspan="6">
                                 {{ $orders->links() }}
                             </td>
                         </tr>
+                        @endif
                     </tbody>
                     <tfoot>
                         <tr>

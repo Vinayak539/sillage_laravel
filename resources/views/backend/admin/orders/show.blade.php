@@ -39,26 +39,15 @@
                     </tr>
                     <tr>
                         <th>Address</th>
-                        <td>{{ $order->address }}</td>
+                        <td>{{ $order->address }}, {{ $order->landmark ? $order->landmark : '' }}, {{ $order->city }},
+                            {{ $order->territory }}, {{ $order->pincode }}</td>
                     </tr>
-                    @if($order->landmark)
+                    @if($order->type_of_address)
                     <tr>
-                        <th>Landmark</th>
-                        <td>{{ $order->landmark }}</td>
+                        <th>Type of Address</th>
+                        <td>{{ $order->type_of_address ? 'Home' : ' Office/Commercial' }}</td>
                     </tr>
                     @endif
-                    <tr>
-                        <th>City</th>
-                        <td>{{ $order->city }}</td>
-                    </tr>
-                    <tr>
-                        <th>Territory</th>
-                        <td>{{ $order->territory }}</td>
-                    </tr>
-                    <tr>
-                        <th>Pincode</th>
-                        <td>{{ $order->pincode }}</td>
-                    </tr>
                     <tr>
                         <th>Order Date</th>
                         <td>{{ date('d-M-Y h:i A' , strtotime($order->created_at)) }}</td>
@@ -233,8 +222,9 @@
                 <thead>
                     <tr>
                         <th colspan="4">
-                            <span class="pull-left text-info">Order Pickedup Origin :
-                                {{ $track_response['Origin'] }}</span> <Span class="pull-right text-info">Order Pickedup
+                            <span class="pull-left text-dark">Order Pickedup Origin :
+                                {{ $track_response['Origin'] }}</span> <Span class="pull-right text-dark">Order
+                                Pickedup
                                 Date :
                                 {{ date('d-M-Y h:i A', strtotime($track_response['PickUpDate'])) }}</Span></th>
                     </tr>
