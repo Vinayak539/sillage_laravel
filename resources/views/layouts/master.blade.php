@@ -118,6 +118,10 @@
         .searchform-3 .searchform__submit {
             padding-top: 0;
         }
+
+        .error {
+            color: rgb(238, 53, 53);
+        }
     </style>
 </head>
 
