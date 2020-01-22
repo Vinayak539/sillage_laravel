@@ -41,11 +41,15 @@ class LoginController extends Controller
 
         if (Auth::guard('user')->attempt(['email' => $request->email, 'password' => $request->password, 'status' => true], $request->remeber)) {
 
+            connectify('success', 'Logged in', 'You are successfully Logged In');
+
             return redirect()->intended(url()->previous());
 
         }
 
-        return back()->withInput($request->only('email', 'remember'))->with('messageDanger1', 'Invalid Credentials, try again later !');
+        connectify('error', 'Login Error', 'Invalid Credentials, Please Check Credentials & try again !');
+
+        return back()->withInput($request->only('email', 'remember'));
     }
 
     public function logout()

@@ -20,19 +20,9 @@
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label for="image_urls"> Images </label>
+                        <label for="image_urls"> Images <span class="text-danger">*</span></label>
                         <input type="file" name="image_urls[]" class="form-control" id="image_urls"
-                            accept="image/jpeg, image/png" multiple>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="left_image"> Left Image</label>
-                        <input type="file" name="left_image" class="form-control" id="left_image" accept="image/jpeg, image/png" >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="right_image"> Right Image</label>
-                        <input type="file" name="right_image" class="form-control" id="right_image" accept="image/jpeg, image/png" >
+                            accept="image/jpeg, image/png" multiple required>
                     </div>
 
                     <input type="hidden" name="color_id" value="{{ $cl->color_id }}">
@@ -60,7 +50,8 @@
             </li>
             <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-list"></i>Update Colour & Size</li>
             <li class="breadcrumb-item"><a href="{{ route('admin.products.all') }}"> All Products</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('admin.products.edit', $cl->product->slug_url) }}"> Go Back</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.products.edit', $cl->product->slug_url) }}"> Go
+                    Back</a></li>
             <li class="breadcrumb-item"><a href="#addImageModal" data-toggle="modal" data-target="#addImageModal"> Add
                     More Images</a></li>
         </ol>
@@ -168,7 +159,7 @@
                                 <div class="card ">
                                     <div class="card-header ">
                                         <button type="button" class="btn btn-outline-danger image-delete"
-                                                data-delete-id="{{ $img->id }}"><i class="fa fa-trash"></i></button>
+                                            data-delete-id="{{ $img->id }}"><i class="fa fa-trash"></i></button>
                                     </div>
                                     <div class="card-body text-center">
                                         <img src="{!! asset('storage/images/multi-products/'. $img->image_url) !!}"
@@ -191,7 +182,7 @@
                                 <div class="card ">
                                     <div class="card-header ">
                                         <button type="button" class="btn btn-outline-danger image-delete"
-                                                data-delete-id="{{ $img->id }}"><i class="fa fa-trash"></i></button>
+                                            data-delete-id="{{ $img->id }}"><i class="fa fa-trash"></i></button>
                                     </div>
                                     <div class="card-body text-center">
                                         <img src="{!! asset('storage/images/multi-products/'. $img->image_url) !!}"
@@ -210,7 +201,8 @@
                             @endif
 
 
-                            @if($img->image_view != "1" && $img->image_view != "2" && $img->image_view != "3" && $img->image_view != "4")
+                            @if($img->image_view != "1" && $img->image_view != "2" && $img->image_view != "3" &&
+                            $img->image_view != "4")
                             <div class="col-md-3">
                                 <div class="card text-center">
                                     <div class="card-body">
@@ -317,6 +309,20 @@
 
         $("#formAddImage").validate({
 
+            rules: {
+
+                "image_urls[]": {
+                    required: true
+                },
+
+            },
+            messages: {
+
+                "image_urls[]": {
+                    required: "Please Choose atleast one image"
+                },
+
+            },
             submitHandler: function (form) {
                 $('.btnSubmit').attr('disabled', 'disabled');
                 $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');

@@ -155,13 +155,13 @@
                                                 <tr class="shipping">
                                                     <th>Shipping</th>
                                                     <td class="text-right">
-                                                        <span> ₹0</span>
+                                                        <span> ₹60</span>
                                                     </td>
                                                 </tr>
                                                 <tr class="order-total">
                                                     <th>Order Total</th>
                                                     <td class="text-right"><span
-                                                            class="order-total-ammount">₹{{ Cart::gettotal() }}</span>
+                                                            class="order-total-ammount">₹{{ Cart::gettotal() + 60 }}</span>
                                                     </td>
                                                 </tr>
                                             </tfoot>
