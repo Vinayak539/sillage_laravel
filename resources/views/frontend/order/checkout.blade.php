@@ -328,7 +328,7 @@
                                                         <input type="checkbox" name="remember" checked id="remember">
                                                         <label for="remember">Remember Me</label>
                                                     </div>
-                                                    <a href="https://thehatkestore.com/myaccount/password/email">Forget
+                                                    <a href="{{ route('user.password.request') }}">Forget
                                                         Password?</a>
                                                 </div>
                                                 <button type="submit"

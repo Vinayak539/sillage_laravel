@@ -6,6 +6,7 @@ use App\Model\SMS;
 use App\Model\TxnUser;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class RewardCommand extends Command
 {
@@ -51,12 +52,12 @@ class RewardCommand extends Command
                 $user['remaining_reward'] = $user->total_sales - 1500;
 
                 Mail::send(['html' => 'backend.mails.expire'], ['user' => $user], function ($message) use ($user) {
-                    $message->from('contact@hnilifestyle.com', 'Hni Perfumes');
+                    $message->from('contact@hnilifestyle.com', 'HNI Lifestyle');
                     $message->to($user->email, $user->name);
-                    $message->subject('Hni Perfumes Pvt. Ltd - Hurry Up Your Reward Expiring Soon Shop Now to avoid losing Rewards');
+                    $message->subject('HNI Lifestyle Pvt. Ltd - Hurry Up Your Reward Expiring Soon Shop Now to avoid losing Rewards');
                 });
 
-                SMS::send($user->mobile, 'Hni - Wish you Happy Birthday on your Occasion, Hurry Up Your Reward Expiring Soon Shop Now to avoid losing Rewards, Visit our website - http://hnilifestyle.com/');
+                SMS::send($user->mobile, 'Hni - Wish you Happy Birthday on your Occasion, Hurry Up Your Reward Expiring Soon Shop Now to avoid losing Rewards, Visit our website - ' . url('/'));
 
                 Log::info('Reward Expiry Mail Sent to ' . $user->name . ' on ' . \Carbon\Carbon::parse(now())->format('Y-m-d'));
             }

@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use App\Model\Enquiry;
 use App\Model\TxnContactUs;
 use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Mail;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class EnquiryController extends Controller
 {
@@ -49,9 +48,9 @@ class EnquiryController extends Controller
         ]);
         
         Mail::send(['html' => 'backend.mails.enquiry'], ['data' => $data], function ($message) {
-            $message->from('contact@thehatkestore.com', 'Thehatkestore');
-            $message->to('contact@thehatkestore.com', 'Thehatkestore');
-            $message->subject('New Enquiry From Thehatkestore');
+            $message->from('contact@hnilifestyle.com', 'HNI Lifestyle');
+            $message->to('contact@hnilifestyle.com', 'HNI Lifestyle');
+            $message->subject('New Enquiry From HNI Lifestyle');
         });
 
         return redirect(route('contact'))->with('messageSuccess', 'Thank you for contacting us, we\'ll get back to you soon..');

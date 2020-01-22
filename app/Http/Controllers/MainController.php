@@ -340,9 +340,9 @@ class MainController extends Controller
             ]);
 
             Mail::send(['html' => 'backend.mails.question'], ['qna' => $qna, 'product' => $product], function ($message) {
-                $message->from('support@thehatkestore.com', 'The Hatke Store');
-                $message->to('support@thehatkestore.com', 'The Hatke Store');
-                $message->subject('The Hatke Store - Someone ask question');
+                $message->from('support@hnilifestyle.com', 'HNI Lifestyle');
+                $message->to('support@hnilifestyle.com', 'HNI Lifestyle');
+                $message->subject('HNI Lifestyle - Someone ask question');
             });
 
             return redirect(route('product', $product->slug_url))->with('messageSuccess1', 'Your question has been submitted successfully ! we\'ll answer your question soon !');

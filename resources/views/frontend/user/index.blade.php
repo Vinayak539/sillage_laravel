@@ -27,7 +27,7 @@
                         <h3 class="heading-tertiary heading-color mb--20">
                            Hi {{ $user->name }},
                         </h3>
-                        <h3>Welcome to the <strong>thehatkestore.com</strong></h3>
+                        <h3>Welcome to the <strong>hnilifestyle.com</strong></h3>
                         @if($user->last_login)
                         <p>
                             Last Login on

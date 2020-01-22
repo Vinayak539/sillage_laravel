@@ -9,6 +9,9 @@ use App\Model\TxnUser;
 use App\Model\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use App\Model\SMS;
+use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\Mail;
 
 class OrderStatusCommand extends Command
 {
@@ -103,15 +106,15 @@ class OrderStatusCommand extends Command
                         ]);
                     }
 
-                    // SMS::send($order->user->mobile, 'Hni Lifestyle - Your Order has been Delivered successfully, Your Order No : ' . $order->id . ' Login for more detail on https://hnilifestyle.com');
+                    SMS::send($order->user->mobile, 'Hni Lifestyle - Your Order has been Delivered successfully, Your Order No : ' . $order->id . ' Login for more detail on ' . url('/'));
 
-                    // $pdf = PDF::loadView('backend.admin.invoices.download', ['invoice' => $order]);
-                    // Mail::send(['html' => 'backend.admin.invoices.show'], ['invoice' => $order], function ($message) use ($order, $pdf) {
-                    //     $message->from('order-confirmation@hnilifestyle.com', 'Hni Lifestyle');
-                    //     $message->to($order->user->email, $order->user->name);
-                    //     $message->subject('Invoice copy of Order No ' . $order->id . ' From HNI Lifestyle');
-                    //     $message->attachData($pdf->output(), 'order_no_' . $order->id . '.pdf');
-                    // });
+                    $pdf = PDF::loadView('backend.admin.invoices.download', ['invoice' => $order]);
+                    Mail::send(['html' => 'backend.admin.invoices.show'], ['invoice' => $order], function ($message) use ($order, $pdf) {
+                        $message->from('order-confirmation@hnilifestyle.com', 'Hni Lifestyle');
+                        $message->to($order->user->email, $order->user->name);
+                        $message->subject('Invoice copy of Order No ' . $order->id . ' From HNI Lifestyle');
+                        $message->attachData($pdf->output(), 'order_no_' . $order->id . '.pdf');
+                    });
                 }
 
                 if ($track_response == 'Delivered' && $order->user->elite == false) {
@@ -126,7 +129,7 @@ class OrderStatusCommand extends Command
                         'delivery_date' => $delivery_date,
                     ]);
 
-                    $promo_user = User::where('promocode', $order->promocode)->first();
+                    $promo_user = TxnUser::where('promocode', $order->promocode)->first();
                     if ($promo_user) {
                         $promo_user->update([
                             'total_rewards' => round($promo_user->total_rewards + (($order->tbt * 10) / 100), 0),
@@ -155,15 +158,15 @@ class OrderStatusCommand extends Command
                         ]);
                     }
 
-                    // SMS::send($order->user->mobile, 'Hni Lifestyle - Your Order has been Delivered successfully, Your Order No : ' . $order->id . ' Login for more detail on https://hnilifestyle.com');
+                    SMS::send($order->user->mobile, 'Hni Lifestyle - Your Order has been Delivered successfully, Your Order No : ' . $order->id . ' Login for more detail on ' . url('/'));
 
-                    // $pdf = PDF::loadView('backend.admin.invoices.download', ['invoice' => $order]);
-                    // Mail::send(['html' => 'backend.admin.invoices.show'], ['invoice' => $order], function ($message) use ($order, $pdf) {
-                    //     $message->from('order-confirmation@hnilifestyle.com', 'Hni Lifestyle');
-                    //     $message->to($order->user->email, $order->user->name);
-                    //     $message->subject('Invoice copy of Order No ' . $order->id . ' From HNI Lifestyle');
-                    //     $message->attachData($pdf->output(), 'order_no_' . $order->id . '.pdf');
-                    // });
+                    $pdf = PDF::loadView('backend.admin.invoices.download', ['invoice' => $order]);
+                    Mail::send(['html' => 'backend.admin.invoices.show'], ['invoice' => $order], function ($message) use ($order, $pdf) {
+                        $message->from('order-confirmation@hnilifestyle.com', 'Hni Lifestyle');
+                        $message->to($order->user->email, $order->user->name);
+                        $message->subject('Invoice copy of Order No ' . $order->id . ' From HNI Lifestyle');
+                        $message->attachData($pdf->output(), 'order_no_' . $order->id . '.pdf');
+                    });
                 }
 
             }

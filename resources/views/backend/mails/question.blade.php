@@ -159,7 +159,7 @@
 
     <div class="container">
         <div>
-            <h3>The Hatke Store</h3>
+            <h3>HNI Lifestyle</h3>
         </div>
         <div class="row">
             <div class="col-sm-12">

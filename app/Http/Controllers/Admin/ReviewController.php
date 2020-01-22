@@ -66,7 +66,7 @@ class ReviewController extends Controller
             return redirect(route('admin.reviews.all'))->withInput();
         }
 
-        $request['email'] = 'admin@thehatkestore.com';
+        $request['email'] = 'admin@hnilifestyle.com';
 
         TxnReview::updateOrCreate([
             'product_id' => $request->product_id,

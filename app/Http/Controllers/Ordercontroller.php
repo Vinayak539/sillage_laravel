@@ -7,6 +7,7 @@ use App\Model\Delivery;
 use App\Model\MapColorSize;
 use App\Model\Paytm;
 use App\Model\Shop;
+use App\Model\SMS;
 use App\Model\Transaction;
 use App\Model\TxnMasterGst;
 use App\Model\TxnOrder;
@@ -194,7 +195,7 @@ class OrderController extends Controller
                     'status' => 'Booked',
                 ]);
 
-                // SMS::send($order->user->mobile, 'Hni Life Style - Your Order has been placed successfully, Your Order No : ' . $order->id . ' Login for more detail on https://hnilifestyle.com');
+                SMS::send($order->user->mobile, 'Hni Life Style - Your Order has been placed successfully, Your Order No : ' . $order->id . ' Login for more detail on ' . url('/'));
 
                 Mail::send(['html' => 'backend.mails.received'], ['order' => $order], function ($message) use ($order) {
                     $message->to($order->user->email)->subject('Your order has been placed successfully ! [order no : ' . $order->id . ']');
@@ -292,16 +293,16 @@ class OrderController extends Controller
 
                     Delivery::orderCreation($order, $order->user);
 
-                    // SMS::send($order->user->mobile, 'Hni Store - Your Order has been placed successfully, Your Order No : ' . $order->id . ' Login for more detail on http://thehatkestore.com/');
+                    SMS::send($order->user->mobile, 'Hni Store - Your Order has been placed successfully, Your Order No : ' . $order->id . ' Login for more detail on ' . url('/'));
 
                     Mail::send(['html' => 'backend.mails.received'], ['order' => $order], function ($message) use ($order) {
                         $message->to($order->user->email)->subject('Your order has been placed successfully ! [order no : ' . $order->id . ']');
-                        $message->from('order-confirmation@thehatkestore.com', 'Hni Store');
+                        $message->from('order-confirmation@hnilifestyle.com', 'Hni Store');
                     });
 
                     Mail::send(['html' => 'backend.mails.admin'], ['order' => $order], function ($message) use ($order) {
-                        $message->to('order-confirmation@thehatkestore.com')->subject('You have a new order ! [order id : ' . $order->id . ']');
-                        $message->from('order-confirmation@thehatkestore.com', 'Hni Store');
+                        $message->to('order-confirmation@hnilifestyle.com')->subject('You have a new order ! [order id : ' . $order->id . ']');
+                        $message->from('order-confirmation@hnilifestyle.com', 'Hni Store');
                     });
 
                     $order->user->update(['total_rewards' => $order->user->total_rewards - $request->session()->get("reward_points", 'default')]);

@@ -157,9 +157,9 @@ class InvoiceController extends Controller
             $invoice = TxnOrder::where('id', $request->order_id)->with('details', 'user', 'transaction')->firstOrFail();
             $pdf = PDF::loadView('backend.admin.invoices.download', ['invoice' => $invoice]);
             Mail::send(['html' => 'backend.admin.invoices.empty'], ['invoice' => $invoice], function ($message) use ($invoice, $pdf) {
-                $message->from('contact@thehatkestore.com', 'The Hatke Store');
+                $message->from('contact@hnilifestyle.com', 'HNI Lifestyle');
                 $message->to($invoice->user->email, $invoice->user->name);
-                $message->subject('Invoice copy of Order No ' . $invoice->id . ' From The Hatke Store');
+                $message->subject('Invoice copy of Order No ' . $invoice->id . ' From HNI Lifestyle');
                 $message->attachData($pdf->output(), 'order_no_' . $invoice->id . '.pdf');
             });
 

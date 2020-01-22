@@ -264,28 +264,28 @@ class UserController extends Controller
                 'description' => 'Applied for Return and Refund against Order ID : ' . $order->id,
             ]);
 
-            SMS::send($order->user->mobile, 'The Hatke Store - You have applied for Return and Refund against Order ID : ' . $order->id . ', Stay tuned for approval on http://thehatkestore.com/myaccount');
+            SMS::send($order->user->mobile, 'HNI Lifestyle - You have applied for Return and Refund against Order ID : ' . $order->id . ', Stay tuned for approval on ' . route('user.login'));
 
             Mail::send(['html' => 'backend.mails.ticket'], ['ticket' => $ticket], function ($message) use ($ticket) {
-                $message->from('support@thehatkestore.com', 'The Hatke Store');
-                $message->to($ticket->email, 'The Hatke Store');
-                $message->bcc('support@thehatkestore.com', 'The Hatke Store');
-                $message->subject('Ranays Store RE:' . $ticket->subject . ' Ticket ID : ' . $ticket->id);
+                $message->from('support@hnilifestyle.com', 'HNI Lifestyle');
+                $message->to($ticket->email, 'HNI Lifestyle');
+                $message->bcc('support@hnilifestyle.com', 'HNI Lifestyle');
+                $message->subject('HNI Lifestyle RE:' . $ticket->subject . ' Ticket ID : ' . $ticket->id);
             });
 
             connectify('success', 'Return Order', 'Order Return applied successfully, stay tuned for approval !');
 
-            return redirect('/myaccount');
+            return redirect(route('user.dashboard'));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
                 connectify('error', 'Error', 'Whoops, Order Not Found, try again later !');
-                return redirect('/myaccount');
+                return redirect(route('user.dashboard'));
             }
             // return $ex->getMessage();
             connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
 
-            return redirect('/myaccount');
+            return redirect(route('user.dashboard'));
         }
     }
 
@@ -299,11 +299,11 @@ class UserController extends Controller
                 'status' => 'Order Cancel By Buyer',
             ]);
 
-            // SMS::send($order->user->mobile, 'The Hatke Store - Your Order ID : ' . $order->id . ', has been cancelled successfully,  Login for more detail on http://thehatkestore.com/');
+            SMS::send($order->user->mobile, 'HNI Lifestyle - Your Order ID : ' . $order->id . ', has been cancelled successfully,  Login for more detail on ' . url('/'));
 
             Mail::send(['html' => 'backend.mails.order-cancel'], ['order' => $order], function ($message) use ($order) {
-                $message->to('support@thehatkestore.com')->subject('Order has been Cancelled ! [order id : ' . $order->id . ']');
-                $message->from('support@thehatkestore.com', 'The Hatke Store');
+                $message->to('support@hnilifestyle.com')->subject('Order has been Cancelled ! [order id : ' . $order->id . ']');
+                $message->from('support@hnilifestyle.com', 'HNI Lifestyle');
             });
             connectify('success', 'Order Cancel', 'Order Cancelled Successfully !');
 
@@ -312,12 +312,12 @@ class UserController extends Controller
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
                 connectify('error', 'Error', 'Whoops, Order Not Found, try again later !');
-                return redirect('/myaccount');
+                return redirect(route('user.dashboard'));
             }
             return $ex->getMessage();
             connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
 
-            return redirect('/myaccount');
+            return redirect(route('user.dashboard'));
         }
     }
 
@@ -342,10 +342,10 @@ class UserController extends Controller
             ]);
 
             Mail::send(['html' => 'backend.mails.ticket'], ['ticket' => $ticket], function ($message) use ($ticket) {
-                $message->from('support@thehatkestore.com', 'The Hatke Store');
-                $message->to($ticket->email, 'The Hatke Store');
-                $message->bcc('support@thehatkestore.com', 'The Hatke Store');
-                $message->subject('Ranays Store' . $ticket->subject . ' Ticket ID : ' . $ticket->id);
+                $message->from('support@hnilifestyle.com', 'HNI Lifestyle');
+                $message->to($ticket->email, 'HNI Lifestyle');
+                $message->bcc('support@hnilifestyle.com', 'HNI Lifestyle');
+                $message->subject('HNI Lifestyle' . $ticket->subject . ' Ticket ID : ' . $ticket->id);
             });
 
             connectify('success', 'Need Help', 'Your query has been sent successfully, our expert will get in touch with you soon, stay tuned !');
@@ -355,12 +355,12 @@ class UserController extends Controller
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
                 connectify('error', 'Error', 'Whoops, Order Not Found, try again later !');
-                return redirect('/myaccount');
+                return redirect(route('user.dashboard'));
             }
             // return $ex->getMessage();
             connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
 
-            return redirect('/myaccount');
+            return redirect(route('user.dashboard'));
         }
     }
 
@@ -403,12 +403,12 @@ class UserController extends Controller
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
                 connectify('error', 'Error', 'Whoops, Order Not Found, try again later !');
-                return redirect('/myaccount');
+                return redirect(route('user.dashboard'));
             }
             // return $ex->getMessage();
             connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
 
-            return redirect('/myaccount');
+            return redirect(route('user.dashboard'));
         }
     }
 
@@ -427,12 +427,12 @@ class UserController extends Controller
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
                 connectify('error', 'Error', 'Whoops, Order Not Found, try again later !');
-                return redirect('/myaccount');
+                return redirect(route('user.dashboard'));
             }
             // return $ex->getMessage();
             connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
 
-            return redirect('/myaccount');
+            return redirect(route('user.dashboard'));
         }
     }
 
