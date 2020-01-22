@@ -15,7 +15,9 @@
     <link rel="stylesheet" href="{!! asset('admin/bundles/bootstrap-daterangepicker/daterangepicker.css') !!}">
     <link rel="stylesheet" href="{!! asset('admin/css/style.css') !!}">
     <link rel="stylesheet" href="{!! asset('admin/css/components.css') !!}">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <link rel="stylesheet" href="{!! asset('admin/bundles/summernote/summernote-bs4.css') !!}">
+    
     @notifyCss
     @yield('extracss')
 </head>
