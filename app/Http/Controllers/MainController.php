@@ -19,6 +19,7 @@ use App\Model\TxnUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class MainController extends Controller
 {
@@ -36,25 +37,29 @@ class MainController extends Controller
 
     public function subscribers(Request $request)
     {
-        $request->validate(
+        $validator = Validator::make($request->all(), [
+            'EMAIL' => 'required|email|unique:subscribers,email',
+        ],
             [
-                'email' => 'required|email|unique:subscribers,email',
-            ],
-            [
-                'email.required' => 'Please Enter Email ID',
-                'email.email'    => 'Please Enter Proper Email',
-                'email.unique'   => 'Email is already Registered',
+                'EMAIL.required' => 'Please Enter Email ID',
+                'EMAIL.email' => 'Please Enter Proper Email',
+                'EMAIL.unique' => 'You have Already been Subscribed with us !',
             ]
         );
 
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return back()->withInput();
+        }
+
         Subscriber::create([
-            'email'  => $request->email,
+            'email' => $request->EMAIL,
             'status' => true,
         ]);
 
         connectify('success', 'Subscribed', 'Thank you for Subscribing with us !');
 
-        return redirect('/');
+        return back();
     }
 
     public function getProduct($slug)

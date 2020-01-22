@@ -424,12 +424,12 @@
                                     Keep Up To Date
                                 </h3>
                                 <div class="form-widget mb--20">
-                                    <form action="#" class="newsletter-form newsletter-form--6 mc-form" method="post"
-                                        target="_blank">
+                                    <form action="{{ route('subscribe') }}" id="formSubscribe" class="newsletter-form newsletter-form--6 mc-form" method="post">
+                                        @csrf
                                         <input type="email" name="newsletter-email" id="newsletter-email"
-                                            class="newsletter-form__input" placeholder="Enter Your Email Address.."
-                                            required />
-                                        <button type="submit" class="newsletter-form__submit">
+                                               class="newsletter-form__input" placeholder="Enter Your Email Address.."
+                                               required />
+                                        <button type="submit" class="newsletter-form__submit btnSubscribe">
                                             Subscribe
                                         </button>
                                     </form>
@@ -635,10 +635,6 @@
     <!-- All Plugins Js -->
 
     <script src="{!! asset('/assets/js/plugins.js') !!}"></script>
-
-    <!-- Ajax Mail Js -->
-
-    <script src="{!! asset('/assets/js/ajax-mail.js') !!}"></script>
 
     <!-- Main JS -->
 

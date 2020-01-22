@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendNewsletterJob;
 use App\Model\Subscriber;
-use App\Model\TxnUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
 
 class SubscriberController extends Controller
@@ -18,21 +18,7 @@ class SubscriberController extends Controller
      */
     public function index(Request $request)
     {
-        $subscribers = TxnUser::where('is_subcribed', true)->orderBy('id', 'DESC');
-
-        if ($request->filled('city')) {
-            $subscribers = $subscribers->where('city', 'like', '%' . $request->city . '%');
-        }
-
-        if ($request->filled('pincode')) {
-            $subscribers = $subscribers->where('pincode', 'like', '%' . $request->pincode . '%');
-        }
-
-        if ($request->filled('territory')) {
-            $subscribers = $subscribers->where('territory', 'like', '%' . $request->territory . '%');
-        }
-
-        $subscribers = $subscribers->get();
+        $subscribers = Subscriber::orderBy('id', 'DESC')->get();
         return view('backend.admin.subscribers.index', compact('subscribers'));
 
     }
@@ -71,7 +57,7 @@ class SubscriberController extends Controller
         ],
             [
                 'sendEmail.required' => 'Please Select Atleast One Email ID',
-                'sendEmail.exists' => 'The Email is not Valid',
+                'sendEmail.exists'   => 'The Email is not Valid',
             ]);
 
         return view('backend.admin.subscribers.send')->with(['sendEmails' => $request->sendEmail]);
@@ -116,10 +102,10 @@ class SubscriberController extends Controller
         $validator = Validator::make($request->all(), [
             'sendEmail' => 'required|array',
             'sendEmail' => 'email',
-            'message' => 'required|string',
+            'message'   => 'required|string',
         ],
             [
-                'email.*.exists' => 'Email is Not Valid',
+                'email.*.exists'   => 'Email is Not Valid',
                 'message.required' => 'Please Enter Message',
             ]);
 
@@ -130,8 +116,9 @@ class SubscriberController extends Controller
 
         foreach ($request->emails as $email) {
             $data = [
-                'email' => $email,
+                'email'       => $email,
                 'bodyMessage' => $request->message,
+                'encrypt_email' => Crypt::encryptString($email)
             ];
 
             $this->dispatch(new SendNewsletterJob($data));
@@ -145,24 +132,28 @@ class SubscriberController extends Controller
     public function unsubscribe($email)
     {
         try {
-            $newsletter = TxnUser::where('email', $email)->firstOrFail();
+
+            $newsletter = Subscriber::where('email', Crypt::decryptString($email))->firstOrFail();
+
             $newsletter->update([
-                'is_subcribed' => false,
+                'status' => false,
             ]);
 
             connectify('success', 'Unsubscribed', 'You have been unsubscribed successfully, you can subscribe anytime by putting your email in Newsletter');
 
             return redirect(url('/'));
+
         } catch (\Exception $ex) {
+
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                connectify('success', 'Unsubscribed', 'Whoops, Something went wrong !');
+                connectify('error', 'Error', 'Whoops, Email Not Found !');
                 return redirect(url('/'));
-            } else {
-                connectify('success', 'Unsubscribed', 'Whoops, Something went wrong from our end !');
-
-                return redirect(url('/'));
-
             }
+
+            connectify('error', 'Error', 'Whoops, Something went wrong from our end !');
+
+            return redirect(url('/'));
+
         }
     }
 }
