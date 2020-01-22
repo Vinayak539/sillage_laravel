@@ -47,14 +47,14 @@
                                     <div class="form-group">
                                         <div class="d-block">
                                             <label for="password" class="control-label">Password</label>
-                                            @if (Route::has('password.request'))
+                                            <!-- @if (Route::has('password.request'))
                                             <div class="float-right">
                                                 <a href="{{ route('password.request') }}" class="text-small"
                                                     id="password">
                                                     Forgot Password?
                                                 </a>
                                             </div>
-                                            @endif
+                                            @endif -->
                                         </div>
                                         <input id="password" type="password"
                                             class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
