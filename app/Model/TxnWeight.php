@@ -11,4 +11,9 @@ class TxnWeight extends Model
     protected $guarded = ['id'];
     public $timestamps = true;
 
+
+    public function product()
+    {
+        return $this->belongsTo(TxnProduct::class);
+    }
 }

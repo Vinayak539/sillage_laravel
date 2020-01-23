@@ -55,9 +55,9 @@ class TxnProduct extends Model
         return $this->hasMany(ProductFaq::class, 'product_id', 'id');
     }
 
-    public function weight()
+    public function unit()
     {
-        return $this->belongsTo(TxnWeight::class);
+        return $this->belongsTo(TxnWeight::class, 'weight_unit', 'id');
     }
 
     public function condition()

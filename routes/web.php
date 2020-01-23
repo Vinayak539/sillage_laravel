@@ -44,6 +44,11 @@ Route::view('/shipping', 'frontend.shipping')->name('shipping');
 Route::GET('/contact', 'EnquiryController@create')->name('contact');
 Route::POST('/contact', 'EnquiryController@store');
 
+// filter
+
+Route::GET('/search/filter', 'MainController@filter')->name('search.filter');
+Route::GET('/categories/filter', 'MainController@cateFilter')->name('categories.filter');
+
 // product routes
 Route::GET('/product/{slug}', 'MainController@getProduct')->name('product');
 Route::GET('/category/{slug}', 'MainController@getCategoryProducts')->name('cate');

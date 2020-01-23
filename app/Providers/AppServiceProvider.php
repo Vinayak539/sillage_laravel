@@ -48,9 +48,10 @@ class AppServiceProvider extends ServiceProvider
 
         $dynamicCategory = $this->buildCategory(0, $category, 0);
         $smallDeviceDynamicCategory = $this->smallDeviceBuildCategory(0, $category, 0);
-        $keywords = TxnKeyword::all();
+        $keywords = TxnKeyword::groupBy('keyword')->get();
         // $topsections     = TopMasterSection::limit(5)->get();
         view()->share(['keywords' => $keywords, 'dynamicCategory' => $dynamicCategory, 'smallDeviceDynamicCategory' => $smallDeviceDynamicCategory, 'footerDynamicCategory' => $footerDynamicCategory]);
+
     }
     public function buildCategory($parent, $category, $count)
     {

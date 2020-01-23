@@ -67,10 +67,9 @@ class MainController extends Controller
 
         try {
             // sizes remove
-            $product = TxnProduct::where('status', true)->where('slug_url', $slug)->with(['images', 'condition', 'sizes', 'colors', 'category', 'warranty', 'reviews' => function ($q) {
+            $product = TxnProduct::where('status', true)->where('slug_url', $slug)->with(['images', 'condition', 'sizes', 'unit', 'colors', 'category', 'warranty', 'reviews' => function ($q) {
                 $q->where('status', true)->get();
             }])->firstOrFail();
-
             // dd($product->sizes);
 
             $prod = DB::table('txn_products as p')
@@ -204,10 +203,9 @@ class MainController extends Controller
     {
 
         $products = \DB::table('txn_products as p')
-            ->selectRaw("p.id , p.title , p.slug_url , p.buy_it_now_price , p.image_url, p.starting_price,p.mrp, p.stock, FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment")
+            ->selectRaw("p.id , p.title , p.slug_url, p.image_url, p.image_url1,FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment")
             ->leftJoin("txn_reviews as r", "r.product_id", "p.id")
             ->leftJoin("txn_keywords as k", "k.product_id", "p.id")
-            ->where('p.stock', '>', 0)
             ->where('p.status', '=', true);
 
         if ($request->filled('brands') && gettype($request->brands) == 'array') {
@@ -220,7 +218,25 @@ class MainController extends Controller
 
         $products = $products->orderBy('p.id', 'DESC')->groupBy("p.id")->paginate(20);
 
-        return response()->json(['products' => $products], 200);
+        $prodLists = [];
+
+        foreach ($products as $prod) {
+            array_push($prodLists, $prod->id);
+        }
+
+        $brands = \DB::table('txn_products as p')
+            ->selectRaw("Distinct(b.id) as id, b.brand_name")
+            ->leftJoin("txn_brands as b", "p.brand_id", "b.id")
+            ->where('p.status', true)
+            ->whereIN('p.id', $prodLists);
+
+        $brands = $brands->groupBy("p.id")->get();
+
+        $conditions = TxnCondition::where('status', true)->get();
+
+        return view('frontend.product.index', compact('products', 'brands', 'conditions'))->with('input', $request);
+
+        // return response()->json(['products' => $products], 200);
     }
 
     public function cateFilter(Request $request)
@@ -243,12 +259,21 @@ class MainController extends Controller
         }
 
         $products = \DB::table('txn_products as p')
-            ->selectRaw("p.id , p.title , p.slug_url , p.buy_it_now_price , p.image_url, p.starting_price,p.mrp, p.stock, FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment")
+            ->selectRaw("p.id , p.title , p.slug_url , p.image_url, p.image_url1, FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment")
             ->leftJoin("txn_reviews as r", "r.product_id", "p.id")
             ->leftJoin("txn_keywords as k", "k.product_id", "p.id")
             ->where('p.status', '=', true)
-            ->where('p.stock', '>', 0)
             ->whereIN('p.category_id', $cateLists);
+
+        $brands = \DB::table('txn_products as p')
+                ->selectRaw("Distinct(b.id) as id, b.brand_name")
+                ->leftJoin("txn_brands as b", "p.brand_id", "b.id")
+                ->where('p.status', true)
+                ->whereIN('p.category_id', $cateLists)
+                ->groupBy("p.id")
+                ->get();
+
+            $conditions = TxnCondition::where('status', true)->get();
 
         if ($request->filled('brands') && gettype($request->brands) == 'array') {
             $products = $products->whereIn('p.brand_id', $request->brands);
@@ -260,7 +285,9 @@ class MainController extends Controller
 
         $products = $products->orderBy('p.id', 'DESC')->groupBy("p.id")->paginate(20);
 
-        return response()->json(['products' => $products], 200);
+        return view('frontend.product.cate-products', compact('products', 'category', 'brands', 'conditions'))->with('input', $request);
+
+        // return response()->json(['products' => $products], 200);
     }
 
     public function getCategoryProducts(Request $request, $slug)

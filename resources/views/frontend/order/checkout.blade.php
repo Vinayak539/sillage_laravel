@@ -247,7 +247,7 @@
                                                                 <h6 class="panel-title">
                                                                     <a data-toggle="collapse" data-parent="#accordion"
                                                                         href="#collapse2">
-                                                                        Enter Shop Name!</a>
+                                                                        Enter Shop Code!</a>
                                                                 </h6>
                                                             </div>
                                                             <div id="collapse2" class="panel-collapse collapse">
@@ -257,7 +257,7 @@
                                                                             <input type="text" name="discountcode"
                                                                                 id="discountcode"
                                                                                 class="single-input-wrapper check-availibility discountcode"
-                                                                                placeholder="Enter Shop Name"
+                                                                                placeholder="Enter Shop Code"
                                                                                 style="border-right: none;margin-bottom: 0;">
                                                                             <div class="input-group-append">
                                                                                 <button type="button"

@@ -885,6 +885,9 @@
 
                         var prodSize = {!! json_encode($product->sizes) !!}
 
+                        console.log(prodSize);
+                        
+
                         var productSizeObj = {
 
                         };
@@ -899,7 +902,7 @@
                         prodSize.forEach(data => {
 
                             html += `<div class="swatch-wrapper"><a class="product-size-swatch-btn variation-btn size_btn ${productSizeObj[data.size_id]? (productSizeObj[data.size_id].size_id ? '' : 'disabledClass'): 'disabledClass'}" data-toggle="tooltip"
-                                data-placement="top" title="${data.title}" data-size-id="${data.size_id}" >
+                                data-placement="top" title="${data.title} {{ $product->unit ? $product->unit->unit : '' }}" data-size-id="${data.size_id}" >
                                 <span class="product-size-swatch-label">${data.title}</span>
                             </a>
                         </div>`
