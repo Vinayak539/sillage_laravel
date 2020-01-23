@@ -74,3 +74,4 @@ add out of stock in product after search and other
 add column used_royalty_points bigint in txn_orders 
 replace column last_purchase date in txn_users 
 ...
+
