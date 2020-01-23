@@ -115,103 +115,23 @@
                     </div>
 
                     <div class="col-md-12">
-                        <div class="row">
-                            @foreach($images as $key => $img)
-
-                            @if($img->image_view == '1' )
-                            <div class="col-md-3">
-                                <div class="card text-center">
-                                    <div class="card-body">
-                                        <img src="{!! asset('storage/images/multi-products/'. $img->image_url) !!}"
-                                            alt="" width="120px">
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="form-group">
-                                            <label for="front_image">Change Front Image</label>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="gallery gallery-md">
+                                    @foreach($images as $key => $img)
+                                    {{-- <div class="card-body">
+                                            <img data-original="{!! asset('storage/images/multi-products/'. $img->image_url) !!}"
+                                                alt="" width="120px" class="lazy">
+                                        </div> --}}
+                                    <div class="item">
+                                        <div  class="gallery-item" data-image="{!! asset('storage/images/multi-products/'. $img->image_url) !!}" data-title="Image{{ $key }}">
                                         </div>
+                                        <button style="position: absolute;margin-left: -85px; z-index: 1;" type="button" class="btn btn-outline-danger btn-sm image-delete"
+                                        data-delete-id="{{ $img->id }}"><i class="fa fa-trash"></i></button>
                                     </div>
+                                    @endforeach
                                 </div>
                             </div>
-                            @endif
-
-                            @if($img->image_view == '2' )
-                            <div class="col-md-3">
-                                <div class="card text-center">
-                                    <div class="card-body">
-                                        <img src="{!! asset('storage/images/multi-products/'. $img->image_url) !!}"
-                                            alt="" width="120px">
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="form-group">
-                                            <label for="back_image">Change Back Image</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-
-                            @if($img->image_view == '3')
-                            <div class="col-md-3">
-                                <div class="card ">
-                                    <div class="card-header ">
-                                        <button type="button" class="btn btn-outline-danger image-delete"
-                                            data-delete-id="{{ $img->id }}"><i class="fa fa-trash"></i></button>
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <img src="{!! asset('storage/images/multi-products/'. $img->image_url) !!}"
-                                            alt="" width="120px">
-
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="form-group">
-                                            <label for="left_image">Change Left Image</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-
-                            @if($img->image_view == '4')
-                            <div class="col-md-3">
-                                <div class="card ">
-                                    <div class="card-header ">
-                                        <button type="button" class="btn btn-outline-danger image-delete"
-                                            data-delete-id="{{ $img->id }}"><i class="fa fa-trash"></i></button>
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <img src="{!! asset('storage/images/multi-products/'. $img->image_url) !!}"
-                                            alt="" width="120px">
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="form-group">
-                                            <label for="right_image">Change Right Image</label>
-                                           
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-
-
-                            @if($img->image_view != "1" && $img->image_view != "2" && $img->image_view != "3" &&
-                            $img->image_view != "4")
-                            <div class="col-md-3">
-                                <div class="card text-center">
-                                    <div class="card-body">
-                                        <img data-original="{!! asset('storage/images/multi-products/'. $img->image_url) !!}"
-                                            alt="" width="120px" class="lazy">
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="form-group">
-                                            <button type="button" class="btn btn-outline-danger image-delete"
-                                                data-delete-id="{{ $img->id }}"><i class="fa fa-trash"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-
-                            @endforeach
                         </div>
                     </div>
 
@@ -233,6 +153,11 @@
 @endsection
 
 @section('extrajs')
+
+<script src="{!! asset('admin/bundles/chocolat/dist/js/jquery.chocolat.min.js') !!}"></script>
+<!-- Page Specific JS File -->
+<script src="{!! asset('admin/js/page/gallery1.js') !!}"></script>
+
 <script>
     $(document).ready(function () {
 
