@@ -22,7 +22,7 @@
                         data-param9="" data-param10="" data-description="">
                         <!-- MAIN IMAGE -->
                         <img src="{!! asset('storage/images/sliders').'/'.$slider->image_url !!}"
-                            alt="{{ $slider->name }}" data-bgposition="center center" data-bgfit="cover"
+                            alt="{{ $slider->name }}" data-bgposition="center center" data-bgfit="contain"
                             data-bgrepeat="no-repeat" data-bgparallax="3" class="rev-slidebg" data-no-retina>
                         <!-- LAYERS -->
                     </li>
@@ -36,7 +36,7 @@
 </div>
 
 @if(count($homeOfferSliders))
-<div class="container mt--50 mb--70 mb-md--50">
+<div class="container mt--50 mt-xs--20 mb--50 mb-xs--20">
     <div class="airi-element-carousel nav-vertical-center nav-style-1" data-slick-options='{
         "slidesToShow" : 1,
         "arrows": true,
@@ -256,7 +256,6 @@
         });
         // $(".out-of-stock").prev().addClass("active");
     });
-
 </script>
 
 @endsection
