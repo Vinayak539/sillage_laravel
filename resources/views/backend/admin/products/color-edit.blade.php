@@ -119,10 +119,6 @@
                             <div class="card-body">
                                 <div class="gallery gallery-md">
                                     @foreach($images as $key => $img)
-                                    {{-- <div class="card-body">
-                                            <img data-original="{!! asset('storage/images/multi-products/'. $img->image_url) !!}"
-                                                alt="" width="120px" class="lazy">
-                                        </div> --}}
                                     <div class="item">
                                         <div  class="gallery-item" data-image="{!! asset('storage/images/multi-products/'. $img->image_url) !!}" data-title="Image{{ $key }}">
                                         </div>
