@@ -81,7 +81,7 @@ class MainController extends Controller
                 ->first();
 
             $colorsSizes = DB::table('map_color_sizes as m')
-                ->selectRaw('DISTINCT(c.title) as color_name, s.title as size_name, c.id as color_id, s.id as size_id, m.mrp, m.stock, m.starting_price, m.id as map_id')
+                ->selectRaw('DISTINCT(c.title) as color_name,c.color_code , s.title as size_name, c.id as color_id, s.id as size_id, m.mrp, m.stock, m.starting_price, m.id as map_id')
                 ->join('mst_colors as c', 'm.color_id', 'c.id')
                 ->join('mst_sizes as s', 'm.size_id', 's.id')
                 ->where('m.product_id', $product->id)

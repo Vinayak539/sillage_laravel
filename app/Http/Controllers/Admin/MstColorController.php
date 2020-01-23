@@ -42,11 +42,14 @@ class MstColorController extends Controller
 
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:50|unique:mst_colors,title',
+            'color_code' => 'required|string|unique:mst_colors,color_code',
         ],
             [
                 'title.required' => 'Please Enter Color',
                 'title.max' => 'Please Enter Color in Maximum 50 Character',
                 'title.unique' => $request->title . ' Colour Already Available',
+                'color_code.required' => 'Please Select Color',
+                'color_code.unique' => $request->color_code . ' Colour Already Available',
             ]);
 
         if ($validator->fails()) {
@@ -56,6 +59,7 @@ class MstColorController extends Controller
 
         MstColor::create([
             'title' => $request->title,
+            'color_code' => $request->color_code,
             'status' => true,
         ]);
 
@@ -117,10 +121,12 @@ class MstColorController extends Controller
 
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:50',
+            'color_code' => 'required|string',
             'status' => 'required|integer|max:1',
         ],
             [
-                'title.required' => 'Please Enter Color',
+                'title.required' => 'Please Enter Color Title',
+                'color_code.required' => 'Please Select Color',
                 'title.max' => 'Please Enter Color in Maximum 50 Character',
                 'status.required' => 'Please Enter Colour Status',
                 'status.max' => 'Invalid Data Provided',
@@ -137,6 +143,7 @@ class MstColorController extends Controller
 
             $color->update([
                 'title' => $request->title,
+                'color_code' => $request->color_code,
                 'status' => $request->status,
             ]);
 

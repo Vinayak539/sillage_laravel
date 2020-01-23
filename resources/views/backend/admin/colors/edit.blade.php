@@ -22,7 +22,7 @@
             <form method="post" id="formEditColour" class="needs-validation">
                 @csrf
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="title">Colour Name <span class="text-danger">*</span></label>
                             <input type="text" name="title" id="title" class="form-control" value="{{ $color->title }}"
@@ -30,7 +30,15 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="color_code">Choose Color <span class="text-danger">*</span></label>
+                            <input type="color" name="color_code" id="color_code" class="form-control"
+                                value="{{ $color->color_code }}" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="status">Status <span class="text-danger">*</span> </label>
                             <select name="status" id="status" class="form-control" required>
@@ -39,6 +47,7 @@
                                 <option value="0" {{ $color->status == false ? 'selected': '' }}>Inactive</option>
                             </select>
                         </div>
+                        
                     </div>
 
                     <div class="col-md-12 text-center">
@@ -60,6 +69,10 @@
                required: true
             },
 
+            color_code: {
+               required: true
+            },
+
             status: {
                required: true
             },
@@ -68,6 +81,10 @@
          messages: {
             title: {
                required: "Please Enter Colour Name"
+            },
+           
+            color_code: {
+               required: "Please Select Color"
             },
 
             status: {

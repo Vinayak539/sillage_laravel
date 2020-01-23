@@ -23,6 +23,14 @@
                                     value="{{ old('title') }}" placeholder="Enter Color Name" required>
                             </div>
                         </div>
+                        
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="color_code">Choose Color <span class="text-danger">*</span></label>
+                                <input type="color" name="color_code" id="color_code" class="form-control"
+                                    value="{{ old('color_code') }}" required>
+                            </div>
+                        </div>
 
                         <div class="col-md-12 text-danger">
                             Note : All * Mark Fields are Compulsory !
@@ -61,6 +69,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Title</th>
                             <th>Color</th>
                             <th>Status</th>
                             <th>Added On</th>
@@ -68,10 +77,12 @@
                         </tr>
                     </thead>
                     <tbody>
+                        
                         @forelse ($colors as $color)
                         <tr>
                             <td>{{ $color->id }}</td>
                             <td>{{ $color->title }} </td>
+                            <td><span class="custom-color" style="background-color: {{$color->color_code}}"></span></td>
                             <td>
                                 {{ $color->status == true ? 'Active' : 'Blocked' }}
                             </td>
@@ -110,6 +121,7 @@
                     <tfoot>
                         <tr>
                             <th>#</th>
+                            <th>Title</th>
                             <th>Color</th>
                             <th>Status</th>
                             <th>Added On</th>
@@ -123,6 +135,18 @@
 
 </section>
 @endsection
+
+@section('extracss')
+<style>
+    .custom-color{
+        height: 25px;
+        width: 40px;
+        display: block;
+        border-radius: 5px;
+        box-shadow: 0px 1px 3px 0px #000;
+    }
+    </style>
+@endsection
 @section('extrajs')
 <script>
     $(document).ready(function () {
@@ -133,10 +157,20 @@
                 title: {
                    required: true
                 },
+                
+                color_code: {
+                   required: true
+                },
+
              },
              messages: {
+
                 title: {
                    required: "Please Enter Colour Name"
+                },
+
+                color_code: {
+                   required: "Please Select Colour"
                 },
              },
              submitHandler: function (form) {

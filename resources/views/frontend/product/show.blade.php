@@ -175,7 +175,7 @@
                             <p class="swatch-label">Color: <strong class="swatch-label color-label"></strong></p>
                             <div class="product-color-swatch variation-wrapper">
                                 @foreach ($colorsSizes as $item)
-                                <div class="swatch-wrapper" style="background: {{ $item->color_name }}">
+                                <div class="swatch-wrapper" style="background: {{ $item->color_code }}">
                                     <a class="product-color-swatch-btn variation-btn" data-toggle="tooltip"
                                         data-placement="top" title="{{ $item->color_name }}"
                                         data-color-id="{{ $item->color_id }}" data-mrp="{{ $item->mrp }}"
