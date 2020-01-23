@@ -594,9 +594,17 @@
     .error {
         color: rgb(238, 53, 53);
     }
-
-    .fs-14 {
+    .fs-14{
         font-size: 14 !important;
+    }
+    .signUp-page{
+        background-color: #fff;
+    }
+    .signUp-minimal .signin-form-wrapper{
+        max-width: 540px;
+    }
+    .Checkout_section .login-or h3{
+        margin-left: 10px;
     }
 </style>
 @endsection

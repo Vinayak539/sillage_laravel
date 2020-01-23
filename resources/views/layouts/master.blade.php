@@ -742,6 +742,15 @@
                 }
             });
 
+            var navheight = $(".fixed-header").height();
+            var mob_navheight = $(".header-mobile__inner").height();
+            // $("#homepage-slider-1").css("margin-top", navheight);
+            if ($(window).width() > 991) {
+                $("#homepage-slider-1").css("margin-top", navheight-5);
+            } else {
+                $("#homepage-slider-1").css("margin-top", navheight+13);
+            }
+
         });
     </script>
 </body>

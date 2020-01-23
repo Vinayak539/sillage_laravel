@@ -67,10 +67,10 @@ class AppServiceProvider extends ServiceProvider
                     $html .= "<ul class='megamenu two-column'>";
                     foreach ($category['parent_cats'][$parent] as $cat_id) {
                         if (!isset($category['parent_cats'][$cat_id])) {
-                            $html .= "<li><a class='megamenu-title' href='" . asset('category') . '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
+                            $html .= "<li><a class='megamenu-title' href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
                         }
                         if (isset($category['parent_cats'][$cat_id])) {
-                            $html .= "<li><a class='megamenu-title' href='" . asset('category') . '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a>";
+                            $html .= "<li><a class='megamenu-title' href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a>";
                             $html .= $this->buildCategory($cat_id, $category, $count);
                             $html .= "</li>";
                         }
@@ -79,10 +79,10 @@ class AppServiceProvider extends ServiceProvider
                     $html .= "<ul class='sub-menu'>";
                     foreach ($category['parent_cats'][$parent] as $cat_id) {
                         if (!isset($category['parent_cats'][$cat_id])) {
-                            $html .= "<li><a class='submenu-title' href='" . asset('category') . '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
+                            $html .= "<li><a class='submenu-title' href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
                         }
                         if (isset($category['parent_cats'][$cat_id])) {
-                            $html .= "<li><a class='submenu-title' href='" . asset('category') . '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a>";
+                            $html .= "<li><a class='submenu-title' href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a>";
                             $html .= $this->buildCategory($cat_id, $category, $count);
                             $html .= "</li>";
                         }
@@ -93,10 +93,10 @@ class AppServiceProvider extends ServiceProvider
                     $html .= "<ul class='mainmenu mainmenu--centered'>";
                     foreach ($category['parent_cats'][$parent] as $cat_id) {
                         if (!isset($category['parent_cats'][$cat_id])) {
-                            $html .= "<li class='mainmenu__item menu-item-has-children has-children'><a href='" . asset('category') . '/' . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text '>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
+                            $html .= "<li class='mainmenu__item menu-item-has-children has-children'><a href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text '>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
                         }
                         if (isset($category['parent_cats'][$cat_id])) {
-                            $html .= "<li class='mainmenu__item menu-item-has-children has-children'><a href='" . asset('category') . '/' . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text '>" . $category['categories'][$cat_id]['name'] . "</span></a></i>";
+                            $html .= "<li class='mainmenu__item menu-item-has-children has-children'><a href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text '>" . $category['categories'][$cat_id]['name'] . "</span></a></i>";
                             $html .= $this->buildCategory($cat_id, $category, $count);
                             $html .= "</li>";
                         }
@@ -106,10 +106,10 @@ class AppServiceProvider extends ServiceProvider
                     $html .= "<ul class='mainmenu mainmenu--3'>";
                     foreach ($category['parent_cats'][$parent] as $cat_id) {
                         if (!isset($category['parent_cats'][$cat_id])) {
-                            $html .= "<li class='mainmenu__item menu-item-has-children'><a href='" . asset('category') . '/' . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text '>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
+                            $html .= "<li class='mainmenu__item menu-item-has-children'><a href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text '>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
                         }
                         if (isset($category['parent_cats'][$cat_id])) {
-                            $html .= "<li class='mainmenu__item menu-item-has-children'><a href='" . asset('category') . '/' . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text '>" . $category['categories'][$cat_id]['name'] . "</span></a></i>";
+                            $html .= "<li class='mainmenu__item menu-item-has-children'><a href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text '>" . $category['categories'][$cat_id]['name'] . "</span></a></i>";
                             $html .= $this->buildCategory($cat_id, $category, $count);
                             $html .= "</li>";
                         }
@@ -120,10 +120,10 @@ class AppServiceProvider extends ServiceProvider
                 $html .= "<ul>";
                 foreach ($category['parent_cats'][$parent] as $cat_id) {
                     if (!isset($category['parent_cats'][$cat_id])) {
-                        $html .= "<li><a href='" . asset('category') . '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
+                        $html .= "<li><a href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
                     }
                     if (isset($category['parent_cats'][$cat_id])) {
-                        $html .= "<li><a href='" . asset('category') . '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a>";
+                        $html .= "<li><a href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a>";
                         $html .= $this->buildCategory($cat_id, $category, $count);
                         $html .= "</li>";
                     }
@@ -148,10 +148,10 @@ class AppServiceProvider extends ServiceProvider
                 $html .= "<ul class='dl-submenu'>";
                 foreach ($category['parent_cats'][$parent] as $cat_id) {
                     if (!isset($category['parent_cats'][$cat_id])) {
-                        $html .= "<li><a class='megamenu-title' href='" . asset('category') . '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
+                        $html .= "<li><a class='megamenu-title' href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
                     }
                     if (isset($category['parent_cats'][$cat_id])) {
-                        $html .= "<li><a class='megamenu-title' href='" . asset('category') . '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a>";
+                        $html .= "<li><a class='megamenu-title' href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a>";
                         $html .= $this->smallDeviceBuildCategory($cat_id, $category, $count);
                         $html .= "</li>";
                     }
@@ -162,10 +162,10 @@ class AppServiceProvider extends ServiceProvider
                 $html .= "<ul class='dl-menu'>";
                 foreach ($category['parent_cats'][$parent] as $cat_id) {
                     if (!isset($category['parent_cats'][$cat_id])) {
-                        $html .= "<li><a href='" . asset('category') . '/' . $category['categories'][$cat_id]['slug_url'] . "'>" . $category['categories'][$cat_id]['name'] . "</a></li>";
+                        $html .= "<li><a href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "'>" . $category['categories'][$cat_id]['name'] . "</a></li>";
                     }
                     if (isset($category['parent_cats'][$cat_id])) {
-                        $html .= "<li><a href='" . asset('category') . '/' . $category['categories'][$cat_id]['slug_url'] . "'>" . $category['categories'][$cat_id]['name'] . "</a></i>";
+                        $html .= "<li><a href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "'>" . $category['categories'][$cat_id]['name'] . "</a></i>";
                         $html .= $this->smallDeviceBuildCategory($cat_id, $category, $count);
                         $html .= "</li>";
                     }
@@ -176,10 +176,10 @@ class AppServiceProvider extends ServiceProvider
                 $html .= "<ul class='dl-submenu'>";
                 foreach ($category['parent_cats'][$parent] as $cat_id) {
                     if (!isset($category['parent_cats'][$cat_id])) {
-                        $html .= "<li><a href='" . asset('category') . '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
+                        $html .= "<li><a href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";
                     }
                     if (isset($category['parent_cats'][$cat_id])) {
-                        $html .= "<li><a href='" . asset('category') . '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a>";
+                        $html .= "<li><a href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "'><span class='mm-text'>" . $category['categories'][$cat_id]['name'] . "</span></a>";
                         $html .= $this->smallDeviceBuildCategory($cat_id, $category, $count);
                         $html .= "</li>";
                     }

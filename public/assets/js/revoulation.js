@@ -181,13 +181,13 @@
 	// Home 07
 	$("#rev_slider_4_1").show().revolution({
 		sliderType:"standard",
-		sliderLayout:"fullwidth",
+		// sliderLayout:"fullwidth",
 		dottedOverlay:"none",
 		delay:9000,
 		navigation: {
 			keyboardNavigation:"off",
 			keyboard_direction: "horizontal",
-			mouseScrollNavigation:"off",
+			mouseScrollNavigation:"on",
              mouseScrollReverse:"default",
 			onHoverStop:"off",
 			touch:{
@@ -200,7 +200,7 @@
 			}
 			,
 			bullets: {
-				enable:true,
+				enable:false,
 				hide_onmobile:false,
 				style:"larev-dot2",
 				hide_onleave:false,
@@ -215,8 +215,10 @@
 		},
 		responsiveLevels:[1240,1240,778,480],
 		visibilityLevels:[1240,1240,778,480],
-		gridwidth:[1920,1920,778,480],
-		gridheight:[830,830,600,500],
+		gridwidth:[1342,1342,778,480],
+		gridheight:[360,360,360,125],
+		// gridwidth:[1920,1920,778,480],
+		// gridheight:[830,830,600,500],
 		lazyType:"none",
 		parallax: {
 			type:"mouse+scroll",
