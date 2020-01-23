@@ -1,0 +1,44 @@
+#!/bin/bash
+echo "Check"
+while read oldrev newrev ref
+do
+    # only checking out the master (or whatever branch you would like to deploy)
+    
+    if [[ $ref = refs/heads/master ]];
+    then
+        echo "Master ref received.  Deploying master branch to production..."
+        git --work-tree=/home/hnili887/ --git-dir=/home/hnili887/repo/site.git checkout -f master
+        cd /home/hnili887/
+        composer install
+        php artisan co:cl
+        php artisan ca:cl
+        php artisan v:cl
+        php artisan r:cl
+        php artisan cl
+        php artisan migrate
+        php artisan s:l
+        
+        composer dump-autoload
+    else
+        if [[ $ref = refs/heads/en ]];
+        then
+                echo "Sandbox ref received. Deploying sandbox branch to beta..."
+                git --work-tree=/home/hnili887/public_html/en/ --git-dir=/home/hnili887/repo/site.git checkout -f en
+                
+                cd /home/hnili887/public_html/en/
+                
+                composer install
+                php artisan co:cl
+                php artisan ca:cl
+                php artisan v:cl
+                php artisan r:cl
+                php artisan cl
+                php artisan migrate
+                # php artisan s:l
+                
+                # composer dump-autoload
+        else
+                echo "Ref $ref successfully received.  Doing nothing: only the master branch may be deployed on this server."
+        fi
+    fi
+done
