@@ -29,64 +29,19 @@
                         <div class="product-gallery vertical-slide-nav">
                             <div class="product-gallery__thumb">
                                 <div class="product-gallery__thumb--image">
-                                    <div class="airi-element-carousel nav-slider slick-vertical multi-images"
-                                        data-slick-options='{
-                                                    "slidesToShow": 3,
-                                                    "slidesToScroll": 1,
-                                                    "vertical": true,
-                                                    "swipe": true,
-                                                    "verticalSwiping": true,
-                                                    "infinite": true,
-                                                    "focusOnSelect": true,
-                                                    "asNavFor": ".main-slider",
-                                                    "arrows": true,
-                                                    "prevArrow": {"buttonClass": "slick-btn slick-prev", "iconClass": "fa fa-angle-up" },
-                                                    "nextArrow": {"buttonClass": "slick-btn slick-next", "iconClass": "fa fa-angle-down" }
-                                                }' data-slick-responsive='[
-                                                    {
-                                                        "breakpoint":992,
-                                                        "settings": {
-                                                            "slidesToShow": 4,
-                                                            "vertical": false,
-                                                            "verticalSwiping": false
-                                                        }
-                                                    },
-                                                    {
-                                                        "breakpoint":575,
-                                                        "settings": {
-                                                            "slidesToShow": 3,
-                                                            "vertical": false,
-                                                            "verticalSwiping": false
-                                                        }
-                                                    },
-                                                    {
-                                                        "breakpoint":480,
-                                                        "settings": {
-                                                            "slidesToShow": 2,
-                                                            "vertical": false,
-                                                            "verticalSwiping": false
-                                                        }
-                                                    }
-                                                ]'>
+                                    {{-- <div class="multi-images">
 
 
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             <div class="product-gallery__large-image">
                                 <div class="gallery-with-thumbs">
                                     <div class="product-gallery__wrapper">
-                                        <div class="airi-element-carousel main-slider product-gallery__full-image image-popup multi-images1"
-                                            data-slick-options='{
-                                                        "slidesToShow": 1,
-                                                        "slidesToScroll": 1,
-                                                        "infinite": true,
-                                                        "arrows": false,
-                                                        "asNavFor": ".nav-slider"
-                                                    }'>
+                                        {{-- <div class="multi-images1">
 
 
-                                        </div>
+                                        </div> --}}
                                         <div class="product-gallery__actions">
                                             <button class="action-btn btn-zoom-popup"><i class="fa fa-search-plus"
                                                     aria-hidden="true"></i></button>
@@ -729,6 +684,14 @@
         padding: 1.5rem 2rem;
     }
 
+    .slick-prev, .slick-next {
+  z-index: 1000;
+}
+
+.slick-prev:before, .slick-next:before { 
+    color:red !important;
+}
+
 </style>
 
 <script type='text/javascript'
@@ -943,9 +906,9 @@
 
 
                         });
-
-                        imageHtml = '';
-                        imageHtml1 = '';
+                        
+                        imageHtml = `<div class="multi-images nav-slider">`;
+                        imageHtml1 = `<div class="multi-images1 main-slider">`;
 
                         images.forEach(image => {
 
@@ -962,69 +925,71 @@
 
                     </figure>`
                         });
+                        imageHtml += `</div>`
+                        imageHtml1 += `</div>`
+                        
+                        // $('.product-gallery__thumb--image').html(imageHtml);
 
-                        $('.multi-images').html(imageHtml);
+                        $('.product-gallery__wrapper').html(imageHtml1);
 
-                        $('.multi-images1').html(imageHtml1);
+                        // console.log('asd', $('.multi-images'));
 
-                        $('.multi-images').slick('unslick');
-
-                        $('.multi-images1').slick('unslick');
-
-                        if ($.fn.slick) {
-                            $('.multi-images').slick({
-                                slidesToShow: 3,
-                                slidesToScroll: 5,
-                                vertical: true,
-                                swipe: true,
-                                verticalSwiping: true,
-                                infinite: false,
-                                focusOnSelect: true,
-                                asNavFor: ".main-slider",
-                                arrows: true,
-                                prevArrow: {
-                                    "buttonClass": "slick-btn slick-prev",
-                                    "iconClass": "fa fa-angle-up"
-                                },
-                                nextArrow: {
-                                    "buttonClass": "slick-btn slick-next",
-                                    "iconClass": "fa fa-angle-down"
-                                },
-                                responsive: [{
-                                        breakpoint: 992,
-                                        settings: {
-                                            slidesToShow: 4,
-                                            vertical: false,
-                                            verticalSwiping: false
-                                        }
-                                    },
-                                    {
-                                        breakpoint: 575,
-                                        settings: {
-                                            slidesToShow: 3,
-                                            vertical: false,
-                                            verticalSwiping: false
-                                        }
-                                    },
-                                    {
-                                        breakpoint: 480,
-                                        settings: {
-                                            slidesToShow: 2,
-                                            vertical: false,
-                                            verticalSwiping: false
-                                        }
-                                    }
-                                ]
-                            });
-                            $('.multi-images1').slick({
-
+                        // $(".multi-images").not('.slick-initialized').slick(
+                        //     {
+                        //         slidesToShow: 3,
+                        //         slidesToScroll: 5,
+                        //         vertical: true,
+                        //         swipe: true,
+                        //         verticalSwiping: true,
+                        //         infinite: false,
+                        //         focusOnSelect: true,
+                        //         asNavFor: ".main-slider",
+                        //         lazyLoad: "ondemand",
+                        //         arrows: true,
+                        //         // prevArrow: {
+                        //         //     "buttonClass": "slick-btn slick-prev",
+                        //         //     "iconClass": "fa fa-angle-up"
+                        //         // },
+                        //         // nextArrow: {
+                        //         //     "buttonClass": "slick-btn slick-next",
+                        //         //     "iconClass": "fa fa-angle-down"
+                        //         // },
+                        //         responsive: [{
+                        //                 breakpoint: 992,
+                        //                 settings: {
+                        //                     slidesToShow: 4,
+                        //                     vertical: false,
+                        //                     verticalSwiping: false
+                        //                 }
+                        //             },
+                        //             {
+                        //                 breakpoint: 575,
+                        //                 settings: {
+                        //                     slidesToShow: 3,
+                        //                     vertical: false,
+                        //                     verticalSwiping: false
+                        //                 }
+                        //             },
+                        //             {
+                        //                 breakpoint: 480,
+                        //                 settings: {
+                        //                     slidesToShow: 2,
+                        //                     vertical: false,
+                        //                     verticalSwiping: false
+                        //                 }
+                        //             }
+                        //         ]
+                        //     }
+                        // );
+                        $(".multi-images1").not('.slick-initialized').slick(
+                            {
                                 slidesToShow: 1,
                                 slidesToScroll: 1,
                                 infinite: true,
-                                arrows: false,
-                                asNavFor: ".nav-slider"
-                            });
-                        }
+                                arrows: true,
+                                // asNavFor: ".nav-slider"
+                            }
+                        );
 
                         $('.product-size-swatch').html(html);
 
