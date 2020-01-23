@@ -128,8 +128,6 @@
                                     <div class="card-footer">
                                         <div class="form-group">
                                             <label for="front_image">Change Front Image</label>
-                                            <input type="file" name="front_image" class="form-control" id="front_image"
-                                                accept="image/jpeg, image/png">
                                         </div>
                                     </div>
                                 </div>
@@ -146,8 +144,6 @@
                                     <div class="card-footer">
                                         <div class="form-group">
                                             <label for="back_image">Change Back Image</label>
-                                            <input type="file" name="back_image" class=" form-control" id="back_image"
-                                                accept="image/jpeg, image/png">
                                         </div>
                                     </div>
                                 </div>
@@ -169,8 +165,6 @@
                                     <div class="card-footer">
                                         <div class="form-group">
                                             <label for="left_image">Change Left Image</label>
-                                            <input type="file" name="left_image" class=" form-control" id="left_image"
-                                                accept="image/jpeg, image/png">
                                         </div>
                                     </div>
                                 </div>
@@ -191,9 +185,7 @@
                                     <div class="card-footer">
                                         <div class="form-group">
                                             <label for="right_image">Change Right Image</label>
-                                            <input type="file" name="right_image" class=" form-control" id="right_image"
-                                                accept="image/jpeg, image/png">
-
+                                           
                                         </div>
                                     </div>
                                 </div>
