@@ -177,12 +177,12 @@
     </div>
 </section>
 
-
-@endsection
 <form id="formDelete" method="POST" action="{{ route('admin.sliders.delete') }}">
     @csrf
     <input type="hidden" name="slider_id" id="txtSliderID">
 </form>
+
+@endsection
 
 @section('extrajs')
 <script>
@@ -190,8 +190,9 @@
         $(".delete-object").click(function () {
             if (window.confirm("Are you sure, You want to Delete ? ")) {
                 $("#txtSliderID").val($(this).attr("data-obj-id"));
+                $(this).attr('disabled', 'disabled');
+                $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
                 $("#formDelete").submit();
-                $(this).html('wait...');
             }
         });
 

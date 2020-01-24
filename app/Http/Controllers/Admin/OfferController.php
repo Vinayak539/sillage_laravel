@@ -88,7 +88,7 @@ class OfferController extends Controller
     {
         try {
 
-            $offer = MstOffer::where('id', $id)->with('map_offers')->firstOrFail();
+            $offer = MstOffer::where('id', $id)->firstOrFail();
 
             $map_offers = \DB::table('map_mst_offer_products as mp')
                 ->selectRaw('mp.id as map_id, mp.status, mp.created_at, c.name as category_name, p.title as product_name, col.title as color_name, s.title as size_name')
@@ -233,7 +233,27 @@ class OfferController extends Controller
      */
     public function destroy(Request $request)
     {
-        //
+        try{
+
+            $offer = MapMstOfferProduct::where('id', $request->offer_id)->firstOrFail();
+            
+            $offer->delete();
+
+            connectify('success', 'Offer Product Removed', 'Offer Product has been removed successfully !');
+
+            return back();
+
+        }catch (\Exception $ex) {
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+
+                connectify('error', 'Error', 'Whoops, Offer Not Found !');
+                return redirect(route('admin.offers.all'));
+            }
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong From Our End !');
+            return back();
+        }
+        
     }
 
     public function getProducts(Request $request)

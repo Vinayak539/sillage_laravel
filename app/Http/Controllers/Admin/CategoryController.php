@@ -98,9 +98,9 @@ class CategoryController extends Controller
         $cate = TxnCategory::where('id', $request->txtCategoryID)->first();
 
         if ($cate) {
-            $request['slug_url'] = Str::slug($cate->name . '-' . $request->category_name, '-');
+            $request['slug_url'] = Str::slug($cate->name . '-' . $request->category_name . $cate->id, '-');
         } else {
-            $request['slug_url'] = Str::slug($request->category_name, '-');
+            $request['slug_url'] = Str::slug($request->category_name. $cate->id, '-');
         }
 
         TxnCategory::create([
@@ -194,9 +194,9 @@ class CategoryController extends Controller
             $category = TxnCategory::where('id', $id)->firstOrFail();
 
             if ($category) {
-                $request['slug_url'] = Str::slug($category->name . '-' . $request->name, '-');
+                $request['slug_url'] = Str::slug($category->name . '-' . $request->category_name . $category->id, '-');
             } else {
-                $request['slug_url'] = Str::slug($request->name, '-');
+                $request['slug_url'] = Str::slug($request->category_name. $category->id, '-');
             }
 
             $category->update([

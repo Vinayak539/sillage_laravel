@@ -23,15 +23,6 @@ Route::view('/cancellation', 'frontend.cancellation')->name('cancellation');
 Route::view('/refund-return', 'frontend.refund-return')->name('refund-return');
 Route::view('/shipping', 'frontend.shipping')->name('shipping');
 Route::view('/faq', 'frontend.faq')->name('faq');
-Route::view('/myaccount/login', 'frontend.login')->name('user.login');
-Route::view('/team', 'frontend.team')->name('team');
-Route::view('/myaccount/register', 'frontend.register')->name('register');
-Route::view('/myaccount/otp', 'frontend.otp')->name('otp');
-Route::view('/forget-password', 'frontend.forget-password')->name('forget-password');
-Route::view('/orders', 'frontend.orders')->name('orders');
-Route::view('/own-creation', 'frontend.own-creation')->name('own-creation');
-Route::view('/account-details', 'frontend.account-details')->name('account-details');
-Route::view('/asd', 'ads')->name('password.request');
 
 // policy
 Route::view('/terms-condition', 'frontend.terms-condition')->name('terms-condition');
@@ -55,6 +46,8 @@ Route::GET('/category/{slug}', 'MainController@getCategoryProducts')->name('cate
 Route::GET('/search', 'MainController@search')->name('search');
 Route::POST('/get-sizes', 'MainController@getSizes')->name('get.sizes');
 Route::POST('/verify-promocode', 'MainController@verifyPromocode')->name('verify.promocode');
+Route::POST('/get-size-price', 'MainController@getSizePrice')->name('get.size.price');
+
 // Start Socialite
 
 Route::GET('auth/{provider}', 'SocialiteManageController@redirectToProvider')->name('user.auth.socialite');
@@ -329,7 +322,7 @@ Route::prefix('adhni753')->group(function () {
             Route::GET('/', 'Admin\OfferController@index')->name('admin.offers.all');
             Route::POST('/', 'Admin\OfferController@store');
             Route::GET('/edit/{id}', 'Admin\OfferController@edit')->name('admin.offers.edit');
-            Route::POST('/edit/{id}', 'Admin\OfferController@update');
+            Route::POST('/edit', 'Admin\OfferController@update')->name('admin.offers.update');
             Route::POST('/delete', 'Admin\OfferController@destroy')->name('admin.offers.delete');
             Route::POST('/get/products', 'Admin\OfferController@getProducts')->name('admin.offers.getProduct');
             Route::POST('/get/colours', 'Admin\OfferController@getColors')->name('admin.offers.getColors');

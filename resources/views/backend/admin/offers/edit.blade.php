@@ -25,7 +25,8 @@
                                     @foreach($categories as $cate)
                                     <option value="{{ $cate->id }}"
                                         {{ old('category_id') == $cate->id ? 'selected' : '' }}>
-                                        {{ $cate->pcategory ? $cate->pcategory->name . ' > ' . $cate->name : $cate->name }}</option>
+                                        {{ $cate->pcategory ? $cate->pcategory->name . ' > ' . $cate->name : $cate->name }}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -153,7 +154,7 @@
                             <th>Sizes</th>
                             <th>Status</th>
                             <th>Added On</th>
-                            <!-- <th>Action</th> -->
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -168,16 +169,16 @@
                                 {{ $ofr->status == true ? 'Active' : 'Blocked' }}
                             </td>
                             <td>{{ date('d-M-Y h:i A', strtotime($ofr->created_at)) }}</td>
-                            <!-- <td>
-                                <a href="{{ route('admin.offers.map.edit', $ofr->map_id) }}"
-                                    class="btn btn-outline-primary" title="Edit Detail">
-                                    <i class="fa fa-edit"></i>
+                            <td>
+                                <a href="javascript:void(0)" data-role="update-obj" data-obj-id="{{ $ofr->map_id }}"
+                                    class="btn btn-outline-danger btn-sm update-object" title="Update Offer">
+                                    <i class="fa fa-edit text-primary"></i>
                                 </a>
-                                <a href="{{ route('admin.offers.edit', $ofr->map_id) }}" class="btn btn-outline-danger"
-                                    title="Delete">
-                                    <i class="fa fa-trash"></i>
+                                <a href="javascript:void(0)" data-role="delete-obj" data-obj-id="{{ $ofr->map_id }}"
+                                    class="btn btn-outline-danger btn-sm delete-object" title="Delete Offer">
+                                    <i class="fa fa-trash text-danger"></i>
                                 </a>
-                            </td> -->
+                            </td>
                         </tr>
                         @empty
                         <tr class="text-center">
@@ -196,7 +197,7 @@
                             <th>Sizes</th>
                             <th>Status</th>
                             <th>Added On</th>
-                            <!-- <th>Action</th> -->
+                            <th>Action</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -206,6 +207,18 @@
 
 </section>
 
+<form id="formDelete" method="POST" action="{{ route('admin.offers.delete') }}">
+    @csrf
+    <input type="hidden" name="offer_id" id="txtOfferID">
+</form>
+
+<form id="formUpdate" method="POST" action="{{ route('admin.offers.update') }}">
+    @csrf
+    <input type="hidden" name="offer_id" id="txtOfferID">
+    <input type="hidden" name="status" id="txtOfferStatus">
+</form>
+
+
 @endsection
 
 @section('extrajs')
@@ -213,6 +226,23 @@
 </script>
 <script>
     $(document).ready(function () {
+
+        $(".delete-object").click(function () {
+            if (window.confirm("Are you sure, You want to Delete ? ")) {
+                $("#txtOfferID").val($(this).attr("data-obj-id"));
+                $(this).attr('disabled', 'disabled');
+                $(this).html('<span class="fa fa-spinner fa-spin"></span>');
+                $("#formDelete").submit();
+            }
+        });
+
+        $(".update-object").click(function () {
+            $("#txtOfferID").val($(this).attr("data-obj-id"));
+            $("#txtOfferStatus").val($(this).attr("data-obj-status"));
+            $(this).attr('disabled', 'disabled');
+            $(this).html('<span class="fa fa-spinner fa-spin"></span>');
+            $("#formUpdate").submit();
+        });
 
         $("#formEditOffer").submit(function () {
 

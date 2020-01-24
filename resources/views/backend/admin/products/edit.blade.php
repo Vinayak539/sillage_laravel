@@ -406,7 +406,7 @@
 
                                 <option value="{{ $ofr->id }}"
                                     {{ $product->offer ? $product->offer->product_id == $product->id ? 'selected' : '' : '' }}>
-                                    {{ $ofr->mst_offer->title }}
+                                    {{ $ofr->title }}
                                 </option>
                                 @endforeach
                             </select>

@@ -82,9 +82,6 @@
 
                         </div> --}}
 
-                        <a href="#" data-toggle="modal" data-target="#bulk-order"
-                            class="float-right bulk-order-btn">Bulk Order</a>
-
                         <div class="clearfix"></div>
 
                         <h3 class="product-titles">{{ $product->title }}</h3>
@@ -125,6 +122,7 @@
                     <div class="clearfix"></div>
 
                     <form action="#" class="variation-form mb--20">
+
                         @if(count($colorsSizes) > 0)
                         <div class="product-color-variations mb--20">
                             <p class="swatch-label">Color: <strong class="swatch-label color-label"></strong></p>
@@ -842,11 +840,13 @@
     $(document).ready(function () {
        
         var color_id = $('.product-color-swatch-btn').attr('data-color-id');
-            var title = $('.product-color-swatch-btn').attr('data-title');
 
-            volume(color_id, title);
+        var title = $('.product-color-swatch-btn').attr('data-title');
+
+        volume(color_id, title);
 
         sessionStorage.clear();
+
         var offers = JSON.parse(sessionStorage.getItem('offers')) || {};
 
         $('.offer_product').click(function () {
@@ -957,6 +957,7 @@
             var stock = $(this).attr('data-stock');
             var starting_price = $(this).attr('data-starting-price');
             var title = $(this).attr('data-title');
+
             $('.size_lable').html('');
             $('#cart_size_id').val('')
 
@@ -988,16 +989,18 @@
 
         });
 
-        $('.product-size-swatch-btn').click(function () {
-            var size_id = $(this).attr('data-size-id');
-            $('#cart_size_id').val(size_id);
-        });
+        // $('.product-size-swatch-btn').click(function () {
+        //     var size_id = $(this).attr('data-size-id');
+        //     console.log(size_id);
+            
+        //     $('#cart_size_id').val(size_id);
+        // });
 
 
         function volume(color_id, title) {
 
-
             $('#cart_color_id').val(color_id);
+
             $('.color-label').html(title);
 
             $.ajaxSetup({
@@ -1014,6 +1017,7 @@
                     color_id: color_id,
                 },
                 success: function (result) {
+
                     var success = result.success;
                     var images = result.color_images;
 
@@ -1023,8 +1027,9 @@
 
                         var prodSize = {!! json_encode($product->sizes) !!}
 
-                        console.log(prodSize);
-                        
+                        $('.size_lable').html(prodSize[0].title);
+
+                        $('#cart_size_id').val(prodSize[0].size_id);
 
                         var productSizeObj = {
 
@@ -1066,62 +1071,12 @@
 
                     </figure>`
                         });
+
                         imageHtml += `</div>`
                         imageHtml1 += `</div>`
                         
-                        // $('.product-gallery__thumb--image').html(imageHtml);
-
                         $('.product-gallery__wrapper').html(imageHtml1);
 
-                        // console.log('asd', $('.multi-images'));
-
-                        // $(".multi-images").not('.slick-initialized').slick(
-                        //     {
-                        //         slidesToShow: 3,
-                        //         slidesToScroll: 5,
-                        //         vertical: true,
-                        //         swipe: true,
-                        //         verticalSwiping: true,
-                        //         infinite: false,
-                        //         focusOnSelect: true,
-                        //         asNavFor: ".main-slider",
-                        //         lazyLoad: "ondemand",
-                        //         arrows: true,
-                        //         // prevArrow: {
-                        //         //     "buttonClass": "slick-btn slick-prev",
-                        //         //     "iconClass": "fa fa-angle-up"
-                        //         // },
-                        //         // nextArrow: {
-                        //         //     "buttonClass": "slick-btn slick-next",
-                        //         //     "iconClass": "fa fa-angle-down"
-                        //         // },
-                        //         responsive: [{
-                        //                 breakpoint: 992,
-                        //                 settings: {
-                        //                     slidesToShow: 4,
-                        //                     vertical: false,
-                        //                     verticalSwiping: false
-                        //                 }
-                        //             },
-                        //             {
-                        //                 breakpoint: 575,
-                        //                 settings: {
-                        //                     slidesToShow: 3,
-                        //                     vertical: false,
-                        //                     verticalSwiping: false
-                        //                 }
-                        //             },
-                        //             {
-                        //                 breakpoint: 480,
-                        //                 settings: {
-                        //                     slidesToShow: 2,
-                        //                     vertical: false,
-                        //                     verticalSwiping: false
-                        //                 }
-                        //             }
-                        //         ]
-                        //     }
-                        // );
                         $(".multi-images1").not('.slick-initialized').slick(
                             {
                                 slidesToShow: 1,
@@ -1153,7 +1108,12 @@
             elements.each((index, element) => {
 
                 element.addEventListener('click', function () {
+
                     var size_id = $(element).attr('data-size-id');
+                    var prod_id = $('#cart_prod_id').val();
+                    var color_id = $('#cart_color_id').val();
+                    
+                    getSizePrice(size_id, color_id, prod_id);
 
                     var title = $(element).attr('title');
 
@@ -1183,6 +1143,45 @@
         }
 
     });
+
+    function getSizePrice(size_id, color_id, prod_id) {
+
+            console.log(prod_id, color_id, size_id);
+            
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                }
+            });
+
+            $.ajax({
+                url: "{{ route('get.size.price') }}",
+                type: 'POST',
+                data: {
+                    product_id: prod_id,
+                    color_id: color_id,
+                    size_id: size_id,
+                },
+                success: function (result) {
+
+                    var success = result.success;
+                    
+                    if (success) {
+                       
+                        $('#cart_size_id').val(size_id);
+                        
+                        $('.mrp').html('<i class="fa fa-inr"></i> ' + success.mrp);
+
+                        $('.starting_price').html('<i class="fa fa-inr"></i> ' + success.starting_price);
+
+                    }else{
+
+                        swal('Error', result.error , 'error');
+                    }
+                }
+            });
+    }
 
     function isOfferExists(key) {
         if (sessionStorage.getItem('offers') && sessionStorage.getItem('offers')[key]) {

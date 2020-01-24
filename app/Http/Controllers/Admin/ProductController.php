@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Model\MapColorSize;
-use App\Model\MapMstOfferProduct;
 use App\Model\MapOfferProduct;
 use App\Model\MapProductMstSize;
 use App\Model\MasterWarranty;
 use App\Model\MstColor;
+use App\Model\MstOffer;
 use App\Model\MstSize;
 use App\Model\ProductFaq;
 use App\Model\TxnBrand;
@@ -38,7 +38,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = TxnProduct::with('category')->orderBy('id')->paginate(50);
-        $gsts = TxnMasterGst::where('status', true)->get();
+        $gsts     = TxnMasterGst::where('status', true)->get();
         return view('backend.admin.products.index', compact('products', 'gsts'));
     }
 
@@ -49,14 +49,14 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $brands = TxnBrand::where('status', true)->get();
-        $sizes = MstSize::where('status', true)->get();
-        $gsts = TxnMasterGst::where('status', true)->get();
-        $colors = MstColor::where('status', true)->get();
-        $materials = TxnMaterial::where('status', true)->get();
-        $units = TxnWeight::where('status', true)->get();
+        $brands     = TxnBrand::where('status', true)->get();
+        $sizes      = MstSize::where('status', true)->get();
+        $gsts       = TxnMasterGst::where('status', true)->get();
+        $colors     = MstColor::where('status', true)->get();
+        $materials  = TxnMaterial::where('status', true)->get();
+        $units      = TxnWeight::where('status', true)->get();
         $conditions = TxnCondition::where('status', true)->get();
-        $gsts = TxnMasterGst::where('status', true)->get();
+        $gsts       = TxnMasterGst::where('status', true)->get();
         $warranties = MasterWarranty::where('status', true)->get();
         $categories = TxnCategory::where('status', true)->orderBy('name', 'ASC')->get();
 
@@ -73,69 +73,69 @@ class ProductController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'title' => 'required|string',
-                'image_url' => 'required|image|max:1024|mimes:jpeg,png',
-                'image_url1' => 'required|image|max:1024|mimes:jpeg,png',
-                'description' => 'required|string',
-                'brand_id' => 'required|integer|exists:txn_brands,id',
-                'category_id' => 'required|exists:txn_categories,id',
-                'color_id' => 'required|integer|exists:mst_colors,id',
-                'size_id' => 'required|exists:mst_sizes,id',
-                'material_id' => 'required|integer|exists:txn_materials,id',
-                'weight_id' => 'nullable|integer|exists:txn_weights,id',
-                'condition_id' => 'required|integer|exists:txn_conditions,id',
-                'warranty_id' => 'nullable|integer|exists:master_warranties,id',
-                'gst_id' => 'required|integer|exists:txn_master_gsts,id',
-                'breadth' => 'nullable|string|max:191',
-                'height' => 'nullable|string|max:191',
-                'weight' => 'nullable|string|max:191',
-                'image_urls' => 'required|array',
-                'image_urls.*' => 'image|max:1024|mimes:jpeg,png',
-                'keywords' => 'required|string',
-                'is_cod' => 'required|numeric|max:1',
-                'mrp' => 'required|numeric|min:1',
+                'title'          => 'required|string',
+                'image_url'      => 'required|image|max:1024|mimes:jpeg,png',
+                'image_url1'     => 'required|image|max:1024|mimes:jpeg,png',
+                'description'    => 'required|string',
+                'brand_id'       => 'required|integer|exists:txn_brands,id',
+                'category_id'    => 'required|exists:txn_categories,id',
+                'color_id'       => 'required|integer|exists:mst_colors,id',
+                'size_id'        => 'required|exists:mst_sizes,id',
+                'material_id'    => 'required|integer|exists:txn_materials,id',
+                'weight_id'      => 'nullable|integer|exists:txn_weights,id',
+                'condition_id'   => 'required|integer|exists:txn_conditions,id',
+                'warranty_id'    => 'nullable|integer|exists:master_warranties,id',
+                'gst_id'         => 'required|integer|exists:txn_master_gsts,id',
+                'breadth'        => 'nullable|string|max:191',
+                'height'         => 'nullable|string|max:191',
+                'weight'         => 'nullable|string|max:191',
+                'image_urls'     => 'required|array',
+                'image_urls.*'   => 'image|max:1024|mimes:jpeg,png',
+                'keywords'       => 'required|string',
+                'is_cod'         => 'required|numeric|max:1',
+                'mrp'            => 'required|numeric|min:1',
                 'starting_price' => 'required|numeric|min:1',
-                'stock' => 'required|numeric|min:1',
+                'stock'          => 'required|numeric|min:1',
             ],
             [
-                'title.required' => 'Please Enter Product Name',
-                'title.unique' => ' Product Already Available',
-                'image_url.required' => 'Please Choose Front Image',
-                'image_url.image' => 'Please Choose Proper front Image',
-                'image_url.mimes' => 'Please Choose Front Image of type JPG & PNG Only',
-                'image_url.max' => 'Please Choose Front Image of Maximum Size 1MB Only',
-                'image_url1.required' => 'Please Choose Back Image',
-                'image_url1.image' => 'Please Choose Back Proper Image',
-                'image_url1.mimes' => 'Please Choose Back Image of type JPG & PNG Only',
-                'image_url1.max' => 'Please Choose Back Image of Maximum Size 1MB Only',
-                'brand_id.required' => 'Please Select Brand',
-                'brand_id.exists' => 'Brand Not Exists',
-                'category_id.required' => 'Please Select Category',
-                'category_id.exists' => 'Category Not Exists',
-                'weight_id.exists' => 'Unit Not Exists',
-                'condition_id.required' => 'Please Select Condition',
-                'condition_id.exists' => 'Condition Not Exists',
-                'gst_id.required' => 'Please Select GST',
-                'gst_id.exists' => 'GST Not Exists',
-                'warranty_id.required' => 'Please Select Warranty',
-                'warranty_id.exists' => 'Warranty Not Exists',
-                'starting_price.required' => 'Please Select Starting Price',
+                'title.required'            => 'Please Enter Product Name',
+                'title.unique'              => ' Product Already Available',
+                'image_url.required'        => 'Please Choose Front Image',
+                'image_url.image'           => 'Please Choose Proper front Image',
+                'image_url.mimes'           => 'Please Choose Front Image of type JPG & PNG Only',
+                'image_url.max'             => 'Please Choose Front Image of Maximum Size 1MB Only',
+                'image_url1.required'       => 'Please Choose Back Image',
+                'image_url1.image'          => 'Please Choose Back Proper Image',
+                'image_url1.mimes'          => 'Please Choose Back Image of type JPG & PNG Only',
+                'image_url1.max'            => 'Please Choose Back Image of Maximum Size 1MB Only',
+                'brand_id.required'         => 'Please Select Brand',
+                'brand_id.exists'           => 'Brand Not Exists',
+                'category_id.required'      => 'Please Select Category',
+                'category_id.exists'        => 'Category Not Exists',
+                'weight_id.exists'          => 'Unit Not Exists',
+                'condition_id.required'     => 'Please Select Condition',
+                'condition_id.exists'       => 'Condition Not Exists',
+                'gst_id.required'           => 'Please Select GST',
+                'gst_id.exists'             => 'GST Not Exists',
+                'warranty_id.required'      => 'Please Select Warranty',
+                'warranty_id.exists'        => 'Warranty Not Exists',
+                'starting_price.required'   => 'Please Select Starting Price',
                 'buy_it_now_price.required' => 'Please Select Buying Price',
-                'reserve_price.required' => 'Please Select Reserve Price',
-                'mrp.required' => 'Please Select MRP',
-                'image_urls.*.image' => 'Please Choose Proper Multiple Image',
-                'image_url.*.mimes' => 'Please Choose Multiple Image of type JPG & PNG Only',
-                'image_url.*.max' => 'Please Choose Multiple Image of Maximum Size 1MB Only',
-                'size_id.required' => 'Please Select Sizes',
-                'size_id.exists' => 'Size does not exists',
-                'description.required' => 'Please Enter Description',
-                'keywords.required' => 'Please Enter Atleast One Keyword of the Product',
-                'is_cod.required' => 'Please Select Cod Availability',
-                'is_cod.min' => 'Invalid data provided in cod availability',
-                'mrp.min' => 'Mrp Should be More than 1',
-                'starting_price.min' => 'Starting Price Should be More than 1',
-                'stock.required' => 'Please Enter Stock',
-                'stock.min' => 'Stock Should be More than 1',
+                'reserve_price.required'    => 'Please Select Reserve Price',
+                'mrp.required'              => 'Please Select MRP',
+                'image_urls.*.image'        => 'Please Choose Proper Multiple Image',
+                'image_url.*.mimes'         => 'Please Choose Multiple Image of type JPG & PNG Only',
+                'image_url.*.max'           => 'Please Choose Multiple Image of Maximum Size 1MB Only',
+                'size_id.required'          => 'Please Select Sizes',
+                'size_id.exists'            => 'Size does not exists',
+                'description.required'      => 'Please Enter Description',
+                'keywords.required'         => 'Please Enter Atleast One Keyword of the Product',
+                'is_cod.required'           => 'Please Select Cod Availability',
+                'is_cod.min'                => 'Invalid data provided in cod availability',
+                'mrp.min'                   => 'Mrp Should be More than 1',
+                'starting_price.min'        => 'Starting Price Should be More than 1',
+                'stock.required'            => 'Please Enter Stock',
+                'stock.min'                 => 'Stock Should be More than 1',
             ]
         );
 
@@ -157,30 +157,30 @@ class ProductController extends Controller
         $category = TxnCategory::where('id', $request->category_id)->first();
 
         $product = TxnProduct::create([
-            'title' => $request->title,
-            'brand_id' => $request->brand_id,
-            'material_id' => $request->material_id,
-            'weight_unit' => $request->weight_id,
-            'condition_id' => $request->condition_id,
-            'description' => $request->description,
-            'length' => $request->length,
-            'breadth' => $request->breadth,
-            'height' => $request->height,
-            'weight' => $request->weight,
-            'width' => $request->width,
-            'upc' => $request->upc,
-            'category_id' => $request->category_id,
-            'warranty_id' => $request->warranty_id,
-            'gst_id' => $request->gst_id,
-            'image_url' => $request->img,
-            'image_url1' => $request->img1,
-            'status' => true,
-            'isCodAvailable' => $request->is_cod,
-            'within_days' => $request->within_days,
-            'wrong_products' => $request->wrong_products,
+            'title'           => $request->title,
+            'brand_id'        => $request->brand_id,
+            'material_id'     => $request->material_id,
+            'weight_unit'     => $request->weight_id,
+            'condition_id'    => $request->condition_id,
+            'description'     => $request->description,
+            'length'          => $request->length,
+            'breadth'         => $request->breadth,
+            'height'          => $request->height,
+            'weight'          => $request->weight,
+            'width'           => $request->width,
+            'upc'             => $request->upc,
+            'category_id'     => $request->category_id,
+            'warranty_id'     => $request->warranty_id,
+            'gst_id'          => $request->gst_id,
+            'image_url'       => $request->img,
+            'image_url1'      => $request->img1,
+            'status'          => true,
+            'isCodAvailable'  => $request->is_cod,
+            'within_days'     => $request->within_days,
+            'wrong_products'  => $request->wrong_products,
             'faulty_products' => $request->faulty_products,
-            'quality_issue' => $request->quality_issue,
-            'slug_url' => Str::slug($category->name . '-' . $request->title, '-'),
+            'quality_issue'   => $request->quality_issue,
+            'slug_url'        => Str::slug($category->name . '-' . $request->title, '-'),
         ]);
 
         if ($request->filled('keywords')) {
@@ -188,7 +188,7 @@ class ProductController extends Controller
             $keywords = explode(',', $request->keywords);
             foreach ($keywords as $keyword) {
                 TxnKeyword::create([
-                    'keyword' => trim($keyword, ' '),
+                    'keyword'    => trim($keyword, ' '),
                     'product_id' => $product->id,
                 ]);
             }
@@ -202,8 +202,8 @@ class ProductController extends Controller
 
                 TxnImage::create([
                     'product_id' => $product->id,
-                    'image_url' => $request->image,
-                    'color_id' => $request->color_id,
+                    'image_url'  => $request->image,
+                    'color_id'   => $request->color_id,
                 ]);
             }
         }
@@ -219,25 +219,25 @@ class ProductController extends Controller
             $gst_amount = round($request->mrp - $before_gst_price);
 
             MapColorSize::create([
-                'product_id' => $product->id,
-                'color_id' => $request->color_id,
-                'size_id' => $request->size_id,
-                'mrp' => $request->mrp,
-                'stock' => $request->stock,
-                'starting_price' => $request->starting_price,
+                'product_id'       => $product->id,
+                'color_id'         => $request->color_id,
+                'size_id'          => $request->size_id,
+                'mrp'              => $request->mrp,
+                'stock'            => $request->stock,
+                'starting_price'   => $request->starting_price,
                 'buy_it_now_price' => $before_gst_price,
-                'gst' => $gst_amount,
+                'gst'              => $gst_amount,
             ]);
 
             $size = MstSize::where('id', $request->size_id)->first();
 
             MapProductMstSize::updateOrCreate([
                 'product_id' => $product->id,
-                'size_id' => $size->id,
+                'size_id'    => $size->id,
             ], [
                 'product_id' => $product->id,
-                'size_id' => $size->id,
-                'title' => $size->title,
+                'size_id'    => $size->id,
+                'title'      => $size->title,
             ]);
         }
 
@@ -245,9 +245,9 @@ class ProductController extends Controller
             if (!in_array(null, $request->field_name, true)) {
                 foreach ($request->field_name as $index => $name) {
                     TxnCustomField::create([
-                        'field_name' => $name,
+                        'field_name'  => $name,
                         'field_value' => $request->field_value[$index],
-                        'product_id' => $product->id,
+                        'product_id'  => $product->id,
                     ]);
                 }
             }
@@ -279,20 +279,20 @@ class ProductController extends Controller
     {
         try {
 
-            $product = TxnProduct::where('slug_url', $id)->with(['category', 'images', 'custom_fields', 'sizes', 'offer'])->firstOrFail();
-            $brands = TxnBrand::where('status', true)->get();
-            $sizes = MstSize::where('status', true)->get();
-            $colors = MstColor::where('status', true)->get();
-            $materials = TxnMaterial::where('status', true)->get();
-            $units = TxnWeight::where('status', true)->get();
-            $conditions = TxnCondition::where('status', true)->get();
-            $gsts = TxnMasterGst::where('status', true)->get();
-            $categories = TxnCategory::where('status', true)->get();
+            $product     = TxnProduct::where('slug_url', $id)->with(['category', 'images', 'custom_fields', 'sizes', 'offer'])->firstOrFail();
+            $brands      = TxnBrand::where('status', true)->get();
+            $sizes       = MstSize::where('status', true)->get();
+            $colors      = MstColor::where('status', true)->get();
+            $materials   = TxnMaterial::where('status', true)->get();
+            $units       = TxnWeight::where('status', true)->get();
+            $conditions  = TxnCondition::where('status', true)->get();
+            $gsts        = TxnMasterGst::where('status', true)->get();
+            $categories  = TxnCategory::where('status', true)->get();
             $allkeywords = TxnKeyword::where('product_id', $product->id)->get();
-            $warranties = MasterWarranty::where('status', true)->get();
-            $keywords = $allkeywords->implode('keyword', ',');
+            $warranties  = MasterWarranty::where('status', true)->get();
+            $keywords    = $allkeywords->implode('keyword', ',');
 
-            $offers = MapMstOfferProduct::with('mst_offer')->get();
+            $offers = MstOffer::where('status', true)->get();
 
             $product_details = DB::table('map_color_sizes as m')
                 ->selectRaw("m.id as map_id, m.mrp, m.stock, m.starting_price, s.title as size_name, s.id as size_id, c.title as color_name, c.id as color_id")
@@ -331,46 +331,46 @@ class ProductController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'title' => 'required|string',
-                'image_url' => 'nullable|image|max:1024|mimes:jpeg,png',
-                'description' => 'required|string',
-                'brand_id' => 'required|integer|exists:txn_brands,id',
-                'material_id' => 'nullable|integer|exists:txn_materials,id',
-                'weight_id' => 'nullable|integer|exists:txn_weights,id',
+                'title'        => 'required|string',
+                'image_url'    => 'nullable|image|max:1024|mimes:jpeg,png',
+                'description'  => 'required|string',
+                'brand_id'     => 'required|integer|exists:txn_brands,id',
+                'material_id'  => 'nullable|integer|exists:txn_materials,id',
+                'weight_id'    => 'nullable|integer|exists:txn_weights,id',
                 'condition_id' => 'required|integer|exists:txn_conditions,id',
-                'category_id' => 'required|integer|exists:txn_categories,id',
-                'gst_id' => 'required|integer|exists:txn_master_gsts,id',
+                'category_id'  => 'required|integer|exists:txn_categories,id',
+                'gst_id'       => 'required|integer|exists:txn_master_gsts,id',
                 // 'expiry_date' => 'nullable|date_format:Y-m-d',
-                'length' => 'nullable|string|max:191',
-                'breadth' => 'nullable|string|max:191',
-                'height' => 'nullable|string|max:191',
-                'weight' => 'nullable|string|max:191',
-                'keywords' => 'required|string',
-                'warranty_id' => 'nullable|integer|exists:master_warranties,id',
-                'is_cod' => 'required|numeric|max:1',
+                'length'       => 'nullable|string|max:191',
+                'breadth'      => 'nullable|string|max:191',
+                'height'       => 'nullable|string|max:191',
+                'weight'       => 'nullable|string|max:191',
+                'keywords'     => 'required|string',
+                'warranty_id'  => 'nullable|integer|exists:master_warranties,id',
+                'is_cod'       => 'required|numeric|max:1',
             ],
             [
-                'title.required' => 'Please Enter Product Name',
-                'image_url.image' => 'Please Choose Proper Image',
-                'image_url.mimes' => 'Please Choose Image of type JPG & PNG Only',
-                'image_url.max' => 'Please Choose Image of Maximum Size 1MB Only',
-                'brand_id.required' => 'Please Select Brand',
-                'brand_id.exists' => 'Brand Not Exists',
-                'weight_id.exists' => 'Unit Not Exists',
-                'material_id.exists' => 'Material Not Exists',
-                'condition_id.required' => 'Please Select Condition',
-                'condition_id.exists' => 'Condition Not Exists',
-                'category_id.required' => 'Please Select Category',
-                'category_id.exists' => 'Category Not Exists',
-                'expiry_date.required' => 'Please Select Expiry Date',
+                'title.required'          => 'Please Enter Product Name',
+                'image_url.image'         => 'Please Choose Proper Image',
+                'image_url.mimes'         => 'Please Choose Image of type JPG & PNG Only',
+                'image_url.max'           => 'Please Choose Image of Maximum Size 1MB Only',
+                'brand_id.required'       => 'Please Select Brand',
+                'brand_id.exists'         => 'Brand Not Exists',
+                'weight_id.exists'        => 'Unit Not Exists',
+                'material_id.exists'      => 'Material Not Exists',
+                'condition_id.required'   => 'Please Select Condition',
+                'condition_id.exists'     => 'Condition Not Exists',
+                'category_id.required'    => 'Please Select Category',
+                'category_id.exists'      => 'Category Not Exists',
+                'expiry_date.required'    => 'Please Select Expiry Date',
                 'expiry_date.date_format' => 'Please Enter date in DD-MM-YYYY format',
-                'keywords.required' => 'Please Enter Atleast One Keyword of the Product',
-                'warranty_id.required' => 'Please Select Warranty',
-                'warranty_id.exists' => 'Warranty Not Exists',
-                'is_cod.required' => 'Please Select Cod Availability',
-                'is_cod.min' => 'Invalid data provided in cod availability',
-                'gst_id.required' => 'Please Select GST',
-                'gst_id.exists' => 'GST Not Exists',
+                'keywords.required'       => 'Please Enter Atleast One Keyword of the Product',
+                'warranty_id.required'    => 'Please Select Warranty',
+                'warranty_id.exists'      => 'Warranty Not Exists',
+                'is_cod.required'         => 'Please Select Cod Availability',
+                'is_cod.min'              => 'Invalid data provided in cod availability',
+                'gst_id.required'         => 'Please Select GST',
+                'gst_id.exists'           => 'GST Not Exists',
             ]
         );
 
@@ -381,8 +381,7 @@ class ProductController extends Controller
 
         try {
 
-            $product = TxnProduct::where('slug_url', $id)->firstOrFail();
-
+            $product = TxnProduct::where('slug_url', $id)->with('offer')->firstOrFail();
             if ($request->hasFile('image_url')) {
 
                 $old_image = public_path('/storage/images/products/' . $product->image_url);
@@ -408,29 +407,29 @@ class ProductController extends Controller
             $category = TxnCategory::where('id', $request->category_id)->first();
 
             $product->update([
-                'title' => $request->title,
-                'brand_id' => $request->brand_id,
-                'material_id' => $request->material_id,
-                'weight_unit' => $request->weight_id,
-                'condition_id' => $request->condition_id,
-                'category_id' => $request->category_id,
-                'description' => $request->description,
-                'length' => $request->length,
-                'breadth' => $request->breadth,
-                'height' => $request->height,
-                'weight' => $request->weight,
-                'width' => $request->width,
-                'upc' => $request->upc,
+                'title'           => $request->title,
+                'brand_id'        => $request->brand_id,
+                'material_id'     => $request->material_id,
+                'weight_unit'     => $request->weight_id,
+                'condition_id'    => $request->condition_id,
+                'category_id'     => $request->category_id,
+                'description'     => $request->description,
+                'length'          => $request->length,
+                'breadth'         => $request->breadth,
+                'height'          => $request->height,
+                'weight'          => $request->weight,
+                'width'           => $request->width,
+                'upc'             => $request->upc,
                 // 'expiry_date' => $request->expiry_date,
-                'status' => $request->status,
-                'warranty_id' => $request->warranty_id,
-                'gst_id' => $request->gst_id,
-                'isCodAvailable' => $request->is_cod,
-                'within_days' => $request->within_days,
-                'wrong_products' => $request->wrong_products,
+                'status'          => $request->status,
+                'warranty_id'     => $request->warranty_id,
+                'gst_id'          => $request->gst_id,
+                'isCodAvailable'  => $request->is_cod,
+                'within_days'     => $request->within_days,
+                'wrong_products'  => $request->wrong_products,
                 'faulty_products' => $request->faulty_products,
-                'quality_issue' => $request->quality_issue,
-                'slug_url' => Str::slug($category->name . '-' . $request->title, '-'),
+                'quality_issue'   => $request->quality_issue,
+                'slug_url'        => Str::slug($category->name . '-' . $request->title, '-'),
             ]);
 
             if ($request->filled('keywords')) {
@@ -440,22 +439,26 @@ class ProductController extends Controller
 
                 foreach ($keywords as $keyword) {
                     TxnKeyword::create([
-                        'keyword' => trim($keyword, ' '),
+                        'keyword'    => trim($keyword, ' '),
                         'product_id' => $product->id,
                     ]);
                 }
             }
 
-            if ($request->filled('offer_id')) {
+            if ($product->offer && $request->offer_id == null) {
+
+                $product->offer->delete();
+
+            } else {
 
                 MapOfferProduct::updateOrCreate(
                     [
                         'product_id' => $product->id,
                     ], [
-                        'product_id' => $product->id,
-                        'map_offer_id' => $request->offer_id,
+                        'product_id'        => $product->id,
+                        'mst_offer_id'      => $request->offer_id,
                         'purchase_quantity' => $request->purchase_quantity,
-                        'offered_quantity' => $request->offered_quantity,
+                        'offered_quantity'  => $request->offered_quantity,
                     ]
                 );
             }
@@ -493,14 +496,14 @@ class ProductController extends Controller
     {
         $request->validate(
             [
-                'image_urls' => 'required|array',
+                'image_urls'   => 'required|array',
                 'image_urls.*' => 'image|max:1024|mimes:jpeg,png',
             ],
             [
                 'image_urls.*.required' => 'Please Choose Atleast One Image',
-                'image_urls.*.image' => 'Please Choose Proper Multiple Image',
-                'image_url.*.mimes' => 'Please Choose Multiple Image of type JPG & PNG Only',
-                'image_url.*.max' => 'Please Choose Multiple Image of Maximum Size 1MB Only',
+                'image_urls.*.image'    => 'Please Choose Proper Multiple Image',
+                'image_url.*.mimes'     => 'Please Choose Multiple Image of type JPG & PNG Only',
+                'image_url.*.max'       => 'Please Choose Multiple Image of Maximum Size 1MB Only',
             ]
         );
 
@@ -516,8 +519,8 @@ class ProductController extends Controller
 
                     TxnImage::create([
                         'product_id' => $product->id,
-                        'image_url' => $request->image,
-                        'color_id' => $request->color_id ? $request->color_id : null,
+                        'image_url'  => $request->image,
+                        'color_id'   => $request->color_id ? $request->color_id : null,
                     ]);
                 }
             }
@@ -580,11 +583,11 @@ class ProductController extends Controller
     {
         $request->validate(
             [
-                'field_name' => 'required|string|max:191',
+                'field_name'  => 'required|string|max:191',
                 'field_value' => 'required|string|max:191',
             ],
             [
-                'field_name.required' => 'Please Enter Field Name',
+                'field_name.required'  => 'Please Enter Field Name',
                 'field_value.required' => 'Please Enter Field Value',
             ]
         );
@@ -594,9 +597,9 @@ class ProductController extends Controller
             $product = TxnProduct::where('id', $id)->firstOrFail();
 
             TxnCustomField::create([
-                'field_name' => $request->field_name,
+                'field_name'  => $request->field_name,
                 'field_value' => $request->field_value,
-                'product_id' => $product->id,
+                'product_id'  => $product->id,
             ]);
 
             connectify('success', 'Custom Field Added', 'Custom Field has been Added Successfully !');
@@ -623,28 +626,28 @@ class ProductController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'color_id' => 'required|integer|exists:mst_colors,id',
-                'size_id' => 'required|exists:mst_sizes,id',
-                'image_urls' => 'required|array',
-                'image_urls.*' => 'image|max:1024|mimes:jpeg,png',
-                'mrp' => 'required|numeric|min:1',
-                'stock' => 'required|numeric|min:1',
+                'color_id'       => 'required|integer|exists:mst_colors,id',
+                'size_id'        => 'required|exists:mst_sizes,id',
+                'image_urls'     => 'required|array',
+                'image_urls.*'   => 'image|max:1024|mimes:jpeg,png',
+                'mrp'            => 'required|numeric|min:1',
+                'stock'          => 'required|numeric|min:1',
                 'starting_price' => 'required|numeric|min:1',
             ],
             [
-                'color_id.required' => 'Please Choose Color',
-                'color_id.exists' => 'Color does not exists',
-                'size_id.required' => 'Please Select Sizes',
-                'size_id.exists' => 'Size does not exists',
-                'image_urls.required' => 'Please Choose Atleast One Image',
-                'image_urls.*.image' => 'Please Choose Proper Multiple Image',
-                'image_urls.*.max' => 'Please Choose Image of maximum size 1Mb',
-                'mrp.required' => 'Please Enter Mrp',
-                'mrp.min' => 'Mrp Should be More than 1',
-                'stock.required' => 'Please Enter Stock',
-                'stock.min' => 'Stock Should be More than 1',
+                'color_id.required'       => 'Please Choose Color',
+                'color_id.exists'         => 'Color does not exists',
+                'size_id.required'        => 'Please Select Sizes',
+                'size_id.exists'          => 'Size does not exists',
+                'image_urls.required'     => 'Please Choose Atleast One Image',
+                'image_urls.*.image'      => 'Please Choose Proper Multiple Image',
+                'image_urls.*.max'        => 'Please Choose Image of maximum size 1Mb',
+                'mrp.required'            => 'Please Enter Mrp',
+                'mrp.min'                 => 'Mrp Should be More than 1',
+                'stock.required'          => 'Please Enter Stock',
+                'stock.min'               => 'Stock Should be More than 1',
                 'starting_price.required' => 'Please Enter Selling Price',
-                'starting_price.min' => 'Selling Price Should be More than 1',
+                'starting_price.min'      => 'Selling Price Should be More than 1',
             ]
         );
 
@@ -674,8 +677,8 @@ class ProductController extends Controller
 
                     TxnImage::create([
                         'product_id' => $product->id,
-                        'image_url' => $request->image,
-                        'color_id' => $request->color_id,
+                        'image_url'  => $request->image,
+                        'color_id'   => $request->color_id,
                     ]);
                 }
             }
@@ -691,25 +694,25 @@ class ProductController extends Controller
                 $gst_amount = round($request->mrp - $before_gst_price);
 
                 MapColorSize::create([
-                    'product_id' => $product->id,
-                    'color_id' => $request->color_id,
-                    'size_id' => $request->size_id,
-                    'mrp' => $request->mrp,
-                    'stock' => $request->stock,
-                    'starting_price' => $request->starting_price,
+                    'product_id'       => $product->id,
+                    'color_id'         => $request->color_id,
+                    'size_id'          => $request->size_id,
+                    'mrp'              => $request->mrp,
+                    'stock'            => $request->stock,
+                    'starting_price'   => $request->starting_price,
                     'buy_it_now_price' => $before_gst_price,
-                    'gst' => $gst_amount,
+                    'gst'              => $gst_amount,
                 ]);
 
                 $size = MstSize::where('id', $request->size_id)->first();
 
                 MapProductMstSize::updateOrCreate([
                     'product_id' => $product->id,
-                    'size_id' => $size->id,
+                    'size_id'    => $size->id,
                 ], [
                     'product_id' => $product->id,
-                    'size_id' => $size->id,
-                    'title' => $size->title,
+                    'size_id'    => $size->id,
+                    'title'      => $size->title,
                 ]);
             }
 
@@ -770,20 +773,20 @@ class ProductController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'size_id' => 'required|exists:mst_sizes,id',
-                'mrp' => 'required|numeric|min:1',
-                'stock' => 'required|numeric|min:0',
+                'size_id'        => 'required|exists:mst_sizes,id',
+                'mrp'            => 'required|numeric|min:1',
+                'stock'          => 'required|numeric|min:0',
                 'starting_price' => 'required|numeric|min:1',
             ],
             [
-                'size_id.required' => 'Please Select Sizes',
-                'size_id.exists' => 'Size does not exists',
-                'mrp.required' => 'Please Enter Mrp',
-                'mrp.min' => 'Mrp Should be More than 1',
-                'stock.required' => 'Please Enter Stock',
-                'stock.min' => 'Stock Should be More than 1',
+                'size_id.required'        => 'Please Select Sizes',
+                'size_id.exists'          => 'Size does not exists',
+                'mrp.required'            => 'Please Enter Mrp',
+                'mrp.min'                 => 'Mrp Should be More than 1',
+                'stock.required'          => 'Please Enter Stock',
+                'stock.min'               => 'Stock Should be More than 1',
                 'starting_price.required' => 'Please Enter Selling Price',
-                'starting_price.min' => 'Selling Price Should be More than 1',
+                'starting_price.min'      => 'Selling Price Should be More than 1',
             ]
         );
 
@@ -799,9 +802,9 @@ class ProductController extends Controller
             $product = TxnProduct::where('id', $cl->product_id)->firstOrFail();
 
             $cl->update([
-                'size_id' => $request->size_id,
-                'mrp' => $request->mrp,
-                'stock' => $request->stock,
+                'size_id'        => $request->size_id,
+                'mrp'            => $request->mrp,
+                'stock'          => $request->stock,
                 'starting_price' => $request->starting_price,
             ]);
 
@@ -832,11 +835,11 @@ class ProductController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'field_name' => 'required|string|max:191',
+                'field_name'  => 'required|string|max:191',
                 'field_value' => 'required|string|max:191',
             ],
             [
-                'field_name.required' => 'Please Enter Field Name',
+                'field_name.required'  => 'Please Enter Field Name',
                 'field_value.required' => 'Please Enter Field Value',
             ]
         );
@@ -850,7 +853,7 @@ class ProductController extends Controller
 
             $field = TxnCustomField::where('id', $request->field_id)->with('product')->firstOrFail();
             $field->update([
-                'field_name' => $request->field_name,
+                'field_name'  => $request->field_name,
                 'field_value' => $request->field_value,
             ]);
             connectify('success', 'Custom Field Updated', 'Custom Field Updated Successfully !');
@@ -946,23 +949,23 @@ class ProductController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'color_id' => 'required|integer|exists:mst_colors,id',
-                'size_id' => 'required|exists:mst_sizes,id',
-                'mrp' => 'required|numeric|min:1',
-                'stock' => 'required|numeric|min:0',
+                'color_id'       => 'required|integer|exists:mst_colors,id',
+                'size_id'        => 'required|exists:mst_sizes,id',
+                'mrp'            => 'required|numeric|min:1',
+                'stock'          => 'required|numeric|min:0',
                 'starting_price' => 'required|numeric|min:1',
             ],
             [
-                'color_id.required' => 'Please Choose Color',
-                'color_id.exists' => 'Color does not exists',
-                'size_id.required' => 'Please Select Sizes',
-                'size_id.exists' => 'Size does not exists',
-                'mrp.required' => 'Please Enter Mrp',
-                'mrp.min' => 'Mrp Should be More than 1',
-                'stock.required' => 'Please Enter Stock',
-                'stock.min' => 'Stock Should be More than 1',
+                'color_id.required'       => 'Please Choose Color',
+                'color_id.exists'         => 'Color does not exists',
+                'size_id.required'        => 'Please Select Sizes',
+                'size_id.exists'          => 'Size does not exists',
+                'mrp.required'            => 'Please Enter Mrp',
+                'mrp.min'                 => 'Mrp Should be More than 1',
+                'stock.required'          => 'Please Enter Stock',
+                'stock.min'               => 'Stock Should be More than 1',
                 'starting_price.required' => 'Please Enter Selling Price',
-                'starting_price.min' => 'Selling Price Should be More than 1',
+                'starting_price.min'      => 'Selling Price Should be More than 1',
             ]
         );
 
@@ -994,16 +997,16 @@ class ProductController extends Controller
 
             MapColorSize::updateOrCreate([
                 'product_id' => $mapColorSize->product->id,
-                'color_id' => $request->color_id,
-                'size_id' => $request->size_id,
+                'color_id'   => $request->color_id,
+                'size_id'    => $request->size_id,
             ], [
-                'color_id' => $request->color_id,
-                'size_id' => $request->size_id,
-                'mrp' => $request->mrp,
-                'stock' => $request->stock,
-                'starting_price' => $request->starting_price,
+                'color_id'         => $request->color_id,
+                'size_id'          => $request->size_id,
+                'mrp'              => $request->mrp,
+                'stock'            => $request->stock,
+                'starting_price'   => $request->starting_price,
                 'buy_it_now_price' => $before_gst_price,
-                'gst' => $gst_amount,
+                'gst'              => $gst_amount,
             ]);
 
             connectify('success', 'Color & Size Updated', 'Color & Size Updated Successfully !');
@@ -1082,15 +1085,15 @@ class ProductController extends Controller
         $request->validate(
             [
                 'question' => 'required|string',
-                'answer' => 'required|string',
-                'status' => 'required|numeric|max:1',
+                'answer'   => 'required|string',
+                'status'   => 'required|numeric|max:1',
             ],
             [
                 'question.required' => 'Please Enter Question',
-                'answer.required' => 'Please Enter Answer',
-                'status.required' => 'Please Select Status',
-                'status.numeric' => 'Invalid Status Given',
-                'status.max' => 'Invalid Status Given',
+                'answer.required'   => 'Please Enter Answer',
+                'status.required'   => 'Please Select Status',
+                'status.numeric'    => 'Invalid Status Given',
+                'status.max'        => 'Invalid Status Given',
             ]
         );
 
@@ -1099,9 +1102,9 @@ class ProductController extends Controller
             $faq = ProductFaq::where('id', $id)->with('product')->firstOrFail();
 
             $faq->update([
-                'question' => $request->question,
-                'answer' => $request->answer,
-                'status' => $request->status,
+                'question'   => $request->question,
+                'answer'     => $request->answer,
+                'status'     => $request->status,
                 'replied_by' => auth('admin')->user()->name,
             ]);
 
@@ -1125,7 +1128,7 @@ class ProductController extends Controller
             ],
             [
                 'size_id.required' => 'Please Select Size',
-                'size_id.exists' => 'Size does not exists',
+                'size_id.exists'   => 'Size does not exists',
             ]
         );
 
@@ -1141,9 +1144,9 @@ class ProductController extends Controller
             $size = MstSize::where('id', $request->size_id)->first();
 
             MapProductMstSize::create([
-                'title' => $size->title,
+                'title'      => $size->title,
                 'product_id' => $product->id,
-                'size_id' => $size->id,
+                'size_id'    => $size->id,
             ]);
 
             connectify('success', 'Add Size', 'Size Added Successfully !');
