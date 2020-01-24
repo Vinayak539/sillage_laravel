@@ -1002,7 +1002,7 @@
             $('#cart_color_id').val(color_id);
 
             $('.color-label').html(title);
-
+            $('.product-color-swatch-btn').addClass('active');
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"

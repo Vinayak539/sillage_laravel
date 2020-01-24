@@ -84,6 +84,7 @@ class MainController extends Controller
                 ->join('mst_colors as c', 'm.color_id', 'c.id')
                 ->join('mst_sizes as s', 'm.size_id', 's.id')
                 ->where('m.product_id', $product->id)
+                ->where('m.status', true)
                 ->groupBy('c.id')
                 ->get();
 
@@ -105,8 +106,10 @@ class MainController extends Controller
                 ->join("map_mst_offer_products as m", "m.offer_product_id", "p.id")
                 ->join("mst_colors as c", "m.color_id", "c.id")
                 ->join("mst_sizes as s", "m.size_id", "s.id")
+                ->join("mst_offers as o", "m.offer_id", "o.id")
                 ->join("map_offer_products as mop", "mop.mst_offer_id", "m.offer_id")
                 ->groupBy('m.offer_product_id', 'm.color_id', 'm.size_id')
+                ->where('o.status', true)
                 ->where('mop.product_id', $product->id)
                 ->get();
 
@@ -132,7 +135,7 @@ class MainController extends Controller
     public function getSizes(Request $request)
     {
 
-        $results = MapColorSize::where('product_id', $request->product_id)->where('color_id', $request->color_id)->orderBy('id', 'ASC')->get();
+        $results = MapColorSize::where('product_id', $request->product_id)->where('color_id', $request->color_id)->where('status', true)->orderBy('id', 'ASC')->get();
 
         // $results = DB::table('map_color_sizes as m')
         //     ->selectRaw('c.title as color_name, GROUP_CONCAT(s.title) as size_name, c.id as color_id, GROUP_CONCAT(s.id) as size_id, m.mrp, m.stock, m.id as map_id')
@@ -410,7 +413,7 @@ class MainController extends Controller
     {
         try{
 
-            $result = MapColorSize::select('mrp', 'starting_price')->where('product_id', $request->product_id)->where('color_id', $request->color_id)->where('size_id', $request->size_id)->firstOrFail();
+            $result = MapColorSize::select('mrp', 'starting_price')->where('product_id', $request->product_id)->where('color_id', $request->color_id)->where('size_id', $request->size_id)->where('status', true)->firstOrFail();
 
             return response()->json(['success' => $result]);
 

@@ -170,10 +170,6 @@
                             </td>
                             <td>{{ date('d-M-Y h:i A', strtotime($ofr->created_at)) }}</td>
                             <td>
-                                <a href="javascript:void(0)" data-role="update-obj" data-obj-id="{{ $ofr->map_id }}"
-                                    class="btn btn-outline-danger btn-sm update-object" title="Update Offer">
-                                    <i class="fa fa-edit text-primary"></i>
-                                </a>
                                 <a href="javascript:void(0)" data-role="delete-obj" data-obj-id="{{ $ofr->map_id }}"
                                     class="btn btn-outline-danger btn-sm delete-object" title="Delete Offer">
                                     <i class="fa fa-trash text-danger"></i>
@@ -212,13 +208,6 @@
     <input type="hidden" name="offer_id" id="txtOfferID">
 </form>
 
-<form id="formUpdate" method="POST" action="{{ route('admin.offers.update') }}">
-    @csrf
-    <input type="hidden" name="offer_id" id="txtOfferID">
-    <input type="hidden" name="status" id="txtOfferStatus">
-</form>
-
-
 @endsection
 
 @section('extrajs')
@@ -234,14 +223,6 @@
                 $(this).html('<span class="fa fa-spinner fa-spin"></span>');
                 $("#formDelete").submit();
             }
-        });
-
-        $(".update-object").click(function () {
-            $("#txtOfferID").val($(this).attr("data-obj-id"));
-            $("#txtOfferStatus").val($(this).attr("data-obj-status"));
-            $(this).attr('disabled', 'disabled');
-            $(this).html('<span class="fa fa-spinner fa-spin"></span>');
-            $("#formUpdate").submit();
         });
 
         $("#formEditOffer").submit(function () {

@@ -114,6 +114,17 @@
                         </div>
                     </div>
 
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="status">Status <span class="text-danger">*</span></label>
+                            <select name="status" id="status" class="form-control" required>
+                                <option value="">--Select--</option>
+                                <option value="1" {{ $cl->status == true ? 'selected' : '' }}>Active</option>
+                                <option value="0" {{ $cl->status == false ? 'selected' : '' }}>Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
@@ -188,6 +199,10 @@
                 starting_price: {
                     required: true
                 },
+                
+                status: {
+                    required: true
+                },
 
             },
             messages: {
@@ -210,6 +225,10 @@
 
                 starting_price: {
                     required: "Please Enter MRP"
+                },
+
+                status: {
+                    required: "Please Select Status"
                 },
 
             },

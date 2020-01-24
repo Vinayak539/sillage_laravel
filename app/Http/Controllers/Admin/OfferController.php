@@ -126,88 +126,30 @@ class OfferController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         $validator = Validator::make($request->all(), [
-            'category_id'      => 'required_with:product_id',
-            'product_id'       => 'required_with:category_id',
-            'offer_product_id' => 'nullable',
-            'offer_color_id'   => 'nullable',
-            'offer_size_id'    => 'nullable',
-            'purchase_qty'     => 'nullable|min:1',
-            'offered_qty'      => 'nullable|min:1',
+            'title' => 'required|string|max:191',
+            'status' => 'required|numeric|max:1|min:0'
         ],
             [
-                'category_id.required_with' => 'Select Category when Product selected !',
-                'product_id.required_with'  => 'Select Product when Category selected !',
-                'purchase_qty.min'          => 'Purchase Quantity Should be minimum 1 !',
-                'offered_qty.min'           => 'Offered Quantity Should be minimum 1 !',
+                'title.required'        => 'Enter Offer Title !',
+                'status.required'       => 'Select Status !',
+                'status.min'            => 'Invalid Status Provided',
+                'status.max'            => 'Invalid Status Provided',
             ]);
 
         if ($validator->fails()) {
-            connectify('error', 'Edit Offer', $validator->errors()->first());
+            connectify('error', 'Error', $validator->errors()->first());
             return redirect(route('admin.offers.edit', $id))->withInput();
         }
 
         try {
 
-            $offer = Offer::where('id', $id)->with('product')->firstOrFail();
+            $offer = MstOffer::where('id', $id)->firstOrFail();
 
-            if ($request->filled('category_id')) {
-
-                $offer->update([
-                    'category_id' => $request->category_id,
-                    'product_id'  => $request->product_id,
-                ]);
-
-            }
-
-            if ($request->filled('offer_product_id')) {
-
-                $offer->update([
-                    'offer_product_id' => $request->offer_product_id,
-                ]);
-
-            }
-
-            if ($request->filled('offer_color_id')) {
-
-                $offer->update([
-                    'offer_color_id' => $request->offer_color_id,
-                ]);
-
-            }
-
-            if ($request->filled('offer_size_id')) {
-
-                $offer->update([
-                    'offer_size_id' => $request->offer_size_id,
-                ]);
-
-            }
-
-            if ($request->filled('purchase_qty')) {
-
-                $offer->product->update([
-                    'purchase_qty' => $request->purchase_qty,
-                ]);
-
-            }
-
-            if ($request->filled('offered_qty')) {
-
-                $offer->product->update([
-                    'offered_qty' => $request->offered_qty,
-                ]);
-
-            }
-
-            if ($request->filled('status')) {
-
-                $offer->update([
-                    'status' => $request->status,
-                ]);
-
-            }
+            $offer->update([
+                'status' => $request->status,
+                'title' => $request->title
+            ]);
 
             connectify('success', 'Offer Updated', 'Offer Updated Successfully !');
 
@@ -219,7 +161,7 @@ class OfferController extends Controller
                 connectify('error', 'Error', 'Whoops, Offer Not Found !');
                 return redirect(route('admin.offers.all'));
             }
-
+            \Log::error(['Offer Error Backend' => $ex->getMessage()]);
             connectify('error', 'Error', 'Whoops, Something Went Wrong From Our End !');
             return redirect(route('admin.offers.edit', $id));
         }
@@ -284,7 +226,7 @@ class OfferController extends Controller
     public function getColors(Request $request)
     {
 
-        $colors = MapColorSize::where('product_id', $request->prod_id)
+        $colors = MapColorSize::where('product_id', $request->prod_id)->status('status', true)
             ->with('color')
             ->get();
 

@@ -322,7 +322,7 @@ Route::prefix('adhni753')->group(function () {
             Route::GET('/', 'Admin\OfferController@index')->name('admin.offers.all');
             Route::POST('/', 'Admin\OfferController@store');
             Route::GET('/edit/{id}', 'Admin\OfferController@edit')->name('admin.offers.edit');
-            Route::POST('/edit', 'Admin\OfferController@update')->name('admin.offers.update');
+            Route::POST('/edit/{id}', 'Admin\OfferController@update')->name('admin.offers.update');
             Route::POST('/delete', 'Admin\OfferController@destroy')->name('admin.offers.delete');
             Route::POST('/get/products', 'Admin\OfferController@getProducts')->name('admin.offers.getProduct');
             Route::POST('/get/colours', 'Admin\OfferController@getColors')->name('admin.offers.getColors');

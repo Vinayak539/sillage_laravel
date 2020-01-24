@@ -22,79 +22,87 @@ class CartController extends Controller
         try {
 
             $product = TxnProduct::where('id', $request->prod_id)->firstOrFail();
-
-            $prodsizeColor = MapColorSize::where('color_id', $request->color_id)->where('product_id', $request->prod_id)->where('size_id', $request->size_id)->with('color')->first();
-
+            
             $size = MstSize::where('id', $request->size_id)->first();
+            
+            $prodsizeColor = MapColorSize::where('color_id', $request->color_id)->where('product_id', $request->prod_id)->where('size_id', $request->size_id)->where('status', true)->with('color')->first();
 
-            $exp_offer = explode(',', $request->map_ids);
+            if ($prodsizeColor) {
 
-            if ($request->filled('offers')) {
 
-                $selected_qty = explode(',', $request->offers);
+                $exp_offer = explode(',', $request->map_ids);
 
-                $product_offer = MapOfferProduct::where('id', $exp_offer[0])->first();
+                if ($request->filled('offers')) {
 
-                if (count($selected_qty) > 0) {
+                    $selected_qty = explode(',', $request->offers);
 
-                    $validateSelectedOffer = ($request->qty / count($selected_qty)) == ($product_offer->purchase_quantity * $product_offer->offered_quantity);
+                    $product_offer = MapOfferProduct::where('id', $exp_offer[0])->first();
 
-                    if (!$validateSelectedOffer) {
+                    if (count($selected_qty) > 0) {
 
-                        connectify('error', 'Invalid Offer', 'Purchase ' . $product_offer->purchase_quantity . ' Product(s) & get ' . $product_offer->offered_quantity . ' Product free');
+                        $validateSelectedOffer = ($request->qty / count($selected_qty)) == ($product_offer->purchase_quantity * $product_offer->offered_quantity);
 
-                        return back();
+                        if (!$validateSelectedOffer) {
+
+                            connectify('error', 'Invalid Offer', 'Purchase ' . $product_offer->purchase_quantity . ' Product(s) & get ' . $product_offer->offered_quantity . ' Product free');
+
+                            return back();
+                        }
                     }
                 }
+
+                // dd((Int) $request->qty, count($selected_qty), $product_offer->purchase_quantity, $product_offer->offered_quantity);
+
+                if ($prodsizeColor->stock <= 0) {
+
+                    connectify('error', 'Product Out Of Stock', 'Product is Out Of Stock, stay tuned !');
+
+                    return back();
+
+                } elseif ($request->qty > $prodsizeColor->stock) {
+
+                    connectify('error', 'Product Out Of Stock', $prodsizeColor->stock . ' Product Left in stock, stay tuned !');
+
+                    return back();
+                }
+
+                Cart::add(array(
+                    'id'         => $size->title . '_' . $prodsizeColor->id,
+                    'name'       => $product->title,
+                    'price'      => $prodsizeColor->mrp,
+                    'quantity'   => $request->qty,
+                    'attributes' => array(
+                        'size_id'        => $size->id,
+                        'color_id'       => $request->color_id,
+                        'color_name'     => $prodsizeColor->color->title,
+                        'size_name'      => $size->title,
+                        'image_url'      => $product->image_url,
+                        'slug_url'       => $product->slug_url,
+                        'product_id'     => $product->id,
+                        'category_id'    => $product->category_id,
+                        'stock'          => $prodsizeColor->stock,
+                        'map_id'         => $prodsizeColor->id,
+                        'isCodAvailable' => $product->isCodAvailable,
+                        'offer_map_id'   => $exp_offer[0],
+                        'offers'         => json_encode($request->offers),
+                    ),
+                ));
+
+                Cart::update($size->title . '_' . $prodsizeColor->id, array(
+                    'quantity' => array(
+                        'relative' => false,
+                        'value'    => $request->qty,
+                    ),
+                ));
+
+                connectify('success', 'Cart', '"' . $product->title . '"' . ' has been added to your cart !');
+
+                return redirect(route('cart'));
             }
 
-            // dd((Int) $request->qty, count($selected_qty), $product_offer->purchase_quantity, $product_offer->offered_quantity);
+            connectify('error', 'Cart', ' Size "' . $size->title . '"' . ' is out of stock currently, stay tuned !');
 
-            if ($prodsizeColor->stock <= 0) {
-
-                connectify('error', 'Product Out Of Stock', 'Product is Out Of Stock, stay tuned !');
-
-                return back();
-
-            } elseif ($request->qty > $prodsizeColor->stock) {
-
-                connectify('error', 'Product Out Of Stock', $prodsizeColor->stock . ' Product Left in stock, stay tuned !');
-
-                return back();
-            }
-
-            Cart::add(array(
-                'id'         => $size->title . '_' . $prodsizeColor->id,
-                'name'       => $product->title,
-                'price'      => $prodsizeColor->mrp,
-                'quantity'   => $request->qty,
-                'attributes' => array(
-                    'size_id'      => $size->id,
-                    'color_id'     => $request->color_id,
-                    'color_name'   => $prodsizeColor->color->title,
-                    'size_name'    => $size->title,
-                    'image_url'    => $product->image_url,
-                    'slug_url'     => $product->slug_url,
-                    'product_id'   => $product->id,
-                    'category_id'  => $product->category_id,
-                    'stock'        => $prodsizeColor->stock,
-                    'map_id'       => $prodsizeColor->id,
-                    'isCodAvailable'=> $product->isCodAvailable,
-                    'offer_map_id' => $exp_offer[0],
-                    'offers'       => json_encode($request->offers),
-                ),
-            ));
-
-            Cart::update($size->title . '_' . $prodsizeColor->id, array(
-                'quantity' => array(
-                    'relative' => false,
-                    'value'    => $request->qty,
-                ),
-            ));
-
-            connectify('success', 'Cart', '"' . $product->title . '"' . ' has been added to your cart !');
-
-            return redirect(route('cart'));
+            return back();
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {

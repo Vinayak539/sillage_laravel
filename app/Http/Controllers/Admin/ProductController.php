@@ -295,7 +295,7 @@ class ProductController extends Controller
             $offers = MstOffer::where('status', true)->get();
 
             $product_details = DB::table('map_color_sizes as m')
-                ->selectRaw("m.id as map_id, m.mrp, m.stock, m.starting_price, s.title as size_name, s.id as size_id, c.title as color_name, c.id as color_id")
+                ->selectRaw("m.id as map_id, m.mrp, m.stock, m.starting_price, s.title as size_name, s.id as size_id, c.title as color_name, c.id as color_id, m.status")
                 ->join('mst_sizes as s', 's.id', 'm.size_id')
                 ->join('mst_colors as c', 'c.id', 'm.color_id')
                 ->Where('m.product_id', $product->id)
@@ -633,6 +633,7 @@ class ProductController extends Controller
                 'mrp'            => 'required|numeric|min:1',
                 'stock'          => 'required|numeric|min:1',
                 'starting_price' => 'required|numeric|min:1',
+                'status'         => 'required|numeric|min:0|max:1',
             ],
             [
                 'color_id.required'       => 'Please Choose Color',
@@ -648,6 +649,10 @@ class ProductController extends Controller
                 'stock.min'               => 'Stock Should be More than 1',
                 'starting_price.required' => 'Please Enter Selling Price',
                 'starting_price.min'      => 'Selling Price Should be More than 1',
+                'status.required'         => 'Please Enter Status',
+                'status.min'              => 'Invalid Status Provided',
+                'status.max'              => 'Invalid Status Provided',
+                'status.numeric'          => 'Invalid Status Provided',
             ]
         );
 
@@ -702,6 +707,7 @@ class ProductController extends Controller
                     'starting_price'   => $request->starting_price,
                     'buy_it_now_price' => $before_gst_price,
                     'gst'              => $gst_amount,
+                    'status'           => true
                 ]);
 
                 $size = MstSize::where('id', $request->size_id)->first();
@@ -777,6 +783,7 @@ class ProductController extends Controller
                 'mrp'            => 'required|numeric|min:1',
                 'stock'          => 'required|numeric|min:0',
                 'starting_price' => 'required|numeric|min:1',
+                'status' => 'required|numeric|min:0|max:1',
             ],
             [
                 'size_id.required'        => 'Please Select Sizes',
@@ -787,6 +794,10 @@ class ProductController extends Controller
                 'stock.min'               => 'Stock Should be More than 1',
                 'starting_price.required' => 'Please Enter Selling Price',
                 'starting_price.min'      => 'Selling Price Should be More than 1',
+                'status.required'         => 'Please Enter Status',
+                'status.min'              => 'Invalid Status Provided',
+                'status.max'              => 'Invalid Status Provided',
+                'status.numeric'          => 'Invalid Status Provided',
             ]
         );
 
@@ -806,6 +817,7 @@ class ProductController extends Controller
                 'mrp'            => $request->mrp,
                 'stock'          => $request->stock,
                 'starting_price' => $request->starting_price,
+                'status' => $request->status,
             ]);
 
             connectify('success', 'Color & Size Added', 'Data has been Updated Successfully !');
@@ -1007,6 +1019,7 @@ class ProductController extends Controller
                 'starting_price'   => $request->starting_price,
                 'buy_it_now_price' => $before_gst_price,
                 'gst'              => $gst_amount,
+                'status'              => $request->status,
             ]);
 
             connectify('success', 'Color & Size Updated', 'Color & Size Updated Successfully !');

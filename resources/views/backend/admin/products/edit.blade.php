@@ -562,6 +562,9 @@
                             <label for="id">ID </label>
                         </th>
                         <th>
+                            <label for="status">Status </label>
+                        </th>
+                        <th>
                             <label for="color_id">Colour Name </label>
                         </th>
                         <th>
@@ -590,6 +593,13 @@
                             <input type="number" name="map_id[{{ $key }}]" value="{{ $cf->map_id }}"
                                 class="form-control" disabled>
                         </td>
+                        <td>
+                            <select name="status[{{ $key }}]" class="form-control" required>
+                                <option value="">--Select--</option>
+                                <option value="1" {{ $cf->status == true ? 'selected' : '' }}>Active</option>
+                                <option value="0" {{ $cf->status == false ? 'selected' : '' }}>Inactive</option>
+                            </select>
+                        </td>
 
                         <td>
                             <select name="colour_id[{{ $key }}]" class="form-control" required>
@@ -616,18 +626,17 @@
 
                         <td>
                             <input type="text" name="mrp[{{ $key }}]" value="{{ $cf->mrp }}" class="form-control"
-                                id="mrp">
+                               >
                         </td>
 
                         <td>
                             <input type="text" name="stock[{{ $key }}]" value="{{ $cf->stock }}" class="form-control"
-                                id="stock">
+                               >
                         </td>
 
                         <td>
                             <input type="text" name="starting_price[{{ $key }}]"
-                                value="{{ $cf->starting_price ? $cf->starting_price : 0 }}" class="form-control"
-                                id="selling_price">
+                                value="{{ $cf->starting_price ? $cf->starting_price : 0 }}" class="form-control">
                         </td>
 
                         <td>
@@ -754,6 +763,7 @@
     <input type="hidden" name="stock" id="txtStockUpdate" />
     <input type="hidden" name="starting_price" id="txtStartingPriceUpdate" />
     <input type="hidden" name="map_id" id="txtUpdateMapID" />
+    <input type="hidden" name="status" id="txtUpdateStatus" />
 </form>
 
 @endsection
@@ -815,17 +825,20 @@
         });
 
         $(".update-color-object").click(function () {
+
             var key = $(this).attr("data-object-index");
             var id = $("input[name='map_id[" + key + "]']").val();
+
             $("#txtColorIDUpdate").val($("select[name='colour_id[" + key + "]']").val());
             $("#txtSizeIDUpdate").val($("select[name='size_id[" + key + "]']").val());
             $("#txtMrpUpdate").val($("input[name='mrp[" + key + "]']").val());
             $("#txtStartingPriceUpdate").val($("input[name='starting_price[" + key + "]']").val());
             $("#txtStockUpdate").val($("input[name='stock[" + key + "]']").val());
+            $("#txtUpdateStatus").val($("select[name='status[" + key + "]']").val());
             $("#txtUpdateMapID").val(id);
-            $("#formColorUpdate").submit();
             $(this).attr('disabled', 'disabled');
             $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+            $("#formColorUpdate").submit();
 
         });
 
