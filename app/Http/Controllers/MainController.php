@@ -98,12 +98,14 @@ class MainController extends Controller
                 ->limit(6)
                 ->get();
 
+
+
             $offers = DB::table('txn_products as p')
                 ->selectRaw('p.title as product_name, p.id as product_id, p.image_url, m.color_id, m.size_id, c.title as color_name, s.title as size_name, m.id as offer_id, mop.purchase_quantity, mop.offered_quantity, mop.id as map_id, mop.map_offer_id')
                 ->join("map_mst_offer_products as m", "m.offer_product_id", "p.id")
                 ->join("mst_colors as c", "m.color_id", "c.id")
                 ->join("mst_sizes as s", "m.size_id", "s.id")
-                ->join("map_offer_products as mop", "mop.map_offer_id", "m.offer_id")
+                ->join("map_offer_products as mop", "mop.mst_offer_id", "m.offer_id")
                 ->groupBy('m.offer_product_id', 'm.color_id', 'm.size_id')
                 ->where('mop.product_id', $product->id)
                 ->get();
@@ -130,7 +132,7 @@ class MainController extends Controller
     public function getSizes(Request $request)
     {
 
-        $results = MapColorSize::where('product_id', $request->product_id)->where('color_id', $request->color_id)->get();
+        $results = MapColorSize::where('product_id', $request->product_id)->where('color_id', $request->color_id)->orderBy('id', 'ASC')->get();
 
         // $results = DB::table('map_color_sizes as m')
         //     ->selectRaw('c.title as color_name, GROUP_CONCAT(s.title) as size_name, c.id as color_id, GROUP_CONCAT(s.id) as size_id, m.mrp, m.stock, m.id as map_id')
