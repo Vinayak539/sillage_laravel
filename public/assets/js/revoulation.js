@@ -190,6 +190,28 @@
 			mouseScrollNavigation:"on",
              mouseScrollReverse:"default",
 			onHoverStop:"off",
+			arrows: {
+				style:"",
+				enable:true,
+				hide_onmobile:false,
+				hide_under:300,
+				hide_onleave:true,
+				hide_delay:200,
+				hide_delay_mobile:1200,
+				tmp:'',
+				left: {
+					h_align:"left",
+					v_align:"center",
+					h_offset:30,
+					v_offset:0
+				},
+				right: {
+					h_align:"right",
+					v_align:"center",
+					h_offset:30,
+					v_offset:0
+				}
+			},
 			touch:{
 				touchenabled:"on",
 				touchOnDesktop:"on",
@@ -216,7 +238,7 @@
 		responsiveLevels:[1240,1240,778,480],
 		visibilityLevels:[1240,1240,778,480],
 		gridwidth:[1342,1342,778,480],
-		gridheight:[360,360,360,125],
+		gridheight:[362,362,362,125],
 		// gridwidth:[1920,1920,778,480],
 		// gridheight:[830,830,600,500],
 		lazyType:"none",
