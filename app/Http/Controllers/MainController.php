@@ -404,4 +404,21 @@ class MainController extends Controller
         return response()->json(['error' => 'Please Enter Valid Promocode', 'status' => 200], 200);
     }
 
+    public function getSizePrice(Request $request)
+    {
+        try{
+
+            $result = MapColorSize::select('mrp', 'starting_price')->where('product_id', $request->product_id)->where('color_id', $request->color_id)->where('size_id', $request->size_id)->firstOrFail();
+
+            return response()->json(['success' => $result]);
+
+        }catch(\Exception $ex){
+            if($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException){
+
+                return response()->json(['error' => 'Whoops something went wrong !']);
+            }
+            return response()->json(['error' => 'Whoops something went wrong from our end, try again later !']);
+        }
+    }
+
 }

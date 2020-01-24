@@ -21,11 +21,7 @@ class CartController extends Controller
     {
         try {
 
-            // dd($request);
-
             $product = TxnProduct::where('id', $request->prod_id)->firstOrFail();
-
-            $sizeColor = MapColorSize::where('color_id', $request->color_id)->where('product_id', $request->prod_id)->with('color')->first();
 
             $prodsizeColor = MapColorSize::where('color_id', $request->color_id)->where('product_id', $request->prod_id)->where('size_id', $request->size_id)->with('color')->first();
 
@@ -38,8 +34,6 @@ class CartController extends Controller
                 $selected_qty = explode(',', $request->offers);
 
                 $product_offer = MapOfferProduct::where('id', $exp_offer[0])->first();
-
-                // dd($product_offer);
 
                 if (count($selected_qty) > 0) {
 
@@ -70,28 +64,28 @@ class CartController extends Controller
             }
 
             Cart::add(array(
-                'id'         => $size->title . '_' . $sizeColor->id,
+                'id'         => $size->title . '_' . $prodsizeColor->id,
                 'name'       => $product->title,
-                'price'      => $sizeColor->mrp,
+                'price'      => $prodsizeColor->mrp,
                 'quantity'   => $request->qty,
                 'attributes' => array(
                     'size_id'      => $size->id,
                     'color_id'     => $request->color_id,
-                    'color_name'   => $sizeColor->color->title,
+                    'color_name'   => $prodsizeColor->color->title,
                     'size_name'    => $size->title,
                     'image_url'    => $product->image_url,
                     'slug_url'     => $product->slug_url,
                     'product_id'   => $product->id,
                     'category_id'  => $product->category_id,
                     'stock'        => $prodsizeColor->stock,
-                    'map_id'       => $sizeColor->id,
+                    'map_id'       => $prodsizeColor->id,
                     'isCodAvailable'=> $product->isCodAvailable,
                     'offer_map_id' => $exp_offer[0],
                     'offers'       => json_encode($request->offers),
                 ),
             ));
 
-            Cart::update($size->title . '_' . $sizeColor->id, array(
+            Cart::update($size->title . '_' . $prodsizeColor->id, array(
                 'quantity' => array(
                     'relative' => false,
                     'value'    => $request->qty,
