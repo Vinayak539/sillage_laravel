@@ -4243,7 +4243,7 @@ span,
     align-items: flex-start;
 }
 
-.product-summary>.product-rating{
+.product-summary>.product-rating {
     cursor: pointer;
 }
 
@@ -16730,7 +16730,8 @@ span,
 
 .header-search-form-wrap {
     width: 150px;
-    margin: 0 0 0 10px; /* extra */
+    margin: 0 0 0 10px;
+    /* extra */
 }
 
 .header-style-1 .user-info-menu {
@@ -29696,33 +29697,36 @@ a:hover {
 
 /* My Order & Details End */
 
-.text-black{
+.text-black {
     color: #000
 }
 
 /* show product start */
-.return--policy span{
+.return--policy span {
     border-radius: 50%;
     line-height: 26px;
     height: 50px;
     width: 50px;
 }
-.return--policy span i{
+
+.return--policy span i {
     font-size: 18px;
 }
-.return--policy p{
+
+.return--policy p {
     margin-top: 10px;
     line-height: 1.5;
     color: #282828;
 }
-.offerSection p{
+
+.offerSection p {
     font-size: 12px;
     color: #282828;
     text-transform: uppercase;
     margin-top: 20px;
 }
 
-.offerSection .selectedOfferBtn{
+.offerSection .selectedOfferBtn {
     font-size: 12px;
     /* background-color: #172337; */
     /* border: 1px solid #172337; */
@@ -29732,7 +29736,7 @@ a:hover {
     cursor: pointer;
 }
 
-.offerSection .selectedOfferBtn:hover{
+.offerSection .selectedOfferBtn:hover {
     /* background-color: #fff; */
     /* border: 1px solid #d7ae00; */
     color: #d7ae00;
@@ -29741,6 +29745,7 @@ a:hover {
 .offerModal .quantity {
     margin-right: -3rem;
 }
+
 /* show product end */
 
 
@@ -29958,7 +29963,8 @@ a:hover {
     -ms-user-select: none;
     user-select: none;
 }
-.radio-cont .card{
+
+.radio-cont .card {
     padding: 20px;
 }
 
@@ -30001,7 +30007,7 @@ a:hover {
 
 /* When the radio button is checked, add a blue background */
 .radio-cont input:checked~.checkmark {
-    background-color: #2196F3;
+    background-color: #2f2f2f;
 }
 
 /* Create the indicator (the dot/circle - hidden when not checked) */
@@ -30029,11 +30035,322 @@ a:hover {
 .radio-cont .card-link {
     font-size: 14px;
     text-transform: uppercase;
-    color: #2196F3;
+    color: #2f2f2f;
 }
 
-.text-black{
+.text-black {
     color: #000 !important;
 }
 
+.faq-tab-wrapper-three .faq-panel .panel .panel-heading .panel-title a {
+    display: block;
+    padding: 20px 40px 20px 25px;
+    font-size: 21px;
+    font-family: 'Josefin Sans', sans-serif;
+    color: #fff;
+    position: relative;
+    background: #d7ae00;
+}
+
+.faq-tab-wrapper-three .faq-panel .panel .panel-heading .panel-title a.collapsed {
+    background: #464646;
+    color: #fff;
+}
+
+.faq-tab-wrapper-three .faq-panel .panel {
+    margin-bottom: 20px;
+}
+
+.faq-tab-wrapper-three .faq-panel .panel-body {
+    padding: 35px 40px 10px 25px;
+}
+
+.faq-tab-wrapper-three .faq-panel .panel-body p {
+    padding-bottom: 25px;
+}
+
+/* .faq-tab-wrapper-three .faq-panel .panel .panel-heading .panel-title a {color: #fff;}
+.faq-tab-wrapper-three .faq-panel .panel .panel-heading .panel-title a:before {
+  content: '';
+  font-family: 'FontAwesome';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 25px;
+  color: #fff;
+}
+.faq-tab-wrapper-three .faq-panel .panel .panel-heading.active-panel .panel-title a:before {content: '';color: #fff;}
+.faq-tab-wrapper-three .faq-panel .panel .panel-heading.active-panel .panel-title a {color: #fff; background: #c2393d;} */
+
+
+.promocode-checkout {
+    /* border: 2px solid #fff; */
+    /* padding: 15px;
+    border-radius: 5px; */
+}
+
+.promocode-checkout h3 {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+.promocode-checkout p {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+
+.promocode-checkout input,
+.promocode-checkout textarea {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #000;
+    background: transparent;
+    margin-bottom: 0px;
+}
+
+.promocode-checkout input {
+    padding: 0;
+    height: 40px;
+    color: #000;
+}
+
+.promocode-checkout ::placeholder {
+    color: #000;
+    opacity: 1;
+}
+
+.promocode-checkout :-ms-input-placeholder {
+    color: #000;
+}
+
+.promocode-checkout ::-ms-input-placeholder {
+    color: #000;
+}
+
+.promocode-checkout .or-text span {
+    display: inline-block;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #000;
+    font-weight: 500;
+    background: #000;
+    border-radius: 50%;
+    line-height: 40px;
+    width: 40px;
+    height: 40px;
+}
+
+
+.promocode-checkout .acType-content h4 {
+    font-size: 28px;
+}
+
+.promocode-checkout .acType-content p {
+    padding: 8px 0 25px;
+}
+
+.promocode-checkout .acType-content .acType-list {
+    margin: 0 -18px;
+}
+
+.promocode-checkout .acType-content .acType-list li {
+    float: left;
+    padding: 0 16px;
+}
+
+.promocode-checkout .acType-content .acType-list li>div {
+    position: relative;
+}
+
+.promocode-checkout .acType-content .acType-list li>div input {
+    position: absolute;
+    opacity: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.promocode-checkout .acType-content .acType-list li>div label {
+    position: relative;
+    font-size: 12px;
+    line-height: 15px;
+    padding: 0 0 0 20px;
+    color: #000;
+    cursor: pointer;
+    /* padding-left: 25px; */
+    /* margin: 0 0 15px; */
+    transition: all 0.1s ease-in-out;
+}
+
+.promocode-checkout .acType-content .acType-list li>div label:before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid #000;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: all 0.1s ease-in-out;
+}
+
+.promocode-checkout .acType-content .acType-list li>div input:checked+label:before {
+    border: 2px solid #17bc48;
+}
+
+.promocode-checkout .acType-content .acType-list li>div input:checked+label {
+    color: #17bc48;
+    font-weight: 600;
+}
+
+.promocode-checkout .acType-content {
+    padding-bottom: 75px;
+}
+
+.promocode-checkout .line-button-one {
+    background: #fff;
+    line-height: 38px !important;
+    width: 100% !important
+}
+
+.promocode-checkout .faq-tab-wrapper-three .faq-panel .panel {
+    margin-bottom: 2px;
+}
+
+/* .promocode-checkout .faq-tab-wrapper-three .faq-panel .panel:last-child {
+    margin-bottom: 20px;
+} */
+
+.promocode-checkout .faq-tab-wrapper-three .faq-panel .panel .panel-heading.active-panel .panel-title a,
+.promocode-checkout .faq-tab-wrapper-three .faq-panel .panel .panel-heading .panel-title a {
+    padding: 10px 25px 10px 15px;
+    font-size: 14px;
+}
+
+.promocode-checkout .faq-tab-wrapper-three .faq-panel .panel-body {
+    padding: 10px 5px 10px 5px;
+}
+
+
+.promocode-checkout .check {
+    margin-bottom: 10px;
+}
+
+.promocode-checkout .check input,
+.promocode-checkout .check input:focus,
+.promocode-checkout .check input:hover {
+    padding-right: 0;
+    outline: none !important;
+    box-shadow: none !important;
+    z-index: 0;
+    border: none;
+}
+
+.promocode-checkout .check button {
+    line-height: 40px;
+}
+
+.promocode-checkout .check .check-availibility {
+    color: #000 !important;
+    background: transparent !important;
+    height: 40px !important;
+    border-radius: 0 !important;
+    border-bottom: 2px solid #000 !important;
+    border: none;
+    z-index: 0;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+
 /* checkout page end*/
+
+/* filter start */
+.cb-container {
+    display: block;
+    position: relative;
+    padding: 0 0 0 28px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.cb-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.cb-checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: #eee;
+}
+
+.rb-checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: #eee;
+    border-radius: 50%
+}
+
+/* On mouse-over, add a grey background color */
+.cb-container:hover input~.cb-checkmark,
+.cb-container:hover input~.rb-checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.cb-container input:checked~.cb-checkmark,
+.cb-container input:checked~.rb-checkmark {
+    background-color: #2f2f2f;
+}
+
+/* Create the cb-checkmark/indicator (hidden when not checked) */
+.cb-checkmark:after,
+.rb-checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the cb-checkmark when checked */
+.cb-container input:checked~.cb-checkmark:after,
+.cb-container input:checked~.rb-checkmark:after {
+    display: block;
+}
+
+/* Style the cb-checkmark/indicator */
+.cb-container .cb-checkmark:after,
+.cb-container .rb-checkmark:after {
+    left: 7px;
+    top: 4px;
+    width: 5px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+/* filter end */

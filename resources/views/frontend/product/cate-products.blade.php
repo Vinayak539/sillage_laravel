@@ -53,13 +53,12 @@
                                                 <ul class="product-widget__list">
                                                     @foreach($brands as $brand)
                                                     <li>
-                                                        <input type="checkbox" id="{{ $brand->brand_name.$brand->id }}"
+                                                        <label for="{{ $brand->brand_name.$brand->id }}" class="cb-container">{{ $brand->brand_name }}
+                                                            <input type="checkbox" id="{{ $brand->brand_name.$brand->id }}"
                                                             name="brands[]" value="{{ $brand->id }}"
                                                             class="cb_brands filter" data-cate-id="{{ $category->id }}">
-                                                        <a href="javascript:void(0)">
-                                                            <label for="{{ $brand->brand_name.$brand->id }}">
-                                                                <span>{{ $brand->brand_name }}</span></label>
-                                                        </a>
+                                                            <span class="cb-checkmark"></span>
+                                                        </label>
                                                     </li>
                                                     @endforeach
                                                 </ul>
@@ -72,13 +71,13 @@
                                                 <ul class="product-widget__list product-color-swatch">
                                                     @foreach($conditions as $cond)
                                                     <li>
-                                                        <input type="checkbox" id="{{ $cond->condition.$cond->id }}"
+                                                        <label for="{{ $cond->condition.$cond->id }}" class="cb-container">
+                                                            {{ $cond->condition }}
+                                                            <input type="checkbox" id="{{ $cond->condition.$cond->id }}"
                                                             name="conditions[]" value="{{ $cond->id }}"
                                                             class="cb_conditions filter">
-                                                        <a href="javascript:void(0)">
-                                                            <label for="{{ $cond->condition.$cond->id }}">
-                                                                <span>{{ $cond->condition }}</span></label>
-                                                        </a>
+                                                            <span class="cb-checkmark"></span>
+                                                        </label>
                                                     </li>
                                                     @endforeach
                                                 </ul>

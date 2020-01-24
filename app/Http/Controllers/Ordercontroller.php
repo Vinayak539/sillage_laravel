@@ -44,7 +44,7 @@ class OrderController extends Controller
         $total_rewards = auth('user')->user()->total_rewards;
 
         $validator = Validator::make($request->all(), [
-            'payment_mode' => 'required',
+            'payment_mode' => 'nullable',
             'pincode' => 'required|digits:6',
             'choose_address' => 'required|numeric|min:1|exists:addresses,id',
         ],

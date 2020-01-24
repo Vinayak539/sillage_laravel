@@ -27,243 +27,230 @@
                 <!-- Checkout Area Start -->
 
                 @if(auth('user')->check())
-                <form action="{{ route('order.checkout') }}" method="post" id="formCheckout">
-
-                    @csrf
-
+                
                     <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="row">
-                                    <div class="col-md-12">
+                        <form action="{{ route('order.checkout') }}" method="post" id="formCheckout">
+                            @csrf
+                            <div class="row">
+            
+                                <div class="col-lg-8">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="checkout-title mt--10">
+                                                <h2>Select Delivery Address</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+                                            <div class="checkout-form form-row mb--30">
+                                                <div class="form__group col-md-6 mb-sm--30">
+                                                    <div class="pincode-deliveryContainer">
+                                                        <label for="name" style="padding-left: 0;" class="form__label form__label--2">Please enter
+                                                            PIN code to check delivery
+                                                            <span class="required">*</span></label>
+                                                        <input type="text" placeholder="Enter pincode"
+                                                            class="pincode-code form__input form__input--2 valid"
+                                                            value="{{ Session::get('pincode') }}" name="pincode"
+                                                            id="pincode" required style="width: 290px">
+                                                        <button type="button"
+                                                            class="pincode-check pincode-button check-availibility pincode_button">
+                                                            <i class="fa fa-search" aria-hidden="true"></i></button>
+                                                    </div>
+                                                </div>
+                                                <div class="form__group col-md-6 mt--40 pincd">
+                                                    <label for="pincode" class="error pincode_error"></label>
+                                                    <p class="text-success pincode_success"></p>
+                                                    <!-- <p class="text-danger pincode_error"></p> -->
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @foreach($addresses as $add)
+                                        <div class="col-md-6">
+                                            <label class="radio-cont">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title pl--35">
+
+                                                            {{ $add->name }}
+
+                                                            <input type="radio" checked="checked" name="choose_address"
+                                                                value="{{ $add->id }}" data-pincode="{{ $add->pincode }}">
+                                                            <span class="checkmark"></span>
+
+                                                            <b><span class="badge badge-pill badge-primary" style="font-size: 12px;float:right;margin-top:6px">{{ $add->type_of_address ? 'Work' : 'Home' }}</span></b>
+                                                        </h4>
+                                                        <p class="card-text">
+                                                            {{ $add->address }},
+                                                            {{ $add->landmark }},
+                                                            {{ $add->city }},
+                                                            {{ $add->territory }},
+                                                            {{ $add->country }},
+                                                            {{ $add->pincode }},
+                                                        </p>
+                                                        @if($add->mobile)
+                                                        <p class="text-info"> 
+                                                            {{ $add->mobile }}
+                                                        </p>
+                                                        @else
+                                                        <p class="text-danger">
+                                                            Update Mobile Number
+                                                        </p>
+                                                        @endif
+                                                        
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <a href="javascript:void(0)"
+                                                            class="card-link float-left remove-address"
+                                                            data-obj-id="{{ $add->id }}">Remove</a>
+                                                        <a href="javascript:void(0)" data-obj-id="{{ $add->id }}"
+                                                            class="card-link float-right editAddress">Edit</a>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        @endforeach
+
+                                        <div class="col-md-6 add_address">
+                                            <label class="radio-cont" data-toggle="modal" data-target="#new-address">
+                                                <div class="card">
+                                                    <div class="card-body text-center pt--130" style="height: 334px;">
+                                                        <i class="fa fa-plus-circle text-black"></i>
+                                                        <p class="text-black"> Add new address</p>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-4 mt-md--40">
+                                    <div class="order-details">
                                         <div class="checkout-title mt--10">
-                                            <h2>Select Delivery Address</h2>
+                                            <h2>Your Order</h2>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-
-                                    <div class="col-md-12">
-                                        <div class="checkout-form form-row mb--30">
-                                            <div class="form__group col-md-6 mb-sm--30">
-                                                <div class="pincode-deliveryContainer">
-                                                    <label for="name" class="form__label form__label--2">Please enter
-                                                        PIN code to check delivery
-                                                        <span class="required">*</span></label>
-                                                    <input type="text" placeholder="Enter pincode"
-                                                        class="pincode-code form__input form__input--2 valid"
-                                                        value="{{ Session::get('pincode') }}" name="pincode"
-                                                        id="pincode" required style="width: 290px">
-                                                    <button type="button"
-                                                        class="pincode-check pincode-button check-availibility pincode_button">
-                                                        <i class="fa fa-search" aria-hidden="true"></i></button>
-                                                </div>
-                                            </div>
-                                            <div class="form__group col-md-6 mt--40 pincd">
-                                                <label for="pincode" class="error pincode_error"></label>
-                                                <p class="text-success pincode_success"></p>
-                                                <!-- <p class="text-danger pincode_error"></p> -->
-                                            </div>
+                                        <div class="table-content table-responsive mb--30">
+                                            <table class="table order-table order-table-2">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Product</th>
+                                                        <th class="text-right">Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @php
+                                                    $isCodAvailable = true;
+                                                    @endphp
+                                                    @foreach (Cart::getContent() as $item)
+                                                    <tr>
+                                                        <th>{{ $item->name }}
+                                                            <strong><span>&#10005;</span>{{ $item->quantity }}</strong>
+                                                        </th>
+                                                        <td class="text-right">₹{{ $item->price }}</td>
+                                                    </tr>
+                                                    @php
+                                                    $isCodAvailable = $item->attributes->isCodAvailable && $isCodAvailable;
+                                                    @endphp
+                                                    @endforeach
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr class="cart-subtotal">
+                                                        <th>Subtotal</th>
+                                                        <td class="text-right">₹{{ Cart::getTotal() }}</td>
+                                                    </tr>
+                                                    <tr class="shipping">
+                                                        <th>Shipping</th>
+                                                        <td class="text-right">
+                                                            <span> ₹60</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="order-total">
+                                                        <th>Order Total</th>
+                                                        <td class="text-right"><span
+                                                                class="order-total-ammount">₹{{ Cart::gettotal() + 60 }}</span>
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
                                         </div>
-                                    </div>
-
-                                    @foreach($addresses as $add)
-                                    <div class="col-md-6">
-                                        <label class="radio-cont">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h4 class="card-title pl--35">
-
-                                                        {{ $add->name }}
-
-                                                        <input type="radio" checked="checked" name="choose_address"
-                                                            value="{{ $add->id }}" data-pincode="{{ $add->pincode }}">
-                                                        <span class="checkmark"></span>
-
-                                                    </h4>
-                                                    <span
-                                                        class="badge badge-dark fs-14">{{ $add->type_of_address ? 'Work' : 'Home' }}</span>
-                                                    <p class="card-text">
-                                                        {{ $add->address }},
-                                                        {{ $add->landmark }},
-                                                        {{ $add->city }},
-                                                        {{ $add->territory }},
-                                                        {{ $add->country }},
-                                                        {{ $add->pincode }},
-                                                    </p>
-                                                </div>
-                                                <div class="card-footer">
-                                                    <a href="javascript:void(0)"
-                                                        class="card-link float-left remove-address"
-                                                        data-obj-id="{{ $add->id }}">Remove</a>
-                                                    <a href="javascript:void(0)" data-obj-id="{{ $add->id }}"
-                                                        class="card-link float-right editAddress">Edit</a>
-                                                </div>
-                                            </div>
-                                        </label>
-                                    </div>
-                                    @endforeach
-
-                                    <div class="col-md-6 add_address">
-                                        <label class="radio-cont" data-toggle="modal" data-target="#new-address">
-                                            <div class="card">
-                                                <div class="card-body text-center pt--130" style="height: 334px;">
-                                                    <i class="fa fa-plus-circle text-black"></i>
-                                                    <p class="text-black"> Add new address</p>
-                                                </div>
-                                            </div>
-                                        </label>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                            <div class="col-lg-4 mt-md--40">
-                                <div class="order-details">
-                                    <div class="checkout-title mt--10">
-                                        <h2>Your Order</h2>
-                                    </div>
-                                    <div class="table-content table-responsive mb--30">
-                                        <table class="table order-table order-table-2">
-                                            <thead>
-                                                <tr>
-                                                    <th>Product</th>
-                                                    <th class="text-right">Total</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @php
-                                                $isCodAvailable = true;
-                                                @endphp
-                                                @foreach (Cart::getContent() as $item)
-                                                <tr>
-                                                    <th>{{ $item->name }}
-                                                        <strong><span>&#10005;</span>{{ $item->quantity }}</strong>
-                                                    </th>
-                                                    <td class="text-right">₹{{ $item->price }}</td>
-                                                </tr>
-                                                @php
-                                                $isCodAvailable = $item->attributes->isCodAvailable && $isCodAvailable;
-                                                @endphp
-                                                @endforeach
-                                            </tbody>
-                                            <tfoot>
-                                                <tr class="cart-subtotal">
-                                                    <th>Subtotal</th>
-                                                    <td class="text-right">₹{{ Cart::getTotal() }}</td>
-                                                </tr>
-                                                <tr class="shipping">
-                                                    <th>Shipping</th>
-                                                    <td class="text-right">
-                                                        <span> ₹60</span>
-                                                    </td>
-                                                </tr>
-                                                <tr class="order-total">
-                                                    <th>Order Total</th>
-                                                    <td class="text-right"><span
-                                                            class="order-total-ammount">₹{{ Cart::gettotal() + 60 }}</span>
-                                                    </td>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                    <div class="checkout-payment">
-                                        <div class="payment-group mb--10">
-                                            <div class="payment-radio">
-                                                <input type="radio" value="paytm" name="payment_mode" id="paytm"
-                                                    checked>
-                                                <label class="payment-label"
-                                                    for="paytm">DEBIT/CREDIT/NETBANKING/PAYTM</label>
-                                            </div>
-                                        </div>
-                                        @if($isCodAvailable)
-                                        <div class="payment-group mb--10">
-                                            <div class="payment-radio">
-                                                <input type="radio" value="cod" name="payment_mode" id="cod">
-                                                <label class="payment-label" for="cod">
-                                                    CASH ON DELIVERY
-                                                </label>
-                                            </div>
-                                            <div class="payment-info cash hide-in-default" data-method="cash">
-                                                <p>Pay with cash upon delivery.</p>
-                                            </div>
-                                        </div>
-                                        @endif
-
-                                        <div class="promocode-checkout">
-                                            <div class="faq-tab-wrapper-three">
-                                                <div class="faq-panel">
-                                                    <div class="panel-group theme-accordion" id="accordion">
-                                                        <div class="panel">
-                                                            <div class="panel-heading active-panel">
-                                                                <h6 class="panel-title">
-                                                                    <a data-toggle="collapse" data-parent="#accordion"
-                                                                        href="#collapse1">
-                                                                        Enter Promo Code</a>
-                                                                </h6>
-                                                            </div>
-                                                            <div id="collapse1" class="panel-collapse collapse show">
-                                                                <div class="panel-body">
-                                                                    <div class="check">
-                                                                        <div class="input-group">
-                                                                            <input type="text" name="promocode"
-                                                                                id="promocode"
-                                                                                class="single-input-wrapper check-availibility promocode"
-                                                                                placeholder="enter code here!"
-                                                                                style="border-right: none;margin-bottom: 0;">
-                                                                            <div class="input-group-append">
-                                                                                <button type="button"
-                                                                                    class="verify_promo check-availibility theme-button-three  mr-0">
-                                                                                    Apply
-                                                                                </button>
+                                        <div class="checkout-payment">
+                                            
+                                            <div class="promocode-checkout">
+                                                <div class="faq-tab-wrapper-three">
+                                                    <div class="faq-panel">
+                                                        <div class="panel-group theme-accordion" id="accordion">
+                                                            <div class="panel">
+                                                                <div class="panel-heading"  id="heading1">
+                                                                    <h6 class="panel-title">
+                                                                        <a data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                                                                            Enter Promo Code</a>
+                                                                    </h6>
+                                                                </div>
+                                                                <div id="collapse1" class="panel-collapse collapse show" aria-labelledby="heading1"  data-parent="#accordion">
+                                                                    <div class="panel-body">
+                                                                        <div class="check">
+                                                                            <div class="input-group">
+                                                                                <input type="text" name="promocode"
+                                                                                    id="promocode"
+                                                                                    class="single-input-wrapper check-availibility promocode"
+                                                                                    placeholder="enter code here!"
+                                                                                    style="border-right: none;margin-bottom: 0;">
+                                                                                <div class="input-group-append">
+                                                                                    <button type="button"
+                                                                                        class="verify_promo check-availibility theme-button-three  mr-0">
+                                                                                        Apply
+                                                                                    </button>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <!-- <div class="form-group">
-                                                                <input id="promocode" type="text"
-                                                                    name="promocode" class="promocode"
-                                                                    placeholder="enter code here!">
-                                                            </div> -->
-                                                                    <div class="acType-content mt-10">
-                                                                        <ul class="acType-list">
-                                                                            @foreach($promocodes as $promo)
-                                                                            <li>
-                                                                                <div>
-                                                                                    <input type="radio" name="promo"
-                                                                                        class="promo"
-                                                                                        value="{{ $promo->promocode }}">
-                                                                                    <label
-                                                                                        for="{{ $promo->promocode }}">{{ $promo->promocode }}</label>
-                                                                                </div>
-                                                                            </li>
-                                                                            @endforeach
-                                                                        </ul>
+                                                                        <!-- <div class="form-group">
+                                                                    <input id="promocode" type="text"
+                                                                        name="promocode" class="promocode"
+                                                                        placeholder="enter code here!">
+                                                                </div> -->
+                                                                        <div class="acType-content mt-10">
+                                                                            <ul class="acType-list">
+                                                                                @foreach($promocodes as $promo)
+                                                                                <li>
+                                                                                    <div>
+                                                                                        <input type="radio" name="promo"
+                                                                                            class="promo"
+                                                                                            value="{{ $promo->promocode }}">
+                                                                                        <label
+                                                                                            for="{{ $promo->promocode }}">{{ $promo->promocode }}</label>
+                                                                                    </div>
+                                                                                </li>
+                                                                                @endforeach
+                                                                            </ul>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="panel">
-                                                            <div class="panel-heading">
-                                                                <h6 class="panel-title">
-                                                                    <a data-toggle="collapse" data-parent="#accordion"
-                                                                        href="#collapse2">
-                                                                        Enter Shop Code!</a>
-                                                                </h6>
-                                                            </div>
-                                                            <div id="collapse2" class="panel-collapse collapse">
-                                                                <div class="panel-body">
-                                                                    <div class="check">
-                                                                        <div class="input-group">
-                                                                            <input type="text" name="discountcode"
-                                                                                id="discountcode"
-                                                                                class="single-input-wrapper check-availibility discountcode"
-                                                                                placeholder="Enter Shop Code"
-                                                                                style="border-right: none;margin-bottom: 0;">
-                                                                            <div class="input-group-append">
-                                                                                <button type="button"
-                                                                                    class="verify_promo check-availibility theme-button-three  mr-0">
-                                                                                    Apply
-                                                                                </button>
+                                                            <div class="panel">
+                                                                <div class="panel-heading"  id="heading2">
+                                                                    <h6 class="panel-title">
+                                                                        <a class="collapsed" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                                                            Enter Shop Code!</a>
+                                                                    </h6>
+                                                                </div>
+                                                                <div id="collapse2" class="panel-collapse collapse" aria-labelledby="heading2" data-parent="#accordion">
+                                                                    <div class="panel-body">
+                                                                        <div class="check">
+                                                                            <div class="input-group">
+                                                                                <input type="text" name="discountcode"
+                                                                                    id="discountcode"
+                                                                                    class="single-input-wrapper check-availibility discountcode"
+                                                                                    placeholder="Enter Shop Code"
+                                                                                    style="border-right: none;margin-bottom: 0;">
+                                                                                <div class="input-group-append">
+                                                                                    <button type="button"
+                                                                                        class="verify_promo check-availibility theme-button-three  mr-0">
+                                                                                        Apply
+                                                                                    </button>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -271,27 +258,50 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-group text-center">
-                                                    <div class="promo_success text-success mt-3"></div>
-                                                    <div class="promo_error text-danger mt-3"></div>
+                                                    <div class="form-group text-center">
+                                                        <div class="promo_success text-success mt-3"></div>
+                                                        <div class="promo_error text-danger mt-3"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="payment-group mt--20">
-                                            @if(count($addresses))
-                                            <button type="submit" class="btn btn-fullwidth btn-style-1 order_place">
-                                                Place Order
-                                            </button>
+                                            <div class="payment-group mb--10">
+                                                <div class="payment-radio">
+                                                    <label for="paytm" class="cb-container">
+                                                        DEBIT/CREDIT/NETBANKING/PAYTM
+                                                        <input type="radio" value="paytm" name="payment_mode" id="paytm"
+                                                        checked>
+                                                        <span class="rb-checkmark"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            @if($isCodAvailable)
+                                            <div class="payment-group mb--10">
+                                                <div class="payment-radio">
+                                                    <label for="cod" class="cb-container">
+                                                        CASH ON DELIVERY
+                                                        <input type="radio" value="cod" name="payment_mode" id="cod">
+                                                        <span class="rb-checkmark"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
                                             @endif
+
+
+                                            <div class="payment-group mt--20">
+                                                @if(count($addresses))
+                                                <button type="submit" class="btn btn-fullwidth btn-style-1 order_place">
+                                                    Place Order
+                                                </button>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                </form>
+                
                 @else
                 <!-- Checkout Area End -->
                 <div class="Checkout_section mt-32">
@@ -605,6 +615,9 @@
     }
     .Checkout_section .login-or h3{
         margin-left: 10px;
+    }
+    .input-group {
+        flex-wrap: inherit !important;
     }
 </style>
 @endsection
