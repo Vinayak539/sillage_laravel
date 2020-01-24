@@ -190,6 +190,28 @@
 			mouseScrollNavigation:"on",
              mouseScrollReverse:"default",
 			onHoverStop:"off",
+			arrows: {
+				style:"",
+				enable:true,
+				hide_onmobile:false,
+				hide_under:300,
+				hide_onleave:true,
+				hide_delay:200,
+				hide_delay_mobile:1200,
+				tmp:'',
+				left: {
+					h_align:"left",
+					v_align:"center",
+					h_offset:30,
+					v_offset:0
+				},
+				right: {
+					h_align:"right",
+					v_align:"center",
+					h_offset:30,
+					v_offset:0
+				}
+			},
 			touch:{
 				touchenabled:"on",
 				touchOnDesktop:"on",

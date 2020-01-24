@@ -55,7 +55,7 @@
 @foreach($sections as $section)
 @if(count($section->msections))
 <!-- Trending Products area Start Here -->
-<section class="trending-products-area pt--30 pb--80 pt-md--20 pb-md--60">
+<section class="trending-products-area pt--30 pb--80 pt-md--20 pb-md--30">
     <div class="container-fluid">
         <div class="row mb--40 mb-md--30">
             <div class="col-12">
@@ -74,12 +74,13 @@
                             }' data-slick-responsive='[
                                 {"breakpoint":1200, "settings": {"slidesToShow": 3} },
                                 {"breakpoint":991, "settings": {"slidesToShow": 2} },
-                                {"breakpoint":450, "settings": {"slidesToShow": 1} }
+                                {"breakpoint":450, "settings": {"slidesToShow": 2} }
                             ]'>
 
                     @foreach($section->msections as $msec)
 
                     @php
+
                     $product = DB::table('txn_products as p')
                     ->selectRaw("p.id,p.title,p.slug_url, p.image_url, p.image_url1, FLOOR(AVG(txn_reviews.rating)) as
                     rating , COUNT(txn_reviews.id) as total_rating")
@@ -88,56 +89,46 @@
                     ->groupBy('p.id')
                     ->first();
                     @endphp
-
                     <div class="airi-product">
                         <div class="product-inner">
                             <figure class="product-image">
                                 <div class="product-image--holder">
                                     <a href="{{ route('product',[$product->slug_url]) }}">
 
-                                        <img src="{!! asset('storage/images/products').'/' !!}{{ $product->image_url }}"
-                                            alt="{{ $product->title }}" class="primary-image">
+                                        <img data-original="{!! asset('storage/images/products/' . $product->image_url)!!}"
+                                            alt="{{ $product->title }}" class="primary-image lazy">
 
-                                        <img src="{!! asset('storage/images/products').'/' !!}{{ $product->image_url1 }}"
-                                            alt="{{ $product->title }}" class="secondary-image">
+                                        <img data-original="{!! asset('storage/images/products/'. $product->image_url1) !!}"
+                                            alt="{{ $product->title }}" class="secondary-image lazy">
                                     </a>
                                 </div>
-                                {{-- <div class="airi-product-action">
-                                            <div class="product-action">
-            
-                                                <a class="add_to_cart_btn action-btn add-cart" href="javascript:void(0);"
-                                                    title="add to cart" data-obj-id="{{ $product->id }}"
-                                data-toggle="tooltip"
-                                data-placement="top" title="Add to Cart">
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                </a>
-                        </div>--}}
-                    </div>
-                    </figure>
-                    <div class="product-info">
-                        <h3 class="product-title">
-                            <a href="{{ route('product',[$product->slug_url]) }}">{{ $product->title }}</a>
-                        </h3>
-                        <div class="product-rating">
-                            <span>
-                                @for($i = 1; $i<= $product->rating; $i++)
-                                    <i class="fa fa-star rated" aria-hidden="true"></i>
-                                    @endfor
-                                    @for($i = 1; $i<= 5 - $product->rating; $i++)
-                                        <i class="fa fa-star-o" aria-hidden="true"></i>
-                                        @endfor
-                            </span>
+                            </figure>
+                            <div class="product-info">
+                                <h3 class="product-title text-center">
+                                    <a
+                                        href="{{ route('product',[$product->slug_url]) }}">{{ Str::limit($product->title,20) }}</a>
+                                    {{-- <span class="pull-right">
+                                        @for($i = 1; $i<= $product->rating; $i++)
+                                            <i class="fa fa-star rated" aria-hidden="true"></i>
+                                            @endfor
+                                            @for($i = 1; $i<= 5 - $product->rating; $i++)
+                                                <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                @endfor
+                                    </span> --}}
+                                </h3>
+                                {{-- <span class="product-price-wrapper">
+                                                    <span class="money">₹ {{ $product->buy_it_now_price }}</span>
+                                <span class="product-price-old">
+                                    <span class="money">₹ {{ $product->mrp }}</span>
+                                </span>
+                                </span> --}}
+                            </div>
                         </div>
-
                     </div>
+                    @endforeach
                 </div>
             </div>
-            @endforeach
-
         </div>
-    </div>
-
-    </div>
     </div>
 </section>
 @endif

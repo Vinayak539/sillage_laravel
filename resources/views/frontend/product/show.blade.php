@@ -130,14 +130,14 @@
                             <p class="swatch-label">Color: <strong class="swatch-label color-label"></strong></p>
                             <div class="product-color-swatch variation-wrapper">
                                 @foreach ($colorsSizes as $item)
-                                <div class="swatch-wrapper" style="background: {{ $item->color_code }}">
+                                <div class="swatch-wrapper swatch-wrapper-color">
                                     <a class="product-color-swatch-btn variation-btn" data-toggle="tooltip"
                                         data-placement="top" title="{{ $item->color_name }}"
                                         data-color-id="{{ $item->color_id }}" data-mrp="{{ $item->mrp }}"
                                         data-stock="{{ $item->stock }}" data-map-id="{{ $item->map_id }}"
                                         data-product-id="{{ $product->id }}" data-title="{{ $item->color_name }}"
                                         data-starting-price="{{ $item->starting_price }}">
-                                        <span class="product-color-swatch-label">{{ $item->color_name }}</span>
+                                        <span class="product-color-swatch-label"  style="background: {{ $item->color_code }}"></span>
                                     </a>
                                 </div>
                                 @endforeach
@@ -172,8 +172,8 @@
                                         "slidesToShow": 6,
                                         "slidesToScroll": 1,
                                         "arrows": true,
-                                        "prevArrow": "fa fa-angle-left",
-                                        "nextArrow": "fa fa-angle-right"
+                                        "prevArrow": {"buttonClass": "slick-btn slick-prev", "iconClass": "fa fa-angle-double-left" },
+                                        "nextArrow": {"buttonClass": "slick-btn slick-next", "iconClass": "fa fa-angle-double-right" }
                                         }' data-slick-responsive='[
                                             {"breakpoint":1200, "settings": {"slidesToShow": 6} },
                                             {"breakpoint":991, "settings": {"slidesToShow": 5} },
@@ -223,7 +223,7 @@
                             </div>
 
                             <div id="button-box" style="margin-right: 10px;">
-                                <a href="javascript:void(0)" class="button-cls sss add-cart">Add to cart</a>
+                                <a href="javascript:void(0)" class="button-show-pdt sss add-cart">Add to cart</a>
                             </div>
                         </div>
                     </form>
@@ -261,10 +261,148 @@
                         @endif
                     </div>
                     @endif
+
+                    {{-- description and review start --}}
+                    <div class="product-data-tab border-bottom pb--40 pb-md--30 pb-sm--20 tab-style-4">
+                        @if(count($product->reviews))
+                        <div class="nav nav-tabs product-data-tab__head mb--40 mb-sm--30" id="product-tab"
+                            role="tablist">
+                            <a class="product-data-tab__link nav-link active" id="nav-description-tab"
+                                data-toggle="tab" href="#nav-description" role="tab" aria-selected="true">
+                                <span>Description</span>
+                            </a>
+                            <a class="product-data-tab__link nav-link" id="nav-reviews-tab" data-toggle="tab"
+                                href="#nav-reviews" role="tab" aria-selected="true">
+                                <span>Reviews ({{ $prod->total_rating }})</span>
+                            </a>
+                        </div>
+                        @endif
+                        <div class="tab-content product-data-tab__content" id="product-tabContent">
+                            <div class="tab-pane fade show active" id="nav-description" role="tabpanel"
+                                aria-labelledby="nav-description-tab">
+                                <div class="product-description">
+                                    <div class="pdp-productDescriptorsContainer">
+                                        <div>
+                                            <h4 class="pdp-product-description-title">
+                                                Product Details <span
+                                                    class="fa fa-list-alt myntraweb-sprite pdp-productDetailsIcon sprites-productDetailsIcon"></span>
+                                            </h4>
+                                            <p class="pdp-product-description-content">{{ $product->description }}
+                                            </p>
+                                        </div>
+                                        <div class="pdp-sizeFitDesc">
+                                            <h4 class="pdp-sizeFitDescTitle pdp-product-description-title">Material
+                                                &amp; Care</h4>
+                                            <p class="pdp-sizeFitDescContent pdp-product-description-content">
+                                                {{ $product->material->material_name }}</p>
+                                        </div>
+                                        <div class="index-sizeFitDesc">
+                                            <h4 class="index-sizeFitDescTitle index-product-description-title"
+                                                style="padding-bottom: 12px;">Specifications
+                                            </h4>
+                                            <div class="index-tableContainer">
+                                                @if($product->brand)
+                                                <div class="index-row">
+                                                    <div class="index-rowKey">Brand</div>
+                                                    <div class="index-rowValue">{{ $product->brand->brand_name }}
+                                                    </div>
+                                                </div>
+                                                @endif
+                                                @if($product->condition)
+                                                <div class="index-row">
+                                                    <div class="index-rowKey">Condition</div>
+                                                    <div class="index-rowValue">{{ $product->condition->condition }}
+                                                    </div>
+                                                </div>
+                                                @endif
+                                                @if($product->length)
+                                                <div class="index-row">
+                                                    <div class="index-rowKey">Length</div>
+                                                    <div class="index-rowValue">{{ $product->length }}</div>
+                                                </div>
+                                                @endif
+                                                @if($product->breadth)
+                                                <div class="index-row">
+                                                    <div class="index-rowKey">Breadth</div>
+                                                    <div class="index-rowValue">{{ $product->breadth }}</div>
+                                                </div>
+                                                @endif
+                                                @if($product->height)
+                                                <div class="index-row">
+                                                    <div class="index-rowKey">Height</div>
+                                                    <div class="index-rowValue">{{ $product->height }}</div>
+                                                </div>
+                                                @endif
+                                                @if($product->weight)
+                                                <div class="index-row">
+                                                    <div class="index-rowKey">Weight</div>
+                                                    <div class="index-rowValue">{{ $product->weight }}</div>
+                                                </div>
+                                                @endif
+                                                @if($product->warranty)
+                                                <div class="index-row">
+                                                    <div class="index-rowKey">Warranty</div>
+                                                    <div class="index-rowValue">{{ $product->warranty->title }}
+                                                    </div>
+                                                </div>
+                                                @endif
+                                                @foreach($product->custom_fields as $field)
+                                                <div class="index-row">
+                                                    <div class="index-rowKey">{{ $field->field_name }}</div>
+                                                    <div class="index-rowValue">{{ $field->field_value }}</div>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-reviews" role="tabpanel"
+                                aria-labelledby="nav-reviews-tab">
+                                <div class="product-reviews">
+                                    <ul class="review__list">
+                                        @foreach($product->reviews as $review)
+                                        <li class="review__item">
+                                            <div class="review__container">
+
+                                                <img alt="Review Avatar" class="review__avatar lazy"
+                                                    data-original="{!! asset('assets/img/others/comment-icon-2.png') !!}">
+
+                                                <div class="review__text">
+                                                    <div class="product-rating float-right">
+                                                        <span>
+                                                            @for($i = 1; $i<= $review->rating; $i++)
+                                                                <i class="fa fa-star rated" aria-hidden="true"></i>
+                                                                @endfor
+                                                                @for($i = 1; $i<= 5 - $review->rating; $i++)
+                                                                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                                    @endfor
+                                                        </span>
+                                                    </div>
+                                                    <div class="review__meta">
+                                                        <strong class="review__author">{{ $review->name }} </strong>
+                                                        <span class="review__dash">-</span>
+                                                        <span
+                                                            class="review__published-date">{{ date('F d, Y', strtotime($review->created_at)) }}</span>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <p class="review__description">
+                                                        {{ $review->comment }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- description and review end --}}
                 </div>
             </div>
         </div>
-
+        {{-- 
         <div class="row justify-content-center pt--45 pt-lg--50 pt-md--55 pt-sm--35">
             <div class="col-12">
                 <div class="product-data-tab tab-style-1">
@@ -393,7 +531,7 @@
                 </div>
             </div>
         </div>
-
+        --}}
         {{-- Releted Products --}}
         <div class="row pt--35 pt-md--25 pt-sm--15 pb--75 pb-md--55 pb-sm--35">
             <div class="col-12">
