@@ -144,7 +144,7 @@ class MainController extends Controller
         //     ->groupBy('c.id')
         //     ->get();
 
-        $color_images = TxnImage::where('product_id', $request->product_id)->where('color_id', $request->color_id)->get();
+        $color_images = TxnImage::where('product_id', $request->product_id)->where('color_id', $request->color_id)->orderBy('id', 'DESC')->get();
 
         if ($results) {
             return response()->json(['success' => $results, 'color_images' => $color_images]);
