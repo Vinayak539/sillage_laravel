@@ -29,94 +29,31 @@
                         <div class="col-md-8 mt--100 mt-lg--80 mt-md--60 pb--5">
                             <div class="accordion-container">
                                 <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="accordion__single mb--60 mb-lg--75 mb-md--55 mb-sm--40">
-                                            <div class="accordion__header" id="headingOne">
-                                                <a class="accordion__link" data-target="#accordionOne">
-                                                    Quisque ut nulla viverra, posuere lorem ?
+                                    <div class="col-lg-12">
+                                        @forelse($faqs as  $key=>$faq)
+                                        <div class="accordion__single mb--30 mb-lg--40 mb-md--55 mb-sm--30">
+                                            <div class="accordion__header" id="heading{{$key}}">
+                                                <a class="accordion__link" data-target="#accordion{{$key}}">
+                                                    {{ $faq->question }}
                                                 </a>
                                             </div>
-                                            <div id="accordionOne" class="accordion__body">
+                                            <div id="accordion{{$key}}" class="accordion__body">
                                                 <div class="accordion__text">
-                                                    Praesent sed ex vel mauris eleifend mollis. Vestibulum dictum
-                                                    sodales ante, ac pulvinar urna sollicitudin in. Suspendisse sodales
-                                                    dolor nec mattis convallis.
+                                                    {{ $faq->answer }}
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="accordion__single mb--60  mb-lg--75 mb-md--55 mb-sm--40">
-                                            <div class="accordion__header" id="headingTwo">
-                                                <a class="accordion__link" data-target="#accordionTwo">
-                                                    Quisque ut nulla viverra, posuere lorem ?
-                                                </a>
-                                            </div>
-                                            <div id="accordionTwo" class="accordion__body">
-                                                <div class="accordion__text">
-                                                    Praesent sed ex vel mauris eleifend mollis. Vestibulum dictum
-                                                    sodales ante, ac pulvinar urna sollicitudin in. Suspendisse sodales
-                                                    dolor nec mattis convallis.
-                                                </div>
-                                            </div>
+                                        @empty
+                                        <div class="alert alert-warning">
+                                            <h5>Comming Soon.</h5>
                                         </div>
-                                        <div class="accordion__single mb--60  mb-lg--75 mb-md--55 mb-sm--40">
-                                            <div class="accordion__header" id="headingThree">
-                                                <a class="accordion__link" data-target="#accordionThree">
-                                                    Quisque ut nulla viverra, posuere lorem ?
-                                                </a>
-                                            </div>
-                                            <div id="accordionThree" class="accordion__body">
-                                                <div class="accordion__text">
-                                                    Praesent sed ex vel mauris eleifend mollis. Vestibulum dictum
-                                                    sodales ante, ac pulvinar urna sollicitudin in. Suspendisse sodales
-                                                    dolor nec mattis convallis.
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @endforelse
                                     </div>
-                                    <div class="col-lg-6">
-                                        <div class="accordion__single mb--60  mb-lg--75 mb-md--55 mb-sm--40">
-                                            <div class="accordion__header" id="headingFive">
-                                                <a class="accordion__link" data-target="#accordionFour">
-                                                    Quisque ut nulla viverra, posuere lorem ?
-                                                </a>
-                                            </div>
-                                            <div id="accordionFour" class="accordion__body">
-                                                <div class="accordion__text">
-                                                    Praesent sed ex vel mauris eleifend mollis. Vestibulum dictum
-                                                    sodales ante, ac pulvinar urna sollicitudin in. Suspendisse sodales
-                                                    dolor nec mattis convallis.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion__single mb--60  mb-lg--75 mb-md--55 mb-sm--40">
-                                            <div class="accordion__header" id="headingSix">
-                                                <a class="accordion__link" data-target="#accordionFive">
-                                                    Quisque ut nulla viverra, posuere lorem ?
-                                                </a>
-                                            </div>
-                                            <div id="accordionFive" class="accordion__body">
-                                                <div class="accordion__text">
-                                                    Praesent sed ex vel mauris eleifend mollis. Vestibulum dictum
-                                                    sodales ante, ac pulvinar urna sollicitudin in. Suspendisse sodales
-                                                    dolor nec mattis convallis.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="accordion__single mb--60  mb-lg--75 mb-md--55 mb-sm--40">
-                                            <div class="accordion__header" id="headingSeven">
-                                                <a class="accordion__link" data-target="#accordionSix">
-                                                    Quisque ut nulla viverra, posuere lorem ?
-                                                </a>
-                                            </div>
-                                            <div id="accordionSix" class="accordion__body">
-                                                <div class="accordion__text">
-                                                    Praesent sed ex vel mauris eleifend mollis. Vestibulum dictum
-                                                    sodales ante, ac pulvinar urna sollicitudin in. Suspendisse sodales
-                                                    dolor nec mattis convallis.
-                                                </div>
-                                            </div>
-                                        </div>
+                                    @if($faqs->total() > 6)
+                                    <div class="col-lg-12">
+                                        {{ $faqs->links() }}
                                     </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

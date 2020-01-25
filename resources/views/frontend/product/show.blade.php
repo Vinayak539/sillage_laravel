@@ -139,7 +139,8 @@
                         @endif
                         @if(count($product->sizes) > 0)
                         <div class="product-size-variations">
-                            <p class="swatch-label">Size: <strong class="swatch-label size_lable"></strong></p>
+                            <p class="swatch-label">Size: <strong class="swatch-label size_lable"></strong> <span class="pull-right cursor-pointer" data-toggle="modal"
+                                data-target="#sizeChart"> SIZE CHART <i class="fa fa-angle-double-right"></i></span></p>
                             <div class="product-size-swatch variation-wrapper">
                                 @foreach ($product->sizes as $item)
                                 <div class="swatch-wrapper">
@@ -506,7 +507,7 @@
     </div>
 </div>
 <!-- Selected Offer modal end -->
-
+{{-- 
 <!-- offer modal start -->
 <div class="modal fade offerModal" id="offer-product">
     <div class="modal-dialog">
@@ -584,7 +585,7 @@
         </div>
     </div>
 </div>
-<!-- offer modal end -->
+<!-- offer modal end --> --}}
 
 
 <form action="{{ route('cart.store') }}" method="post" id="cartForm">
@@ -596,11 +597,107 @@
     <input type="hidden" name="offers" id="cart_offer">
     <input type="hidden" name="map_ids" id="cart_map_id">
 </form>
+<div class="modal fade" id="sizeChart">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">SIZE CHART</h4>
+                <button type="button" class="close cclose" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <th class="text-center" colspan="3">WOMEN</th>
+                      </tr>
+                      <tr>
+                        <th>SIZE</th>
+                        <th>CHEST</th>
+                        <th>LENGTH</th>
+                      </tr>
+                      <tr>
+                        <td>S</td>
+                        <td>35.5</td>
+                        <td>24</td>
+                      </tr>
+                      <tr>
+                        <td>M</td>
+                        <td>36.5</td>
+                        <td>25</td>
+                      </tr>
+                      <tr>
+                        <td>L</td>
+                        <td>37.5</td>
+                        <td>26</td>
+                      </tr>
+                      <tr>
+                        <td>XL</td>
+                        <td>38.5</td>
+                        <td>27</td>
+                      </tr>
+                      <tr>
+                        <td>2XL</td>
+                        <td>39.5</td>
+                        <td>28</td>
+                      </tr>
+                      <tr>
+                        <th colspan="3"></th>
+                      </tr>
+                      <tr>
+                        <th class="text-center" colspan="3">MEN</th>
+                      </tr>
+                      <tr>
+                        <th>SIZE</th>
+                        <th>CHEST</th>
+                        <th>LENGTH</th>
+                      </tr>
+                      <tr>
+                        <td>S</td>
+                        <td>38</td>
+                        <td>26.5</td>
+                      </tr>
+                      <tr>
+                        <td>M</td>
+                        <td>40</td>
+                        <td>27.5</td>
+                      </tr>
+                      <tr>
+                        <td>L</td>
+                        <td>42</td>
+                        <td>28.5</td>
+                      </tr>
+                      <tr>
+                        <td>XL</td>
+                        <td>44</td>
+                        <td>30.5</td>
+                      </tr>
+                      <tr>
+                        <td>2XL</td>
+                        <td>46</td>
+                        <td>31.5</td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('extracss')
 <style>
+    .table-bordered td, .table-bordered th {
+    border: 1px solid #dee2e6;
+}.table td, .table th {
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
     .bulk-order-btn {
         /* padding: 4px 10px 1px;
         font-size: 12px; */
@@ -707,16 +804,18 @@
                     'size': load_offers[index].size_name,
                     'offer_id': load_offers[index].offer_id,
                     'map_id': load_offers[index].map_id,
+                    'image_url' : load_offers[index].image_url,
                 };
+                
             }
 
             count--;
            
-            html +=   `<div class="airi-product offer_product" data-product-name="${load_offers[index].product_name }"
+            html +=   `<div class="airi-product offer_product ${count+1>0 ? 'active': null}" data-product-name="${load_offers[index].product_name }"
                         data-color="${load_offers[index].color_name }" data-size="${load_offers[index].size_name }"
                         data-index="${index }" data-purchase-quantity="${load_offers[index].purchase_quantity }"
                         data-offered-quantity="${load_offers[index].offered_quantity }"
-                        data-offered-id="${load_offers[index].offer_id }" data-map-id="${load_offers[index].map_id }">
+                        data-offered-id="${load_offers[index].offer_id }" data-map-id="${load_offers[index].map_id }" data-image="${load_offers[index].image_url}">
                         <div class="product-inner">
                             <figure class="product-image">
                                 <div class="product-image--holder">
@@ -727,11 +826,11 @@
                                 </div>
                             </figure>
                             <div class="product-info">
-                                <h3 class="product-title">
-                                    <a href="javascript:void(0)">${load_offers[index].product_name }</a>
+                                <h3 class="product-title text-center">
+                                    ${load_offers[index].product_name }
                                 </h3>
-                                <p class="product-title">
-                                    <a href="javascript:void(0)">${load_offers[index].color_name} [ ${load_offers[index].size_name} ]</a>
+                                <p class="text-center" style="margin:0;font-size: 1rem">
+                                    ${load_offers[index].color_name} [ ${load_offers[index].size_name} ]
                                 </p>
                             </div>
                         </div>
@@ -767,8 +866,10 @@
                         'offer_id': offer_id,
                         'map_id': map_id,
                     };
+                    $(this).addClass('active');
                 } else {
                     delete offers[index];
+                    $(this).removeClass('active');
                 }
                 sessionStorage.setItem("offers", JSON.stringify(offers));
                 // Offer Designing goes here
@@ -787,6 +888,7 @@
                         <h6>Name : ${offers[key].name} </h6>
                         <h6>Color : ${offers[key].color}</h6>
                         <h6>Size : ${offers[key].size}</h6>
+                        <h6>Image : <img src="${window.location.origin + '/storage/images/products/' + offers[key].image_url}" width="50px"> </h6>
                     </div>`;
                 }
                 $('.offer_section').html(html);
@@ -1117,14 +1219,14 @@
 
                             imageHtml += `<figure class="product-gallery__thumb--single">
                     <img alt="Products" class="lazy"
-                        src="${window.location.origin}/storage/images/multi-products/${image.image_url}">
+                        data-lazy="${window.location.origin}/storage/images/multi-products/${image.image_url}">
 
                     </figure>`
 
                             imageHtml1 += `<figure class="product-gallery__image zoom">
                     
                     <img alt="Products" class="lazy"
-                        src="${window.location.origin}/storage/images/multi-products/${image.image_url}">
+                        data-lazy="${window.location.origin}/storage/images/multi-products/${image.image_url}">
 
                     </figure>`
                         });
@@ -1136,6 +1238,7 @@
 
                         $(".multi-images1").not('.slick-initialized').slick(
                             {
+                                lazyLoad: 'ondemand',
                                 slidesToShow: 1,
                                 slidesToScroll: 1,
                                 infinite: true,

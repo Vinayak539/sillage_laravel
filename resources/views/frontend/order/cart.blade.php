@@ -148,11 +148,9 @@
 <script>
     $('.quantity-input').change(function (e) {
         e.preventDefault();
-
         var quantity = parseInt($(this).val());
         var itemid = $(this).attr('data-index');
         var stock = parseInt($(this).attr('data-stock'));
-
         if (quantity > stock) {
             swal('Out Of Stock', 'Product is Currently Out of Stock, Stay Tuned !', 'error');
         } else {
@@ -161,13 +159,10 @@
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 }
             });
-
             $(this).attr('disabled', 'disabled');
-
             $(this).html(
                 '<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">Loading...</span>'
             );
-
             $.ajax({
                 url: "{{ route('cart.update') }}",
                 type: 'POST',
@@ -175,27 +170,18 @@
                     quantity: quantity,
                     itemid: itemid,
                 },
-
                 success: function (result) {
                     var success = result.success;
-
                     console.log('size', result.size);
                     if (success) {
-
                         $('.quantity-input').removeAttr('disabled', 'disabled');
-
                     } else {
-
                         $('.quantity-input').removeAttr('disabled')
                     }
-
                     location.reload(true);
-
                 }
             });
         }
-
     });
-
 </script>
 @endsection

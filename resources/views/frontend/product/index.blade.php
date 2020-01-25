@@ -30,7 +30,7 @@
                                         <p class="product-pages">Showing {{count($products)}} results</p>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                               {{-- <div class="col-md-6">
                                     <div class="shop-toolbar__right">
                                         <a href="#" class="product-filter-btn shop-toolbar__btn">
                                             <span>Filters</span>
@@ -38,10 +38,10 @@
                                         </a>
                                         
                                     </div>
-                                </div>
+                                </div>  --}}
                             </div>
                         </div>
-                        <div class="advanced-product-filters">
+                        {{-- <div class="advanced-product-filters">
                             <div class="product-filter">
                                 <form action="{{ route('search.filter') }}" method="get">
                                     <div class="row">
@@ -91,7 +91,7 @@
                                     <a href="#" class="btn-close"><i class="fa fa-times" aria-hidden="true"></i></i></a>
                                 </form>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="shop-products">

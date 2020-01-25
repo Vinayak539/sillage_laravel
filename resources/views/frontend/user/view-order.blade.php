@@ -98,7 +98,7 @@
 
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="description">Write your query <span class="text-danger">*</span></label>
+                                    <label for="description" style="padding-left: 0">Write your query <span class="text-danger">*</span></label>
                                     <textarea name="description" id="description" class="form-control" rows="5"
                                         required>{{ old('description') }}</textarea>
                                 </div>
@@ -139,11 +139,15 @@
 </div>
 <!-- Breadcrumb area End -->
 
-<div id="content" class="main-content-wrapper">
+<div id="content" class="main-content-wrapper order-details">
     <div class="page-content-inner">
         <div class="container">
             <div class="personal-detail">
                 <div class="row">
+                    <div class="col-md-12">
+                        <a href="{{ route('user.showOrder') }}" class="pull-left mt-0 mb-3"> <i
+                                class="fa fa-angle-double-left" aria-hidden="true"></i> Go Back</a>
+                    </div>
                     <div class="col-md-9">
                         <div class="address">
                             <h4>Delivery Address</h4>
@@ -170,8 +174,8 @@
                                     class="fa fa-question-circle" aria-hidden="true"></i>
                                 Need Help</a>
                             <a href="" data-toggle="modal" data-target="#review"><i class="fa fa-star"
-                                    aria-hidden="true"></i>
-                                Rate & Review</a>
+                                aria-hidden="true"></i>
+                            Rate & Review</a>
                             @if($order->return_status === null && $order->status != 'delivered' && $order->status !=
                             'Order Cancel By Buyer')
                             @if($order->status != 'shipped')
@@ -201,7 +205,7 @@
                     </div>
                 </div>
             </div>
-            <div class="order-bordered mt-30 mb-30">
+            <div class="order-bordered mt--30 mb--30">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="order_sec">
@@ -305,7 +309,7 @@
                                             @ENDIF
                                              <tr>
                                                 <th> + Shipping Charges </th>
-                                                <td> &#8377; 50 </td>
+                                                <td> &#8377; {{ $order->total >= 1000 ? '0' : '60' }} </td>
                                             </tr>
                                             <tr>
                                                 <th> <strong>Grand Total</strong> </th>
@@ -344,8 +348,8 @@
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label>Select Product <span class="text-danger">*</span></label>
-                                        <select name="product_id" id="product_id" class="form-control">
+                                        <label style="padding-left: 0">Select Product <span class="text-danger">*</span></label style="padding-left: 0">
+                                        <select name="product_id" id="product_id" class="form__input form__input--2">
                                             <option value="">--Select Product--</option>
                                             @foreach($order->details as $order)
                                             <option value="{{ $order->product->id }}">
@@ -354,7 +358,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-6">
-                                        <label>Rating <span class="text-danger">*</span></label>
+                                        <label style="padding-left: 0">Rating <span class="text-danger">*</span></label style="padding-left: 0">
                                         <div class="starability-grow">
                                             <input type="radio" id="growing-rate1" class="star" name="rating" checked
                                                 value="1" {{old('rating')== 1 ? 'checked' : ''}}>
@@ -383,8 +387,8 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label>Comment <span class="text-danger">*</span></label>
-                                        <textarea class="form-control" name="comment" id="comment" cols="30" rows="4"
+                                        <label style="padding-left: 0">Comment <span class="text-danger">*</span></label>
+                                        <textarea class="form__input form__input--textarea" name="comment" id="comment" cols="30" rows="4"
                                             placeholder="Write your comments here"
                                             required>{{ old('comment') }}</textarea>
                                     </div>
@@ -409,6 +413,103 @@
     @csrf
 </form>
 
+@endsection
+@section('extracss')
+<style>
+    .table thead th,
+    .table th,
+    .table thead td,
+    .table td {
+        padding: 10px;
+    }
+
+    .order-details p {
+        color: #000;
+    }
+
+    .order-details .personal-detail {
+        box-shadow: 0px 2px 6px 2px #ccc;
+        padding: 20px;
+    }
+
+    .order-details .address p {
+        margin-bottom: 0px;
+    }
+
+    .order-details .address h4 {
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .icon-circle {
+        background: #ffd54c;
+        text-align: center;
+        height: 20px;
+        width: 20px;
+        line-height: 20px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+
+    .order_sec {
+        border: none;
+        border-radius: 5px;
+    }
+
+    .order_sec .pro_sec .img,
+    .order_sec p.delivery,
+    .order_sec p.date,
+    .padding10,
+    .order_sec p.price {
+        padding-left: 0;
+    }
+
+    .review-sec {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .review-sec a {
+        display: block;
+        border: 1px solid #333 !important;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        color: #333 !important;
+    }
+
+    .review-sec h4 {
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    @media screen and (max-width: 767px) {
+        .order_sec .pro_sec {
+            height: auto;
+        }
+
+        .order_sec .pro_sec .content {
+            padding-top: 0;
+            padding-top: 0;
+        }
+
+        .order_sec .pro_sec .content p.title {
+            margin-bottom: 5px;
+        }
+
+        .order_sec .pro_sec .img,
+        .order_sec p.delivery,
+        .order_sec p.date,
+        .padding10,
+        .order_sec p.price {
+            padding: 0;
+        }
+
+        .review-sec {
+            float: unset !important;
+        }
+    }
+</style>
 @endsection
 @section('extrajs')
 

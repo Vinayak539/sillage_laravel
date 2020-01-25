@@ -363,7 +363,6 @@
                                     <li>
                                         <a href="{{ route('faq') }}">FAQ'S</a>
                                     </li>
-                                    <li><a href="#">ORDER TRACKING</a></li>
                                 </ul>
                             </div>
                         </div>
