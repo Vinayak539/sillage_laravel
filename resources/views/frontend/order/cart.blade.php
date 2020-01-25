@@ -89,7 +89,8 @@
                                                         </li>
                                                         <li>
                                                             <input type="number" min="1" max="{{ $item->attributes->stock }}" value="{{ $item->quantity }}" name="qty" disabled
-                                                                class="product-value quantity-input val">
+                                                                class="product-value quantity-input val" data-index="{{ $item->id }}"
+                                                                data-stock="{{ $item->attributes->stock }}" autofocus>
                                                         </li>
                                                         <li>
                                                             <div class="value-increase switcher">+ </div>
