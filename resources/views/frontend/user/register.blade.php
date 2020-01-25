@@ -24,28 +24,30 @@
         </div>  -->
         <form
             id="login-form"
-            action="/myaccount/register"
+            action="{{ route('user.register') }}"
             method="POST"
             autocomplete="off"
-            class="register"
+            class="register needs-validation"
         >
+        @csrf
             <div class="row">
                 <div class="col-12">
-                    <div class="input-group">
+                    <div class="input-group mb-0">
                         <input
                             type="text"
                             name="name"
                             id="name"
-                            value=""
+                            value="{{ old('name') }}"
                             required
                         />
                         <label>Name *</label>
                     </div>
+                    <label for="name" class="error"></label>
                     <!-- /.input-group -->
                 </div>
                 <!-- /.col- -->
                 <div class="col-12">
-                    <div class="input-group">
+                    <div class="input-group mb-0">
                         <input
                             type="number"
                             name="mobile"
@@ -58,11 +60,13 @@
                         />
                         <label>Mobile Number *</label>
                     </div>
+                    <label for="mobile" class="error"></label>
+
                     <!-- /.input-group -->
                 </div>
                 <!-- /.col- -->
                 <div class="col-12">
-                    <div class="input-group">
+                    <div class="input-group mb-0">
                         <input
                             type="email"
                             id="email"
@@ -72,20 +76,24 @@
                         />
                         <label>Email *</label>
                     </div>
+                    <label for="email" class="error"></label>
+
                     <!-- /.input-group -->
                 </div>
                 <!-- /.col- -->
                 <div class="col-12">
-                    <div class="input-group">
+                    <div class="input-group mb-0">
                         <input
                             type="password"
                             name="password"
                             id="password"
-                            value=""
+                            value="{{ old('password') }}"
                             required
                         />
                         <label>Password *</label>
                     </div>
+                    <label for="password" class="error"></label>
+
                     <!-- /.input-group -->
                 </div>
                 <!-- /.col- -->
@@ -94,7 +102,7 @@
 
             <button
                 type="submit"
-                class="line-button-one button-rose button_update_register"
+                class="line-button-one button-rose btnSubmit"
             >
                 Register
             </button>
@@ -103,10 +111,12 @@
         <p class="or-text"><span>or</span></p>
         <ul class="social-icon-wrapper row">
             <li class="col-12">
-                <a href="#" class="gmail"
-                    ><i class="fa fa-envelope-o" aria-hidden="true"></i>
-                    Gmail</a
-                >
+                <a href="{{ route('user.auth.socialite', 'google') }}" class="gmail"><i class="fa fa-envelope-o" aria-hidden="true"></i>
+                    Gmail</a>
+            </li>
+            <li class="col-12">
+                <a href="{{ route('user.auth.socialite', 'facebook') }}" class="facebook"><i class="fa fa-facebook" aria-hidden="true"></i>
+                    Facebook</a>
             </li>
         </ul>
     </div>
@@ -114,12 +124,63 @@
 </div>
 <!-- /.signUp-page -->
 
-@endsection @section('extrajs')
+@endsection 
+
+@section('extrajs')
 <script>
     $(document).ready(function () {
-        $('.register').submit(function () {
-            $('.button_update_register').attr('disabled', 'disabled');
-            $('.button_update_register').html('Please Wait');
+       
+        $("#login-form").validate({
+            rules: {
+
+                name: {
+                    required: true,
+                },             
+
+                email: {
+                    required: true,
+                    email:true,
+                },
+                
+                mobile: {
+                    required: true,
+                    number:true,
+                    minlength: 10,
+                    maxlength: 10
+                },
+
+                password: {
+                    required:true
+                }
+               
+            },
+            messages: {
+              
+                name: {
+                    required: "Please Enter Name"
+                },
+
+                email: {
+                    required: "Please Enter Email"
+                },
+
+                password: {
+                    required: "Please Enter Password"
+                },
+
+                mobile: {
+                    required: "Please Enter Mobile Number",
+                    number: "Mobile Number should be numeric only",
+                    minlength: "Mobile Number should be 10 digits",
+                    maxlength: "Mobile Number should be 10 digits",
+                }
+
+            },
+            submitHandler: function (form) {
+                $('.btnSubmit').attr('disabled', 'disabled');
+                $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+                form.submit();
+            }
         });
     });
 

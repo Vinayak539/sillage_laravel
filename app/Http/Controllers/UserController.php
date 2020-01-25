@@ -14,7 +14,7 @@ use App\Model\User;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -115,35 +115,40 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:191',
-            'mobile' => 'required|digits_between:10,12',
-            'city' => 'required|string|max:191',
+        $validator = Validator::make($request->all(), [
+            'name'      => 'required|string|max:191',
+            'mobile'    => 'required|digits_between:10,12',
+            'city'      => 'required|string|max:191',
             'territory' => 'required|string|max:191',
-            'address' => 'required|string',
-            'pincode' => 'required|digits:6',
+            'address'   => 'required|string',
+            'pincode'   => 'required|digits:6',
         ],
             [
-                'name.required' => 'Please Enter Name',
-                'mobile.required' => 'Please Enter Mobile Number',
+                'name.required'         => 'Please Enter Name',
+                'mobile.required'       => 'Please Enter Mobile Number',
                 'mobile.digits_between' => 'Mobile Number should be between 10 to 12 digits',
-                'city.required' => 'Please Enter City',
-                'territory.required' => 'Please Enter State',
-                'address.required' => 'Please Enter Address',
-                'pincode.required' => 'Please Enter Pincode',
-                'pincode.digits' => 'Pincode should be of 6 digits',
+                'city.required'         => 'Please Enter City',
+                'territory.required'    => 'Please Enter State',
+                'address.required'      => 'Please Enter Address',
+                'pincode.required'      => 'Please Enter Pincode',
+                'pincode.digits'        => 'Pincode should be of 6 digits',
             ]);
+
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return back()->withInput();
+        }
 
         try {
             $user = TxnUser::where('id', auth('user')->user()->id)->firstOrFail();
 
             $user->update([
-                'name' => $request->name,
-                'mobile' => $request->mobile,
-                'city' => $request->city,
-                'address' => $request->address,
+                'name'      => $request->name,
+                'mobile'    => $request->mobile,
+                'city'      => $request->city,
+                'address'   => $request->address,
                 'territory' => $request->territory,
-                'pincode' => $request->pincode,
+                'pincode'   => $request->pincode,
             ]);
 
             connectify('success', 'Profile Updated', 'Profile has been updated successfully  !');
@@ -163,14 +168,19 @@ class UserController extends Controller
     }
     public function updateChangePassword(Request $request)
     {
-        $request->validate([
-            'password' => 'required_with:con_password|max:191',
+        $validator = Validator::make($request->all(), [
+            'password'     => 'required_with:con_password|max:191',
             'con_password' => 'required_with:password|max:191',
         ],
             [
-                'password.required_with' => 'Please Enter New Password to change password',
+                'password.required_with'     => 'Please Enter New Password to change password',
                 'con_password.required_with' => 'Please Enter Old Password to change password',
             ]);
+
+            if ($validator->fails()) {
+                connectify('error', 'Error', $validator->errors()->first());
+                return back()->withInput();
+            }
 
         try {
 
@@ -219,25 +229,30 @@ class UserController extends Controller
 
     public function returnOrder(Request $request, $id)
     {
-        $request->validate([
-            'reason' => 'required|string|max:191',
+       $validator = Validator::make($request->all(), [
+            'reason'    => 'required|string|max:191',
             'image_url' => 'nullable|image|max:1024|mimes:jpeg,png',
         ],
             [
                 'reason.required' => 'Please Select Reason',
                 'image_url.image' => 'Please Select Proper Image',
-                'image_url.max' => 'Please Select Image of Maximum size 1MB',
+                'image_url.max'   => 'Please Select Image of Maximum size 1MB',
                 'image_url.mimes' => 'Please Select Image of type JPEG & PNG',
             ]);
 
         if ($request->reason == 'other') {
-            $request->validate([
+           $validator = Validator::make($request->all(), [
                 'other_reason' => 'required|string|max:500',
             ],
                 [
                     'other_reason.required' => 'Please Write Reason',
-                    'other_reason.max' => 'Please Write Reason in 500 characters',
+                    'other_reason.max'      => 'Please Write Reason in 500 characters',
                 ]);
+        }
+
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return back()->withInput();
         }
 
         try {
@@ -252,15 +267,15 @@ class UserController extends Controller
             $order->update([
                 'return_status' => 'Applied',
                 'cancel_reason' => $request->reason,
-                'image_url' => $request->img,
-                'other_reason' => $request->other_reason,
+                'image_url'     => $request->img,
+                'other_reason'  => $request->other_reason,
             ]);
 
             $ticket = Returnticket::create([
-                'email' => $order->user->email,
-                'subject' => 'Return & Refund',
-                'open_by' => auth('user')->user()->name,
-                'status' => true,
+                'email'       => $order->user->email,
+                'subject'     => 'Return & Refund',
+                'open_by'     => auth('user')->user()->name,
+                'status'      => true,
                 'description' => 'Applied for Return and Refund against Order ID : ' . $order->id,
             ]);
 
@@ -323,22 +338,27 @@ class UserController extends Controller
 
     public function orderHelp(Request $request, $id)
     {
-        $request->validate([
+       $validator = Validator::make($request->all(), [
             'description' => 'required|string',
         ],
             [
                 'description.required' => 'Please Enter your query',
             ]);
+
+            if ($validator->fails()) {
+                connectify('error', 'Error', $validator->errors()->first());
+                return back()->withInput();
+            }
         try {
 
             $order = TxnOrder::where('id', $id)->with('user')->firstOrFail();
 
             $ticket = Ticket::create([
-                'email' => $order->user->email,
-                'subject' => 'Order By : ' . $order->id,
+                'email'       => $order->user->email,
+                'subject'     => 'Order By : ' . $order->id,
                 'description' => $request->description,
-                'open_by' => auth('user')->user()->name . ' - Customer',
-                'status' => true,
+                'open_by'     => auth('user')->user()->name . ' - Customer',
+                'status'      => true,
             ]);
 
             Mail::send(['html' => 'backend.mails.ticket'], ['ticket' => $ticket], function ($message) use ($ticket) {
@@ -366,33 +386,38 @@ class UserController extends Controller
 
     public function review(Request $request)
     {
-        $request->validate([
+       $validator = Validator::make($request->all(), [
             'product_id' => 'required|integer|exists:txn_products,id',
-            'rating' => 'required|integer|max:5|min:1',
-            'comment' => 'required|string',
+            'rating'     => 'required|integer|max:5|min:1',
+            'comment'    => 'required|string',
         ],
             [
                 'product_id.required' => 'Please Select Product',
-                'product_id.integer' => 'Invalid data provided',
-                'product_id.exists' => 'Product Not Found !',
+                'product_id.integer'  => 'Invalid data provided',
+                'product_id.exists'   => 'Product Not Found !',
             ]);
+
+            if ($validator->fails()) {
+                connectify('error', 'Error', $validator->errors()->first());
+                return back()->withInput();
+            }
 
         try {
 
             $user = TxnUser::where('id', auth('user')->user()->id)->firstOrFail();
 
             TxnReview::updateOrCreate([
-                'user_id' => $user->id,
+                'user_id'    => $user->id,
                 'product_id' => $request->product_id,
             ],
                 [
-                    'user_id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
+                    'user_id'    => $user->id,
+                    'name'       => $user->name,
+                    'email'      => $user->email,
                     'product_id' => $request->product_id,
-                    'rating' => $request->rating,
-                    'comment' => $request->comment,
-                    'status' => false,
+                    'rating'     => $request->rating,
+                    'comment'    => $request->comment,
+                    'status'     => false,
                 ]
             );
 
@@ -501,24 +526,24 @@ class UserController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'address' => 'required|string|max:1000',
-            'city' => 'required|string|max:191',
-            'territory' => 'required|string|max:191',
-            'landmark' => 'nullable|string|max:191',
-            'pincode' => 'required|digits:6',
+            'address'         => 'required|string|max:1000',
+            'city'            => 'required|string|max:191',
+            'territory'       => 'required|string|max:191',
+            'landmark'        => 'nullable|string|max:191',
+            'pincode'         => 'required|digits:6',
             'type_of_address' => 'required|numeric|min:0|max:1',
         ],
             [
-                'payment_mode.required' => 'Please Select Any of the Payment Mode !',
-                'address.required' => 'Please Enter Address',
-                'city.required' => 'Please Enter City',
-                'territory.required' => 'Please Enter Territory/State',
-                'pincode.required' => 'Please Enter Pincode',
-                'pincode.digits' => 'Pincode should be of 6 digits',
+                'payment_mode.required'    => 'Please Select Any of the Payment Mode !',
+                'address.required'         => 'Please Enter Address',
+                'city.required'            => 'Please Enter City',
+                'territory.required'       => 'Please Enter Territory/State',
+                'pincode.required'         => 'Please Enter Pincode',
+                'pincode.digits'           => 'Pincode should be of 6 digits',
                 'type_of_address.required' => 'Please Select Type of Address',
-                'type_of_address.numeric' => 'Invalid data provided',
-                'type_of_address.min' => 'Invalid data provided',
-                'type_of_address.max' => 'Invalid data provided',
+                'type_of_address.numeric'  => 'Invalid data provided',
+                'type_of_address.min'      => 'Invalid data provided',
+                'type_of_address.max'      => 'Invalid data provided',
             ]);
 
         if ($validator->fails()) {
@@ -531,13 +556,13 @@ class UserController extends Controller
             $add = Address::where('id', $id)->firstOrFail();
 
             $add->update([
-                'city' => $request->city,
-                'territory' => $request->territory,
-                'address' => $request->address,
-                'landmark' => $request->landmark,
-                'pincode' => $request->pincode,
+                'city'            => $request->city,
+                'territory'       => $request->territory,
+                'address'         => $request->address,
+                'landmark'        => $request->landmark,
+                'pincode'         => $request->pincode,
                 'type_of_address' => $request->type_of_address,
-                'name' => $request->name,
+                'name'            => $request->name,
             ]);
 
             connectify('success', 'Address Updated', 'Address has been updated successfully !');
@@ -585,27 +610,27 @@ class UserController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'address' => 'required|string|max:1000',
-            'city' => 'required|string|max:191',
-            'territory' => 'required|string|max:191',
-            'landmark' => 'nullable|string|max:191',
-            'pincode' => 'required|digits:6',
-            'mobile' => 'required|digits:10',
+            'address'         => 'required|string|max:1000',
+            'city'            => 'required|string|max:191',
+            'territory'       => 'required|string|max:191',
+            'landmark'        => 'nullable|string|max:191',
+            'pincode'         => 'required|digits:6',
+            'mobile'          => 'required|digits:10',
             'type_of_address' => 'required|numeric|min:0|max:1',
         ],
             [
-                'payment_mode.required' => 'Please Select Any of the Payment Mode !',
-                'address.required' => 'Please Enter Address',
-                'city.required' => 'Please Enter City',
-                'territory.required' => 'Please Enter Territory/State',
-                'pincode.required' => 'Please Enter Pincode',
-                'pincode.digits' => 'Pincode should be of 6 digits',
-                'mobile.required' => 'Please Enter Mobile Number',
-                'mobile.digits' => 'Mobile number should be of 10 digits',
+                'payment_mode.required'    => 'Please Select Any of the Payment Mode !',
+                'address.required'         => 'Please Enter Address',
+                'city.required'            => 'Please Enter City',
+                'territory.required'       => 'Please Enter Territory/State',
+                'pincode.required'         => 'Please Enter Pincode',
+                'pincode.digits'           => 'Pincode should be of 6 digits',
+                'mobile.required'          => 'Please Enter Mobile Number',
+                'mobile.digits'            => 'Mobile number should be of 10 digits',
                 'type_of_address.required' => 'Please Select Type of Address',
-                'type_of_address.numeric' => 'Invalid data provided',
-                'type_of_address.min' => 'Invalid data provided',
-                'type_of_address.max' => 'Invalid data provided',
+                'type_of_address.numeric'  => 'Invalid data provided',
+                'type_of_address.min'      => 'Invalid data provided',
+                'type_of_address.max'      => 'Invalid data provided',
             ]);
 
         if ($validator->fails()) {
@@ -618,19 +643,19 @@ class UserController extends Controller
             $user = TxnUser::where('id', auth('user')->user()->id)->firstOrFail();
 
             $request['country'] = $request->country ? $request->country : 'India';
-            $request['name'] = $request->name ? $request->name : $user->name;
+            $request['name']    = $request->name ? $request->name : $user->name;
 
             Address::create([
-                'city' => $request->city,
-                'territory' => $request->territory,
-                'address' => $request->address,
-                'landmark' => $request->landmark,
-                'country' => $request->country,
-                'pincode' => $request->pincode,
+                'city'            => $request->city,
+                'territory'       => $request->territory,
+                'address'         => $request->address,
+                'landmark'        => $request->landmark,
+                'country'         => $request->country,
+                'pincode'         => $request->pincode,
                 'type_of_address' => $request->type_of_address,
-                'user_id' => $user->id,
-                'name' => $request->name,
-                'mobile' => $request->mobile,
+                'user_id'         => $user->id,
+                'name'            => $request->name,
+                'mobile'          => $request->mobile,
             ]);
 
             connectify('success', 'Address Saved', 'New Address has been added to your list !');
@@ -651,27 +676,27 @@ class UserController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'address' => 'required|string|max:1000',
-            'city' => 'required|string|max:191',
-            'territory' => 'required|string|max:191',
-            'landmark' => 'nullable|string|max:191',
-            'pincode' => 'required|digits:6',
-            'mobile' => 'required|digits:10',
+            'address'         => 'required|string|max:1000',
+            'city'            => 'required|string|max:191',
+            'territory'       => 'required|string|max:191',
+            'landmark'        => 'nullable|string|max:191',
+            'pincode'         => 'required|digits:6',
+            'mobile'          => 'required|digits:10',
             'type_of_address' => 'required|numeric|min:0|max:1',
         ],
             [
-                'payment_mode.required' => 'Please Select Any of the Payment Mode !',
-                'address.required' => 'Please Enter Address',
-                'city.required' => 'Please Enter City',
-                'territory.required' => 'Please Enter Territory/State',
-                'pincode.required' => 'Please Enter Pincode',
-                'pincode.digits' => 'Pincode should be of 6 digits',
+                'payment_mode.required'    => 'Please Select Any of the Payment Mode !',
+                'address.required'         => 'Please Enter Address',
+                'city.required'            => 'Please Enter City',
+                'territory.required'       => 'Please Enter Territory/State',
+                'pincode.required'         => 'Please Enter Pincode',
+                'pincode.digits'           => 'Pincode should be of 6 digits',
                 'type_of_address.required' => 'Please Select Type of Address',
-                'type_of_address.numeric' => 'Invalid data provided',
-                'type_of_address.min' => 'Invalid data provided',
-                'type_of_address.max' => 'Invalid data provided',
-                'mobile.required' => 'Please Enter Mobile Number',
-                'mobile.digits' => 'Mobile number should be of 10 digits',
+                'type_of_address.numeric'  => 'Invalid data provided',
+                'type_of_address.min'      => 'Invalid data provided',
+                'type_of_address.max'      => 'Invalid data provided',
+                'mobile.required'          => 'Please Enter Mobile Number',
+                'mobile.digits'            => 'Mobile number should be of 10 digits',
             ]);
 
         if ($validator->fails()) {
@@ -684,14 +709,14 @@ class UserController extends Controller
             $add = Address::where('id', $request->address_id)->firstOrFail();
 
             $add->update([
-                'city' => $request->city,
-                'territory' => $request->territory,
-                'address' => $request->address,
-                'landmark' => $request->landmark,
-                'pincode' => $request->pincode,
+                'city'            => $request->city,
+                'territory'       => $request->territory,
+                'address'         => $request->address,
+                'landmark'        => $request->landmark,
+                'pincode'         => $request->pincode,
                 'type_of_address' => $request->type_of_address,
-                'name' => $request->name,
-                'mobile' => $request->mobile,
+                'name'            => $request->name,
+                'mobile'          => $request->mobile,
             ]);
 
             connectify('success', 'Address Updated', 'Address has been updated successfully !');

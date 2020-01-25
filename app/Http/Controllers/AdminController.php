@@ -109,9 +109,9 @@ class AdminController extends Controller
                 $request->image_url->storeAs('public/images/admins', $admin->image_url);
             }
 
-            if ($request->filled('status')) {
+            if ($request->filled('password')) {
                 $admin->update([
-                    'status' => $request->status,
+                    'password' => bcrypt($request->password),
                 ]);
             }
 

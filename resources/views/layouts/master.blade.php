@@ -293,7 +293,7 @@
                                         <a href="#miniCart" class="mini-cart-btn toolbar-btn">
                                             <i class="fa fa-shopping-cart toolbar-btn-cls text-black"
                                                 aria-hidden="true"></i>
-                                            <sup class="mini-cart-count">2</sup>
+                                            <sup class="mini-cart-count">{{ Cart::getContent()->count() }}</sup>
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item">
@@ -740,6 +740,16 @@
                         '<span class="fa fa-spinner fa-spin"></span> Loading...');
                     form.submit();
                 }
+            });
+
+            $('.gmail').click(function(){
+                $(this).attr('disabled', 'disabled');
+                $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+            });
+
+            $('.facebook').click(function(){
+                    $(this).attr('disabled', 'disabled');
+                    $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
             });
 
             var navheight = $(".fixed-header").height();

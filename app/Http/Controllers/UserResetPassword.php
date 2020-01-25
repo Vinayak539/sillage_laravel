@@ -7,6 +7,7 @@ use App\Model\TxnUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class UserResetPassword extends Controller
 {
@@ -17,7 +18,7 @@ class UserResetPassword extends Controller
 
     public function resetPassword(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:txn_users,email',
         ],
             [
@@ -25,6 +26,12 @@ class UserResetPassword extends Controller
                 'email.email'    => 'Please Enter Proper Email',
                 'email.exists'   => 'Email not found !',
             ]);
+
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return back()->withInput();
+        }
+
         try {
 
             $user = TxnUser::where('email', $request->email)->firstOrFail();
@@ -48,10 +55,17 @@ class UserResetPassword extends Controller
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return back()->with('errors', 'Whoops, Email Not Found !')->withInput($request->all());
+                
+                connectify('error', 'Invalid Email', 'Whoops, Email Not Found !');
+
+                return back()->withInput($request->all());
+
             }
-            // return back()->with('status', 'error, ' . $ex->getMessage());
-            return back()->with('status', 'Whoops, Something Went Wrong From Our End try again !');
+            
+            connectify('error', 'Error', 'Whoops, Something Went Wrong From Our End try again !');
+
+            return back();
+
         }
     }
 
@@ -85,22 +99,32 @@ class UserResetPassword extends Controller
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return back()->with('errors', 'Whoops, Email Not Found !');
+
+                connectify('error', 'Invalid Email', 'Whoops, Email Id Not Found !');
+
+                return back();
             }
-            // return back()->with('status', 'error, ' . $ex->getMessage());
-            return back()->with('status', 'Whoops, Something Went Wrong From Our End try again !');
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong From Our End try again !');
+
+            return back();
+
         }
     }
 
     public function verifyOTP(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'otp' => 'required|max:6',
         ],
             [
                 'otp.required' => 'Please Enter OTP',
             ]);
 
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return back()->withInput();
+        }
         try
         {
 
@@ -116,10 +140,17 @@ class UserResetPassword extends Controller
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return back()->with('error', 'The Entered Otp is Invalid !');
+
+                connectify('error', 'Invalid Otp', 'The Entered Otp is Invalid !');
+
+                return back();
+
             }
-            // return back()->with('status', 'error, ' . $ex->getMessage());
-            return back()->with('status', 'Whoops, Something Went Wrong From Our End try again !');
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong From Our End try again !');
+
+            return back();
+
         }
     }
 
@@ -135,7 +166,7 @@ class UserResetPassword extends Controller
 
     public function reset(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email'        => 'required|email|max:191|exists:txn_users,email',
             'password'     => 'required_with:con_password|string|max:191',
             'con_password' => 'required_with:password|same:password|string|max:191',
@@ -147,6 +178,11 @@ class UserResetPassword extends Controller
                 'con_password.required_with' => 'Please Enter Password to Reset Password',
                 'con_password.same'          => 'Please Enter Confirm Password same as Password',
             ]);
+
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return back()->withInput();
+        }
         try
         {
 
@@ -166,14 +202,22 @@ class UserResetPassword extends Controller
 
             session()->pull('user', 'default');
 
-            return redirect('/myaccount')->with('messageSuccess1', 'Password has been changed successfully ! ');
+            connectify('success', 'Success', 'Password has been changed successfully !');
+
+            return redirect(route('user.dashboard'));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return back()->with('errors', 'Whoops, Email Not Found !');
+
+                connectify('error', 'error', 'Whoops, Email Not Found !');
+
+                return back();
             }
-            // return back()->with('status', 'error, ' . $ex->getMessage());
-            return back()->with('status', 'Whoops, Something Went Wrong From Our End try again !');
+
+            connectify('error', 'error', 'Whoops, Something Went Wrong From Our End try again !');
+
+            return back();
+
         }
     }
 }

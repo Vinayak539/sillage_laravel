@@ -40,7 +40,9 @@ class CartController extends Controller
 
                     if (count($selected_qty) > 0) {
 
-                        $validateSelectedOffer = ($request->qty / count($selected_qty)) == ($product_offer->purchase_quantity * $product_offer->offered_quantity);
+                        // dd(count($selected_qty), $product_offer->purchase_quantity, $product_offer->offered_quantity * $request->qty);
+
+                        $validateSelectedOffer = (count($selected_qty)) == ($product_offer->purchase_quantity * ($product_offer->offered_quantity * $request->qty));
 
                         if (!$validateSelectedOffer) {
 

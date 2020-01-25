@@ -21,6 +21,7 @@
                 method="POST"
                 enctype="multipart/form-data"
                 autocomplete="off"
+                id="formUpdate"
             >
                 @csrf
                 <div class="row">
@@ -35,6 +36,7 @@
                                         id="name"
                                         class="form-control"
                                         value="{{ $admin->name }}"
+                                        required
                                     />
                                 </div>
                             </div>
@@ -51,6 +53,18 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
+                                    <label for="password">Old Password </label>
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        id="password"
+                                        class="form-control"
+                                        placeholder="Password"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
                                     <label for="password">Password </label>
                                     <input
                                         type="password"
@@ -61,28 +75,6 @@
                                     />
                                 </div>
                             </div>
-                            @if($admin->super_admin == true)
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="status">Status </label>
-                                    <select
-                                        name="status"
-                                        id="status"
-                                        class="form-control"
-                                    >
-                                        <option value=""
-                                            >--Select Status--</option
-                                        >
-                                        <option value="1" {{ $admin->status === 1 ? 'selected' : ''
-                                            }}>Active</option
-                                        >
-                                        <option value="0" {{ $admin->status === 0 ? 'selected' : ''
-                                            }}>Inactive</option
-                                        >
-                                    </select>
-                                </div>
-                            </div>
-                            @endif
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -108,9 +100,9 @@
                                     <div>
                                         @if ($admin->image_url)
                                         <img
-                                            src="{!! asset('storage/images/admins').'/'.$admin->image_url !!}"
+                                        data-original="{!! asset('storage/images/admins/' . $admin->image_url ) !!}"
                                             alt="{{ $admin->name }}"
-                                            class="img img-responsive img-circle"
+                                            class="img img-responsive img-circle lazy"
                                             width="200px !important"
                                         />
                                         @else
@@ -136,5 +128,39 @@
         </div>
     </div>
 </section>
+
+@endsection
+
+@section('extrajs')
+
+
+<script>
+    $(document).ready(function () {
+
+        $("#formUpdate").validate({
+            rules: {
+
+                name: {
+                    required: true,
+                },
+               
+            },
+            messages: {
+              
+                name: {
+                    required: "Please Enter Name"
+                },
+
+            },
+            submitHandler: function (form) {
+                $('.btnSubmit').attr('disabled', 'disabled');
+                $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+                form.submit();
+            }
+        });
+
+    });
+
+</script>
 
 @endsection

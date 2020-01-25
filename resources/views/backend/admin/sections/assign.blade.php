@@ -19,7 +19,7 @@
             <h4>Assign Product in {{ $section->SectionName }}</h4>
         </div>
         <div class="card-body">
-            <form method="post" role="form" class="needs-validation">
+            <form method="post" role="form" class="needs-validation" id="formAssign"> 
                 @csrf
                 <div class="col-md-12 mx-auto table-responsive">
                     <table class="table table-bordered table-striped">
@@ -39,7 +39,7 @@
                                 <td>
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input checkBoxClass"
-                                            name="assign[]" value="{{$product->id}}" id="customCheck{{ $product->id }}">
+                                            name="assign[]" value="{{ $product->id }}" id="customCheck{{ $product->id }}" required>
                                         <label class="custom-control-label mb-3"
                                             for="customCheck{{ $product->id }}"></label>
                                     </div>
@@ -47,8 +47,8 @@
                                 <td>
                                     <a href="{{ '/storage/images/products/'. $product->image_url }}"
                                         target="_blank"><img
-                                            src="{{ '/storage/images/products/'. $product->image_url }}"
-                                            alt="{{ $product->title }}" width="50">
+                                            data-original="{{ '/storage/images/products/'. $product->image_url }}"
+                                            alt="{{ $product->title }}" class="lazy" width="50">
                                     </a>
                                 </td>
                                 <td>{{ $product->title }}</td>
@@ -109,11 +109,32 @@
             }
         });
 
+        $("#formAssign").validate({
+             rules: {
+    
+                "assign[]": {
+                   required: true
+                },
+             },
+
+             messages: {
+                "assign[]": {
+                   required: "Please Select Atleast One Product"
+                },
+             },
+
+             submitHandler: function (form) {
+                $('.btnSubmit').attr('disabled', 'disabled');
+                $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+                form.submit();
+             }
+          });
+
         var old_categories = {!!json_encode($assignedProducts) !!};
 
         if (old_categories && typeof old_categories == "object") {
             for (x of old_categories) {
-                $(".checkBoxClass[value=" + x.id + "]").attr("checked", "checked");
+                $(".checkBoxClass[value=" + x.product_id + "]").attr("checked", "checked");
             }
         }
 

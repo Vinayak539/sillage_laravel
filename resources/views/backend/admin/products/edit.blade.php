@@ -395,6 +395,18 @@
                         </div>
                     </div>
 
+                    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="review_status">Review Status <span class="text-danger">*</span></label>
+                            <select name="review_status" id="review_status" class="form-control" required>
+                                <option value="">-- Select --</option>
+                                <option value="1" {{ $product->review_status == true ? 'selected' : '' }}>Available</option>
+                                <option value="0" {{ $product->review_status == false ? 'selected' : '' }}>Not Available</option>
+                            </select>
+                        </div>
+                    </div>
+
 
                     <div class="col-md-4">
                         <div class="form-group">
@@ -877,6 +889,11 @@
                 is_cod: {
                     required: true
                 },
+
+                review_status: {
+                    required: true
+                },
+
                 description: {
                     required: true
                 },
@@ -915,6 +932,11 @@
                 is_cod: {
                     required: "Please Select COD Availability"
                 },
+
+                review_status: {
+                    required: "Please Select Review Status"
+                },
+
                 description: {
                     required: "Please Enter Description of Product"
                 },

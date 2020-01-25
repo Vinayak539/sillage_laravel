@@ -56,7 +56,8 @@
                 <!-- <div class="col-md-6 product-main-details mt--40 mt-md--10 mt-sm--30"> -->
                 <div class="col-md-6 product-main-details mt-md--10 mt-sm--30">
                     <div class="product-summary">
-                        {{-- <div class="product-rating float-left" id="product-rating">
+                        @if($product->review_status)
+                        <div class="product-rating float-left" id="product-rating">
                             @if($prod)
                             <span>
                                 @for($i = 1; $i<= $prod->rating; $i++)
@@ -80,8 +81,8 @@
                             </span>
                             @endif
 
-                        </div> --}}
-
+                        </div>
+                        @endif
                         <div class="clearfix"></div>
 
                         <h3 class="product-titles">{{ $product->title }}</h3>
@@ -99,26 +100,19 @@
                         </a>
                         @endif
 
-                        {{--
-                        @if($product->stock == 0)
-                        <span class="product-stock in-stock float-right text-danger">
-                            <i class="fa fa-ban" aria-hidden="true"></i>
-                            out of stock
-                        </span>
-                        @else
+                        
+                        @if($product->isCodAvailable)
                         <span class="product-stock in-stock float-right text-success">
                             <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                            in stock
+                            Cash on Delivery Available
                         </span>
-                        @endif --}}
-
-
-                        {{-- <div class="product-price-wrapper mb--30 mb-md--10">
-                            <span class="money">₹{{ $product->buy_it_now_price }}</span>
-                        <span class="old-price">
-                            <span class="money">₹{{ $product->mrp }}</span>
+                        @else
+                        <span class="product-stock in-stock float-right text-danger">
+                            <i class="fa fa-ban" aria-hidden="true"></i>
+                            Cash on Delivery Not Available
                         </span>
-                    </div> --}}
+                        @endif
+
                     <div class="clearfix"></div>
 
                     <form action="#" class="variation-form mb--20">
@@ -162,9 +156,10 @@
                     </form>
 
                     <div class="offerSection">
-                        @if(count($offers))<p> Choose Any {{ $offers[0]->offered_quantity }} Offer On Purchase of
+                        @if(count($offers))
+                        <p> Choose Any {{ $offers[0]->offered_quantity }} Offer On Purchase of
                             {{ $offers[0]->purchase_quantity }} </p>
-                        <div class="airi-element-carousel product-carousel nav-vertical-center offer"
+                        <div class="airi-element-carousel-offer product-carousel nav-vertical-center offer"
                             data-slick-options='{
                                         "spaceBetween": 30,
                                         "slidesToShow": 6,
@@ -179,34 +174,7 @@
                                         ]'>
 
 
-                            @foreach($offers as $key => $offer)
-
-                            <div class="airi-product offer_product" data-product-name="{{ $offer->product_name }}"
-                                data-color="{{ $offer->color_name }}" data-size="{{ $offer->size_name }}"
-                                data-index="{{ $key }}" data-purchase-quantity="{{ $offer->purchase_quantity }}"
-                                data-offered-quantity="{{ $offer->offered_quantity }}"
-                                data-offered-id="{{ $offer->offer_id }}" data-map-id="{{ $offer->map_id }}">
-                                <div class="product-inner">
-                                    <figure class="product-image">
-                                        <div class="product-image--holder">
-                                            <a href="javascript:void(0)">
-                                                <img src="{!! asset('storage/images/products/' . $offer->image_url) !!}"
-                                                    alt="Product Image">
-                                            </a>
-                                        </div>
-                                    </figure>
-                                    <div class="product-info">
-                                        <h3 class="product-title">
-                                            <a href="javascript:void(0)">{{ $offer->product_name }}</a>
-                                        </h3>
-                                        <p class="product-title">
-                                            <a
-                                                href="javascript:void(0)">{{ $offer->color_name . '[' . $offer->size_name . ']' }}</a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
+                            
 
                         </div>
                         <a href="javascript:void(0)" class="selectedOfferBtn">View
@@ -355,6 +323,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @if($product->review_status)
                             <div class="tab-pane fade" id="nav-reviews" role="tabpanel"
                                 aria-labelledby="nav-reviews-tab">
                                 <div class="product-reviews">
@@ -394,142 +363,14 @@
                                     </ul>
                                 </div>
                             </div>
+                            @endif
                         </div>
                     </div>
                     {{-- description and review end --}}
                 </div>
             </div>
         </div>
-        {{-- 
-        <div class="row justify-content-center pt--45 pt-lg--50 pt-md--55 pt-sm--35">
-            <div class="col-12">
-                <div class="product-data-tab tab-style-1">
-                    <div class="nav nav-tabs product-data-tab__head mb--40 mb-md--30" id="product-tab" role="tablist">
-                        @if($product->description)
-                        <a class="product-data-tab__link nav-link active" id="nav-description-tab" data-toggle="tab"
-                            href="#nav-description" role="tab" aria-selected="true">
-                            <span>Description</span>
-                        </a>
-                        @endif
-                        @if(count($product->reviews))
-                        <a class="product-data-tab__link nav-link" id="nav-reviews-tab" data-toggle="tab"
-                            href="#nav-reviews" role="tab" aria-selected="true">
-                            <span>Reviews ({{ $prod->total_rating }})</span>
-                        </a>
-                        @endif
-                    </div>
-                    <div class="tab-content product-data-tab__content" id="product-tabContent">
-                        <div class="tab-pane fade show active" id="nav-description" role="tabpanel"
-                            aria-labelledby="nav-description-tab">
-                            <div class="product-description">
-
-                                <p>
-                                    {{ $product->description }}
-                                </p>
-                                <h4>Product Detail</h4>
-                                <table class="table">
-                                    <tbody>
-                                        @if($product->brand)
-                                        <tr>
-                                            <th class="first_child">Brand</th>
-                                            <td>{{ $product->brand->brand_name }}</td>
-                                        </tr>
-                                        @endif
-                                        @if($product->material)
-                                        <tr>
-                                            <th class="first_child">Material</th>
-                                            <td>{{ $product->material->material_name }}</td>
-                                        </tr>
-                                        @endif
-                                        @if($product->condition)
-                                        <tr>
-                                            <th class="first_child">Condition</th>
-                                            <td>{{ $product->condition->condition }}</td>
-                                        </tr>
-                                        @endif
-                                        @if($product->length)
-                                        <tr>
-                                            <th class="first_child">Length</th>
-                                            <td>{{ $product->length }}</td>
-                                        </tr>
-                                        @endif
-                                        @if($product->breadth)
-                                        <tr>
-                                            <th class="first_child">Breadth</th>
-                                            <td>{{ $product->breadth }}</td>
-                                        </tr>
-                                        @endif
-                                        @if($product->height)
-                                        <tr>
-                                            <th class="first_child">Height</th>
-                                            <td>{{ $product->height }}</td>
-                                        </tr>
-                                        @endif
-                                        @if($product->weight)
-                                        <tr>
-                                            <th class="first_child">Weight</th>
-                                            <td>{{ $product->weight }}</td>
-                                        </tr>
-                                        @endif
-                                        @if($product->warranty)
-                                        <tr>
-                                            <th class="first_child">Warranty</th>
-                                            <td>{{ $product->warranty->title }}</td>
-                                        </tr>
-                                        @endif
-                                        @foreach($product->custom_fields as $field)
-                                        <tr>
-                                            <th>{{ $field->field_name }}</th>
-                                            <td>{{ $field->field_value }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="nav-reviews" role="tabpanel" aria-labelledby="nav-reviews-tab">
-                            <div class="product-reviews">
-                                <ul class="review__list">
-                                    @foreach($product->reviews as $review)
-                                    <li class="review__item">
-                                        <div class="review__container">
-
-                                            <img src="{!! asset('assets/img/others/comment-icon-2.png') !!} "
-                                                alt="Review Avatar" class="review__avatar">
-
-                                            <div class="review__text">
-                                                <div class="product-rating float-right">
-                                                    <span>
-                                                        @for($i = 1; $i<= $review->rating; $i++)
-                                                            <i class="fa fa-star rated" aria-hidden="true"></i>
-                                                            @endfor
-                                                            @for($i = 1; $i<= 5 - $review->rating; $i++)
-                                                                <i class="fa fa-star-o" aria-hidden="true"></i>
-                                                                @endfor
-                                                    </span>
-                                                </div>
-                                                <div class="review__meta">
-                                                    <strong class="review__author">{{ $review->name }} </strong>
-                                                    <span class="review__dash">-</span>
-                                                    <span
-                                                        class="review__published-date">{{ date('F d, Y', strtotime($review->created_at)) }}</span>
-                                                </div>
-                                                <div class="clearfix"></div>
-                                                <p class="review__description">
-                                                    {{ $review->comment }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        --}}
+       
         {{-- Releted Products --}}
         <div class="row pt--35 pt-md--25 pt-sm--15 pb--75 pb-md--55 pb-sm--35">
             <div class="col-12">
@@ -560,26 +401,27 @@
                                     <figure class="product-image">
                                         <div class="product-image--holder">
                                             <a href="{{ route('product',[$rproduct->slug_url]) }}">
-                                                <img src="{!! asset('storage/images/products').'/'.$rproduct->image_url !!} "
+                                                <img src="{!! asset('storage/images/products/' . $rproduct->image_url) !!} "
                                                     alt="Product Image" class="primary-image">
 
-                                                <img src="{!! asset('assets/img/products/prod-12-4.jpg') !!} "
+                                                <img src="{!! asset('storage/images/products/' . $rproduct->image_url1) !!} "
                                                     alt="Product Image" class="secondary-image">
                                             </a>
                                         </div>
                                     </figure>
                                     <div class="product-info">
                                         <h3 class="product-title">
-                                            <a
-                                                href="{{ route('product',[$rproduct->slug_url]) }}">{{ Str::limit($rproduct->title,15) }}</a>
-                                            {{-- <span class="pull-right">
+                                            <a href="{{ route('product',$rproduct->slug_url) }}">{{ Str::limit($rproduct->title,15) }}</a>
+                                            @if($rproduct->review_status) 
+                                            <span class="pull-right">
                                                 @for($i = 1; $i<= $rproduct->rating; $i++)
                                                     <i class="fa fa-star rated" aria-hidden="true"></i>
                                                     @endfor
                                                     @for($i = 1; $i<= 5 - $rproduct->rating; $i++)
                                                         <i class="fa fa-star-o" aria-hidden="true"></i>
                                                         @endfor
-                                            </span> --}}
+                                            </span> 
+                                            @endif
                                         </h3>
 
                                         <span class="pull-left">
@@ -848,6 +690,62 @@
         sessionStorage.clear();
 
         var offers = JSON.parse(sessionStorage.getItem('offers')) || {};
+        
+        var load_offers = {!! json_encode($offers) !!};
+
+        var count = {!! json_encode($product->offer ? $product->offer->offered_quantity : '') !!};
+
+        var html = '';
+
+        for (let index = 0; index < load_offers.length; index++) {
+
+            if(count>0){
+                offers[index] = {};
+                offers[index] = {
+                    'name': load_offers[index].product_name,
+                    'color': load_offers[index].color_name,
+                    'size': load_offers[index].size_name,
+                    'offer_id': load_offers[index].offer_id,
+                    'map_id': load_offers[index].map_id,
+                };
+            }
+
+            count--;
+           
+            html +=   `<div class="airi-product offer_product" data-product-name="${load_offers[index].product_name }"
+                        data-color="${load_offers[index].color_name }" data-size="${load_offers[index].size_name }"
+                        data-index="${index }" data-purchase-quantity="${load_offers[index].purchase_quantity }"
+                        data-offered-quantity="${load_offers[index].offered_quantity }"
+                        data-offered-id="${load_offers[index].offer_id }" data-map-id="${load_offers[index].map_id }">
+                        <div class="product-inner">
+                            <figure class="product-image">
+                                <div class="product-image--holder">
+                                    <a href="javascript:void(0)">
+                                        <img src="${window.location.origin + '/storage/images/products/' + load_offers[index].image_url}"
+                                            alt="Product Image">
+                                    </a>
+                                </div>
+                            </figure>
+                            <div class="product-info">
+                                <h3 class="product-title">
+                                    <a href="javascript:void(0)">${load_offers[index].product_name }</a>
+                                </h3>
+                                <p class="product-title">
+                                    <a href="javascript:void(0)">${load_offers[index].color_name} [ ${load_offers[index].size_name} ]</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>`
+            
+        }
+
+        $('.offer').html(html);
+        
+        // $(".offer").slick('unslick');
+
+        elementCarousel();
+
+        sessionStorage.setItem("offers", JSON.stringify(offers));
 
         $('.offer_product').click(function () {
             var pname = $(this).attr('data-product-name');
@@ -944,6 +842,7 @@
         $('.product-color-swatch-btn').click(function (e) {
 
             var item = $('.product-color-swatch-btn').hasClass('active');
+
             if (item) {
                 $('.product-color-swatch-btn').removeClass('active')
             }
@@ -996,13 +895,172 @@
         //     $('#cart_size_id').val(size_id);
         // });
 
+       function elementCarousel(){
+        $html = $('html');
+        $body = $('body');
+
+            $elementCarousel = $('.airi-element-carousel-offer')
+
+            // console.log('epeke', $elementCarousel);
+
+            if($elementCarousel.elExists()){
+                var slickInstances = [];
+
+                /*For RTL*/
+                if( $html.attr("dir") == "rtl" || $body.attr("dir") == "rtl" ){
+                    $elementCarousel.attr("dir", "rtl");
+                }
+
+
+                $elementCarousel.each(function(index, element){
+                    var $this = $(this);	
+
+                    // Carousel Options
+                    
+                    var $options = typeof $this.data('slick-options') !== 'undefined' ? $this.data('slick-options') : ''; 
+
+                    var $spaceBetween = $options.spaceBetween ? parseInt($options.spaceBetween, 10) : 0,
+                        $spaceBetween_xl = $options.spaceBetween_xl ? parseInt($options.spaceBetween_xl, 10) : 0,
+                        $spaceBetween_lg = $options.spaceBetween_lg ? parseInt($options.spaceBetween_lg, 10) : 0,
+                        $rowSpace = $options.rowSpace ? parseInt($options.rowSpace, 10) : 0,
+                        $vertical = $options.vertical ? $options.vertical : false,
+                        $focusOnSelect = $options.focusOnSelect ? $options.focusOnSelect : false,
+                        $asNavFor = $options.asNavFor ? $options.asNavFor : '',
+                        $fade = $options.fade ? $options.fade : false,
+                        $autoplay = $options.autoplay ? $options.autoplay : false,
+                        $autoplaySpeed = $options.autoplaySpeed ? parseInt($options.autoplaySpeed, 10) : 5000,
+                        $swipe = $options.swipe ? $options.swipe : true,
+                        $swipeToSlide = $options.swipeToSlide ? $options.swipeToSlide : true,
+                        $touchMove = $options.touchMove ? $options.touchMove : true,
+                        $verticalSwiping = $vertical ? ($options.verticalSwiping ? $options.verticalSwiping : true) : false,
+                        $draggable = $options.draggable ? $options.draggable : true,
+                        $arrows = $options.arrows ? $options.arrows : false,
+                        $dots = $options.dots ? $options.dots : false,
+                        $adaptiveHeight = $options.adaptiveHeight ? $options.adaptiveHeight : true,
+                        $infinite = $options.infinite ? $options.infinite : false,
+                        $variableWidth = $options.variableWidth ? $options.variableWidth : false,
+                        $centerMode = $options.centerMode ? $options.centerMode : false,
+                        $centerPadding = $options.centerPadding ? $options.centerPadding : '',
+                        $speed = $options.speed ? parseInt($options.speed, 10) : 500,
+                        $appendArrows = $options.appendArrows ? $options.appendArrows : $this,
+                        $prevArrow = $arrows === true ? ($options.prevArrow ? '<span class="'+ $options.prevArrow.buttonClass +'"><i class="'+ $options.prevArrow.iconClass +'"></i></span>' : '<button class="tty-slick-text-btn tty-slick-text-prev">previous</span>') : '',
+                        $nextArrow = $arrows === true ? ($options.nextArrow ? '<span class="'+ $options.nextArrow.buttonClass +'"><i class="'+ $options.nextArrow.iconClass +'"></i></span>' : '<button class="tty-slick-text-btn tty-slick-text-next">next</span>') : '',
+                        $rows = $options.rows ? parseInt($options.rows, 10) : 1,
+                        $rtl = $options.rtl || $html.attr('dir="rtl"') || $body.attr('dir="rtl"') ? true : false,
+                        $slidesToShow = $options.slidesToShow ? parseInt($options.slidesToShow, 10) : 1,
+                        $slidesToScroll = $options.slidesToScroll ? parseInt($options.slidesToScroll, 10) : 1;
+
+                    /*Responsive Variable, Array & Loops*/
+                    var $responsiveSetting = typeof $this.data('slick-responsive') !== 'undefined' ? $this.data('slick-responsive') : '',
+                        $responsiveSettingLength = $responsiveSetting.length,
+                        $responsiveArray = [];
+                        for (var i = 0; i < $responsiveSettingLength; i++) {
+                            $responsiveArray[i] = $responsiveSetting[i];
+                            
+                        }
+
+                    // Adding Class to instances
+                    $this.addClass('slick-carousel-'+index);		
+                    $this.parent().find('.slick-dots').addClass('dots-'+index);		
+                    $this.parent().find('.slick-btn').addClass('btn-'+index);
+
+                    if($spaceBetween != 0){
+                        $this.addClass('slick-gutter-'+$spaceBetween);
+                    }
+                    if($spaceBetween_xl != 0){
+                        $this.addClass('slick-gutter-xl-'+$spaceBetween_xl);
+                    }
+                    if($spaceBetween_lg != 0){
+                        $this.addClass('slick-gutter-lg-'+$spaceBetween_lg);
+                    }
+                    var $slideCount = null;
+                    $this.on('init', function(event, slick){
+                        $this.find('.slick-active').first().addClass('first-active');
+                        $this.find('.slick-active').last().addClass('last-active');
+                        $slideCount = slick.slideCount;
+                        if($slideCount <= $slidesToShow){
+                            $this.children('.slick-dots').hide();	
+                        }
+                        var $firstAnimatingElements = $('.slick-slide').find('[data-animation]');
+                        doAnimations($firstAnimatingElements);  
+                    });
+
+                    $this.slick({
+                        slidesToShow: $slidesToShow,
+                        slidesToScroll: $slidesToScroll,
+                        asNavFor: $asNavFor,
+                        autoplay: $autoplay,
+                        autoplaySpeed: $autoplaySpeed,
+                        speed: $speed,
+                        infinite: $infinite,
+                        arrows: $arrows,
+                        dots: $dots,
+                        adaptiveHeight: $adaptiveHeight,
+                        vertical: $vertical,
+                        focusOnSelect: $focusOnSelect,
+                        centerMode: $centerMode,
+                        centerPadding: $centerPadding,
+                        swipe: $swipe,
+                        swipeToSlide: $swipeToSlide,
+                        touchMove: $touchMove,
+                        draggable: $draggable,
+                        verticalSwiping: $verticalSwiping,
+                        variableWidth: $variableWidth,
+                        fade: $fade,
+                        appendArrows: $appendArrows,
+                        prevArrow: $prevArrow,
+                        nextArrow: $nextArrow,
+                        rtl: $rtl,
+                        responsive: $responsiveArray,
+                    });
+
+                    
+
+                    $this.on('beforeChange', function(e, slick, currentSlide, nextSlide) {
+                        $this.find('.slick-active').first().removeClass('first-active');
+                        $this.find('.slick-active').last().removeClass('last-active');
+                        var $animatingElements = $('.slick-slide[data-slick-index="' + nextSlide + '"]').find('[data-animation]');
+                        doAnimations($animatingElements);
+                    });
+                    function doAnimations(elements) {
+                        var animationEndEvents = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+                        elements.each(function() {
+                            var $el = $(this);
+                            var $animationDelay = $el.data('delay');
+                            var $animationDuration = $el.data('duration');
+                            var $animationType = 'animated ' + $el.data('animation');
+                            $el.css({
+                                'animation-delay': $animationDelay,
+                                'animation-duration': $animationDuration,
+                            });
+                            $el.addClass($animationType).one(animationEndEvents, function() {
+                                $el.removeClass($animationType);
+                            });
+                        });
+                    }
+
+                    $this.on('afterChange', function(e, slick){
+                        $this.find('.slick-active').first().addClass('first-active');
+                        $this.find('.slick-active').last().addClass('last-active');
+                    });
+
+                    // Updating the sliders in tab
+                    $('body').on('shown.bs.tab', 'a[data-toggle="tab"], a[data-toggle="pill"]', function (e) {
+                        $this.slick('setPosition');
+                    });
+                });
+            }
+        }
+
 
         function volume(color_id, title) {
 
             $('#cart_color_id').val(color_id);
 
+            $('.swatch-wrapper-color:first-child a').addClass('active');
+
             $('.color-label').html(title);
-            $('.product-color-swatch-btn').addClass('active');
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
@@ -1049,7 +1107,6 @@
                                 <span class="product-size-swatch-label">${data.title}</span>
                             </a>
                         </div>`
-
 
                         });
                         
@@ -1125,15 +1182,18 @@
 
                         $('.size_lable').html(title + ' ' +
                             '<strong class="text-danger">Out of Stock</strong>');
-
+                        
                     } else {
 
                         $('#cart_size_id').val(size_id);
+                        
                         var item = $('.product-size-swatch-btn').hasClass('active');
+
                         if (item) {
                             $('.product-size-swatch-btn').removeClass('active')
                         }
-                        $(element).addClass('active')
+                        
+                        $(element).addClass('active');
                     }
 
                 });
@@ -1146,8 +1206,6 @@
 
     function getSizePrice(size_id, color_id, prod_id) {
 
-            console.log(prod_id, color_id, size_id);
-            
 
             $.ajaxSetup({
                 headers: {
@@ -1181,6 +1239,7 @@
                     }
                 }
             });
+            
     }
 
     function isOfferExists(key) {

@@ -19,7 +19,7 @@ class ReviewController extends Controller
     public function index()
     {
         $reviews = TxnReview::orderBy('id', 'DESC')->with('product')->paginate(50);
-        $products = TxnProduct::where('status', true)->orderBy('id', 'DESC')->get();
+        $products = TxnProduct::where('status', true)->where('review_status', true)->orderBy('id', 'DESC')->get();
         return view('backend.admin.reviews.index', compact('reviews', 'products'));
     }
 

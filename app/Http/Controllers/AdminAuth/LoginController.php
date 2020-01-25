@@ -35,13 +35,13 @@ class LoginController extends Controller
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->remeber)) {
             return redirect()->intended(url()->previous());
         }
-        return redirect(route('admin.login'))->withInput($request->only('email', 'remember'))->withErrors(['email' => Lang::get('auth.failed')]);
+        return redirect(route('login'))->withInput($request->only('email', 'remember'))->withErrors(['email' => Lang::get('auth.failed')]);
     }
 
     public function logout()
     {
         Auth::guard('admin')->logout();
-        return redirect()->intended(route('admin.login'));
+        return redirect()->intended(route('login'));
     }
 
     public function checkEmail(Request $request)

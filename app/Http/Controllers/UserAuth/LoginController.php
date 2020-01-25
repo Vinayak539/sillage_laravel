@@ -147,7 +147,7 @@ class LoginController extends Controller
             ]);
 
         if ($validator->fails()) {
-            connectify('error', 'Not Verified', $validator->errors()->first());
+            connectify('error', 'Invalid Otp', $validator->errors()->first());
             return back()->withInput();
         }
 
@@ -179,8 +179,9 @@ class LoginController extends Controller
 
         } else {
 
-            connectify('success', 'Registered Successfully', 'You are successfully Registered !');
-            return back()->with('error', 'The Entered Otp is Invalid !');
+            connectify('error', 'Error', 'The Entered Otp is Invalid !');
+
+            return back();
         }
 
     }

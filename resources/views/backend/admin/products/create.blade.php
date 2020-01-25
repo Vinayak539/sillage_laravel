@@ -221,11 +221,22 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="is_cod">Cod Available <span class="text-danger">*</span></label>
-                                <select name="is_cod" id="is_cod" class="form-control">
+                                <select name="is_cod" id="is_cod" class="form-control" required>
                                     <option value="">--Select Cod Availability--</option>
                                     <option value="1" {{ old('is_cod') == true ? 'selected' : '' }}>Available</option>
                                     <option value="0" {{ old('is_cod') == false ? 'selected' : '' }}>Not Available
                                     </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="review_status">Review Status <span class="text-danger">*</span></label>
+                                <select name="review_status" id="review_status" class="form-control" required>
+                                    <option value="">-- Select --</option>
+                                    <option value="1" {{ old('review_status') == true ? 'selected' : '' }}>Available</option>
+                                    <option value="0" {{ old('review_status') == false ? 'selected' : '' }}>Not Available</option>
                                 </select>
                             </div>
                         </div>
@@ -467,6 +478,10 @@
                    required: true
                 },
 
+                review_status: {
+                   required: true
+                },
+
                 description: {
                    required: true
                 },
@@ -542,6 +557,10 @@
 
                 is_cod: {
                    required: "Please Select COD Availability"
+                },
+
+                review_status: {
+                   required: "Please Select Review Status"
                 },
 
                 description: {

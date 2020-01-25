@@ -90,6 +90,8 @@ class MasterSectionController extends Controller
 
             $section = MsSection::where('id', $id)->firstOrFail();
 
+            \DB::table('map_product_sections')->where('section_id', $section->id)->delete();
+
             foreach ($request->assign as $asection) {
                 MapProductSection::updateOrCreate(
                     [

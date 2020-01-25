@@ -82,20 +82,23 @@
                     @php
 
                     $product = DB::table('txn_products as p')
-                    ->selectRaw("p.id,p.title,p.slug_url, p.image_url, p.image_url1, FLOOR(AVG(txn_reviews.rating)) as
+                    ->selectRaw("p.id,p.title,p.slug_url, p.image_url, p.image_url1, p.review_status, FLOOR(AVG(txn_reviews.rating)) as
                     rating , COUNT(txn_reviews.id) as total_rating")
                     ->leftJoin("txn_reviews", "txn_reviews.product_id", "p.id")
                     ->where('p.id', $msec->product_id)
+                    ->where('p.status', true)
                     ->groupBy('p.id')
                     ->first();
+
                     @endphp
+                    @if($product)
                     <div class="airi-product">
                         <div class="product-inner">
                             <figure class="product-image">
                                 <div class="product-image--holder">
-                                    <a href="{{ route('product',[$product->slug_url]) }}">
+                                    <a href="{{ route('product', $product->slug_url) }}">
 
-                                        <img data-original="{!! asset('storage/images/products/' . $product->image_url)!!}"
+                                        <img data-original="{!! asset('storage/images/products/' . $product->image_url) !!}"
                                             alt="{{ $product->title }}" class="primary-image lazy">
 
                                         <img data-original="{!! asset('storage/images/products/'. $product->image_url1) !!}"
@@ -105,26 +108,23 @@
                             </figure>
                             <div class="product-info">
                                 <h3 class="product-title text-center">
-                                    <a
-                                        href="{{ route('product',[$product->slug_url]) }}">{{ Str::limit($product->title,20) }}</a>
-                                    {{-- <span class="pull-right">
+                                    <a href="{{ route('product',$product->slug_url) }}">{{ Str::limit($product->title,20) }}</a>
+                                   @if($product->review_status)
+                                   <span class="pull-right">
                                         @for($i = 1; $i<= $product->rating; $i++)
                                             <i class="fa fa-star rated" aria-hidden="true"></i>
                                             @endfor
                                             @for($i = 1; $i<= 5 - $product->rating; $i++)
                                                 <i class="fa fa-star-o" aria-hidden="true"></i>
                                                 @endfor
-                                    </span> --}}
+                                    </span>
+                                    @endif
                                 </h3>
-                                {{-- <span class="product-price-wrapper">
-                                                    <span class="money">₹ {{ $product->buy_it_now_price }}</span>
-                                <span class="product-price-old">
-                                    <span class="money">₹ {{ $product->mrp }}</span>
-                                </span>
-                                </span> --}}
+                                
                             </div>
                         </div>
                     </div>
+                    @endif
                     @endforeach
                 </div>
             </div>

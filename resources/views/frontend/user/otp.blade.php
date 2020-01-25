@@ -68,13 +68,7 @@
                         <label>OTP *</label>
                     </div> <!-- /.input-group -->
                 </div> <!-- /.col- -->
-                @if (session('error'))
-                <div class="col-12">
-                    <div class="alert alert-danger" role="alert">
-                        {{ session('error') }}
-                    </div>
-                </div>
-                @endif
+                
             </div> <!-- /.row -->
 
             <button type="submit" class="line-button-one button-rose update_button">Verify</button>

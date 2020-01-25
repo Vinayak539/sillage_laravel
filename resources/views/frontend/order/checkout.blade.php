@@ -356,7 +356,7 @@
                                                         class="gmail"><i class="fa fa-envelope-o"
                                                             aria-hidden="true"></i>
                                                         Gmail</a></li>
-                                                <li class="col-12"><a href="#" class="facebook"><i
+                                                <li class="col-12"><a href="{{ route('user.auth.socialite', 'facebook') }}" class="facebook"><i
                                                             class="fa fa-facebook" aria-hidden="true"></i> Facebook</a>
                                                 </li>
                                             </ul>

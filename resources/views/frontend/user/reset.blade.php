@@ -23,49 +23,35 @@
         <div class="title-area text-center">
             <h3>Reset Password</h3>
         </div> <!-- /.title-area -->
-        <form id="login-form" action="{{ route('user.reset.password') }}" method="POST" autocomplete="off" class="form">
+        <form id="login-form" action="{{ route('user.reset.password') }}" method="POST" autocomplete="off" class="needs-validation">
             @csrf
             <div class="row">
                 <div class="col-12">
-                    <div class="input-group{{ $errors->has('email') ? ' is-invalid' : '' }}">
+                    <div class="input-group mb-0">
                         <input type="text" name="email" id="email" value="{{ $email ?? old('email') }}" required autofocus>
                         <label>Email *</label>
                     </div> <!-- /.input-group -->
+                    <label for="email" class="error"></label>
                 </div> <!-- /.col- -->
-                @if ($errors->has('email'))
+               
                 <div class="col-12">
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $errors->first('email') }}</strong>
-                    </span>
-                </div>
-                @endif
-                <div class="col-12">
-                    <div class="input-group">
+                    <div class="input-group mb-0">
                         <input type="password" name="password" id="password" required>
                         <label>New Passwords *</label>
                     </div> <!-- /.input-group -->
+                    <label for="password" class="error"></label>
                 </div> <!-- /.col- -->
+
                 <div class="col-12">
-                    <div class="input-group">
+                    <div class="input-group mb-0">
                         <input type="password" name="con_password" id="con_password" required>
-                        <label>Password *</label>
+                        <label>Confirm Password *</label>
                     </div> <!-- /.input-group -->
+                    <label for="con_password" class="error"></label>
                 </div> <!-- /.col- -->
-                @if ($errors->any())
-                <div class="col-12">
-                    <span class="invalid-feedback" role="alert">
-                        <ul>
-                            @foreach($errors->all() as $error)
-                            <strong>
-                                <li>{{ $error }}</li>
-                            </strong>
-                            @endforeach
-                        </ul>
-                    </span>
-                </div>
-                @endif
+
             </div> <!-- /.row -->
-            <button type="submit" class="line-button-one button-rose button_update">Update</button>
+            <button type="submit" class="line-button-one button-rose btnSubmit">Update</button>
         </form>
     </div> <!-- /.sign-up-form-wrapper -->
 </div>
@@ -86,10 +72,49 @@
 @section('extrajs')
 <script>
     $(document).ready(function() {
-        $(".login").submit(function() {
-            $(".button_update_login").attr("disabled", "disabled");
-            $(".button_update_login").html("Please Wait");
+
+        $("#login-form").validate({
+            rules: {           
+
+                email: {
+                    required: true,
+                    email:true,
+                },
+                
+                con_password: {
+                    required: true,
+                    equalTo:"#password"
+                },
+                
+                password: {
+                    required:true
+                }
+               
+            },
+            messages: {
+              
+                email: {
+                    required: "Please Enter Email"
+                },
+
+                password: {
+                    required: "Please Enter Password"
+                },
+
+                con_password: {
+                    required: "Please Enter Confirm Password",
+                    equalTo: "Please Enter Confirm Password same as above password",
+                },
+
+
+            },
+            submitHandler: function (form) {
+                $('.btnSubmit').attr('disabled', 'disabled');
+                $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+                form.submit();
+            }
         });
+        
     });
 </script>
 @endsection

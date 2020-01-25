@@ -99,4 +99,5 @@ class TxnProduct extends Model
     {
         return $this->belongsTo(MapOfferProduct::class, 'id', 'product_id');
     }
+
 }

@@ -89,17 +89,16 @@ class MainController extends Controller
                 ->get();
 
             $related_products = \DB::table('txn_products as p')
-                ->selectRaw("p.id as product_id , p.title , p.slug_url, p.image_url, p.image_url1, p.status , FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment, c.name as category_name, c.slug_url as category_url")
+                ->selectRaw("p.id as product_id , p.title, c.id as cate_id , p.slug_url, p.image_url, p.image_url1, p.status, p.review_status , FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment, c.name as category_name, c.slug_url as category_url")
                 ->leftJoin("txn_reviews as r", "r.product_id", "p.id")
                 ->leftJoin("txn_categories as c", "c.id", "p.category_id")
                 ->where('p.status', true)
-                ->where('p.id', '<>', $product->id)
-                ->orWhere('c.id', $product->category_id)
+                ->where('p.id', '<>' ,$product->id)
+                ->Where('c.id', $product->category_id)
                 ->orderBy('p.id', 'DESC')
+                ->groupBy("p.id")
                 ->limit(6)
                 ->get();
-
-
 
             $offers = DB::table('txn_products as p')
                 ->selectRaw('p.title as product_name, p.id as product_id, p.image_url, m.color_id, m.size_id, c.title as color_name, s.title as size_name, m.id as offer_id, mop.purchase_quantity, mop.offered_quantity, mop.id as map_id, mop.map_offer_id')

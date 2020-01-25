@@ -35,10 +35,10 @@
                         <tr>
                             <td>{{ $product->id }}</td>
                             <td>
-                                <a href="{!! asset('storage/images/products').'/' !!}{{ $product->image_url }}"
+                                <a href="{!! asset('storage/images/products/'. $product->image_url) !!}"
                                     target="_blank">
-                                    <img src="{!! asset('storage/images/products').'/' !!}{{ $product->image_url }}"
-                                        alt="{{ $product->title }}" class="img img-responsive img-circle" width="40"
+                                    <img data-original="{!! asset('storage/images/products/'. $product->image_url) !!}"
+                                        alt="{{ $product->title }}" class="img img-responsive img-circle lazy" width="40"
                                         height="40" loading="lazy">
                                 </a>
                             </td>
