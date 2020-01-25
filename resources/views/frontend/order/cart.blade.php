@@ -87,12 +87,12 @@
                                                         <li>
                                                             <div class="value-decrease switcher">-</div>
                                                         </li>
-                                                        <li><input type="number" min="1" max="22" value="1" disabled
-                                                                class="product-value val"></li>
+                                                        <li>
+                                                            <input type="number" min="1" max="{{ $item->attributes->stock }}" value="{{ $item->quantity }}" name="qty" disabled
+                                                                class="product-value quantity-input val">
+                                                        </li>
                                                         <li>
                                                             <div class="value-increase switcher">+ </div>
-                                                            <input type="number" min="1" max="22" value="{{ $item->quantity }}" disabled
-                                                                class="product-value val">
                                                         </li>
                                                     </ul>
                                                     <!-- <div class="quantity">
@@ -174,9 +174,9 @@
               }
           });
         }
-    $('.quantity-input').change(function (e) {
+    $('.product-value').change(function (e) {
         e.preventDefault();
-
+        
         var quantity = parseInt($(this).val());
         var itemid = $(this).attr('data-index');
         var stock = parseInt($(this).attr('data-stock'));
