@@ -83,13 +83,25 @@
                                                     </span>
                                                 </td>
                                                 <td class="product-quantity">
-                                                    <div class="quantity">
+                                                    <ul class="order-box">
+                                                        <li>
+                                                            <div class="value-decrease switcher">-</div>
+                                                        </li>
+                                                        <li><input type="number" min="1" max="22" value="1" disabled
+                                                                class="product-value val"></li>
+                                                        <li>
+                                                            <div class="value-increase switcher">+ </div>
+                                                            <input type="number" min="1" max="22" value="{{ $item->quantity }}" disabled
+                                                                class="product-value val">
+                                                        </li>
+                                                    </ul>
+                                                    <!-- <div class="quantity">
                                                         <input type="number" class="quantity-input" name="qty"
                                                             value="{{ $item->quantity }}" min="1"
                                                             max="{{ $item->attributes->stock }}"
                                                             data-index="{{ $item->id }}"
                                                             data-stock="{{ $item->attributes->stock }}" autofocus>
-                                                    </div>
+                                                    </div> -->
                                                 </td>
                                                 <td class="product-total-price">
                                                     <span class="product-price-wrapper">
@@ -146,6 +158,22 @@
 
 @section('extrajs')
 <script>
+    if ($(".product-value").length) {
+            $('.value-increase').on('click',function(){
+              var $qty=$(this).closest('ul').find('.product-value');
+              var currentVal = parseInt($qty.val());
+              if (!isNaN(currentVal)) {
+                  $qty.val(currentVal + 1);
+              }
+          });
+          $('.value-decrease').on('click',function(){
+              var $qty=$(this).closest('ul').find('.product-value');
+              var currentVal = parseInt($qty.val());
+              if (!isNaN(currentVal) && currentVal > 1) {
+                  $qty.val(currentVal - 1);
+              }
+          });
+        }
     $('.quantity-input').change(function (e) {
         e.preventDefault();
 

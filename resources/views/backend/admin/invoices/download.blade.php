@@ -327,6 +327,15 @@
                             Rs. {{ round($invoice->tax / 2, 2) }}
                         </td>
                     </tr>
+                    <tr>
+                        <th colspan="3">
+                            Shipping
+                        </th>
+                        <td>
+                            Rs.
+                            {{ $invoice->total >= 1000 ? '0' : '60' }}
+                        </td>
+                    </tr>
                     @if($invoice->discount)
                     <tr>
                         <th colspan="3">

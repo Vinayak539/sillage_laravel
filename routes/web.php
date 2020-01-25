@@ -17,19 +17,14 @@ Route::view('/about', 'frontend.about')->name('about');
 Route::view('/all-product', 'frontend.all-product')->name('all-product');
 Route::view('/product-detail', 'frontend.product-detail')->name('product-detail');
 Route::view('/checkout', 'frontend.checkout')->name('checkout');
-Route::view('/terms-condition', 'frontend.terms-condition')->name('terms-condition');
-Route::view('/privacy', 'frontend.privacy')->name('privacy');
-Route::view('/cancellation', 'frontend.cancellation')->name('cancellation');
-Route::view('/refund-return', 'frontend.refund-return')->name('refund-return');
-Route::view('/shipping', 'frontend.shipping')->name('shipping');
-Route::view('/faq', 'frontend.faq')->name('faq');
+Route::GET('/faq', 'Admin\FaqController@manage')->name('faq');
 
 // policy
-Route::view('/terms-condition', 'frontend.terms-condition')->name('terms-condition');
-Route::view('/privacy', 'frontend.privacy')->name('privacy');
-Route::view('/cancellation', 'frontend.cancellation')->name('cancellation');
-Route::view('/refund-return', 'frontend.refund-return')->name('refund-return');
-Route::view('/shipping', 'frontend.shipping')->name('shipping');
+Route::view('/terms-condition', 'frontend.policy.terms-condition')->name('terms-condition');
+Route::view('/privacy', 'frontend.policy.privacy')->name('privacy');
+Route::view('/cancellation', 'frontend.policy.cancellation')->name('cancellation');
+Route::view('/refund-return', 'frontend.policy.refund-return')->name('refund-return');
+Route::view('/shipping', 'frontend.policy.shipping')->name('shipping');
 
 // contact us
 Route::GET('/contact', 'EnquiryController@create')->name('contact');
