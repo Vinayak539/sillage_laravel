@@ -287,12 +287,28 @@
                         <th>QTY</th>
                         <th>AMT (Rs.)</th>
                     </tr>
-                    @foreach($invoice->details as $detail)
+
+                @foreach($invoice->details as $detail)
+
+                        @php
+                            $offers = json_decode($detail->offers);
+                            $exp_offers = explode(",", $offers);
+                        @endphp
                     <tr>
                         <td>
                             {{ $detail->product->title }} <br>
                             {{ $detail->size ? 'Size: ' . $detail->size->title : '' }} <br>
-                            {{ $detail->color ? 'Colour: ' . $detail->color->title : '' }}
+                            {{ $detail->color ? 'Colour: ' . $detail->color->title : '' }} <br>
+
+                            @if(!empty($exp_offers))
+                                @foreach($exp_offers as $ofr)
+                                    @php
+                                        $offer = \App\Model\MapMstOfferProduct::where('id', $ofr)->with('product', 'color', 'size')->first();
+                                    @endphp
+
+                                    + {{ $offer->product->title }} [{{ $offer->size->title }} ML] <br />
+                                @endforeach
+                            @endif
                         </td>
                         <td>{{ $detail->mrp }}</td>
                         <td>{{ $detail->quantity }}</td>
@@ -329,7 +345,7 @@
                     </tr>
                     <tr>
                         <th colspan="3">
-                            Shipping
+                            + Shipping
                         </th>
                         <td>
                             Rs.

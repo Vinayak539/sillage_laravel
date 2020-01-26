@@ -100,7 +100,7 @@
                         </a>
                         @endif
 
-                        
+
                         @if($product->isCodAvailable)
                         <span class="product-stock in-stock float-right text-success">
                             <i class="fa fa-check-circle-o" aria-hidden="true"></i>
@@ -175,7 +175,7 @@
                                         ]'>
 
 
-                            
+
 
                         </div>
                         <a href="javascript:void(0)" class="selectedOfferBtn">View
@@ -371,7 +371,7 @@
                 </div>
             </div>
         </div>
-       
+
         {{-- Releted Products --}}
         <div class="row pt--35 pt-md--25 pt-sm--15 pb--75 pb-md--55 pb-sm--35">
             <div class="col-12">
@@ -413,7 +413,7 @@
                                     <div class="product-info">
                                         <h3 class="product-title">
                                             <a href="{{ route('product',$rproduct->slug_url) }}">{{ Str::limit($rproduct->title,15) }}</a>
-                                            @if($rproduct->review_status) 
+                                            @if($rproduct->review_status)
                                             <span class="pull-right">
                                                 @for($i = 1; $i<= $rproduct->rating; $i++)
                                                     <i class="fa fa-star rated" aria-hidden="true"></i>
@@ -421,7 +421,7 @@
                                                     @for($i = 1; $i<= 5 - $rproduct->rating; $i++)
                                                         <i class="fa fa-star-o" aria-hidden="true"></i>
                                                         @endfor
-                                            </span> 
+                                            </span>
                                             @endif
                                         </h3>
 
@@ -507,7 +507,7 @@
     </div>
 </div>
 <!-- Selected Offer modal end -->
-{{-- 
+{{--
 <!-- offer modal start -->
 <div class="modal fade offerModal" id="offer-product">
     <div class="modal-dialog">
@@ -763,7 +763,7 @@
   z-index: 1000;
 }
 
-.slick-prev:before, .slick-next:before { 
+.slick-prev:before, .slick-next:before {
     color:red !important;
 }
 
@@ -777,7 +777,7 @@
 @section('extrajs')
 <script>
     $(document).ready(function () {
-       
+
         var color_id = $('.product-color-swatch-btn').attr('data-color-id');
 
         var title = $('.product-color-swatch-btn').attr('data-title');
@@ -787,7 +787,7 @@
         sessionStorage.clear();
 
         var offers = JSON.parse(sessionStorage.getItem('offers')) || {};
-        
+
         var load_offers = {!! json_encode($offers) !!};
 
         var count = {!! json_encode($product->offer ? $product->offer->offered_quantity : '') !!};
@@ -806,11 +806,11 @@
                     'map_id': load_offers[index].map_id,
                     'image_url' : load_offers[index].image_url,
                 };
-                
+
             }
 
             count--;
-           
+
             html +=   `<div class="airi-product offer_product ${count+1>0 ? 'active': null}" data-product-name="${load_offers[index].product_name }"
                         data-color="${load_offers[index].color_name }" data-size="${load_offers[index].size_name }"
                         data-index="${index }" data-purchase-quantity="${load_offers[index].purchase_quantity }"
@@ -835,11 +835,11 @@
                             </div>
                         </div>
                     </div>`
-            
+
         }
 
         $('.offer').html(html);
-        
+
         // $(".offer").slick('unslick');
 
         elementCarousel();
@@ -910,7 +910,7 @@
                 offer_ids = [];
                 map_ids = [];
                 if (offers) {
-                    var offer = JSON.parse(sessionStorage.getItem("offers"))
+                    var offer = JSON.parse(sessionStorage.getItem("offers"));
                     for (let key in offers) {
                         offer_ids.push(offers[key].offer_id);
                         map_ids.push(offers[key].map_id);
@@ -993,7 +993,7 @@
         // $('.product-size-swatch-btn').click(function () {
         //     var size_id = $(this).attr('data-size-id');
         //     console.log(size_id);
-            
+
         //     $('#cart_size_id').val(size_id);
         // });
 
@@ -1015,11 +1015,11 @@
 
 
                 $elementCarousel.each(function(index, element){
-                    var $this = $(this);	
+                    var $this = $(this);
 
                     // Carousel Options
-                    
-                    var $options = typeof $this.data('slick-options') !== 'undefined' ? $this.data('slick-options') : ''; 
+
+                    var $options = typeof $this.data('slick-options') !== 'undefined' ? $this.data('slick-options') : '';
 
                     var $spaceBetween = $options.spaceBetween ? parseInt($options.spaceBetween, 10) : 0,
                         $spaceBetween_xl = $options.spaceBetween_xl ? parseInt($options.spaceBetween_xl, 10) : 0,
@@ -1058,12 +1058,12 @@
                         $responsiveArray = [];
                         for (var i = 0; i < $responsiveSettingLength; i++) {
                             $responsiveArray[i] = $responsiveSetting[i];
-                            
+
                         }
 
                     // Adding Class to instances
-                    $this.addClass('slick-carousel-'+index);		
-                    $this.parent().find('.slick-dots').addClass('dots-'+index);		
+                    $this.addClass('slick-carousel-'+index);
+                    $this.parent().find('.slick-dots').addClass('dots-'+index);
                     $this.parent().find('.slick-btn').addClass('btn-'+index);
 
                     if($spaceBetween != 0){
@@ -1081,10 +1081,10 @@
                         $this.find('.slick-active').last().addClass('last-active');
                         $slideCount = slick.slideCount;
                         if($slideCount <= $slidesToShow){
-                            $this.children('.slick-dots').hide();	
+                            $this.children('.slick-dots').hide();
                         }
                         var $firstAnimatingElements = $('.slick-slide').find('[data-animation]');
-                        doAnimations($firstAnimatingElements);  
+                        doAnimations($firstAnimatingElements);
                     });
 
                     $this.slick({
@@ -1116,7 +1116,7 @@
                         responsive: $responsiveArray,
                     });
 
-                    
+
 
                     $this.on('beforeChange', function(e, slick, currentSlide, nextSlide) {
                         $this.find('.slick-active').first().removeClass('first-active');
@@ -1211,7 +1211,7 @@
                         </div>`
 
                         });
-                        
+
                         imageHtml = `<div class="multi-images nav-slider">`;
                         imageHtml1 = `<div class="multi-images1 main-slider">`;
 
@@ -1224,7 +1224,7 @@
                     </figure>`
 
                             imageHtml1 += `<figure class="product-gallery__image zoom">
-                    
+
                     <img alt="Products" class="lazy"
                         data-lazy="${window.location.origin}/storage/images/multi-products/${image.image_url}">
 
@@ -1233,7 +1233,7 @@
 
                         imageHtml += `</div>`
                         imageHtml1 += `</div>`
-                        
+
                         $('.product-gallery__wrapper').html(imageHtml1);
 
                         $(".multi-images1").not('.slick-initialized').slick(
@@ -1272,7 +1272,7 @@
                     var size_id = $(element).attr('data-size-id');
                     var prod_id = $('#cart_prod_id').val();
                     var color_id = $('#cart_color_id').val();
-                    
+
                     getSizePrice(size_id, color_id, prod_id);
 
                     var title = $(element).attr('title');
@@ -1285,17 +1285,17 @@
 
                         $('.size_lable').html(title + ' ' +
                             '<strong class="text-danger">Out of Stock</strong>');
-                        
+
                     } else {
 
                         $('#cart_size_id').val(size_id);
-                        
+
                         var item = $('.product-size-swatch-btn').hasClass('active');
 
                         if (item) {
                             $('.product-size-swatch-btn').removeClass('active')
                         }
-                        
+
                         $(element).addClass('active');
                     }
 
@@ -1327,11 +1327,11 @@
                 success: function (result) {
 
                     var success = result.success;
-                    
+
                     if (success) {
-                       
+
                         $('#cart_size_id').val(size_id);
-                        
+
                         $('.mrp').html('<i class="fa fa-inr"></i> ' + success.mrp);
 
                         $('.starting_price').html('<i class="fa fa-inr"></i> ' + success.starting_price);
@@ -1342,7 +1342,7 @@
                     }
                 }
             });
-            
+
     }
 
     function isOfferExists(key) {

@@ -27,12 +27,12 @@
                 <!-- Checkout Area Start -->
 
                 @if(auth('user')->check())
-                
+
                     <div class="col-md-12">
                         <form action="{{ route('order.checkout') }}" method="post" id="formCheckout">
                             @csrf
                             <div class="row">
-            
+
                                 <div class="col-lg-8">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -91,7 +91,7 @@
                                                             {{ $add->pincode }},
                                                         </p>
                                                         @if($add->mobile)
-                                                        <p class="text-info"> 
+                                                        <p class="text-info">
                                                             {{ $add->mobile }}
                                                         </p>
                                                         @else
@@ -99,7 +99,7 @@
                                                             Update Mobile Number
                                                         </p>
                                                         @endif
-                                                        
+
                                                     </div>
                                                     <div class="card-footer">
                                                         <a href="javascript:void(0)"
@@ -177,7 +177,7 @@
                                             </table>
                                         </div>
                                         <div class="checkout-payment">
-                                            
+
                                             <div class="promocode-checkout">
                                                 <div class="faq-tab-wrapper-three">
                                                     <div class="faq-panel">
@@ -301,7 +301,7 @@
                             </div>
                         </form>
                     </div>
-                
+
                 @else
                 <!-- Checkout Area End -->
                 <div class="Checkout_section mt-32">
@@ -453,13 +453,6 @@
                             </div>
                         </div>
 
-                        @if(auth('user')->check() && !empty(auth('user')->user()->mobile))
-
-                        <input type="hidden" name="mobile" value="{{ auth('user')->user()->mobile }}" min="0"
-                            minlength="10" maxlength="10">
-
-                        @else
-
                         <div class="form-row mb--30">
                             <div class="form__group col-12">
                                 <label for="mobile" class="form__label form__label--2">Mobile <span
@@ -468,8 +461,6 @@
                                     placeholder="Mobile Number" required>
                             </div>
                         </div>
-
-                        @endif
 
                         <div class="form-row mb--30">
                             <div class="form__group col-12">
@@ -630,9 +621,9 @@
         $('.order_place').attr('disabled', 'disabled');
         $('.add_address').hide();
 
-        // var pincode = $("input[name='choose_address']:checked").attr('data-pincode');
+        var pincode = $("input[name='choose_address']:checked").attr('data-pincode');
 
-        // $('#pincode').val(pincode);
+        $('#pincode').val(pincode);
         var pincode = $('#pincode').val();
 
         chkPindode(pincode);
@@ -668,7 +659,7 @@
 
                 var address_id = $(this).attr('data-obj-id');
                 $('#txtAddID').val(address_id);
-                $('.remove-address').html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+                $('.remove-address').html('<span class="fa fa-spinner fa-spin"></span> ');
                 $('.remove-address').attr('disabled', 'disabled');
                 $('#formAddDelete').submit();
             }
@@ -678,6 +669,9 @@
         $('.editAddress').click(function () {
 
             var address_id = $(this).attr('data-obj-id');
+
+            $(this).html('<span class="fa fa-spinner fa-spin"></span> ');
+            $(this).attr('disabled', 'disabled');
 
             if (address_id.length > 0) {
 
@@ -770,6 +764,9 @@
 
                             $('#formEdit').html(html);
                             $('#edit-address').modal('show');
+                            $('.editAddress').html('<a href="javascript:void(0)" data-obj-id=' + address_id + 'class="card-link float-right editAddress">Edit</a>');
+                            $('.editAddress').removeAttr('disabled');
+
                         }
                     }
                 });

@@ -311,7 +311,7 @@
 
 
                         <div class="col-md-8 mb-3">
-                            <label>Return Policy <span class="text-danger">*</span></label> <br>
+                            <label>Return Policy </label> <br>
                             <div class="form-check form-check-inline">
                                 <div class="custom-control custom-checkbox my-1 mr-sm-2">
                                     <input type="checkbox" class="custom-control-input" id="within_days"

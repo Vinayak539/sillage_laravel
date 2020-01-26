@@ -395,7 +395,7 @@
                         </div>
                     </div>
 
-                    
+
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="review_status">Review Status <span class="text-danger">*</span></label>
@@ -444,7 +444,7 @@
                     </div>
 
                     <div class="col-md-8 mb-3">
-                        <label>Return Policy <span class="text-danger">*</span></label> <br>
+                        <label>Return Policy </label> <br>
                         <div class="form-check form-check-inline">
                             <div class="custom-control custom-checkbox my-1 mr-sm-2">
                                 <input type="checkbox" class="custom-control-input" id="within_days" name="within_days"
@@ -508,7 +508,7 @@
                             </div>
                         </div>
                     </div>
-{{-- 
+{{--
                     @if(count($product->images))
                     <div class="col-md-12">
                         <label>Other Images</label>
@@ -784,7 +784,7 @@
 <script>
     $(document).ready(function () {
 
-        
+
             var offer_id = $('#offer_id').val();
             if(offer_id.length > 0){
                 $('.offer_div').show();
@@ -1012,7 +1012,7 @@
                 "image_urls[]": {
                     required: "Please Upload Colour Images"
                 },
-                
+
             },
             submitHandler: function (form) {
                 $('.btnSubmit').attr('disabled', 'disabled');

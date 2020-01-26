@@ -128,7 +128,7 @@ class InvoiceController extends Controller
 
             $invoice = TxnOrder::where('id', $id)->with('details', 'user', 'transaction')->firstOrFail();
 
-            // return view('backend.admin.invoices.download', compact('invoice'));
+             return view('backend.admin.invoices.download', compact('invoice'));
 
             $pdf = PDF::loadView('backend.admin.invoices.download', ['invoice' => $invoice]);
 
@@ -144,6 +144,7 @@ class InvoiceController extends Controller
                 return redirect(route('admin.invoices.all'));
             }
 
+            \Log::error(['invoice download' => $ex->getMessage()]);
             connectify('error', 'Error', 'Whoops, Something Went Wrong from our end !');
 
             return redirect(route('admin.invoices.all'));

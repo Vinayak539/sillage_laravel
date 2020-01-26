@@ -125,10 +125,10 @@
                 $(".customCheck[value=" + x.id + "]").attr("checked", "checked");
             }
         }
-        
+
         $("#formRemoveProduct").validate({
              rules: {
-    
+
                 "assign[]": {
                    required: true
                 },
