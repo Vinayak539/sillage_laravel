@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Model\Address;
+use App\Model\Delivery;
 use App\Model\Returnticket;
 use App\Model\SMS;
 use App\Model\Ticket;
@@ -177,10 +178,10 @@ class UserController extends Controller
                 'con_password.required_with' => 'Please Enter Old Password to change password',
             ]);
 
-            if ($validator->fails()) {
-                connectify('error', 'Error', $validator->errors()->first());
-                return back()->withInput();
-            }
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return back()->withInput();
+        }
 
         try {
 
@@ -229,7 +230,7 @@ class UserController extends Controller
 
     public function returnOrder(Request $request, $id)
     {
-       $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'reason'    => 'required|string|max:191',
             'image_url' => 'nullable|image|max:1024|mimes:jpeg,png',
         ],
@@ -241,7 +242,7 @@ class UserController extends Controller
             ]);
 
         if ($request->reason == 'other') {
-           $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), [
                 'other_reason' => 'required|string|max:500',
             ],
                 [
@@ -310,26 +311,36 @@ class UserController extends Controller
 
             $order = TxnOrder::where('id', $request->order_id)->with('user')->firstOrFail();
 
-            $order->update([
-                'status' => 'Order Cancel By Buyer',
-            ]);
+            $res = json_decode(Delivery::cancelOrder($order->id));
 
-            SMS::send($order->user->mobile, 'HNI Lifestyle - Your Order ID : ' . $order->id . ', has been Cancelled successfully,  Login for more detail on ' . url('/'));
+            if ($res->status == true) {
 
-            Mail::send(['html' => 'backend.mails.order-cancel'], ['order' => $order], function ($message) use ($order) {
-                $message->to('support@hnilifestyle.com')->subject('Order has been Cancelled ! [order id : ' . $order->id . ']');
-                $message->from('support@hnilifestyle.com', 'HNI Lifestyle');
-            });
-            connectify('success', 'Order Cancel', 'Order Cancelled Successfully !');
+                $order->update([
+                    'status' => 'Cancelled',
+                ]);
 
-            return redirect(route('user.order', $request->order_id));
+                // SMS::send($order->user->mobile, 'HNI Lifestyle - Your Order ID : ' . $order->id . ', has been Cancelled successfully,  Login for more detail on ' . url('/'));
+
+                Mail::send(['html' => 'backend.mails.order-cancel'], ['order' => $order], function ($message) use ($order) {
+                    $message->to('support@hnilifestyle.com')->subject('Order has been Cancelled ! [order id : ' . $order->id . ']');
+                    $message->from('support@hnilifestyle.com', 'HNI Lifestyle');
+                });
+
+                connectify('success', 'Order Cancel', 'Order Cancelled Successfully !');
+
+                return redirect(route('user.order', $request->order_id));
+            }
+
+            connectify('error', 'Order Cancel', 'Whoops, Something Went wrong, try again later !');
+
+            return back();
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
                 connectify('error', 'Error', 'Whoops, Order Not Found, try again later !');
                 return redirect(route('user.dashboard'));
             }
-            // return $ex->getMessage();
+            return $ex->getMessage();
             connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
 
             return redirect(route('user.dashboard'));
@@ -338,17 +349,17 @@ class UserController extends Controller
 
     public function orderHelp(Request $request, $id)
     {
-       $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'description' => 'required|string',
         ],
             [
                 'description.required' => 'Please Enter your query',
             ]);
 
-            if ($validator->fails()) {
-                connectify('error', 'Error', $validator->errors()->first());
-                return back()->withInput();
-            }
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return back()->withInput();
+        }
         try {
 
             $order = TxnOrder::where('id', $id)->with('user')->firstOrFail();
@@ -386,7 +397,7 @@ class UserController extends Controller
 
     public function review(Request $request)
     {
-       $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'product_id' => 'required|integer|exists:txn_products,id',
             'rating'     => 'required|integer|max:5|min:1',
             'comment'    => 'required|string',
@@ -397,10 +408,10 @@ class UserController extends Controller
                 'product_id.exists'   => 'Product Not Found !',
             ]);
 
-            if ($validator->fails()) {
-                connectify('error', 'Error', $validator->errors()->first());
-                return back()->withInput();
-            }
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return back()->withInput();
+        }
 
         try {
 

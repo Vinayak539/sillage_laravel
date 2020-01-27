@@ -243,8 +243,8 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="condition_id">Condition <span class="text-danger">*</span></label>
-                            <select name="condition_id" id="condition_id" class="form-control" required>
+                            <label for="condition_id">Condition </label>
+                            <select name="condition_id" id="condition_id" class="form-control" >
                                 <option value="">--Select Condition--</option>
                                 @foreach($conditions as $condition)
                                 <option value="{{ $condition->id }}"
@@ -878,10 +878,7 @@
                 material_id: {
                     required: true
                 },
-                condition: {
-                    required: true
-                },
-
+               
                 gst_id: {
                     required: true
                 },
@@ -921,10 +918,7 @@
                 material_id: {
                     required: "Please Select Material"
                 },
-                condition: {
-                    required: "Please Select Condition"
-                },
-
+               
                 gst_id: {
                     required: "Please Select Gst"
                 },

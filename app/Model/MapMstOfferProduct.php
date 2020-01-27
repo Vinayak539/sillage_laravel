@@ -27,4 +27,9 @@ class MapMstOfferProduct extends Model
     {
         return $this->belongsTo(MstSize::class, 'size_id', 'id');
     }
+
+    public static function offer($offer_id)
+    {
+        return self::where('id', $offer_id)->with('product', 'color', 'size')->first();
+    }
 }

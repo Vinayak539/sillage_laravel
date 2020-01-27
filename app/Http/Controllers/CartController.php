@@ -20,7 +20,22 @@ class CartController extends Controller
     }
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'qty' => 'required|min:1|max:4',
+        ],
+            [
+                'qty.required' => 'Please Select Atleast One Quantity',
+                'qty.min' => 'Please Select Atleast One Quantity',
+                'qty.max' => 'Only 4 Quantity of product is allowed at a time'
+            ]);
+
+        if ($validator->fails()) {
+            connectify('error', 'Checkout Error', $validator->errors()->first());
+            return redirect(route('checkout'))->withInput();
+        }
+
         try {
+
             $product = TxnProduct::where('id', $request->prod_id)->firstOrFail();
 
             $size = MstSize::where('id', $request->size_id)->first();
@@ -48,9 +63,9 @@ class CartController extends Controller
 
                         if (!$validateSelectedOffer) {
 
-                            connectify('error', 'Invalid Offer', 'Purchase ' . $product_offer->purchase_quantity . ' Product(s) & get ' . $product_offer->offered_quantity . ' Product free');
+                            connectify('error', 'Invalid Offer', 'On Purchase of ' . $product_offer->purchase_quantity * $request->qty . ' Product(s) Select ' . $product_offer->offered_quantity * $request->qty . ' offer Product(s)');
 
-                            return back();
+                            return back()->withInput($request->all());
                         }
                     }
                 }

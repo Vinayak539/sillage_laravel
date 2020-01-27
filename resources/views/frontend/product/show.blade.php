@@ -29,19 +29,13 @@
                         <div class="product-gallery vertical-slide-nav">
                             <div class="product-gallery__thumb">
                                 <div class="product-gallery__thumb--image">
-                                    {{-- <div class="multi-images">
-
-
-                                    </div> --}}
+                                    
                                 </div>
                             </div>
                             <div class="product-gallery__large-image">
                                 <div class="gallery-with-thumbs">
                                     <div class="product-gallery__wrapper">
-                                        {{-- <div class="multi-images1">
-
-
-                                        </div> --}}
+                                      
                                         <div class="product-gallery__actions">
                                             <button class="action-btn btn-zoom-popup"><i class="fa fa-search-plus"
                                                     aria-hidden="true"></i></button>
@@ -99,8 +93,7 @@
                             <span>{{ $product->category->name }}</span>
                         </a>
                         @endif
-
-
+                        {{-- 
                         @if($product->isCodAvailable)
                         <span class="product-stock in-stock float-right text-success">
                             <i class="fa fa-check-circle-o" aria-hidden="true"></i>
@@ -111,7 +104,8 @@
                             <i class="fa fa-ban" aria-hidden="true"></i>
                             Cash on Delivery Not Available
                         </span>
-                        @endif
+                        @endif 
+                        --}}
 
                     <div class="clearfix"></div>
 
@@ -190,7 +184,7 @@
                     <form action="#" class="form--action mt--20 mb--30 mb-sm--20">
                         <div class="product-action flex-row align-items-center">
                             <div class="quantity">
-                                <input type="number" class="quantity-input" name="qty" id="qty" value="1" min="1">
+                                <input type="number" class="quantity-input" name="qty" id="qty" value="{{ old('qty') ? old('qty') : '1'  }}" min="1" max="4">
                             </div>
 
                             <div id="button-box" style="margin-right: 10px;">
@@ -511,86 +505,6 @@
     </div>
 </div>
 <!-- Selected Offer modal end -->
-{{--
-<!-- offer modal start -->
-<div class="modal fade offerModal" id="offer-product">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h5 class="modal-title">Offer Product</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-            <!-- Modal body -->
-            <div class="modal-body">
-                <div class="ptb--10 plr--10">
-                    <div class="offer-product-section row">
-                        <div class="col-md-3 mb--20">
-                            <img src="{!! asset('storage/images/products').'/'.$product->image_url !!}" alt="Products"
-                                height="100px">
-                        </div>
-                        <div class="col-md-9">
-                            <h5>{{ $product->title }}</h5>
-                        </div>
-                    </div>
-                    <form action="#" class="variation-form mb--35">
-                        @if(count($colorsSizes) > 0)
-                        <div class="product-color-variations mb--20">
-                            <p class="swatch-label">Color: <strong class="swatch-label color-label"></strong></p>
-                            <div class="product-color-swatch variation-wrapper">
-                                @foreach ($colorsSizes as $item)
-                                <div class="swatch-wrapper" style="background: {{ $item->color_name }}">
-                                    <a class="product-color-swatch-btn variation-btn {{ $item->color_name }}"
-                                        data-toggle="tooltip" data-placement="top" title="{{ $item->color_name }}"
-                                        data-color-id="{{ $item->color_id }}" data-mrp="{{ $item->mrp }}"
-                                        data-stock="{{ $item->stock }}" data-map-id="{{ $item->map_id }}"
-                                        data-product-id="{{ $product->id }}" data-title="{{ $item->color_name }}">
-                                        <span class="product-color-swatch-label">{{ $item->color_name }}</span>
-                                    </a>
-                                </div>
-                                @endforeach
-
-                            </div>
-                        </div>
-                        @endif
-                        @if(count($product->sizes) > 0)
-                        <div class="product-size-variations">
-                            <p class="swatch-label">Size: <strong class="swatch-label size_lable"></strong></p>
-                            <div class="product-size-swatch variation-wrapper">
-                                @foreach ($product->sizes as $item)
-                                <div class="swatch-wrapper">
-                                    <a class="product-size-swatch-btn variation-btn size_btn" data-toggle="tooltip"
-                                        data-placement="top" title="{{ $item->title }}"
-                                        data-size-id="{{ $item->size_id }}">
-                                        <span class="product-size-swatch-label">{{ $item->title }}</span>
-                                    </a>
-                                </div>
-                                @endforeach
-                            </div>
-                        </div>
-                        @endif
-                    </form>
-                    <form action="#" class="form--action mt--20 mb--30 mb-sm--20">
-                        <div class="product-action flex-row align-items-center">
-                            <div class="quantity" style="height: 5.7rem;width: 10rem;">
-                                <input type="number" class="quantity-input" name="qty" id="qty" value="1" min="1">
-                            </div>
-
-                            <div>
-                                <a href="javascript:void(0)" class="button-cls sss apply-offer"
-                                    style="opacity: 1;text-align: center;">Apply</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- offer modal end --> --}}
-
 
 <form action="{{ route('cart.store') }}" method="post" id="cartForm">
     @csrf

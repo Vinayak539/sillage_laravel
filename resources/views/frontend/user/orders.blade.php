@@ -158,13 +158,17 @@
                             @php $statusBoolean = true @endphp
 
                             @foreach($order->details as $detail)
+
+                            @php 
+                                $image = \App\Model\TxnImage::image($detail->product_id, $detail->color_id);
+                            @endphp
                             <div class="col-md-12 mt--10">
                                 <div class="order_sec">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="pro_sec">
                                                 <div class="img">
-                                                    <img class="lazy" data-original="{!! asset('storage/images/products/'.$detail->product->image_url) !!}"
+                                                    <img class="lazy" data-original="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}"
                                                         alt="{{ $detail->product->title }}" />
                                                 </div>
                                                 <div class="content">
@@ -223,7 +227,7 @@
                                             </p>
                                         </div>
                                         @if($order->return_status === null &&
-                                        $order->status === 'delivered' &&
+                                        $order->status === 'Delivered' &&
                                         $order->status !== 'Cancelled')
                                         <div class="col-sm-3">
                                             <a href="javascript:void(0)" class="return-btn"
@@ -233,8 +237,8 @@
                                             </a>
                                         </div>
                                         @endif @if($order->return_status ===
-                                        null && $order->status != 'delivered' &&
-                                        $order->status != 'Cancelled') @if($order->status != 'shipped')
+                                        null && $order->status != 'Delivered' &&
+                                        $order->status != 'Cancelled') @if($order->status != 'Shipped')
                                         <a href="javascript:void(0);" class="cancelBtn" data-obj-id="{{ $order->id }}">
                                             <i class="fa fa-times" aria-hidden="true"></i>
                                             Cancel

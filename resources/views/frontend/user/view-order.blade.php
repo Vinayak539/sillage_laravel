@@ -176,7 +176,8 @@
                             <a href="" data-toggle="modal" data-target="#review"><i class="fa fa-star"
                                 aria-hidden="true"></i>
                             Rate & Review</a>
-                            @if($order->return_status === null && $order->status != 'Delivered')
+                            @if($order->return_status === null && $order->status != 'Delivered' &&
+                                        $order->status != 'Cancelled') 
                                 @if($order->status != 'Shipped')
                                 <a href="javascript:void(0);" class="cancelBtn" data-obj-id="{{ $order->id }}">
                                     <i class="fa fa-times" aria-hidden="true"></i>
@@ -192,7 +193,6 @@
                                 </p>
                                 @endif
                             @endif
-
 
                             @if($order->return_status === null && $order->status === 'Delivered')
                             <a href="javascript:void(0);" class="returnBtn" data-toggle="modal"
@@ -213,12 +213,13 @@
                                 $total += $detail->quantity*$detail->mrp;
                                 $offers = json_decode($detail->offers);
                                 $exp_offers = explode(",", $offers);
+                                $image = \App\Model\TxnImage::image($detail->product_id, $detail->color_id);
                             @endphp
                             <div class="row mb-3">
                                 <div class="col-sm-5">
                                     <div class="pro_sec">
                                         <div class="img">
-                                            <img data-original="{!! asset('/storage/images/products/' . $detail->product->image_url) !!}"
+                                            <img data-original="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}"
                                                 alt="{{ $detail->product->title }}" class="lazy">
                                         </div>
                                         <div class="content">
@@ -233,7 +234,7 @@
                                                 @if(!empty($exp_offers))
                                                     @foreach($exp_offers as $ofr)
                                                         @php
-                                                            $offer = \App\Model\MapMstOfferProduct::where('id', $ofr)->with('product', 'color', 'size')->first();
+                                                            $offer = \App\Model\MapMstOfferProduct::offer($ofr);
                                                         @endphp
 
                                                         + {{ $offer->product->title }} [{{ $offer->size->title }} ML] <br />
@@ -425,6 +426,8 @@
 
 <form id="formCancel" method="POST" action="{{ route('user.orders.cancel') }}">
     @csrf
+    <input type="hidden" name="order_id" id="txtCancelOrder">
+
 </form>
 
 @endsection
@@ -539,10 +542,12 @@
         $('.cancelBtn').click(function () {
 
             if (window.confirm('Are you sure want to cancel order ?')) {
-                var action = $("#formCancel").attr("action") + $(this).attr("data-obj-id");
-                $("#formCancel").attr("action", action);
+                $("#txtCancelOrder").val($(this).attr("data-obj-id"));
                 $("#formCancel").submit();
-                $(this).html('wait...');
+                $(this).attr('disabled', 'disabled');
+                $(this).html(
+                    '<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only">Loading...</span>'
+                );
             }
         });
     });

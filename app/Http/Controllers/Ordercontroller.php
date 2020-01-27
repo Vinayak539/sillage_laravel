@@ -69,6 +69,13 @@ class OrderController extends Controller
             return redirect(route('checkout'))->withInput();
         }
 
+        if (Cart::getContent()->count() > 4) {
+
+            connectify('error', 'Quantity', 'Whoops, Only 4 Quantity is Allowed at a time !');
+
+            return redirect(route('checkout'));
+        }
+
         $res = Delivery::verify($request->pincode);
 
         $res1 = json_decode($res, true);

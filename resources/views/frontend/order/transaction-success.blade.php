@@ -51,13 +51,13 @@
                                 $total += $detail->quantity*$detail->mrp;
                                 $offers = json_decode($detail->offers);
                                 $exp_offers = explode(",", $offers);
+                                $image = \App\Model\TxnImage::image($detail->product_id, $detail->color_id);
                             @endphp
                             <div class="row mb-3">
                                 <div class="col-sm-5">
                                     <div class="pro_sec">
                                         <div class="img">
-                                            <img data-original="{!! asset('/storage/images/products/' . $detail->product->image_url) !!}"
-                                                alt="{{ $detail->product->title }}" class="lazy">
+                                            <img data-original="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}" alt="{{ $detail->product->title }}" class="lazy">
                                         </div>
                                         <div class="content">
                                             <p class="title">
@@ -73,7 +73,7 @@
                                                 @if(!empty($exp_offers))
                                                     @foreach($exp_offers as $ofr)
                                                         @php
-                                                            $offer = \App\Model\MapMstOfferProduct::where('id', $ofr)->with('product', 'color', 'size')->first();
+                                                            $offer = \App\Model\MapMstOfferProduct::offer($ofr);
                                                         @endphp
 
                                                         + {{ $offer->product->title }} [{{ $offer->size->title }} ML] <br />

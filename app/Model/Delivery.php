@@ -33,7 +33,6 @@ class Delivery
     {
         try {
 
-            // $baseUrl = 'https://staging-express.delhivery.com/api/packages/json/?ref_nos=5004&verbose=0&token=' . self::$logistic_api_token;
             $baseUrl = 'https://staging-express.delhivery.com/api/packages/json/?ref_nos=' . $order . '&verbose=1&token=' . self::$logistic_api_token;
 
             $client = new \GuzzleHttp\Client([
@@ -55,7 +54,7 @@ class Delivery
         $original_array = array(
             array(
                 "city"         => $order->city,
-                "name"         => $user->name,
+                "name"         => $order->user_name,
                 "pin"          => $order->pincode,
                 "country"      => "India",
                 "phone"        => $user->mobile,
@@ -107,7 +106,7 @@ class Delivery
         $original_array = array(
             array(
                 "city"                 => $order->city,
-                "name"                 => $user->name,
+                "name"                 => $order->user_name,
                 "pin"                  => $order->pincode,
                 "country"              => "India",
                 "phone"                => $user->mobile,
@@ -155,5 +154,47 @@ class Delivery
             \Log::info($response);
             return;
         }
+    }
+
+    public static function cancelOrder($order_id)
+    {
+        try {
+
+            $details = array(
+                'cancellation' => 'true',
+                'waybill'      => trim($order_id),
+            );
+
+            $data = json_encode($details);
+
+            $curl = curl_init('https://staging-express.delhivery.com/api/p/edit');
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_ENCODING, '');
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                "Accept: application/json",
+                "Authorization: Token " . self::$logistic_api_token,
+                "Content-Type: application/json",
+            ));
+
+            $response = curl_exec($curl);
+            $err      = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+                \Log::info('Error : ' . $err);
+                return;
+            } else {
+                \Log::info($response);
+                return $response;
+            }
+
+        } catch (\Exception $ex) {
+            \Log::info('Cancel Order Error : ' . $ex->getMessage());
+            return;
+        }
+
     }
 }

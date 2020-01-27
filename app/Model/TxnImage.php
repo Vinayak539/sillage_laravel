@@ -14,4 +14,9 @@ class TxnImage extends Model
     {
         return $this->belongsTo(TxnProduct::class);
     }
+
+    public static function image($product_id,$color_id)
+    {
+        return self::select('image_url')->where('color_id', $color_id)->where('product_id', $product_id)->first();
+    }
 }
