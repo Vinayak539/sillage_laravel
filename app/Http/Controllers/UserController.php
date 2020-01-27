@@ -314,7 +314,7 @@ class UserController extends Controller
                 'status' => 'Order Cancel By Buyer',
             ]);
 
-            SMS::send($order->user->mobile, 'HNI Lifestyle - Your Order ID : ' . $order->id . ', has been cancelled successfully,  Login for more detail on ' . url('/'));
+            SMS::send($order->user->mobile, 'HNI Lifestyle - Your Order ID : ' . $order->id . ', has been Cancelled successfully,  Login for more detail on ' . url('/'));
 
             Mail::send(['html' => 'backend.mails.order-cancel'], ['order' => $order], function ($message) use ($order) {
                 $message->to('support@hnilifestyle.com')->subject('Order has been Cancelled ! [order id : ' . $order->id . ']');
@@ -329,7 +329,7 @@ class UserController extends Controller
                 connectify('error', 'Error', 'Whoops, Order Not Found, try again later !');
                 return redirect(route('user.dashboard'));
             }
-            return $ex->getMessage();
+            // return $ex->getMessage();
             connectify('error', 'Error', 'Whoops, Something Went Wrong from our end, try again later !');
 
             return redirect(route('user.dashboard'));

@@ -62,8 +62,8 @@
                                                 </td>
 
                                                 <td class="product-thumbnail text-left">
-                                                    <img src="{!! asset('storage/images/products/'.$item->attributes->image_url) !!} "
-                                                        alt="{{ $item->name }}">
+                                                    <img src="{!! asset('storage/images/multi-products/'.$item->attributes->color_image) !!} "
+                                                        alt="{{ $item->name }}" width="50px">
                                                 </td>
                                                 <td class="product-name text-left wide-column">
                                                     <h3>

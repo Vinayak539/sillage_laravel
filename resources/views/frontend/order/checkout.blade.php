@@ -161,12 +161,21 @@
                                                         <th>Subtotal</th>
                                                         <td class="text-right">₹{{ Cart::getTotal() }}</td>
                                                     </tr>
+                                                    
+                                                    <tr class="discount">
+                                                        <th>Discount</th>
+                                                        <td class="text-right">
+                                                            <span id="discount_span"> 0</span>
+                                                        </td>
+                                                    </tr>
+
                                                     <tr class="shipping">
                                                         <th>Shipping</th>
                                                         <td class="text-right">
                                                             <span> ₹60</span>
                                                         </td>
                                                     </tr>
+                                                    
                                                     <tr class="order-total">
                                                         <th>Order Total</th>
                                                         <td class="text-right"><span
@@ -182,7 +191,7 @@
                                                 <div class="faq-tab-wrapper-three">
                                                     <div class="faq-panel">
                                                         <div class="panel-group theme-accordion" id="accordion">
-                                                            <div class="panel">
+                                                            {{-- <div class="panel">
                                                                 <div class="panel-heading"  id="heading1">
                                                                     <h6 class="panel-title">
                                                                         <a data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
@@ -228,22 +237,22 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            </div> --}}
                                                             <div class="panel">
                                                                 <div class="panel-heading"  id="heading2">
                                                                     <h6 class="panel-title">
-                                                                        <a class="collapsed" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-                                                                            Enter Shop Code!</a>
+                                                                        <a class="collapsed" data-toggle="collapse" data-target="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                                                                            Enter Promocode !</a>
                                                                     </h6>
                                                                 </div>
-                                                                <div id="collapse2" class="panel-collapse collapse" aria-labelledby="heading2" data-parent="#accordion">
+                                                                <div id="collapse2" class="panel-collapse collapse show" aria-labelledby="heading2" data-parent="#accordion">
                                                                     <div class="panel-body">
                                                                         <div class="check">
                                                                             <div class="input-group">
                                                                                 <input type="text" name="discountcode"
                                                                                     id="discountcode"
                                                                                     class="single-input-wrapper check-availibility discountcode"
-                                                                                    placeholder="Enter Shop Code"
+                                                                                    placeholder="Enter Promocode"
                                                                                     style="border-right: none;margin-bottom: 0;">
                                                                                 <div class="input-group-append">
                                                                                     <button type="button"
@@ -275,6 +284,7 @@
                                                     </label>
                                                 </div>
                                             </div>
+
                                             @if($isCodAvailable)
                                             <div class="payment-group mb--10">
                                                 <div class="payment-radio">
@@ -1056,43 +1066,59 @@
         });
 
         $('.verify_promo').click(function (e) {
+
             e.preventDefault();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('input[name="_token"]').val()
-                }
-            });
-            $(this).html('Wait...');
-            $(this).attr('disabled', 'disabled');
-            $.ajax({
-                url: "{{ route('verify.promocode') }}",
-                method: 'POST',
-                data: {
-                    promocode: $('.promocode').val(),
-                    discountcode: $('#discountcode').val(),
-                },
-                success: function (result) {
-                    if (result.success) {
-                        $('.promo_success').html(result.success);
-                        $('.verify_promo').html('Apply');
-                        $('.verify_promo').removeAttr('disabled', 'disabled');
-                        $('.promo_error').hide();
-                        $('.promo_success').show();
-                        setTimeout(function () {
-                            $('.promo_success').fadeOut();
-                        }, 4000);
-                    } else {
-                        $('.promo_success').hide();
-                        $('.promo_error').show();
-                        $('.promo_error').html(result.error);
-                        $('.verify_promo').html('Apply');
-                        $('.verify_promo').removeAttr('disabled', 'disabled');
-                        setTimeout(function () {
-                            $('.promo_error').fadeOut();
-                        }, 4000);
+            
+            var promo = $('#discountcode').val();
+            
+            if(promo == '' ){
+                
+                $('.promo_error').html('Please Enter Promocode !');
+
+            }else{
+
+                $(this).html('<span class="fa fa-spinner fa-spin"></span>');
+                $(this).attr('disabled', 'disabled');
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('input[name="_token"]').val()
                     }
-                }
-            });
+                });
+                
+                $.ajax({
+                    url: "{{ route('verify.promocode') }}",
+                    method: 'POST',
+                    data: {
+                        promocode: $('.promocode').val(),
+                        discountcode: $('#discountcode').val(),
+                    },
+                    success: function (result) {
+                        if (result.success) {
+                            $('.promo_success').html(result.success);
+                            $('.verify_promo').html('Apply');
+                            $('.verify_promo').removeAttr('disabled', 'disabled');
+                            $('.promo_error').hide();
+                            $('.promo_success').show();
+                            setTimeout(function () {
+                                $('.promo_success').fadeOut();
+                            }, 4000);
+                            $('#discount_span').html("{{ Cart::getTotal() * 0.10 }}");
+                            $('.order-total-ammount').html("{{ (Cart::getTotal() - Cart::getTotal() * 0.10) + 60 }}");
+                        } else {
+                            $('.promo_success').hide();
+                            $('.promo_error').show();
+                            $('.promo_error').html(result.error);
+                            $('.verify_promo').html('Apply');
+                            $('.verify_promo').removeAttr('disabled', 'disabled');
+                            setTimeout(function () {
+                                $('.promo_error').fadeOut();
+                            }, 4000);
+                        }
+                    }
+                });
+            }
+            
         });
 
     });

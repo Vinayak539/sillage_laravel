@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Model\MapColorSize;
 use App\Model\MapOfferProduct;
 use App\Model\MstSize;
+use App\Model\TxnImage;
 use App\Model\TxnProduct;
 use Cart;
 use Illuminate\Http\Request;
@@ -25,6 +26,8 @@ class CartController extends Controller
             $size = MstSize::where('id', $request->size_id)->first();
 
             $prodsizeColor = MapColorSize::where('color_id', $request->color_id)->where('product_id', $request->prod_id)->where('size_id', $request->size_id)->where('status', true)->with('color')->first();
+
+            $image = TxnImage::where('color_id', $request->color_id)->where('product_id', $request->prod_id)->first();
 
             if ($prodsizeColor) {
 
@@ -86,6 +89,7 @@ class CartController extends Controller
                         'isCodAvailable' => $product->isCodAvailable,
                         'offer_map_id'   => $exp_offer[0],
                         'offers'         => json_encode($request->offers),
+                        'color_image'    => $image->image_url
                     ),
                 ));
 

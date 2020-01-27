@@ -176,27 +176,25 @@
                             <a href="" data-toggle="modal" data-target="#review"><i class="fa fa-star"
                                 aria-hidden="true"></i>
                             Rate & Review</a>
-                            @if($order->return_status === null && $order->status != 'delivered' && $order->status !=
-                            'Order Cancel By Buyer')
-                            @if($order->status != 'shipped')
-                            <a href="javascript:void(0);" class="cancelBtn" data-obj-id="{{ $order->id }}">
-                                <i class="fa fa-times" aria-hidden="true"></i>
-                                Cancel
-                            </a>
-                            @else
-                            <a href="javascript:void(0);" class="cancelBtn" data-obj-id="{{ $order->id }}">
-                                <i class="fa fa-times" aria-hidden="true"></i>
-                                Cancel
-                            </a>
-                            <p>
-                                <strong class="text-danger">Note : Extra Shipping Charges will be charged.</strong>
-                            </p>
-                            @endif
+                            @if($order->return_status === null && $order->status != 'Delivered')
+                                @if($order->status != 'Shipped')
+                                <a href="javascript:void(0);" class="cancelBtn" data-obj-id="{{ $order->id }}">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                    Cancel
+                                </a>
+                                @else
+                                <a href="javascript:void(0);" class="cancelBtn" data-obj-id="{{ $order->id }}">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                    Cancel
+                                </a>
+                                <p>
+                                    <strong class="text-danger">Note : Extra Shipping Charges will be charged.</strong>
+                                </p>
+                                @endif
                             @endif
 
 
-                            @if($order->return_status === null && $order->status === 'delivered' && $order->status !==
-                            'Order Cancel By Buyer')
+                            @if($order->return_status === null && $order->status === 'Delivered')
                             <a href="javascript:void(0);" class="returnBtn" data-toggle="modal"
                                 data-target="#orderReturn"><i class="fa fa-refresh" aria-hidden="true"></i>
                                 Return</a>
@@ -425,7 +423,7 @@
 
 {{-- Review Model End --}}
 
-<form id="formCancel" method="POST" action="/myaccount/order/cancel/">
+<form id="formCancel" method="POST" action="{{ route('user.orders.cancel') }}">
     @csrf
 </form>
 

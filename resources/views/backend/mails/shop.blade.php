@@ -235,6 +235,15 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td>
+                            Link:
+                        </td>
+                        <td>
+                            {{ route('shop.login') }}
+                        </td>
+                    </tr>
+
                 </table>
             </div>
         </div>

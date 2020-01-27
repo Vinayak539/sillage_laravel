@@ -127,7 +127,7 @@ class OrderController extends Controller
 
             $request['tbt'] = round($total - $totalGst, 2);
 
-            $request['discount'] = $is_valid_promocode ? $request->tbt * 0.10 : 0;
+            $request['discount'] = $is_valid_promocode ? $total * 0.10 : 0;
 
             if ($total < 1000) {
                 $total = $total + $request->shipingcharge;
