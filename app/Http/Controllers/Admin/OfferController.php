@@ -226,8 +226,9 @@ class OfferController extends Controller
     public function getColors(Request $request)
     {
 
-        $colors = MapColorSize::where('product_id', $request->prod_id)->status('status', true)
+        $colors = MapColorSize::where('product_id', $request->prod_id)->where('status', true)
             ->with('color')
+            ->groupBy('color_id')
             ->get();
 
         $sizes = MapProductMstSize::where('product_id', $request->prod_id)

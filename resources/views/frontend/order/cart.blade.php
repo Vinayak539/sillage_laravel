@@ -82,7 +82,12 @@
                                                         <span class="money">₹{{ $item->price }}</span>
                                                     </span>
                                                 </td>
-                                                <td class="product-quantity">
+                                                <td class="product-price">
+                                                    <span class="product-price-wrapper">
+                                                        <span class="money">{{ $item->quantity }}</span>
+                                                    </span>
+                                                </td>
+                                                {{-- <td class="product-quantity">
                                                     <div class="quantity">
                                                         <input type="number" class="quantity-input" name="qty"
                                                             value="{{ $item->quantity }}" min="1"
@@ -90,7 +95,7 @@
                                                             data-index="{{ $item->id }}"
                                                             data-stock="{{ $item->attributes->stock }}" autofocus>
                                                     </div>
-                                                </td>
+                                                </td> --}}
                                                 <td class="product-total-price">
                                                     <span class="product-price-wrapper">
                                                         <span

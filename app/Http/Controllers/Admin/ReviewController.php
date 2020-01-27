@@ -110,7 +110,7 @@ class ReviewController extends Controller
         try {
 
             $review = TxnReview::where('id', $id)->firstOrFail();
-            $products = TxnProduct::where('status', true)->orderBy('id', 'DESC')->get();
+            $products = TxnProduct::where('status', true)->where('review_status', true)->orderBy('id', 'DESC')->get();
             return view('backend.admin.reviews.edit', compact('review', 'products'));
 
         } catch (\Exception $ex) {

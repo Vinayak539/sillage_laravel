@@ -139,8 +139,12 @@
                         @endif
                         @if(count($product->sizes) > 0)
                         <div class="product-size-variations">
-                            <p class="swatch-label">Size: <strong class="swatch-label size_lable"></strong> <span class="pull-right cursor-pointer" data-toggle="modal"
-                                data-target="#sizeChart"> SIZE CHART <i class="fa fa-angle-double-right"></i></span></p>
+                            <p class="swatch-label">Size: <strong class="swatch-label size_lable"></strong> 
+                                @if($product->category ? $product->category->name != 'Perfumes' : '')
+                                <span class="pull-right cursor-pointer" data-toggle="modal"
+                                data-target="#sizeChart"> SIZE CHART <i class="fa fa-angle-double-right"></i></span>
+                                @endif
+                            </p>
                             <div class="product-size-swatch variation-wrapper">
                                 @foreach ($product->sizes as $item)
                                 <div class="swatch-wrapper">
@@ -231,7 +235,7 @@
 
                     {{-- description and review start --}}
                     <div class="product-data-tab border-bottom pb--40 pb-md--30 pb-sm--20 tab-style-4">
-                        @if(count($product->reviews))
+                        @if(count($product->reviews) && $product->review_status)
                         <div class="nav nav-tabs product-data-tab__head mb--40 mb-sm--30" id="product-tab"
                             role="tablist">
                             <a class="product-data-tab__link nav-link active" id="nav-description-tab"
@@ -334,7 +338,7 @@
                                             <div class="review__container">
 
                                                 <img alt="Review Avatar" class="review__avatar lazy"
-                                                    data-original="{!! asset('assets/img/others/comment-icon-2.png') !!}">
+                                                    data-original="{!! asset('admin/img/admin2.png') !!}">
 
                                                 <div class="review__text">
                                                     <div class="product-rating float-right">
@@ -820,7 +824,7 @@
                             <figure class="product-image">
                                 <div class="product-image--holder">
                                     <a href="javascript:void(0)">
-                                        <img src="${window.location.origin + '/storage/images/products/' + load_offers[index].image_url}"
+                                        <img src="${window.location.origin + '/storage/images/multi-products/' + load_offers[index].image_url}"
                                             alt="Product Image">
                                     </a>
                                 </div>
@@ -888,7 +892,7 @@
                         <h6>Name : ${offers[key].name} </h6>
                         <h6>Color : ${offers[key].color}</h6>
                         <h6>Size : ${offers[key].size}</h6>
-                        <h6>Image : <img src="${window.location.origin + '/storage/images/products/' + offers[key].image_url}" width="50px"> </h6>
+                        <h6>Image : <img src="${window.location.origin + '/storage/images/multi-products/' + offers[key].image_url}" width="50px"> </h6>
                     </div>`;
                 }
                 $('.offer_section').html(html);
@@ -1248,6 +1252,9 @@
                         );
 
                         $('.product-size-swatch').html(html);
+
+                        $('.product-size-swatch-btn:first').addClass('active');
+
 
                         attachClickListener('.size_btn');
 

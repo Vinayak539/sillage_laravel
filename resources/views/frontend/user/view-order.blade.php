@@ -211,18 +211,37 @@
                         <div class="order_sec">
                             @php $total = 0; @endphp
                             @foreach($order->details as $detail)
-                            @php $total += $detail->quantity*$detail->mrp; @endphp
+                            @php 
+                                $total += $detail->quantity*$detail->mrp;
+                                $offers = json_decode($detail->offers);
+                                $exp_offers = explode(",", $offers);
+                            @endphp
                             <div class="row mb-3">
                                 <div class="col-sm-5">
                                     <div class="pro_sec">
                                         <div class="img">
-                                            <img src="/storage/images/products/{{ $detail->product->image_url }}"
-                                                alt="{{ $detail->product->title }}">
+                                            <img data-original="{!! asset('/storage/images/products/' . $detail->product->image_url) !!}"
+                                                alt="{{ $detail->product->title }}" class="lazy">
                                         </div>
                                         <div class="content">
-                                            <p class="title">{{ $detail->product->title }}</p>
+                                            <p class="title"><a href="/product/{{ $detail->product->slug_url }}">{{ $detail->product->title }}</a></p>
+                                            <p>
+                                                {{ $detail->size ? 'Size: ' . $detail->size->title : '' }} <br>
+                                                {{ $detail->color ? 'Colour: ' . $detail->color->title : '' }} <br>
+                                            </p>
                                             <p>Price : {{ $detail->mrp }}</p>
                                             <p>Qty : {{ $detail->quantity }}</p>
+                                            <p>
+                                                @if(!empty($exp_offers))
+                                                    @foreach($exp_offers as $ofr)
+                                                        @php
+                                                            $offer = \App\Model\MapMstOfferProduct::where('id', $ofr)->with('product', 'color', 'size')->first();
+                                                        @endphp
+
+                                                        + {{ $offer->product->title }} [{{ $offer->size->title }} ML] <br />
+                                                    @endforeach
+                                                @endif
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -234,9 +253,6 @@
                                     <p class="delivery">Delivered by
                                         {{ date('M, d', strtotime($order->delivery_date)) }}</p>
                                     @endif
-                                    <p class="padding10">Return policy valid till
-                                        {{ date('M, d', strtotime('+7 days', strtotime(str_replace('/', '-', \Carbon\Carbon::now())))) }}
-                                    </p>
                                 </div>
                             </div>
                             @endforeach

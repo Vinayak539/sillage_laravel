@@ -145,8 +145,8 @@
                     <tr>
                         <th>Image Uploaded</th>
                         <td>
-                            <a href="/storage/images/order-returns/{{ $order->image_url }}" target="_blank">
-                                <img src="/storage/images/order-returns/{{ $order->image_url }}"
+                            <a href="{!! asset('/storage/images/order-returns/' . $order->image_url) !!}" target="_blank">
+                                <img src="{!! asset('/storage/images/order-returns/' . $order->image_url) !!}"
                                     alt="Return Product Image" width="50">
                             </a>
                         </td>
@@ -162,13 +162,12 @@
         <div class="card-header bg-dark text-white-all">
             <h4>Order Information</h4>
         </div>
-        <div class="card-body">
+        <div class="card-body table-responsive">
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Image</th>
                         <th>Product Name</th>
-                        <th>Colour & Size</th>
                         <th>MRP</th>
                         <th>Quantity</th>
                         <th>Total</th>
@@ -178,17 +177,34 @@
                 <tbody>
                     @foreach($order->details as $detail)
 
+                    @php
+                        $offers = json_decode($detail->offers);
+                        $exp_offers = explode(",", $offers);
+                    @endphp
                     <tr>
                         <td>
                             <a href="{{ asset('/storage/images/products/'. $detail->product->image_url) }}"
                                 target="_blank"><img
-                                    src="{{ asset('/storage/images/products/'. $detail->product->image_url) }}"
-                                    alt="{{ $detail->product->title }}" width="50" class="img img-responsive"></a>
+                                    data-original="{{ asset('/storage/images/products/'. $detail->product->image_url) }}"
+                                    alt="{{ $detail->product->title }}" width="50" class="img img-responsive lazy"></a>
                         </td>
-                        <td>{{ $detail->product->title }}</td>
                         <td>
+                            {{ $detail->product->title }} <br>
+
                             {{ $detail->size ? 'Size: ' . $detail->size->title : '' }} <br>
                             {{ $detail->color ? 'Colour: ' . $detail->color->title : '' }}
+
+                            @if(!empty($exp_offers))
+                            <br>
+                            <br>
+                                @foreach($exp_offers as $ofr)
+                                    @php
+                                        $offer = \App\Model\MapMstOfferProduct::where('id', $ofr)->with('product', 'color', 'size')->first();
+                                    @endphp
+
+                                    + {{ $offer->product->title }} [{{ $offer->size->title }} ML] <br />
+                                @endforeach
+                            @endif
                         </td>
                         <td>{{ $detail->mrp }}</td>
                         <td>{{ $detail->quantity }}</td>
@@ -198,7 +214,7 @@
                     @endforeach
 
                     <tr>
-                        <th colspan="6" class="bg-silver text-right text-uppercase">
+                        <th colspan="5" class="bg-silver text-right text-uppercase">
                             <p>Total Amount : &#8377; {{ $order->tbt }}</p>
                             <p>+ CGST : &#8377; {{ round($order->tax/2, 2) }}</p>
                             <p>+ SGST : &#8377; {{ round($order->tax/2, 2) }}</p>
