@@ -824,7 +824,7 @@
                             <figure class="product-image">
                                 <div class="product-image--holder">
                                     <a href="javascript:void(0)">
-                                        <img src="${window.location.origin + '/storage/images/multi-products/' + load_offers[index].image_url}"
+                                        <img src="${window.location.origin + '/storage/images/products/' + load_offers[index].image_url}"
                                             alt="Product Image">
                                     </a>
                                 </div>
@@ -892,7 +892,7 @@
                         <h6>Name : ${offers[key].name} </h6>
                         <h6>Color : ${offers[key].color}</h6>
                         <h6>Size : ${offers[key].size}</h6>
-                        <h6>Image : <img src="${window.location.origin + '/storage/images/multi-products/' + offers[key].image_url}" width="50px"> </h6>
+                        <h6>Image : <img src="${window.location.origin + '/storage/images/products/' + offers[key].image_url}" width="50px"> </h6>
                     </div>`;
                 }
                 $('.offer_section').html(html);
