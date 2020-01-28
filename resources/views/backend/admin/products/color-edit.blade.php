@@ -116,6 +116,14 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
+                            <label for="stock">Stock <span class="text-danger">*</span></label>
+                            <input type="number" name="stock" class="form-control" id="stock" placeholder="Enter Stock"
+                                value="{{ $cl->stock }}" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
                             <label for="status">Status <span class="text-danger">*</span></label>
                             <select name="status" id="status" class="form-control" required>
                                 <option value="">--Select--</option>
