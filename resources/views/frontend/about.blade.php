@@ -25,20 +25,38 @@
             <div class="row ptb--40 ptb-md--30 ptb-sm--20">
                 <div class="col-lg-6 offset-lg-1 col-md-6 order-md-2 mb-sm--25">
                     <div class="about-text">
-                        <h3 class="heading-tertiary heading-color mb--20">Why Work With Us ?</h3>
-                        <p class="color--light-3 mb--25">Praesent sed ex vel mauris eleifend mollis. Vestibulum
-                            dictum sodales ante, ac pulvinar urna sollicitudin in. Suspendisse sodales dolor nec
-                            mattis convallis. Quisque ut nulla viverra, posuere lorem eget, ultrices metus.</p>
+                        <h3 class="heading-tertiary heading-color mb--20">Invest in yourself to get the best Returns
+                        </h3>
+                        <p class="mb-20"><strong class="text-color-primary">HNILIFESTYLE</strong> is operated by
+                            <strong>KHUSHI NATURALS</strong>, a partnership company. Started by 3
+                            partners <strong>Mr.Bharat Joshi</strong>, <strong>Mr.Hitesh Dewda</strong> and
+                            <strong>Mrs.Bhavna Dewda</strong> who are passionate for Perfumes
+                            and Cosmetics. </p>
+                        <p> In business world <strong class="text-color-primary">HNI</strong> stands for <strong
+                                class="text-color-primary">“High Net worth Investor or Individual“</strong>. HNIs are
+                            Individuals
+                            who think intelligently and invest smartly in Projects and Stocks to make Good Fortunes. For
+                            us
+                            <strong class="text-color-primary">HNI</strong> stands for <strong
+                                class="text-color-primary">“Highly Natural Investor”</strong>. We strongly believe
+                            <strong>“Invest in yourself to get the
+                                best Returns”</strong> investing in one’s Health and Mind.
+                        </p>
 
-                        <p class="color--light-3">Dspendisse sodales dolor nec mattis convallis. Quisque ut
-                            nulla viverra, posuere lorem eget, ultrices metus ed maximus neque feugiat magna
-                            pretium, euismod sagittis massa tincidunt.</p>
-
-                        <p class="color--light-3">Dspendisse sodales dolor nec mattis convallis. Quisque ut
-                            nulla viverra, posuere lorem eget, ultrices metus ed maximus neque feugiat magna
-                            pretium, euismod sagittis massa tincidunt.</p>
-
-
+                        <h3 class="heading-tertiary heading-color mb--20">HNI stands for “Highly Natural Investor”</h3>
+                        <p>Today market is flooded with Perfume and Cosmetic Manufacturers who rampantly uses Harmful
+                            Chemicals
+                            to make Cosmetic Products. Such Harmful chemicals can make person sick or give Life –
+                            Threatening
+                            Diseases. This chemicals are equally Harmful for Humans and environment as pollution from
+                            Industries
+                            and Vehicles.</p>
+                        <p>India is the country which gave Yoga and Ayurveda to the world. Ayurveda is more than 5000yrs
+                            old and has methods and preparations for Human Skin. Each one of us has full right to look
+                            Beautiful and Gorgeous. </p>
+                        <p>Hence after referring to Ayurveda Literatures and combining it with Modern Science we are
+                            bringing range of Safe and effective Cosmetics for our customers.
+                        </p>
                     </div>
                 </div>
                 <div class="col-lg-5 col-md-6 order-md-1">
@@ -47,7 +65,7 @@
                     </figure>
                 </div>
             </div>
-           
+
         </div>
     </div>
 </div>

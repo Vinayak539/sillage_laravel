@@ -36,10 +36,6 @@
                                 <div class="gallery-with-thumbs">
                                     <div class="product-gallery__wrapper">
                                       
-                                        <div class="product-gallery__actions">
-                                            <button class="action-btn btn-zoom-popup"><i class="fa fa-search-plus"
-                                                    aria-hidden="true"></i></button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -77,6 +73,8 @@
 
                         </div>
                         @endif
+                        <a href="#" data-toggle="modal" data-target="#bulk-order"
+                            class="btn btn-sm float-right bulk-order-btn">Bulk Order</a>
                         <div class="clearfix"></div>
 
                         <h3 class="product-titles">{{ $product->title }}</h3>
@@ -188,7 +186,7 @@
                             </div>
 
                             <div id="button-box" style="margin-right: 10px;">
-                                <a href="javascript:void(0)" class="button-show-pdt sss add-cart">Add to cart</a>
+                                <a href="javascript:void(0)" class="button-show-pdt sss add-cart sm-hidden">Add to cart</a>
                             </div>
                         </div>
                     </form>
@@ -228,7 +226,7 @@
                     @endif
 
                     {{-- description and review start --}}
-                    <div class="product-data-tab border-bottom pb--40 pb-md--30 pb-sm--20 tab-style-4">
+                    <div class="product-data-tab border-bottom pb--20 pb-md--30 pb-sm--20 tab-style-4">
                         @if(count($product->reviews) && $product->review_status)
                         <div class="nav nav-tabs product-data-tab__head mb--40 mb-sm--30" id="product-tab"
                             role="tablist">
@@ -266,17 +264,17 @@
 
                                         <div class="index-sizeFitDesc">
                                             <h4 class="index-sizeFitDescTitle index-product-description-title"
-                                                style="padding-bottom: 12px;">Specifications
+                                                style="padding-bottom: 12px;">Specifications <span class="btn bulk-order-btn pull-right" data-toggle="collapse" data-target="#speci">Read More/Read Less</span>
                                             </h4>
-                                            <div class="index-tableContainer">
+                                            <div class="index-tableContainer collapse" id="speci">
                                                 {{-- @if($product->brand)
                                                 <div class="index-row">
                                                     <div class="index-rowKey">Brand</div>
                                                     <div class="index-rowValue">{{ $product->brand->brand_name }}
                                                     </div>
                                                 </div>
-                                                @endif --}}
-                                                @if($product->condition)
+                                                @endif
+                                                {{-- @if($product->condition)
                                                 <div class="index-row">
                                                     <div class="index-rowKey">Condition</div>
                                                     <div class="index-rowValue">{{ $product->condition->condition }}
@@ -383,21 +381,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
-                        <div class="airi-element-carousel product-carousel nav-vertical-center" data-slick-options='{
-                                        "spaceBetween": 30,
-                                        "slidesToShow": 4,
-                                        "slidesToScroll": 1,
-                                        "arrows": true,
-                                        "prevArrow": "fa fa-angle-left",
-                                        "nextArrow": "fa fa-angle-right"
-                                        }' data-slick-responsive='[
-                                            {"breakpoint":1200, "settings": {"slidesToShow": 3} },
-                                            {"breakpoint":991, "settings": {"slidesToShow": 2} },
-                                            {"breakpoint":450, "settings": {"slidesToShow": 1} }
-                                        ]'>
-
-                            @foreach($related_products as $rproduct)
+                    @foreach($related_products as $rproduct)
+                        <div class="col-md-3 col-sm-6 col-xs-6 col-6 mb-5">
                             <div class="airi-product">
                                 <div class="product-inner">
                                     <figure class="product-image">
@@ -434,9 +419,8 @@
                                     </div>
                                 </div>
                             </div>
-                            @endforeach
                         </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -497,17 +481,24 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="ptb--10 plr--10">
-                    <div class="col-md-12 offer_section">
-                        <div class="selected-offer">
-                            <h6 class="text-danger">No Offer Selected</h6>
+                        <div class="row offer_section">
                         </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!-- Selected Offer modal end -->
+
+{{-- fixed add to cart in mobile start --}}
+<div class="sm-container add-cart">
+    <div class="item">
+        <a href="javascript:void(0);">
+            ADD TO CART
+        </a>
+    </div>
+</div>
+{{-- fixed add to cart in mobile end --}}
 
 <form action="{{ route('cart.store') }}" method="post" id="cartForm">
     @csrf
@@ -530,79 +521,94 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                <table class="table table-bordered">
-                    <tbody>
-                      <tr>
-                        <th class="text-center" colspan="3">WOMEN</th>
-                      </tr>
-                      <tr>
-                        <th>SIZE</th>
-                        <th>CHEST</th>
-                        <th>LENGTH</th>
-                      </tr>
-                      <tr>
-                        <td>S</td>
-                        <td>35.5</td>
-                        <td>24</td>
-                      </tr>
-                      <tr>
-                        <td>M</td>
-                        <td>36.5</td>
-                        <td>25</td>
-                      </tr>
-                      <tr>
-                        <td>L</td>
-                        <td>37.5</td>
-                        <td>26</td>
-                      </tr>
-                      <tr>
-                        <td>XL</td>
-                        <td>38.5</td>
-                        <td>27</td>
-                      </tr>
-                      <tr>
-                        <td>2XL</td>
-                        <td>39.5</td>
-                        <td>28</td>
-                      </tr>
-                      <tr>
-                        <th colspan="3"></th>
-                      </tr>
-                      <tr>
-                        <th class="text-center" colspan="3">MEN</th>
-                      </tr>
-                      <tr>
-                        <th>SIZE</th>
-                        <th>CHEST</th>
-                        <th>LENGTH</th>
-                      </tr>
-                      <tr>
-                        <td>S</td>
-                        <td>38</td>
-                        <td>26.5</td>
-                      </tr>
-                      <tr>
-                        <td>M</td>
-                        <td>40</td>
-                        <td>27.5</td>
-                      </tr>
-                      <tr>
-                        <td>L</td>
-                        <td>42</td>
-                        <td>28.5</td>
-                      </tr>
-                      <tr>
-                        <td>XL</td>
-                        <td>44</td>
-                        <td>30.5</td>
-                      </tr>
-                      <tr>
-                        <td>2XL</td>
-                        <td>46</td>
-                        <td>31.5</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#size-guide">Size Guide</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#measure">How To Measure</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="size-guide" class="container tab-pane active"><br>
+                        <table class="table table-bordered">
+                            <tbody>
+                              <tr>
+                                <th class="text-center" colspan="3">WOMEN</th>
+                              </tr>
+                              <tr>
+                                <th>SIZE</th>
+                                <th>CHEST</th>
+                                <th>LENGTH</th>
+                              </tr>
+                              <tr>
+                                <td>S</td>
+                                <td>35.5</td>
+                                <td>24</td>
+                              </tr>
+                              <tr>
+                                <td>M</td>
+                                <td>36.5</td>
+                                <td>25</td>
+                              </tr>
+                              <tr>
+                                <td>L</td>
+                                <td>37.5</td>
+                                <td>26</td>
+                              </tr>
+                              <tr>
+                                <td>XL</td>
+                                <td>38.5</td>
+                                <td>27</td>
+                              </tr>
+                              <tr>
+                                <td>2XL</td>
+                                <td>39.5</td>
+                                <td>28</td>
+                              </tr>
+                              <tr>
+                                <th colspan="3"></th>
+                              </tr>
+                              <tr>
+                                <th class="text-center" colspan="3">MEN</th>
+                              </tr>
+                              <tr>
+                                <th>SIZE</th>
+                                <th>CHEST</th>
+                                <th>LENGTH</th>
+                              </tr>
+                              <tr>
+                                <td>S</td>
+                                <td>38</td>
+                                <td>26.5</td>
+                              </tr>
+                              <tr>
+                                <td>M</td>
+                                <td>40</td>
+                                <td>27.5</td>
+                              </tr>
+                              <tr>
+                                <td>L</td>
+                                <td>42</td>
+                                <td>28.5</td>
+                              </tr>
+                              <tr>
+                                <td>XL</td>
+                                <td>44</td>
+                                <td>30.5</td>
+                              </tr>
+                              <tr>
+                                <td>2XL</td>
+                                <td>46</td>
+                                <td>31.5</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                    </div>
+                    <div id="measure" class="container tab-pane fade"><br>
+                        <img src="{{ asset('assets/images/').'/'.'sizechart.jpg' }}" alt="size chart">
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -612,13 +618,19 @@
 
 @section('extracss')
 <style>
-    .table-bordered td, .table-bordered th {
-    border: 1px solid #dee2e6;
-}.table td, .table th {
-    padding: .75rem;
-    vertical-align: top;
-    border-top: 1px solid #dee2e6;
+    @media (max-width: 47.94em){
+    .btn {
+        min-height: unset;
+        line-height: unset;
+    }
 }
+    .table-bordered td, .table-bordered th {
+        border: 1px solid #dee2e6;
+    }.table td, .table th {
+        padding: .75rem;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+    }
     .bulk-order-btn {
         /* padding: 4px 10px 1px;
         font-size: 12px; */
@@ -843,11 +855,14 @@
             var html = '';
             if (offers) {
                 for (let key in offers) {
-                    html += ` <div class="selected-offer">
-                        <h6>Name : ${offers[key].name} </h6>
-                        <h6>Color : ${offers[key].color}</h6>
-                        <h6>Size : ${offers[key].size}</h6>
-                        <h6>Image : <img src="${window.location.origin + '/storage/images/products/' + offers[key].image_url}" width="50px"> </h6>
+                    html += ` <div class="col-md-6 col-6 mb-3">
+                        <div class="card">
+                            <img class="card-img-top" src="${window.location.origin + '/storage/images/products/' + offers[key].image_url}" alt="${offers[key].name}">
+                            <div class="card-body">
+                            <h5 class="card-title">${offers[key].name}</h5>
+                            <p class="card-text">Color : ${offers[key].color} <br />Size : ${offers[key].size}</p>
+                            </div>
+                        </div>
                     </div>`;
                 }
                 $('.offer_section').html(html);
@@ -1191,18 +1206,78 @@
                         });
 
                         imageHtml += `</div>`
-                        imageHtml1 += `</div>`
+                        imageHtml1 += `</div>   <div class="product-gallery__actions">
+                                            <button class="action-btn btn-zoom-popup"><i class="fa fa-search-plus"
+                                                    aria-hidden="true"></i></button>
+                                        </div>`
 
+                        $('.product-gallery__thumb--image').html(imageHtml);
                         $('.product-gallery__wrapper').html(imageHtml1);
+
+                        $(".multi-images").not('.slick-initialized').slick(
+                            {
+                                lazyLoad: 'ondemand',
+                                slidesToShow: 5,
+                                slidesToScroll: 1,
+                                vertical: true,
+                                swipe: true,
+                                focusOnSelect:true,
+                                verticalSwiping: true,
+                                infinite: true,
+                                asNavFor: ".multi-images1",
+                                responsive: [
+                                    {
+                                    breakpoint: 992,
+                                    settings: {
+                                        slidesToShow: 3,
+                                        vertical:false,
+                                        verticalSwiping: false,
+                                        centerMode: true,
+                                        arrows: true,
+                                        prevArrow: '<span class="slick-btn slick-prev slick-arrow" style=""><i class="fa fa-angle-up"></i></span>',
+                                        nextArrow: '<span class="slick-btn slick-next slick-arrow" style=""><i class="fa fa-angle-down"></i></span>',
+                                    }
+                                    },
+                                    {
+                                    breakpoint: 575,
+                                    settings: {
+                                        slidesToShow: 3,
+                                        vertical:false,
+                                        verticalSwiping: false,
+                                        centerMode: true,
+                                        arrows: true,
+                                        prevArrow: '<span class="slick-btn slick-prev slick-arrow" style=""><i class="fa fa-angle-up"></i></span>',
+                                        nextArrow: '<span class="slick-btn slick-next slick-arrow" style=""><i class="fa fa-angle-down"></i></span>',
+                                    }
+                                    },
+                                    {
+                                    breakpoint: 480,
+                                    settings: {
+                                        slidesToShow: 3,
+                                        vertical:false,
+                                        verticalSwiping: false,
+                                        centerMode: true,
+                                        arrows: true,
+                                        prevArrow: '<span class="slick-btn slick-prev slick-arrow" style=""><i class="fa fa-angle-up"></i></span>',
+                                        nextArrow: '<span class="slick-btn slick-next slick-arrow" style=""><i class="fa fa-angle-down"></i></span>',
+                                    }
+                                    }
+                                    // You can unslick at a given breakpoint now by adding:
+                                    // settings: "unslick"
+                                    // instead of a settings object
+                                ]
+                            }
+                        );
 
                         $(".multi-images1").not('.slick-initialized').slick(
                             {
                                 lazyLoad: 'ondemand',
                                 slidesToShow: 1,
                                 slidesToScroll: 1,
+                                swipe: true,
                                 infinite: true,
                                 arrows: true,
-                                // asNavFor: ".nav-slider"
+                                asNavFor: ".multi-images",
                             }
                         );
 

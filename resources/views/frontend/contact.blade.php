@@ -106,12 +106,12 @@
                     <!-- Contact info widget start here -->
                     <div class="contact-info-widget two-column-list sm-one-column mb--45 mb-sm--35">
                         <div class="contact-info mb-sm--35">
-                            <h3>Business Phone</h3>
+                            <h3>Customer Support No.</h3>
                             <a href="tel:+919619614785">(+91) 961 9614 785</a>
                         </div>
                         <div class="contact-info">
-                            <h3>Say Hello</h3>
-                            <a href="mailto:support@hnilifestyle.com">support@hnilifestyle.com</a>
+                            <h3>Email Id</h3>
+                            <a href="mailto:contact@hnilifestyle.com">contact@hnilifestyle.com</a>
                         </div>
                     </div>
                     <!-- Contact info widget end here -->

@@ -331,7 +331,7 @@
             <div class="container">
                 <div class="footer-top border-bottom pt--40 pb--30">
                     <div class="row">
-                        <div class="footer-column-1 mb-md--40">
+                        <div class="footer-column-1 mb-md--40  mb-xs--20">
                             <div class="footer-widget">
                                 <h3 class="widget-title widget-title--2">
                                     Main Category
@@ -346,7 +346,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="footer-column-2  ">
+                        <div class="footer-column-2 mb-xs--20">
                             <div class="footer-widget">
                                 <h3 class="widget-title widget-title--2">
                                     Company
@@ -366,7 +366,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="footer-column-3 mb-xs--40">
+                        <div class="footer-column-3 mb-xs--20">
                             <div class="footer-widget">
                                 <h3 class="widget-title widget-title--2">
                                     Policy
@@ -398,7 +398,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="footer-column-4 mb-xs--40">
+                        <div class="footer-column-4 mb-xs--20">
                             <div class="footer-widget">
                                 <h3 class="widget-title widget-title--2">Contact Info</h3>
                                 <ul class="contact-info">
@@ -421,7 +421,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="footer-column-5">
+                        <div class="footer-column-5 mb-xs--20">
                             <div class="footer-widget">
                                 <h3 class="widget-title widget-title--2">
                                     Keep Up To Date
@@ -462,7 +462,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="footer-bottom ptb--15">
+                <div class="footer-bottom ptb--15 sm-padding-footer">
                     <div class="row">
                         <div class="col-sm-12 text-sm-left text-center">
                             <p class="copyright-text">
