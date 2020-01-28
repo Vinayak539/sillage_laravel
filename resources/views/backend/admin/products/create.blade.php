@@ -343,25 +343,20 @@
                             </div>
                         </div>
 
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="description">Description <span class="text-danger">*</span></label>
+                                <textarea name="description" id="description" rows="5"
+                                    class="form-control summernote">{{ old('description') }}</textarea>
+                            </div>
+                        </div>
 
                         <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="description">Description <span class="text-danger">*</span></label>
-                                        <textarea name="description" id="description" rows="5"
-                                            class="form-control">{{ old('description') }}</textarea>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="keywords">Keywords </span><span class="text-danger">*</span> <span
-                                                class="text-warning">(Use Comma "," to seperate keywords)</span></label>
-                                        <textarea name="keywords" id="keywords" rows="5"
-                                            class="form-control">{{ old('keywords') }}</textarea>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label for="keywords">Keywords </span><span class="text-danger">*</span> <span
+                                        class="text-warning">(Use Comma "," to seperate keywords)</span></label>
+                                <textarea name="keywords" id="keywords" rows="5"
+                                    class="form-control">{{ old('keywords') }}</textarea>
                             </div>
                         </div>
 
