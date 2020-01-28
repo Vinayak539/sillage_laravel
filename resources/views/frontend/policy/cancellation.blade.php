@@ -29,7 +29,7 @@
                         <strong>After Shipment :</strong>
                         <p class="color--light-3">Incase you change your mind and wish to cancel an order that has been
                             shipped or out for Delivery, email us at <a
-                                href="mailto:customersupport@hnilifestyle.com">customersupport@hnilifestyle.com</a>.</p>
+                                href="mailto:support@hnilifestyle.com">support@hnilifestyle.com</a>.</p>
                         <strong>Request :</strong>
                         <p class="color--light-3"> If the order is out for delivery and courier boy attempts to deliver
                             kindly do not accept the delivery of the order.</p>
@@ -43,7 +43,7 @@
                         <strong>Before Shipment : </strong>
                         <p class="color--light-3">Incase you change your mind and wish to cancel an order that has not
                             been shipped, immediately email us at <a
-                                href="mailto:customersupport@hnilifestyle.com">customersupport@hnilifestyle.com</a>.</p>
+                                href="mailto:support@hnilifestyle.com">support@hnilifestyle.com</a>.</p>
                         <p class="color--light-3">In such circumstances the order will be cancelled and the total money
                             paid by you will be returned to your account within 48 to 72 Business Hours after
                             cancellation request is duly processed by our Team.</p>
@@ -66,7 +66,7 @@
                         </p>
                         <p><strong>3] Procedure to cancel Order ?</strong><br />
                             A] Kindly mail us on <a
-                                href="mailto:customersupport@hnilifestyle.com">customersupport@hnilifestyle.com</a>
+                                href="mailto:support@hnilifestyle.com">support@hnilifestyle.com</a>
                             along with your order ID that you wish to cancel your order.
                         </p>
                         <p><strong>4] When will I get my money refunded post Cancellation of Order ?</strong><br />
