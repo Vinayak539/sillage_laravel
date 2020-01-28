@@ -252,7 +252,8 @@
                                                 Product Details <span
                                                     class="fa fa-list-alt myntraweb-sprite pdp-productDetailsIcon sprites-productDetailsIcon"></span>
                                             </h4>
-                                            <p class="pdp-product-description-content">{{ $product->description }}
+                                            <p class="pdp-product-description-content">
+                                                {!! $product->description !!}
                                             </p>
                                         </div>
                                         <div class="pdp-sizeFitDesc">

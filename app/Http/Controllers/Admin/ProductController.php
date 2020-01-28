@@ -97,7 +97,6 @@ class ProductController extends Controller
                 'mrp'            => 'required|numeric|min:1',
                 'starting_price' => 'required|numeric|min:1',
                 'stock'          => 'required|numeric|min:1',
-                'sort_index'     => 'required|numeric|min:1',
             ],
             [
                 'title.required'            => 'Please Enter Product Name',
@@ -140,8 +139,6 @@ class ProductController extends Controller
                 'starting_price.min'        => 'Starting Price Should be More than 1',
                 'stock.required'            => 'Please Enter Stock',
                 'stock.min'                 => 'Stock Should be More than 1',
-                'sort_index.required'       => 'Please Enter Sort Index',
-                'sort_index.min'            => 'Sort Index Should be More than 1',
             ]
         );
 
@@ -187,7 +184,6 @@ class ProductController extends Controller
             'wrong_products'  => $request->wrong_products,
             'faulty_products' => $request->faulty_products,
             'quality_issue'   => $request->quality_issue,
-            'sort_index'      => $request->sort_index,
             'slug_url'        => Str::slug($category->name . '-' . $request->title, '-'),
         ]);
 
@@ -357,7 +353,6 @@ class ProductController extends Controller
                 'warranty_id'   => 'nullable|integer|exists:master_warranties,id',
                 'is_cod'        => 'required|numeric|max:1',
                 'review_status' => 'required|numeric|min:0|max:1',
-                'sort_index'    => 'required|numeric|min:1',
             ],
             [
                 'title.required'          => 'Please Enter Product Name',
