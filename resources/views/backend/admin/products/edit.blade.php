@@ -618,7 +618,7 @@
                         </td>
 
                         <td>
-                            <select name="status[{{ $key }}]" class="form-control" required>
+                            <select name="status[{{ $key }}]" class="form-control" style="width: fit-content;" required>
                                 <option value="">--Select--</option>
                                 <option value="1" {{ $cf->status == true ? 'selected' : '' }}>Active</option>
                                 <option value="0" {{ $cf->status == false ? 'selected' : '' }}>Inactive</option>
@@ -631,7 +631,7 @@
                         </td>
 
                         <td>
-                            <select name="colour_id[{{ $key }}]" class="form-control" required>
+                            <select name="colour_id[{{ $key }}]" class="form-control" required disabled>
                                 <option value="">--Select Colour--</option>
                                 @foreach($colors as $color)
                                 <option value="{{ $color->id }}" {{ $cf->color_id == $color->id ? 'selected' : '' }}>

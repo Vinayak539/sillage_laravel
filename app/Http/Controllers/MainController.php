@@ -89,6 +89,8 @@ class MainController extends Controller
                 ->orderBy('m.sort_index')
                 ->get();
 
+                // dd($colorsSizes);
+
             $related_products = \DB::table('txn_products as p')
                 ->selectRaw("p.id as product_id , p.title, c.id as cate_id , p.slug_url, p.image_url, p.image_url1, p.status, p.review_status , FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment, c.name as category_name, c.slug_url as category_url")
                 ->leftJoin("txn_reviews as r", "r.product_id", "p.id")

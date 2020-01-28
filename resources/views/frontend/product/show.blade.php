@@ -10,7 +10,7 @@
             <div class="col-12">
                 <ul class="breadcrumb">
                     <li><a href="{{ route('index') }}">Home</a></li>
-
+                    <li><a href="{{ route('cate', $product->category->slug_url) }}">{{ $product->category->name }}</a></li>
                     <li class="current"><span> {{ $product->title }}</span></li>
                 </ul>
             </div>
@@ -132,7 +132,7 @@
                         @if(count($product->sizes) > 0)
                         <div class="product-size-variations">
                             <p class="swatch-label">Size: <strong class="swatch-label size_lable"></strong> 
-                                @if($product->category ? $product->category->name != 'Perfumes' : '')
+                                @if($product->category ? $product->category->name != 'Fragrance' : '')
                                 <span class="pull-right cursor-pointer" data-toggle="modal"
                                 data-target="#sizeChart"> SIZE CHART <i class="fa fa-angle-double-right"></i></span>
                                 @endif
@@ -533,6 +533,8 @@
                     <div id="size-guide" class="container tab-pane active"><br>
                         <table class="table table-bordered">
                             <tbody>
+
+                                @if($product->category->parent_id == 5)
                               <tr>
                                 <th class="text-center" colspan="3">WOMEN</th>
                               </tr>
@@ -569,6 +571,8 @@
                               <tr>
                                 <th colspan="3"></th>
                               </tr>
+                              @endif
+                              @if($product->category->parent_id != 5)
                               <tr>
                                 <th class="text-center" colspan="3">MEN</th>
                               </tr>
@@ -602,6 +606,7 @@
                                 <td>46</td>
                                 <td>31.5</td>
                               </tr>
+                              @endif
                             </tbody>
                           </table>
                     </div>
@@ -749,7 +754,7 @@
 
             count--;
 
-            html +=   `<div class="airi-product offer_product ${count+1>0 ? 'active': null}" data-product-name="${load_offers[index].product_name }"
+            html +=   `<div class="airi-product offer_product ${count+1>0 ? 'active': 'disabledClass'}" data-product-name="${load_offers[index].product_name }"
                         data-color="${load_offers[index].color_name }" data-size="${load_offers[index].size_name }"
                         data-index="${index }" data-purchase-quantity="${load_offers[index].purchase_quantity }"
                         data-offered-quantity="${load_offers[index].offered_quantity }"
@@ -785,34 +790,72 @@
         sessionStorage.setItem("offers", JSON.stringify(offers));
 
         $('.offer_product').click(function () {
-            var pname = $(this).attr('data-product-name');
-            var pcolor = $(this).attr('data-color');
-            var psize = $(this).attr('data-size');
-            var index = $(this).attr('data-index');
-            var offer_id = $(this).attr('data-offered-id');
-            var map_id = $(this).attr('data-map-id');
+
+            var total_offers = JSON.parse(sessionStorage.getItem("offers"));
+
             var pquantity = $(this).attr('data-purchase-quantity');
             var oquantity = $(this).attr('data-offered-quantity');
             var quantity = $('.quantity-input').val();
-            if (quantity >= pquantity) {
-                if (!offers[index]) {
-                    offers[index] = {};
-                    offers[index] = {
-                        'name': pname,
-                        'color': pcolor,
-                        'size': psize,
-                        'offer_id': offer_id,
-                        'map_id': map_id,
-                    };
-                    $(this).addClass('active');
+            var index = $(this).attr('data-index');
+            
+            if (total_offers[index]) {
+                
+                delete total_offers[index];
+                
+                $(this).removeClass('active');
+
+                sessionStorage.setItem("offers", JSON.stringify(total_offers));
+
+            }
+
+            var offer_count = Object.keys(total_offers).length;
+
+            var result = checkOfferQuantity(offer_count, quantity);
+            
+            if(result){
+                
+                var pname = $(this).attr('data-product-name');
+                var pcolor = $(this).attr('data-color');
+                var psize = $(this).attr('data-size');
+                var offer_id = $(this).attr('data-offered-id');
+                var map_id = $(this).attr('data-map-id');
+                var image_path = $(this).attr('data-image');
+                               
+                if (quantity >= pquantity) {
+                    if (!offers[index]) {
+                        offers[index] = {};
+                        offers[index] = {
+                            'name': pname,
+                            'color': pcolor,
+                            'size': psize,
+                            'offer_id': offer_id,
+                            'map_id': map_id,
+                            'image_url': image_path,
+                        };
+                        
+                        $(this).addClass('active');
+
+                    } else {
+                        delete offers[index];
+                        $(this).removeClass('active');
+                    }
+
+                    sessionStorage.setItem("offers", JSON.stringify(offers));
+                    
                 } else {
-                    delete offers[index];
-                    $(this).removeClass('active');
+                    swal('Invalid', 'On Purchase of ' + pquantity + ' Choose Any ' + oquantity, 'error');
                 }
-                sessionStorage.setItem("offers", JSON.stringify(offers));
-                // Offer Designing goes here
-            } else {
-                swal('Invalid', 'On Purchase of ' + pquantity + ' Choose Any ' + oquantity, 'error');
+             }else{
+               
+                var ofrs =  $('.offer_product').not('.active');
+
+                for (const key in ofrs) {
+                    if (ofrs.hasOwnProperty(key)) {
+                        $('.offer_product').not('.active').addClass('disabledClass ');
+                    }
+                }
+
+                // swal('Invalid', 'On Purchase of ' + pquantity*quantity + ' Product(s) Choose Any ' + oquantity*quantity + ' Product(s)', 'error');
             }
         });
 
@@ -1252,7 +1295,6 @@
 
                         $('.product-size-swatch-btn:first').addClass('active');
 
-
                         attachClickListener('.size_btn');
 
                         $(".disabledClass").parents('.swatch-wrapper').css({
@@ -1354,6 +1396,20 @@
             return true;
         }
         return false;
+    }
+
+    function checkOfferQuantity(offer_counts, quantity){
+
+        var count = {!! json_encode($product->offer ? $product->offer->offered_quantity : '') !!};
+
+        if(offer_counts >= count*quantity)
+        {
+            return false;   
+        }
+
+        $('.offer_product ').removeClass('disabledClass');
+
+        return true;
     }
 
 </script>
