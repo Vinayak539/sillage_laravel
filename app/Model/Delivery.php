@@ -17,7 +17,7 @@ class Delivery
     public static $live_logistic_api_token = "68b7e9fc555e3b81d4f451fe66871d9881c47e05";
     public static $live_logistic_pickup    = "KHUSHINATURALS SURFACE";
     public static $live_logistic_base_url    = "https://track.delhivery.com";
-
+// 
     public static function verify($pincode)
     {
         try {
