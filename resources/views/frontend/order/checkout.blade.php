@@ -104,9 +104,9 @@
                                                     <div class="card-footer">
                                                         <a href="javascript:void(0)"
                                                             class="card-link float-left remove-address"
-                                                            data-obj-id="{{ $add->id }}">Remove</a>
+                                                            data-obj-id="{{ $add->id }}"><i class="fa fa-trash text-danger "></i>  Remove</a>
                                                         <a href="javascript:void(0)" data-obj-id="{{ $add->id }}"
-                                                            class="card-link float-right editAddress">Edit</a>
+                                                            class="card-link float-right editAddress"><i class="fa fa-pencil text-primary"></i> Edit</a>
                                                     </div>
                                                 </div>
                                             </label>
@@ -757,7 +757,14 @@
                                     </div>
                                 </div>
 
-                                <input type="hidden" name="pincode" id="pincode" value="${data.pincode}" >
+                                <div class="form-row mb--30">
+                                    <div class="form__group col-12">
+                                        <label for="pincode" class="form__label form__label--2">Pincode
+                                            <span class="required">*</span></label>
+                                        <input type="text" name="pincode" id="pincode" class="form__input form__input--2"
+                                            required placeholder="Pincode" value="${data.pincode}" required>
+                                    </div>
+                                </div>
 
                                 <div class="form-row mb--30">
                                     <div class="form__group col-12">
@@ -923,6 +930,13 @@
                     maxlength: 10
                 },
 
+                pincode: {
+                    required: true,
+                    number: true,
+                    minlength: 6,
+                    maxlength: 6
+                },
+
                 address: {
                     required: true,
                 },
@@ -955,6 +969,13 @@
                     number: "Please Enter Proper Mobile Number",
                     minlength: "Mobile Number should be of 10 digits",
                     maxlength: "Mobile Number should be of 10 digits",
+                },
+
+                pincode: {
+                    required: "Please Enter Pincode",
+                    number: "Please Enter Proper Pincode",
+                    minlength: "Pincode should be of 10 digits",
+                    maxlength: "Pincode should be of 10 digits",
                 },
 
                 address: {

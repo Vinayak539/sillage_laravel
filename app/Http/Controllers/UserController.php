@@ -602,7 +602,7 @@ class UserController extends Controller
 
             $address->delete();
 
-            connectify('success', 'Address Deleted', 'Address has been successfully removed from your list !');
+            connectify('success', 'Address Deleted', 'Address has been removed successfully from your list !');
 
             return back();
 

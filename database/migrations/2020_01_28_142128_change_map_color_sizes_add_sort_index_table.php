@@ -14,7 +14,7 @@ class ChangeMapColorSizesAddSortIndexTable extends Migration
     public function up()
     {
         Schema::table('map_color_sizes', function (Blueprint $table) {
-            $table->string('sort_index')->nullable()->after('status');
+            $table->integer('sort_index')->nullable()->after('status');
         });
     }
 
