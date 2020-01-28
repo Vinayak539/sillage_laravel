@@ -10,7 +10,7 @@
             <div class="col-12">
                 <ul class="breadcrumb">
                     <li><a href="{{ route('index') }}">Home</a></li>
-
+                    <li><a href="{{ route('cate', $product->category->slug_url) }}">{{ $product->category->name }}</a></li>
                     <li class="current"><span> {{ $product->title }}</span></li>
                 </ul>
             </div>
@@ -132,7 +132,7 @@
                         @if(count($product->sizes) > 0)
                         <div class="product-size-variations">
                             <p class="swatch-label">Size: <strong class="swatch-label size_lable"></strong> 
-                                @if($product->category ? $product->category->name != 'Perfumes' : '')
+                                @if($product->category ? $product->category->name != 'Fragrance' : '')
                                 <span class="pull-right cursor-pointer" data-toggle="modal"
                                 data-target="#sizeChart"> SIZE CHART <i class="fa fa-angle-double-right"></i></span>
                                 @endif
@@ -533,6 +533,8 @@
                     <div id="size-guide" class="container tab-pane active"><br>
                         <table class="table table-bordered">
                             <tbody>
+
+                                @if($product->category->parent_id == 5)
                               <tr>
                                 <th class="text-center" colspan="3">WOMEN</th>
                               </tr>
@@ -569,6 +571,8 @@
                               <tr>
                                 <th colspan="3"></th>
                               </tr>
+                              @endif
+                              @if($product->category->parent_id != 5)
                               <tr>
                                 <th class="text-center" colspan="3">MEN</th>
                               </tr>
@@ -602,6 +606,7 @@
                                 <td>46</td>
                                 <td>31.5</td>
                               </tr>
+                              @endif
                             </tbody>
                           </table>
                     </div>
@@ -1284,7 +1289,6 @@
                         $('.product-size-swatch').html(html);
 
                         $('.product-size-swatch-btn:first').addClass('active');
-
 
                         attachClickListener('.size_btn');
 
