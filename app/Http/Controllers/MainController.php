@@ -86,6 +86,7 @@ class MainController extends Controller
                 ->where('m.product_id', $product->id)
                 ->where('m.status', true)
                 ->groupBy('c.id')
+                ->orderBy('m.sort_index')
                 ->get();
 
             $related_products = \DB::table('txn_products as p')
@@ -134,7 +135,7 @@ class MainController extends Controller
     public function getSizes(Request $request)
     {
 
-        $results = MapColorSize::where('product_id', $request->product_id)->where('color_id', $request->color_id)->where('status', true)->where('stock', '>', 0)->orderBy('id', 'ASC')->get();
+        $results = MapColorSize::where('product_id', $request->product_id)->where('color_id', $request->color_id)->where('status', true)->where('stock', '>', 0)->orderBy('sort_index')->get();
 
         // $results = DB::table('map_color_sizes as m')
         //     ->selectRaw('c.title as color_name, GROUP_CONCAT(s.title) as size_name, c.id as color_id, GROUP_CONCAT(s.id) as size_id, m.mrp, m.stock, m.id as map_id')

@@ -238,7 +238,7 @@
                                             <li>
                                                 <a href="javascript:void(0);">
                                                     <i class="fa fa-user-circle-o text-black"></i>
-                                                    {{ Str::limit(auth('user')->user()->name,8,'') }}</a>
+                                                    {{ Str::limit(auth('user')->user()->name,16,'') }}</a>
                                             </li>
 
                                             <li>
@@ -462,7 +462,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="footer-bottom ptb--15">
+                <div class="footer-bottom ptb--15 sm-padding-footer">
                     <div class="row">
                         <div class="col-sm-12 text-sm-left text-center">
                             <p class="copyright-text">
@@ -513,7 +513,7 @@
                             <li>
                                 <a href="javascript:void(0);">
                                     <i class="fa fa-user-circle-o"></i>
-                                    {{ Str::limit(auth('user')->user()->name,8,'') }}</a>
+                                    {{ Str::limit(auth('user')->user()->name,16,'') }}</a>
                             </li>
                             <li>
                                 <a href="{{ route('user.dashboard') }}">Dashboard</a>

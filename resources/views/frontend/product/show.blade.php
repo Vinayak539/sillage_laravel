@@ -250,21 +250,24 @@
                                                 Product Details <span
                                                     class="fa fa-list-alt myntraweb-sprite pdp-productDetailsIcon sprites-productDetailsIcon"></span>
                                             </h4>
-                                            <p class="pdp-product-description-content">{{ $product->description }}
+                                            <p class="pdp-product-description-content">
+                                                {!! $product->description !!}
                                             </p>
                                         </div>
-                                        <div class="pdp-sizeFitDesc">
+                                        
+                                        {{-- <div class="pdp-sizeFitDesc">
                                             <h4 class="pdp-sizeFitDescTitle pdp-product-description-title">Material
                                                 &amp; Care</h4>
                                             <p class="pdp-sizeFitDescContent pdp-product-description-content">
                                                 {{ $product->material->material_name }}</p>
-                                        </div>
+                                        </div> --}}
+
                                         <div class="index-sizeFitDesc">
                                             <h4 class="index-sizeFitDescTitle index-product-description-title"
                                                 style="padding-bottom: 12px;">Specifications <span class="btn bulk-order-btn pull-right" data-toggle="collapse" data-target="#speci">Read More/Read Less</span>
                                             </h4>
                                             <div class="index-tableContainer collapse" id="speci">
-                                                @if($product->brand)
+                                                {{-- @if($product->brand)
                                                 <div class="index-row">
                                                     <div class="index-rowKey">Brand</div>
                                                     <div class="index-rowValue">{{ $product->brand->brand_name }}
@@ -277,8 +280,8 @@
                                                     <div class="index-rowValue">{{ $product->condition->condition }}
                                                     </div>
                                                 </div>
-                                                @endif --}}
-                                                @if($product->length)
+                                                @endif
+                                                {{-- @if($product->length)
                                                 <div class="index-row">
                                                     <div class="index-rowKey">Length</div>
                                                     <div class="index-rowValue">{{ $product->length }}</div>
@@ -301,7 +304,7 @@
                                                     <div class="index-rowKey">Weight</div>
                                                     <div class="index-rowValue">{{ $product->weight }}</div>
                                                 </div>
-                                                @endif
+                                                @endif --}}
                                                 @if($product->warranty)
                                                 <div class="index-row">
                                                     <div class="index-rowKey">Warranty</div>
@@ -814,7 +817,7 @@
             var html = '';
             if (offers) {
                 for (let key in offers) {
-                    html += ` <div class="col-md-6 mb-3">
+                    html += ` <div class="col-md-6 col-6 mb-3">
                         <div class="card">
                             <img class="card-img-top" src="${window.location.origin + '/storage/images/products/' + offers[key].image_url}" alt="${offers[key].name}">
                             <div class="card-body">

@@ -84,12 +84,14 @@ class OrderStatusCommand extends Command
                         ]);
 
                         $order->update([
-                            'reward_points' => round($final_dis, 0),
+                            'reward_points' => round($order->tbt * 0.1, 0),
                         ]);
+
+                        SMS::send($shop->mobile, 'Hni Lifestyle - Congratulation You have received Rs.' . $order->tbt * 0.1 . ' Commission on Order ID : ' . $order->id . ' Your total commission is Rs.' . $final_dis . ' for more login on hnilifestyle.com');
 
                     }
 
-                    SMS::send($order->user->mobile, 'Hni Lifestyle - Your Order has been Delivered successfully, Your Order No : ' . $order->id . ' Login for more detail on ' . url('/'));
+                    SMS::send($order->user->mobile, 'Hni Lifestyle - Your Order has been Delivered successfully, Your Order ID : ' . $order->id . ' Login for more detail on ' . url('/'));
 
                     $pdf = PDF::loadView('backend.admin.invoices.download', ['invoice' => $order]);
                     Mail::send(['html' => 'backend.admin.invoices.show'], ['invoice' => $order], function ($message) use ($order, $pdf) {

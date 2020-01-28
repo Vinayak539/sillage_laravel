@@ -299,11 +299,11 @@ class ProductController extends Controller
             $offers = MstOffer::where('status', true)->get();
 
             $product_details = DB::table('map_color_sizes as m')
-                ->selectRaw("m.id as map_id, m.mrp, m.stock, m.starting_price, s.title as size_name, s.id as size_id, c.title as color_name, c.id as color_id, m.status")
+                ->selectRaw("m.id as map_id, m.mrp, m.stock, m.starting_price, s.title as size_name, s.id as size_id, c.title as color_name, c.id as color_id, m.status, m.sort_index")
                 ->join('mst_sizes as s', 's.id', 'm.size_id')
                 ->join('mst_colors as c', 'c.id', 'm.color_id')
                 ->Where('m.product_id', $product->id)
-                ->orderBy('m.id', 'DESC')
+                ->orderBy('m.sort_index')
                 ->get();
 
             return view('backend.admin.products.edit', compact('product_details', 'product', 'brands', 'sizes', 'colors', 'materials', 'units', 'conditions', 'gsts', 'keywords', 'categories', 'warranties', 'offers'));
@@ -335,24 +335,24 @@ class ProductController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'title'        => 'required|string',
-                'image_url'    => 'nullable|image|max:1024|mimes:jpeg,png',
-                'description'  => 'required|string',
-                'brand_id'     => 'required|integer|exists:txn_brands,id',
-                'material_id'  => 'nullable|integer|exists:txn_materials,id',
-                'weight_id'    => 'nullable|integer|exists:txn_weights,id',
-                'condition_id' => 'nullable|integer|exists:txn_conditions,id',
-                'category_id'  => 'required|integer|exists:txn_categories,id',
-                'gst_id'       => 'required|integer|exists:txn_master_gsts,id',
+                'title'         => 'required|string',
+                'image_url'     => 'nullable|image|max:1024|mimes:jpeg,png',
+                'description'   => 'required|string',
+                'brand_id'      => 'required|integer|exists:txn_brands,id',
+                'material_id'   => 'nullable|integer|exists:txn_materials,id',
+                'weight_id'     => 'nullable|integer|exists:txn_weights,id',
+                'condition_id'  => 'nullable|integer|exists:txn_conditions,id',
+                'category_id'   => 'required|integer|exists:txn_categories,id',
+                'gst_id'        => 'required|integer|exists:txn_master_gsts,id',
                 // 'expiry_date' => 'nullable|date_format:Y-m-d',
-                'length'       => 'nullable|string|max:191',
-                'breadth'      => 'nullable|string|max:191',
-                'height'       => 'nullable|string|max:191',
-                'weight'       => 'nullable|string|max:191',
-                'keywords'     => 'required|string',
-                'warranty_id'  => 'nullable|integer|exists:master_warranties,id',
-                'is_cod'       => 'required|numeric|max:1',
-                'review_status'       => 'required|numeric|min:0|max:1',
+                'length'        => 'nullable|string|max:191',
+                'breadth'       => 'nullable|string|max:191',
+                'height'        => 'nullable|string|max:191',
+                'weight'        => 'nullable|string|max:191',
+                'keywords'      => 'required|string',
+                'warranty_id'   => 'nullable|integer|exists:master_warranties,id',
+                'is_cod'        => 'required|numeric|max:1',
+                'review_status' => 'required|numeric|min:0|max:1',
             ],
             [
                 'title.required'          => 'Please Enter Product Name',
@@ -374,8 +374,8 @@ class ProductController extends Controller
                 'warranty_id.exists'      => 'Warranty Not Exists',
                 'is_cod.required'         => 'Please Select Cod Availability',
                 'is_cod.min'              => 'Invalid data provided in cod availability',
-                'review_status.required'    => 'Please Select Review Status',
-                'review_status.min'         => 'Invalid data provided in Review Status',
+                'review_status.required'  => 'Please Select Review Status',
+                'review_status.min'       => 'Invalid data provided in Review Status',
                 'gst_id.required'         => 'Please Select GST',
                 'gst_id.exists'           => 'GST Not Exists',
             ]
@@ -642,6 +642,7 @@ class ProductController extends Controller
                 'stock'          => 'required|numeric|min:1',
                 'starting_price' => 'required|numeric|min:1',
                 'status'         => 'required|numeric|min:0|max:1',
+                'sort_index'     => 'required|numeric|min:1',
             ],
             [
                 'color_id.required'       => 'Please Choose Color',
@@ -661,6 +662,8 @@ class ProductController extends Controller
                 'status.min'              => 'Invalid Status Provided',
                 'status.max'              => 'Invalid Status Provided',
                 'status.numeric'          => 'Invalid Status Provided',
+                'sort_index.required'     => 'Please Select Sort Index',
+                'sort_index.min'          => 'Invalid data provided in Sort Index',
             ]
         );
 
@@ -713,9 +716,10 @@ class ProductController extends Controller
                     'mrp'              => $request->mrp,
                     'stock'            => $request->stock,
                     'starting_price'   => $request->starting_price,
+                    'sort_index'       => $request->sort_index,
                     'buy_it_now_price' => $before_gst_price,
                     'gst'              => $gst_amount,
-                    'status'           => true
+                    'status'           => true,
                 ]);
 
                 $size = MstSize::where('id', $request->size_id)->first();
@@ -791,7 +795,8 @@ class ProductController extends Controller
                 'mrp'            => 'required|numeric|min:1',
                 'stock'          => 'required|numeric|min:0',
                 'starting_price' => 'required|numeric|min:1',
-                'status' => 'required|numeric|min:0|max:1',
+                'status'         => 'required|numeric|min:0|max:1',
+                'sort_index'     => 'required|numeric|min:1',
             ],
             [
                 'size_id.required'        => 'Please Select Sizes',
@@ -806,6 +811,9 @@ class ProductController extends Controller
                 'status.min'              => 'Invalid Status Provided',
                 'status.max'              => 'Invalid Status Provided',
                 'status.numeric'          => 'Invalid Status Provided',
+                'sort_index.required'     => 'Please Enter Sort Index',
+                'sort_index.min'          => 'Invalid Sort Index Provided',
+                'sort_index.numeric'      => 'Invalid Sort Index Provided',
             ]
         );
 
@@ -825,7 +833,8 @@ class ProductController extends Controller
                 'mrp'            => $request->mrp,
                 'stock'          => $request->stock,
                 'starting_price' => $request->starting_price,
-                'status' => $request->status,
+                'status'         => $request->status,
+                'sort_index'     => $request->sort_index,
             ]);
 
             connectify('success', 'Color & Size Added', 'Data has been Updated Successfully !');
@@ -974,6 +983,7 @@ class ProductController extends Controller
                 'mrp'            => 'required|numeric|min:1',
                 'stock'          => 'required|numeric|min:0',
                 'starting_price' => 'required|numeric|min:1',
+                'sort_index' => 'required|numeric|min:1'
             ],
             [
                 'color_id.required'       => 'Please Choose Color',
@@ -984,6 +994,8 @@ class ProductController extends Controller
                 'mrp.min'                 => 'Mrp Should be More than 1',
                 'stock.required'          => 'Please Enter Stock',
                 'stock.min'               => 'Stock Should be More than 1',
+                'sort_index.required'          => 'Please Enter Sort Index',
+                'sort_index.min'               => 'Sort Index Should be More than 1',
                 'starting_price.required' => 'Please Enter Selling Price',
                 'starting_price.min'      => 'Selling Price Should be More than 1',
             ]
@@ -1027,7 +1039,8 @@ class ProductController extends Controller
                 'starting_price'   => $request->starting_price,
                 'buy_it_now_price' => $before_gst_price,
                 'gst'              => $gst_amount,
-                'status'              => $request->status,
+                'status'           => $request->status,
+                'sort_index'           => $request->sort_index,
             ]);
 
             connectify('success', 'Color & Size Updated', 'Color & Size Updated Successfully !');

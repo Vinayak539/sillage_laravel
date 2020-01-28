@@ -62,7 +62,7 @@
             <h4>Update Colour & Size</h4>
         </div>
         <div class="card-body">
-            <form method="post" id="formEditProduct" class="needs-validation" enctype="multipart/form-data" novalidate>
+            <form method="post" id="formEditProduct" class="needs-validation" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
 
@@ -111,6 +111,14 @@
                             <label for="stock">Stock <span class="text-danger">*</span></label>
                             <input type="number" name="stock" class="form-control" id="stock" placeholder="Enter Stock"
                                 value="{{ $cl->stock }}" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="sort_index">Sort Index <span class="text-danger">*</span></label>
+                            <input type="number" name="sort_index" class="form-control" id="sort_index" placeholder="Enter Sort Index"
+                                value="{{ $cl->sort_index }}" required>
                         </div>
                     </div>
 
@@ -196,6 +204,10 @@
                     required: true
                 },
 
+                sort_index: {
+                    required: true
+                },
+
                 starting_price: {
                     required: true
                 },
@@ -225,6 +237,10 @@
 
                 starting_price: {
                     required: "Please Enter MRP"
+                },
+
+                sort_index: {
+                    required: "Please Enter Sort Index"
                 },
 
                 status: {

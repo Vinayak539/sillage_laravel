@@ -34,11 +34,14 @@ class LoginController extends Controller
 
         if (Auth::guard('shop')->attempt(['email' => $request->email, 'password' => $request->password, 'status' => true], $request->remeber)) {
 
+            connectify('success', 'Logged In', 'You Are Successfully Logged In !');
+
             return redirect()->intended(url()->previous());
 
         }
 
-        return back()->withInput($request->only('email', 'remember'))->withInput($request->only('email', 'remember'))->withErrors(['email' => Lang::get('auth.failed')]);
+        connectify('error', 'Error', 'Invalid Username or Password, try again !');
+        return back()->withInput($request->only('email', 'remember'));
     }
 
     public function logout()

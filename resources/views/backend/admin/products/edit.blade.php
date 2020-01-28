@@ -138,6 +138,12 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="sort_index">Sort Index <span class="text-danger">*</span></label>
+                        <input type="number" name="sort_index" id="sort_index" class="form-control" value="{{ old('sort_index') }}"
+                            min="1" placeholder="Enter Sort Index" required>
+                    </div>
+
+                    <div class="form-group">
                         <label for="image_urls">Color Images <span class="text-danger">*</span></label>
                         <div class="custom-file">
                             <input type="file" name="image_urls[]" class="custom-file-input" id="image_urls"
@@ -470,23 +476,25 @@
                     </div>
 
                     <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="title">Description <span class="text-danger">*</span></label>
+                            <textarea name="description" id="description" rows="8" class="form-control summernote"
+                                required>{{ $product->description }}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="keywords">Keywords </span><span class="text-danger">*</span> <span
+                                    class="text-warning">(Use Comma "," to seperate
+                                    keywords)</label>
+                            <textarea name="keywords" id="keywords" rows="8" class="form-control"
+                                required>{{ $keywords }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="title">Description <span class="text-danger">*</span></label>
-                                    <textarea name="description" id="description" rows="8" class="form-control"
-                                        required>{{ $product->description }}</textarea>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="keywords">Keywords </span><span class="text-danger">*</span> <span
-                                            class="text-warning">(Use Comma "," to seperate
-                                            keywords)</label>
-                                    <textarea name="keywords" id="keywords" rows="8" class="form-control"
-                                        required>{{ $keywords }}</textarea>
-                                </div>
-                            </div>
+                            
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Existing Front Image</label>
@@ -508,7 +516,7 @@
                             </div>
                         </div>
                     </div>
-{{--
+                    {{--
                     @if(count($product->images))
                     <div class="col-md-12">
                         <label>Other Images</label>
@@ -577,6 +585,9 @@
                             <label for="status">Status </label>
                         </th>
                         <th>
+                            <label for="sort_index">Sort Index </label>
+                        </th>
+                        <th>
                             <label for="color_id">Colour Name </label>
                         </th>
                         <th>
@@ -605,12 +616,18 @@
                             <input type="number" name="map_id[{{ $key }}]" value="{{ $cf->map_id }}"
                                 class="form-control" disabled>
                         </td>
+
                         <td>
                             <select name="status[{{ $key }}]" class="form-control" required>
                                 <option value="">--Select--</option>
                                 <option value="1" {{ $cf->status == true ? 'selected' : '' }}>Active</option>
                                 <option value="0" {{ $cf->status == false ? 'selected' : '' }}>Inactive</option>
                             </select>
+                        </td>
+
+                        <td>
+                            <input type="number" min="1" name="sort_index[{{ $key }}]" value="{{ $cf->sort_index }}" class="form-control"
+                               >
                         </td>
 
                         <td>
@@ -775,6 +792,7 @@
     <input type="hidden" name="stock" id="txtStockUpdate" />
     <input type="hidden" name="starting_price" id="txtStartingPriceUpdate" />
     <input type="hidden" name="map_id" id="txtUpdateMapID" />
+    <input type="hidden" name="sort_index" id="txtSortIndexUpdate" />
     <input type="hidden" name="status" id="txtUpdateStatus" />
 </form>
 
@@ -846,6 +864,7 @@
             $("#txtMrpUpdate").val($("input[name='mrp[" + key + "]']").val());
             $("#txtStartingPriceUpdate").val($("input[name='starting_price[" + key + "]']").val());
             $("#txtStockUpdate").val($("input[name='stock[" + key + "]']").val());
+            $("#txtSortIndexUpdate").val($("input[name='sort_index[" + key + "]']").val());
             $("#txtUpdateStatus").val($("select[name='status[" + key + "]']").val());
             $("#txtUpdateMapID").val(id);
             $(this).attr('disabled', 'disabled');
@@ -975,6 +994,10 @@
                     required: true
                 },
 
+                sort_index: {
+                    required: true
+                },
+
                 starting_price: {
                     required: true
                 },
@@ -997,6 +1020,10 @@
 
                 stock: {
                     required: "Please Enter Stock"
+                },
+
+                sort_index: {
+                    required: "Please Enter Sort Index"
                 },
 
                 starting_price: {

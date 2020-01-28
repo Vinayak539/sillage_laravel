@@ -298,6 +298,14 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
+                                <label for="sort_index">Sort Index <span class="text-danger">*</span></label>
+                                <input type="number" name="sort_index" id="sort_index" class="form-control"
+                                    value="{{ old('sort_index') }}" min="1" placeholder="Enter Sort Index" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
                                 <label for="image_urls">Color Images <span class="text-danger">*</span></label>
                                 <div class="custom-file">
                                     <input type="file" name="image_urls[]" class="custom-file-input" id="image_urls"
@@ -308,7 +316,6 @@
 
                             </div>
                         </div>
-
 
                         <div class="col-md-8 mb-3">
                             <label>Return Policy </label> <br>
@@ -336,25 +343,20 @@
                             </div>
                         </div>
 
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="description">Description <span class="text-danger">*</span></label>
+                                <textarea name="description" id="description" rows="5"
+                                    class="form-control summernote">{{ old('description') }}</textarea>
+                            </div>
+                        </div>
 
                         <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="description">Description <span class="text-danger">*</span></label>
-                                        <textarea name="description" id="description" rows="5"
-                                            class="form-control">{{ old('description') }}</textarea>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="keywords">Keywords </span><span class="text-danger">*</span> <span
-                                                class="text-warning">(Use Comma "," to seperate keywords)</span></label>
-                                        <textarea name="keywords" id="keywords" rows="5"
-                                            class="form-control">{{ old('keywords') }}</textarea>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label for="keywords">Keywords </span><span class="text-danger">*</span> <span
+                                        class="text-warning">(Use Comma "," to seperate keywords)</span></label>
+                                <textarea name="keywords" id="keywords" rows="5"
+                                    class="form-control">{{ old('keywords') }}</textarea>
                             </div>
                         </div>
 
@@ -509,6 +511,10 @@
                 stock: {
                    required: true
                 },
+
+                sort_index: {
+                   required: true
+                },
              },
              messages: {
 
@@ -573,6 +579,10 @@
 
                 stock: {
                    required: "Please Enter Stock"
+                },
+
+                sort_index: {
+                   required: "Please Enter Sort Index"
                 },
 
                 "image_urls[]": {

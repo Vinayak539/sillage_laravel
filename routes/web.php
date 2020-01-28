@@ -387,13 +387,11 @@ Route::prefix('hnishop')->group(function () {
 
         Route::GET('/', 'ShopController@index')->name('shop.dashboard');
 
+        Route::GET('/profile', 'ShopController@getAccount')->name('shop.account');
+
         Route::POST('/profile', 'ShopController@update')->name('shop.update');
 
         Route::POST('/logout', 'ShopAuth\LoginController@logout')->name('shop.logout');
-
-        Route::prefix('/orders')->group(function () {
-            Route::get('/', 'ShopController@getOrders')->name('shop.orders');
-        });
 
     });
 

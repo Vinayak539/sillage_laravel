@@ -13,7 +13,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" role="form" class="form">
+            <form method="POST" role="form" class="needs-validation" id="formAddShop">
                 @csrf
                 <div class="modal-body">
                     <div class="row">
@@ -47,6 +47,7 @@
                                     min="0000000000" maxlength="6" required>
                             </div>
                         </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="email">Email <span class="text-danger">*</span></label>
@@ -54,11 +55,36 @@
                                     value="{{ old('email') }}" placeholder="Enter Email ID" required>
                             </div>
                         </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="password">Password <span class="text-danger">*</span></label>
                                 <input type="password" name="password" id="password" class="form-control"
                                     value="{{ old('password') }}" placeholder="Enter Password" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="con_password">Confirm Password <span class="text-danger">*</span></label>
+                                <input type="password" name="con_password" id="con_password" class="form-control"
+                                    value="{{ old('con_password') }}" placeholder="Enter Re-enter Password" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="account_no">Account Number </label>
+                                <input type="text" name="account_no" id="account_no" class="form-control"
+                                    value="{{ old('account_no') }}" placeholder="Enter Account Number">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ifsc_code">IFSC Code </label>
+                                <input type="text" name="ifsc_code" id="ifsc_code" class="form-control"
+                                    value="{{ old('ifsc_code') }}" placeholder="Enter IFSC Code">
                             </div>
                         </div>
 
@@ -68,7 +94,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary update_button">
+                    <button type="submit" class="btn btn-primary btnSubmit">
                         <i class="fa fa-plus"></i> Add
                     </button>
                 </div>
@@ -85,8 +111,7 @@
                     Home</a></li>
             <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-list"></i> Shops</li>
             <li class="breadcrumb-item"><a href="#addModal" data-toggle="modal" data-target="#addModal"><i
-                        class="fas fa-plus"></i> Add
-                    Shop</a></li>
+                        class="fas fa-plus"></i> Add Shop</a></li>
         </ol>
     </nav>
     <div class="card">
@@ -121,26 +146,10 @@
                             </td>
                             <td>{{ date('d-M-Y h:i A', strtotime($shop->created_at)) }}</td>
                             <td>
-                                <div class="dropdown">
-                                    <button type="button" class="btn btn-outline-primary dropdown-toggle"
-                                        data-toggle="dropdown">
-                                        Action
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a href="{{ route('admin.shops.edit', $shop->id) }}" class="dropdown-item"
-                                            title="Edit Detail">
-                                            <i class="fa fa-edit text-primary"></i> Edit
-                                        </a>
-                                        {{-- <a href="{{ route('admin.shops.coupons', $shop->id) }}"
-                                        class="dropdown-item" title="Generate Coupon">
-                                        <i class="fa fa-tags text-primary"></i> Generate Coupons
-                                        </a> --}}
-                                        {{--  <button type="button" data-role="delete-obj" data-obj-id="{{$shop->id}}"
-                                        class="dropdown-item delete-object" title="Delete Shop">
-                                        <i class="fa fa-trash text-danger"></i> Delete
-                                        </button> --}}
-                                    </div>
-                                </div>
+                                <a href="{{ route('admin.shops.edit', $shop->id) }}" class="btn btn-outline-primary btn-sm"
+                                    title="Edit Detail">
+                                    <i class="fa fa-edit"></i>
+                                </a>
                             </td>
                         </tr>
                         @empty
@@ -174,12 +183,6 @@
             </div>
         </div>
     </div>
-
-    <form id="formDelete" method="POST" action="{{ route('admin.shops.delete') }}">
-        @csrf
-        <input type="hidden" name="shop_id" id="txtShopID">
-    </form>
-
 </section>
 
 @endsection
@@ -187,11 +190,82 @@
 @section('extrajs')
 <script>
     $(document).ready(function () {
-        $(".delete-object").click(function () {
-            if (window.confirm("Are you sure, You want to Delete ? ")) {
-                $('#txtShopID').val($(this).attr("data-obj-id"));
-                $("#formDelete").submit();
-                $(this).html('wait...');
+
+        $("#formAddShop").validate({
+            rules: {
+
+                name: {
+                    required: true
+                },
+
+                city: {
+                    required: true
+                },
+
+                address: {
+                    required: true
+                },
+
+                mobile: {
+                    required: true,
+                    number: true,
+                    minlength: 10,
+                    maxlength: 10
+                },
+
+                email: {
+                    required: true,
+                    email: true
+                },
+
+                password: {
+                    required: true
+                },
+
+                con_password: {
+                    required: true,
+                    equalTo: "#password"
+                },
+            },
+            messages: {
+
+                name: {
+                    required: "Please Enter Shop Name"
+                },
+
+                city: {
+                    required: "Please Enter City"
+                },
+
+                address: {
+                    required: "Please Enter Shop Address"
+                },
+
+                mobile: {
+                    required: "Please Enter Mobile Number",
+                    number: "Mobile Number should be Numeric Only",
+                    minlength: "Mobile Number should be of 10 Digits Only",
+                    maxlength: "Mobile Number should be of 10 Digits Only",
+                },
+
+                email: {
+                    required: "Please Enter Email ID",
+                    email: "Please Enter Valid Email ID"
+                },
+
+                password: {
+                    required: "Please Enter Password"
+                },
+
+                con_password: {
+                    required: "Please Enter Confirm Password",
+                    equalTo: "Please Enter Confirm Password same as Above Password"
+                },
+            },
+            submitHandler: function (form) {
+                $('.btnSubmit').attr('disabled', 'disabled');
+                $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+                form.submit();
             }
         });
     });
