@@ -234,7 +234,26 @@
                             {{ $shop->mobile }}
                         </td>
                     </tr>
-
+                    @if($shop->account_no)
+                    <tr>
+                        <td>
+                            Account No:
+                        </td>
+                        <td>
+                            {{ $shop->account_no }}
+                        </td>
+                    </tr>
+                    @endif
+                    @if($shop->ifsc_code)
+                    <tr>
+                        <td>
+                            IFSC Code:
+                        </td>
+                        <td>
+                            {{ $shop->ifsc_code }}
+                        </td>
+                    </tr>
+                    @endif
                     <tr>
                         <td>
                             Link:

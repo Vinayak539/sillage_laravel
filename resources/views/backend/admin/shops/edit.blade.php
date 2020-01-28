@@ -98,6 +98,23 @@
                         </div>
                     </div>
 
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="account_no">Account Number </label>
+                            <input type="text" name="account_no" id="account_no" class="form-control"
+                                value="{{ $shop->account_no }}" placeholder="Enter Account Number">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ifsc_code">IFSC Code </label>
+                            <input type="text" name="ifsc_code" id="ifsc_code" class="form-control"
+                                value="{{ $shop->ifsc_code }}" placeholder="Enter IFSC Code">
+                        </div>
+                    </div>
+
+
                     <div class="col-md-12 text-center">
                         <button type="submit" class="btn btn-primary btnSubmit"> <i class="fas fa-pencil-alt"></i>
                             Update</button>

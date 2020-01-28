@@ -45,12 +45,14 @@ class ShopController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name'     => 'required|string|max:191',
-            'city'     => 'required|string|max:191',
-            'address'  => 'required|string|max:191',
-            'mobile'   => 'required|digits_between:8,12',
-            'email'    => 'required|email|max:191|unique:shops,email',
-            'password' => 'required|string|max:191',
+            'name'       => 'required|string|max:191',
+            'city'       => 'required|string|max:191',
+            'address'    => 'required|string|max:191',
+            'mobile'     => 'required|digits_between:8,12',
+            'email'      => 'required|email|max:191|unique:shops,email',
+            'password'   => 'required|string|max:191',
+            'account_no' => 'nullable|string|max:191',
+            'ifsc_code'  => 'nullable|string|max:191',
         ],
             [
                 'name.required'         => 'Please Enter Shop Name',
@@ -69,19 +71,21 @@ class ShopController extends Controller
             return redirect(route('admin.shops.all'))->withInput();
         }
 
-        $subname     = strtoupper(substr($request->name, 0, 4));
+        $subname     = strtoupper(substr(str_replace(' ', '', $request->name), 0, 4));
         $rand_number = str_pad(rand(0, 9), 4, '0', STR_PAD_LEFT);
         $dis_code    = $subname . $rand_number . date('d') . date('m');
 
         $shop = Shop::create([
-            'name'      => strtolower($request->name),
-            'city'      => $request->city,
-            'address'   => $request->address,
-            'mobile'    => $request->mobile,
-            'email'     => $request->email,
-            'shop_code' => $dis_code,
-            'password'  => bcrypt($request->password),
-            'status'    => true,
+            'name'       => $request->name,
+            'city'       => $request->city,
+            'address'    => $request->address,
+            'mobile'     => $request->mobile,
+            'email'      => $request->email,
+            'shop_code'  => $dis_code,
+            'password'   => bcrypt($request->password),
+            'account_no' => $request->account_no,
+            'ifsc_code'  => $request->ifsc_code,
+            'status'     => true,
         ]);
 
         Mail::send(['html' => 'backend.mails.shop'], ['shop' => $shop, 'password' => $request->password], function ($message) use ($shop) {
@@ -151,6 +155,8 @@ class ShopController extends Controller
             'mobile'       => 'required|digits_between:8,12',
             'password'     => 'required_with:con_password|max:191',
             'con_password' => 'required_with:password|same:password|max:191',
+            'account_no'   => 'nullable|string|max:191',
+            'ifsc_code'    => 'nullable|string|max:191',
         ],
             [
                 'name.required'              => 'Please Enter Shop Name',
@@ -167,11 +173,13 @@ class ShopController extends Controller
             $shop = Shop::where('id', $id)->firstOrFail();
 
             $shop->update([
-                'name'    => strtolower($request->name),
-                'city'    => $request->city,
-                'address' => $request->address,
-                'mobile'  => $request->mobile,
-                'status'  => $request->status,
+                'name'       => $request->name,
+                'city'       => $request->city,
+                'address'    => $request->address,
+                'mobile'     => $request->mobile,
+                'status'     => $request->status,
+                'account_no' => $request->account_no,
+                'ifsc_code'  => $request->ifsc_code,
             ]);
 
             if ($request->filled('password')) {

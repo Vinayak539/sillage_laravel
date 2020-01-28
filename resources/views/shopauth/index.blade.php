@@ -9,14 +9,12 @@
             <div class="col-12 text-center">
                 <h1 class="page-title">My Account</h1>
                 <ul class="breadcrumb justify-content-center">
-                    <li><a href="{{ route('shop.dashboard') }}">Dashboard</a></li>
-                    <li><a href="{{ route('shop.orders') }}">Orders</a></li>
+                    <li class="current"><a href="{{ route('shop.dashboard') }}">Orders</a></li>
+                    <li><a href="{{ route('shop.account') }}">Account</a></li>
                     <li><a href="{{ route('shop.logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                     </li>
-                    <li class="current"><span>My Account</span></li>
-
-                    <form id="logout-form" action="{{ route('shop.logout') }}" method="POST" style="display: none;">
+                   <form id="logout-form" action="{{ route('shop.logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
                 </ul>
@@ -165,6 +163,10 @@
             city: {
                 required: true,
             },
+
+            con_password:{
+                equalTo:"#password"
+            }
         },
         messages: {
 
@@ -185,6 +187,10 @@
             city: {
                 required: "Please Enter City"
             },
+
+            con_password:{
+                equalTo: "Please Enter Confirm Password same as password"
+            }
 
         },
         submitHandler: function (form) {
