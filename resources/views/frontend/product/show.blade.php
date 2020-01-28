@@ -619,11 +619,16 @@
 @section('extracss')
 <style>
     @media (max-width: 47.94em){
-    .btn {
-        min-height: unset;
-        line-height: unset;
+        .btn {
+            min-height: unset;
+            line-height: unset;
+        }
     }
-}
+    @media screen and (max-width: 767px) {
+        .sm-padding-footer{
+            padding-bottom:15% !important;
+        }
+    }
     .table-bordered td, .table-bordered th {
         border: 1px solid #dee2e6;
     }.table td, .table th {

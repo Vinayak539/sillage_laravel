@@ -44,8 +44,8 @@
                                     <div class="row">
 
                                         <div class="col-md-12">
-                                            <div class="checkout-form form-row mb--30">
-                                                <div class="form__group col-md-6 mb-sm--30">
+                                            <div class="checkout-form form-row mb--30 mb-xs--10">
+                                                <div class="form__group col-md-6 mb-sm--30 mb-xs--10">
                                                     <div class="pincode-deliveryContainer">
                                                         <label for="name" style="padding-left: 0;" class="form__label form__label--2">Please enter
                                                             PIN code to check delivery
@@ -59,7 +59,7 @@
                                                             <i class="fa fa-search" aria-hidden="true"></i></button>
                                                     </div>
                                                 </div>
-                                                <div class="form__group col-md-6 mt--40 pincd">
+                                                <div class="form__group col-md-6 mt--40 mt-xs--10 pincd">
                                                     <label for="pincode" class="error pincode_error"></label>
                                                     <p class="text-success pincode_success"></p>
                                                     <!-- <p class="text-danger pincode_error"></p> -->
@@ -127,7 +127,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-lg-4 mt-md--40">
+                                <div class="col-lg-4 mt-md--40 mt-xs--10">
                                     <div class="order-details">
                                         <div class="checkout-title mt--10">
                                             <h2>Your Order</h2>

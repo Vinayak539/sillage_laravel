@@ -24,7 +24,7 @@
         <div class="container">
             @if(Cart::isEmpty())
             <div class="row">
-                <div class="col-md-12 mb-50 mt-50">
+                <div class="col-md-12 mb--50 mt--50">
                     <div class="alert alert-warning text-center">
                         <h4>Your cart is empty... You can add some product from <a href="{{ route('search') }}">here</a>
                         </h4>
@@ -33,91 +33,61 @@
             </div>
             @else
 
-            <div class="row pt--30 pb--80 pt-md--45 pt-sm--25 pb-md--60 pb-sm--40">
-                <div class="col-lg-8 mb-md--30">
-                    <form class="cart-form" action="#">
-                        <div class="row no-gutters">
-                            <div class="col-12">
-                                <div class="table-content table-responsive">
-                                    <table class="table text-center">
-                                        <thead style="background-color: #f2f2f2;">
-                                            <tr>
-                                                <th>&nbsp;</th>
-                                                <th>&nbsp;</th>
-                                                <th class="text-left">Product</th>
-                                                <th class="text-left">Colour & Size</th>
-                                                <th>price</th>
-                                                <th>quantity</th>
-                                                <th>total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (Cart::getContent() as $item)
-                                            <tr>
-                                                <td class="product-remove text-left">
-                                                    <a href="javascript:void(0)" class="btn-remove-item"
-                                                        data-remove-id="{{ $item->id }}">
-                                                        <i class="fa fa-times" aria-hidden="true"></i></i>
-                                                    </a>
-                                                </td>
-
-                                                <td class="product-thumbnail text-left">
-                                                    <img src="{!! asset('storage/images/multi-products/'.$item->attributes->color_image) !!} "
-                                                        alt="{{ $item->name }}" width="50px">
-                                                </td>
-                                                <td class="product-name text-left wide-column">
-                                                    <h3>
-                                                        <a href="{{ route('product', $item->attributes->slug_url) }}">{{ $item->name }}
-                                                        </a>
-                                                    </h3>
-                                                </td>
-                                                <td class="product-price text-left">
-                                                    <span class="product-price-wrapper">
-                                                        <span class="money">{{ $item->attributes->color_name }} &
-                                                            {{ $item->attributes->size_name }}</span>
-                                                    </span>
-                                                </td>
-                                                <td class="product-price">
-                                                    <span class="product-price-wrapper">
-                                                        <span class="money">₹{{ $item->price }}</span>
-                                                    </span>
-                                                </td>
-                                                <td class="product-price">
-                                                    <span class="product-price-wrapper">
-                                                        <span class="money">{{ $item->quantity }}</span>
-                                                    </span>
-                                                </td>
-                                                {{-- <td class="product-quantity">
-                                                    <div class="quantity">
-                                                        <input type="number" class="quantity-input" name="qty"
-                                                            value="{{ $item->quantity }}" min="1"
-                                                            max="{{ $item->attributes->stock }}"
-                                                            data-index="{{ $item->id }}"
-                                                            data-stock="{{ $item->attributes->stock }}" autofocus>
-                                                    </div>
-                                                </td> --}}
-                                                <td class="product-total-price">
-                                                    <span class="product-price-wrapper">
-                                                        <span
-                                                            class="money"><strong>₹{{ $item->price * $item->quantity }}</strong></span>
-                                                    </span>
-                                                </td>
-                                            </tr>
-
-                                            @endforeach
-
-                                        </tbody>
-                                    </table>
-                                </div>
+            <div class="row pt--30 pb--80 pt-md--45 pt-sm--40 pb-md--60 pb-sm--40">
+                <div class="col-md-8">
+                     <!-- List group -->
+                     <ul class="list-group list-group-lg list-group-flush-x mb-6">
+                        @foreach (Cart::getContent() as $item)
+                        <li class="list-group-item">
+                          <div class="row align-items-center">
+                            <div class="col-2">
+          
+                              <!-- Image -->
+                              <a href="{{ route('product', $item->attributes->slug_url) }}">
+                                <img src="{!! asset('storage/images/multi-products/'.$item->attributes->color_image) !!} "
+                                alt="{{ $item->name }}" class="img-fluid">
+                              </a>
+          
                             </div>
-                        </div>
-                    </form>
+                            <div class="col">
+          
+                              <!-- Title -->
+                              <div class="d-flex mb-2 font-weight-bold">
+                                <a class="text-body font-size-16px" href="{{ route('product', $item->attributes->slug_url) }}">{{ $item->name }}</a> <span class="ml-auto">₹{{ $item->price * $item->quantity }}</span>
+                              </div>
+          
+                              <!-- Text -->
+                              <p class="mb-5 font-size-15px text-muted">
+                                Size: {{ $item->attributes->size_name }} <br />
+                                Color: {{ $item->attributes->color_name }} <br />
+                                Price : ₹{{ $item->price }}
+                              </p>
+          
+                              <!--Footer -->
+                              <div class="d-flex align-items-center">
+          
+                                <p class="font-size-15px">Qty. {{ $item->quantity }}</p>
+          
+                                <!-- Remove -->
+                                <a class="font-size-15px text-gray-400 ml-auto btn-remove-item" href="javascript:void(0)" 
+                                data-remove-id="{{ $item->id }}">
+                                  <i class="fa fa-remove"></i> Remove
+                                </a>
+          
+                              </div>
+          
+                            </div>
+                          </div>
+                        </li>
+                        @endforeach
+                      </ul>
+                    
                 </div>
-                <div class="col-lg-4">
+                <div class="col-md-4">
                     <div class="cart-collaterals">
                         <div class="cart-totals">
                             <h5 class="mb--15">Cart totals</h5>
-
+    
                             <div class="table-content table-responsive">
                                 <table class="table order-table">
                                     <tbody>
@@ -142,9 +112,9 @@
                     </div>
                 </div>
             </div>
-            @endif
-        </div>
+        @endif
     </div>
+</div>
 </div>
 <!-- Main Content Wrapper Start -->
 @endsection

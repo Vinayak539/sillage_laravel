@@ -69,8 +69,8 @@
                             "slidesToShow": 4,
                             "slidesToScroll": 1,
                             "arrows": true,
-                            "prevArrow": "fa fa-angle-left",
-                            "nextArrow": "fa fa-angle-right"
+                            "prevArrow": {"buttonClass": "slick-btn slick-prev", "iconClass": "fa fa-angle-left" },
+                            "nextArrow": {"buttonClass": "slick-btn slick-next", "iconClass": "fa fa-angle-right" }
                             }' data-slick-responsive='[
                                 {"breakpoint":1200, "settings": {"slidesToShow": 3} },
                                 {"breakpoint":991, "settings": {"slidesToShow": 2} },
