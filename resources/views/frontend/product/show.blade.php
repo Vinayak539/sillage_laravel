@@ -256,12 +256,14 @@
                                                 {!! $product->description !!}
                                             </p>
                                         </div>
-                                        <div class="pdp-sizeFitDesc">
+                                        
+                                        {{-- <div class="pdp-sizeFitDesc">
                                             <h4 class="pdp-sizeFitDescTitle pdp-product-description-title">Material
                                                 &amp; Care</h4>
                                             <p class="pdp-sizeFitDescContent pdp-product-description-content">
                                                 {{ $product->material->material_name }}</p>
-                                        </div>
+                                        </div> --}}
+
                                         <div class="index-sizeFitDesc">
                                             <h4 class="index-sizeFitDescTitle index-product-description-title"
                                                 style="padding-bottom: 12px;">Specifications
@@ -281,7 +283,7 @@
                                                     </div>
                                                 </div>
                                                 @endif
-                                                @if($product->length)
+                                                {{-- @if($product->length)
                                                 <div class="index-row">
                                                     <div class="index-rowKey">Length</div>
                                                     <div class="index-rowValue">{{ $product->length }}</div>
@@ -304,7 +306,7 @@
                                                     <div class="index-rowKey">Weight</div>
                                                     <div class="index-rowValue">{{ $product->weight }}</div>
                                                 </div>
-                                                @endif
+                                                @endif --}}
                                                 @if($product->warranty)
                                                 <div class="index-row">
                                                     <div class="index-rowKey">Warranty</div>
