@@ -267,13 +267,13 @@
                                                 style="padding-bottom: 12px;">Specifications
                                             </h4>
                                             <div class="index-tableContainer">
-                                                @if($product->brand)
+                                                {{-- @if($product->brand)
                                                 <div class="index-row">
                                                     <div class="index-rowKey">Brand</div>
                                                     <div class="index-rowValue">{{ $product->brand->brand_name }}
                                                     </div>
                                                 </div>
-                                                @endif
+                                                @endif --}}
                                                 @if($product->condition)
                                                 <div class="index-row">
                                                     <div class="index-rowKey">Condition</div>
