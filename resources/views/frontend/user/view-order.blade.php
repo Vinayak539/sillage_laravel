@@ -161,6 +161,7 @@
                             <p>Pincode - {{ $order->pincode }}</p>
                             <p><strong>Phone Number - {{ $order->user->mobile }}</strong></p>
                             <p><strong>Email Id - {{ $order->user->email }}</strong></p>
+                            @if($order->promocode)<p><strong> Promocode Used - {{ $order->promocode }}</strong></p>@endif
                         </div>
                     </div>
 
@@ -230,7 +231,9 @@
                                             </p>
                                             <p>Price : {{ $detail->mrp }}</p>
                                             <p>Qty : {{ $detail->quantity }}</p>
+                                            @if($offers)
                                             <p>
+
                                                 @if(!empty($exp_offers))
                                                     @foreach($exp_offers as $ofr)
                                                         @php
@@ -241,6 +244,7 @@
                                                     @endforeach
                                                 @endif
                                             </p>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

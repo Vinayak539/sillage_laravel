@@ -299,7 +299,14 @@
                             {{ $detail->product->title }} <br>
                             {{ $detail->size ? 'Size: ' . $detail->size->title : '' }} <br>
                             {{ $detail->color ? 'Colour: ' . $detail->color->title : '' }} <br>
-
+                        </td>
+                        <td>{{ $detail->mrp }}</td>
+                        <td>{{ $detail->quantity }}</td>
+                        <td>{{ $detail->mrp * $detail->quantity }}</td>
+                    </tr>
+                    @if($offers)
+                    <tr>
+                        <td colspan="4">
                             @if(!empty($exp_offers))
                                 @foreach($exp_offers as $ofr)
                                     @php
@@ -310,11 +317,8 @@
                                 @endforeach
                             @endif
                         </td>
-                        <td>{{ $detail->mrp }}</td>
-                        <td>{{ $detail->quantity }}</td>
-                        <td>{{ $detail->mrp * $detail->quantity }}</td>
                     </tr>
-
+                    @endif
                     @endforeach
                     <tr style="border-bottom: 3px solid #000;">
                         <td colspan="4"></td>

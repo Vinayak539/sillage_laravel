@@ -69,6 +69,7 @@
                                             </p>
                                             <p>Price : {{ $detail->mrp }}</p>
                                             <p>Quantity : {{ $detail->quantity }}</p>
+                                            @if($offers)
                                             <p>
                                                 @if(!empty($exp_offers))
                                                     @foreach($exp_offers as $ofr)
@@ -76,10 +77,11 @@
                                                             $offer = \App\Model\MapMstOfferProduct::offer($ofr);
                                                         @endphp
 
-                                                        + {{ $offer->product->title }} [{{ $offer->size->title }} ML] <br />
+                                                        + {{ $offer->product ? $offer->product->title : '' }} [{{ $offer->size->title }} ML] <br />
                                                     @endforeach
                                                 @endif
                                             </p>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

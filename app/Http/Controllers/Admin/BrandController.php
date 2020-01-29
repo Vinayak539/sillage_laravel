@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Model\BulkOrder;
 use App\Model\TxnBrand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class BrandController extends Controller
@@ -41,27 +43,42 @@ class BrandController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:50|unique:txn_brands,brand_name',
+            'name'    => 'required|string|max:191',
+            'mobile'  => 'required|digits_between:8,12',
+            'email'   => 'required|email|max:191',
+            'message' => 'required|string',
         ],
             [
-                'name.required' => 'Please Enter Brand Name',
-                'name.max' => 'Please Enter Brand Name in Maximum 50 Character',
-                'name.unique' => $request->name . ' brand Already Available',
+                'name.required'         => 'Please Enter Your Name',
+                'mobile.required'       => 'Please Enter Your Mobile Number',
+                'mobile.digits_between' => 'Please Enter Mobile Number in digits between 8 to 12',
+                'email.required'        => 'Please Enter Email ID',
+                'email.email'           => 'Please Enter Proper Email ID',
+                'message.required'      => 'Please Enter Message',
             ]);
 
         if ($validator->fails()) {
-            connectify('error', 'Add Brand', $validator->errors()->first());
-            return redirect(route('admin.brands.all'))->withInput();
+            connectify('error', 'Error', $validator->errors()->first());
+            return redirect(route('contact'))->withInput();
         }
 
-        TxnBrand::create([
-            'brand_name' => $request->name,
-            'status' => true,
+        $data = BulkOrder::create([
+            'name'    => $request->name,
+            'mobile'  => $request->mobile,
+            'subject' => $request->subject,
+            'email'   => $request->email,
+            'message' => $request->message,
         ]);
 
-        connectify('success', 'Brand Added', 'Brand has been added successfully !');
+        Mail::send(['html' => 'backend.mails.enquiry'], ['data' => $data], function ($message) {
+            $message->from('contact@hnilifestyle.com', 'HNI Lifestyle');
+            $message->to('contact@hnilifestyle.com', 'HNI Lifestyle');
+            $message->subject('New Bulk Order From HNI Lifestyle');
+        });
+        
+        connectify('success', 'Enquiry Success', 'Thank you for contacting us, we\'ll get back to you soon !');
 
-        return redirect(route('admin.brands.all'));
+        return back();
     }
 
     /**

@@ -199,7 +199,7 @@
                             {{$data->mobile}}
                         </td>
                     </tr>
-                    
+                    @if($data->subject)
                     <tr>
                         <td>
                             Subject
@@ -208,6 +208,7 @@
                             {{$data->subject}}
                         </td>
                     </tr>
+                    @endif
                     <tr>
                         <td>
                             Message

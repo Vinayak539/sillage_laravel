@@ -98,7 +98,7 @@ class UserController extends Controller
     {
         try {
             $user = TxnUser::where('id', auth('user')->user()->id)->with(['orders' => function ($q) {
-                $q->where('status', '<>', 'nc')->get();
+                $q->where('status', '<>', 'nc')->orderBy('id', 'desc')->get();
             }])->firstOrFail();
             return view('frontend.user.orders', compact('user'));
 

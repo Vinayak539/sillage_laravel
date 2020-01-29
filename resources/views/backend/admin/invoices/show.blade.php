@@ -3,14 +3,10 @@
 
 <head>
     <style>
-        img {
-            height: 70px;
-
-        }
-
         * {
             font-family: 'Segoe UI';
-            color: #504E4E;
+            color: #000;
+            font-size: 11px;
         }
 
         th {
@@ -31,18 +27,18 @@
         }
 
         .container {
-            padding-right: 15px;
-            padding-left: 15px;
-            margin-right: auto;
-            margin-left: auto;
+            padding-left: 2px;
+            margin: 0 auto;
+            width: 350px !important;
         }
-
-
 
         .row:after {
             clear: both;
         }
 
+        .clear_both {
+            clear: both;
+        }
 
         .row {
             margin-right: -15px;
@@ -58,11 +54,13 @@
 
 
         .bg-silver {
-            background-color: #eee !important;
+            background-color: #000 !important;
             padding: 3px;
+            color: #fff;
+            font-weight: 700;
         }
 
-        .col-sm-12 {
+        .col-sm-6 {
             position: relative;
             min-height: 1px;
             padding-right: 15px;
@@ -70,8 +68,12 @@
         }
 
 
-        .col-sm-12 {
+        .col-sm-6 {
             float: left;
+        }
+
+        .col-sm-6 {
+            width: 100%;
         }
 
         .col-sm-12 {
@@ -110,7 +112,7 @@
             padding: 5px;
             line-height: 1.42857143;
             vertical-align: top;
-            border-top: 1px solid #ddd;
+            border-top: 1px solid #000;
         }
 
         .text-center {
@@ -123,7 +125,7 @@
 
         .table-bordered td,
         .table-bordered th {
-            border: 1px solid #ddd !important
+            border: 1px solid #000 !important
         }
 
         .text-right {
@@ -140,6 +142,10 @@
             overflow-x: auto
         }
 
+        .invoice_span {
+            float: right;
+        }
+
         @media (min-width:768px) {
             .container {
                 width: 650px
@@ -154,7 +160,7 @@
 
         @media (min-width:1200px) {
             .container {
-                width: 970px
+                width: 970px;
             }
         }
 
@@ -162,95 +168,98 @@
             color: #337ab7;
             text-decoration: none;
         }
+
+        .company_title {
+            font: 600 14px normal bold;
+            text-transform: uppercase;
+            margin-bottom: 5px !important;
+        }
+
+        .company_address {
+            font-size: 9px !important;
+            text-align: center;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .pb-20 {
+            padding-bottom: 20px !important;
+            /* height: 150px !important; */
+        }
+
+        .main-border {
+            border: 1px solid #000;
+            padding: 10px;
+        }
+
+        .mb-0 {
+            margin-bottom: 0;
+        }
+
+        .text-white {
+            color: #fff !important;
+        }
+
+        .fw-600 {
+            font-weight: 900;
+        }
     </style>
 
 </head>
 
 <body>
     <div class="container">
-        <div>
-            <a href="{{ url('/') }}/">
-                <!-- <img src="{{ url('/') }}/images/hni_logo.png" alt="Ranayas" /> -->
-                <h3>HNI Lifestyle</h3>
-            </a>
-        </div>
         <div class="row">
-            <div class="col-sm-12">
-                <div class="alert alert-success">
-                    <h4>
-                        Invoice Copy #{{ $invoice->id }}
-                    </h4>
-                </div>
-                <table border="1" class="table table-bordered table-responsive">
+            <div class="col-sm-12 main-border">
+                <table class="table table-bordered table-responsive">
+                    <tr class="pb-20">
+                        <td colspan="2">
+                            <div class="text-center">
+                                <p class="company_title text-center"> Khushi Naturals </p>
+                                <p class="company_address"> Unit no.112, 1st Floor, Bldg no.A6,
+                                    Harihar Complex, Dapode,Thane- 421302.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-center fw-600">Tax Invoice</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            GSTIN: 27AAUFK1614M1ZT
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            Contact: 9619614785
+                            <span class="invoice_span">Email id : support@hnilifestyle.com</span>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table table-bordered table-responsive">
                     <tr>
                         <th colspan="2" class="text-center text-uppercase bg-silver">
                             Contact Information
                         </th>
                     </tr>
-                    @if($invoice->transaction['TXNID'])
                     <tr>
-                        <td>TRANSACTION NO </td>
-                        <td>{{ $invoice->transaction['TXNID'] }}</td>
-                    </tr>
-                    @endif
-                    <tr>
-                        <td>
-                            Invoice No :
-                        </td>
-                        <td>
-                            {{$invoice->id}}
+                        <td colspan="2">
+                            Invoice No : {{ $invoice->id }}
+                            <span class="invoice_span">Order Date : {{date('d M Y' , strtotime($invoice->created_at))}}
+                            </span>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            Order No :
-                        </td>
-                        <td>
-                            {{$invoice->id}}
+                        <td colspan="2">
+                            Name : {{$invoice->user_name}}
+                            <span class="invoice_span">Consumer ID : {{$invoice->user->id}}</span>
                         </td>
                     </tr>
+
                     <tr>
-                        <td>
-                            Consumer ID :
-                        </td>
-                        <td>
-                            {{$invoice->user->id}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Order Date</td>
-                        <td>{{ date('d-m-Y h:i A', strtotime($invoice->created_at)) }}</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Name :
-                        </td>
-                        <td>
-                            {{$invoice->user_name}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Email :
-                        </td>
-                        <td>
-                            {{$invoice->user->email}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Contact No. :
-                        </td>
-                        <td>
-                            {{$invoice->user->mobile}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            City :
-                        </td>
-                        <td>
-                            {{$invoice->city}}
+                        <td colspan="2">
+                            Contact No. : {{$invoice->user->mobile}}
+                            <span class="invoice_span">Email : {{$invoice->user->email}}</span>
                         </td>
                     </tr>
                     <tr>
@@ -259,55 +268,114 @@
                         </td>
 
                         <td>
-                            {{$invoice->address}} , Pincode : {{$invoice->pincode}} , City : {{$invoice->city}} ,
-                            Landmark : {{ $invoice->landmark }}
+                            {{$invoice->address}} ,
+                            <br> Pincode : {{$invoice->pincode}} , City : {{$invoice->city}} , Landmark :
+                            {{$invoice->landmark}}
                         </td>
                     </tr>
-
                 </table>
-                <hr>
-                <table border="1" class="table table-bordered table-responsive">
+
+                <table class="table table-bordered table-responsive mb-0">
                     <tr>
-                        <th colspan="12" class="text-center text-uppercase bg-silver">
+                        <th colspan="4" class="text-center text-uppercase bg-silver">
                             Order Information
                         </th>
                     </tr>
-
                     <tr>
                         <th>Product Name</th>
-                        <th>Colour & Size</th>
-                        <th>MRP (Rs)</th>
+                        <th>MRP (Rs.)</th>
                         <th>QTY</th>
-                        <th>AMOUNT (Rs)</th>
+                        <th>AMT (Rs.)</th>
                     </tr>
-                    @foreach($invoice->details as $detail)
+
+                @foreach($invoice->details as $detail)
+
+                        @php
+                            $offers = json_decode($detail->offers);
+                            $exp_offers = explode(",", $offers);
+                        @endphp
                     <tr>
-                        <td>{{ $detail->product->title }}</td>
-                        <td>{{ $detail->size ? 'Size: ' . $detail->size->title : '' }} <br>
-                            {{ $detail->color ? 'Colour: ' . $detail->color->title : '' }}</td>
+                        <td>
+                            {{ $detail->product->title }} <br>
+                            {{ $detail->size ? 'Size: ' . $detail->size->title : '' }} <br>
+                            {{ $detail->color ? 'Colour: ' . $detail->color->title : '' }} <br>
+                        </td>
                         <td>{{ $detail->mrp }}</td>
                         <td>{{ $detail->quantity }}</td>
                         <td>{{ $detail->mrp * $detail->quantity }}</td>
                     </tr>
-                    @endforeach
+                    @if($offers)
                     <tr>
-                        <th colspan="12" class="bg-silver text-right text-uppercase">
-                            <p>Total : Rs {{ $invoice->tbt }}</p>
-                            <p>+ CGST : Rs {{ round($invoice->tax/2, 2) }}</p>
-                            <p>+ SGST : Rs {{ round($invoice->tax/2, 2) }}</p>
-                            @if($invoice->discount)<p>- Discount : Rs {{ $invoice->discount }}</p>@endif
-                            <p>Grand Total : Rs {{ $invoice->total }}</p>
+                        <td colspan="4">
+                            @if(!empty($exp_offers))
+                                @foreach($exp_offers as $ofr)
+                                    @php
+                                        $offer = \App\Model\MapMstOfferProduct::where('id', $ofr)->with('product', 'color', 'size')->first();
+                                    @endphp
+
+                                    + {{ $offer->product->title }} [{{ $offer->size->title }} ML] <br />
+                                @endforeach
+                            @endif
+                        </td>
+                    </tr>
+                    @endif
+                    @endforeach
+                    <tr style="border-bottom: 3px solid #000;">
+                        <td colspan="4"></td>
+                    </tr>
+                    <tr>
+                        <th colspan="3">
+                            Total
                         </th>
+                        <td>
+                            Rs. {{ $invoice->tbt }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="3">
+                            + CGST
+                        </th>
+                        <td>
+                            Rs. {{ round($invoice->tax / 2, 2) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="3">
+                            + SGST
+                        </th>
+                        <td>
+                            Rs. {{ round($invoice->tax / 2, 2) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="3">
+                            + Shipping
+                        </th>
+                        <td>
+                            Rs.
+                            {{ $invoice->total >= 1000 ? '0' : '60' }}
+                        </td>
+                    </tr>
+                    @if($invoice->discount)
+                    <tr>
+                        <th colspan="3">
+                            - Discount
+                        </th>
+                        <td>
+                            Rs. {{ $invoice->discount }}
+                        </td>
+                    </tr>
+                    @endif
+
+                    <tr>
+                        <th colspan="3">
+                            Grand Total
+                        </th>
+                        <td>
+                            Rs. {{ $invoice->total }}
+                        </td>
                     </tr>
                 </table>
-                <div>
-                    <b>
-                        NOTE :
-                    </b>
-                    This is an autogenerated mail. Please do not reply to this mail. If you have any queries then go to
-                    <a href="{{ url('/') }}/reach_us">hnilifestyle.com</a> Or send a mail at
-                    <a href="mailto:support@hnilifestyle.com">support@hnilifestyle.com</a>
-                </div>
             </div>
         </div>
     </div>

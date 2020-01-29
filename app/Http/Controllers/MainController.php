@@ -70,7 +70,6 @@ class MainController extends Controller
             $product = TxnProduct::where('status', true)->where('slug_url', $slug)->with(['images', 'condition', 'sizes', 'unit', 'colors', 'category', 'warranty', 'reviews' => function ($q) {
                 $q->where('status', true)->get();
             }])->firstOrFail();
-            // dd($product->sizes);
 
             $prod = DB::table('txn_products as p')
                 ->select(DB::raw('FLOOR(AVG(txn_reviews.rating)) as rating , COUNT(txn_reviews.id) as total_rating'))
@@ -89,8 +88,6 @@ class MainController extends Controller
                 ->orderBy('m.sort_index')
                 ->get();
 
-                // dd($colorsSizes);
-
             $related_products = \DB::table('txn_products as p')
                 ->selectRaw("p.id as product_id , p.title, c.id as cate_id , p.slug_url, p.image_url, p.image_url1, p.status, p.review_status , FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment, c.name as category_name, c.slug_url as category_url")
                 ->leftJoin("txn_reviews as r", "r.product_id", "p.id")
@@ -104,17 +101,22 @@ class MainController extends Controller
                 ->get();
 
             $offers = DB::table('txn_products as p')
-                ->selectRaw('p.title as product_name, p.id as product_id, p.image_url, m.color_id, m.size_id, c.title as color_name, s.title as size_name, m.id as offer_id, mop.purchase_quantity, mop.offered_quantity, mop.id as map_id, mop.map_offer_id')
+                ->selectRaw('p.title as product_name, p.id as product_id, m.color_id, m.size_id, c.title as color_name, s.title as size_name, m.id as offer_id, mop.purchase_quantity, mop.offered_quantity, mop.id as map_id, mop.map_offer_id, timg.image_url')
                 ->join("map_mst_offer_products as m", "m.offer_product_id", "p.id")
                 ->join("mst_colors as c", "m.color_id", "c.id")
                 ->join("mst_sizes as s", "m.size_id", "s.id")
                 ->join("mst_offers as o", "m.offer_id", "o.id")
                 ->join("map_offer_products as mop", "mop.mst_offer_id", "m.offer_id")
+                ->join("txn_images as timg",function($join){
+                    $join->on("timg.product_id","=","m.offer_product_id")
+                        ->on("timg.color_id","=","m.color_id");
+                })
                 ->groupBy('m.offer_product_id', 'm.color_id', 'm.size_id')
                 ->where('o.status', true)
                 ->where('mop.product_id', $product->id)
                 ->get();
 
+                // dd($offers);
 
             return view('frontend.product.show', compact('product', 'related_products', 'prod', 'colorsSizes', 'offers'));
 

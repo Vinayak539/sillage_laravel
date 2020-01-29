@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Model\Faq;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class FaqController extends Controller
 {
@@ -18,7 +19,7 @@ class FaqController extends Controller
         $faqs = Faq::orderBy('id', 'DESC')->paginate(50);
         return view('backend.admin.faqs.index', compact('faqs'));
     }
-    
+
     public function manage()
     {
         $faqs = Faq::orderBy('id', 'ASC')->paginate(10);
@@ -43,7 +44,7 @@ class FaqController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'question' => 'required|string',
             'answer'   => 'required|string',
         ],
@@ -52,13 +53,21 @@ class FaqController extends Controller
                 'answer.required'   => 'Please Enter Answer',
             ]);
 
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return redirect(route('admin.faqs.all'))->withInput();
+        }
+
         Faq::create([
             'question' => $request->question,
             'answer'   => $request->answer,
             'status'   => true,
         ]);
 
-        return redirect(route('admin.faqs.all'))->with('messageSuccess', 'Faq has been added successfully !');
+        connectify('success', 'Success', 'Faq has been added successfully !');
+
+        return redirect(route('admin.faqs.all'));
+
     }
 
     /**
@@ -88,9 +97,17 @@ class FaqController extends Controller
         } catch (\Exception $ex) {
 
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.faqs.all'))->with('messageDanger', 'Whoops, Faq Not Found with id : ' . $id);
+
+                connectify('error', 'Error', 'Whoops, Faq Not Found !');
+
+                return redirect(route('admin.faqs.all'));
+
             }
-            return redirect(route('admin.faqs.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from my end !');
+
+            return redirect(route('admin.faqs.all'));
+
         }
     }
 
@@ -103,7 +120,7 @@ class FaqController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'question' => 'required|string',
             'answer'   => 'required|string',
             'status'   => 'required|string|max:191',
@@ -123,14 +140,23 @@ class FaqController extends Controller
                 'status'   => $request->status,
             ]);
 
-            return redirect(route('admin.faqs.edit', $id))->with('messageSuccess', 'Faq has been Updated Successfully !');
+            connectify('success', 'Success', 'Faq has been Updated Successfully !');
+
+            return redirect(route('admin.faqs.edit', $id));
 
         } catch (\Exception $ex) {
 
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.faqs.all'))->with('messageDanger', 'Whoops, Faq Not Found with id : ' . $id);
+
+                connectify('error', 'Error', 'Whoops, Faq Not Found !');
+
+                return redirect(route('admin.faqs.all'));
+
             }
-            return redirect(route('admin.faqs.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from my end !');
+
+            return redirect(route('admin.faqs.all'));
         }
     }
 
@@ -140,22 +166,31 @@ class FaqController extends Controller
      * @param  \App\Model\Faq  $faq
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         try {
 
-            $faq = Faq::where('id', $id)->firstOrFail();
+            $faq = Faq::where('id', $request->faq_id)->firstOrFail();
 
             $faq->delete();
 
-            return redirect(route('admin.faqs.all'))->with('messageSuccess', 'Faq has been deleted Successfully !');
+            connectify('success', 'Success', 'Faq has been deleted Successfully !');
+
+            return redirect(route('admin.faqs.all'));
 
         } catch (\Exception $ex) {
 
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.faqs.all'))->with('messageDanger', 'Whoops, Faq Not Found with id : ' . $id);
+
+                connectify('error', 'Error', 'Whoops, Faq Not Found !');
+
+                return redirect(route('admin.faqs.all'));
+
             }
-            return redirect(route('admin.faqs.all'))->with('messageDanger', 'Error, ' . $ex->getMessage());
+
+            connectify('error', 'Error', 'Whoops, Something Went Wrong from my end !');
+
+            return redirect(route('admin.faqs.all'));
         }
     }
 }

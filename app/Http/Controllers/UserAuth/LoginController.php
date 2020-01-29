@@ -56,7 +56,8 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::guard('user')->logout();
-        return back()->with('messageSuccess1', 'You have logged out successfully !');
+        connectify('success', 'Logged Out', 'You have logged out successfully !');
+        return back();
     }
 
     public function store(Request $request)

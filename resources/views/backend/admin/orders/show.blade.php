@@ -71,6 +71,13 @@
                             {{ $order->status }}
                         </td>
                     </tr>
+                    
+                    @if($order->promocode)
+                    <tr>
+                        <th>Promocode</th>
+                        <td>{{ $order->promocode }}</td>
+                    </tr>
+                    @endif
 
                     @if($order->status === 'Delivered' && $order->delivery_date)
                     <tr>
@@ -193,17 +200,18 @@
 
                             {{ $detail->size ? 'Size: ' . $detail->size->title : '' }} <br>
                             {{ $detail->color ? 'Colour: ' . $detail->color->title : '' }}
+                            @if($offers)
+                                @if(!empty($exp_offers))
+                                <br>
+                                <br>
+                                    @foreach($exp_offers as $ofr)
+                                        @php
+                                            $offer = \App\Model\MapMstOfferProduct::where('id', $ofr)->with('product', 'color', 'size')->first();
+                                        @endphp
 
-                            @if(!empty($exp_offers))
-                            <br>
-                            <br>
-                                @foreach($exp_offers as $ofr)
-                                    @php
-                                        $offer = \App\Model\MapMstOfferProduct::where('id', $ofr)->with('product', 'color', 'size')->first();
-                                    @endphp
-
-                                    + {{ $offer->product->title }} [{{ $offer->size->title }} ML] <br />
-                                @endforeach
+                                        + {{ $offer->product->title }} [{{ $offer->size->title }} ML] <br />
+                                    @endforeach
+                                @endif
                             @endif
                         </td>
                         <td>{{ $detail->mrp }}</td>
