@@ -128,7 +128,7 @@ class InvoiceController extends Controller
 
             $invoice = TxnOrder::where('id', $id)->with('details', 'user', 'transaction')->firstOrFail();
 
-             return view('backend.admin.invoices.download', compact('invoice'));
+            //  return view('backend.admin.invoices.download', compact('invoice'));
 
             $pdf = PDF::loadView('backend.admin.invoices.download', ['invoice' => $invoice]);
 

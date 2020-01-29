@@ -13,13 +13,13 @@
 
 Route::GET('/', 'MainController@index')->name('index');
 Route::view('/about', 'frontend.about')->name('about');
-// Route::view('/contact', 'frontend.contact')->name('contact');
 Route::view('/all-product', 'frontend.all-product')->name('all-product');
 Route::view('/product-detail', 'frontend.product-detail')->name('product-detail');
 Route::view('/checkout', 'frontend.checkout')->name('checkout');
 Route::GET('/faq', 'Admin\FaqController@manage')->name('faq');
 
 // policy
+
 Route::view('/terms-condition', 'frontend.policy.terms-condition')->name('terms-condition');
 Route::view('/privacy', 'frontend.policy.privacy')->name('privacy');
 Route::view('/cancellation', 'frontend.policy.cancellation')->name('cancellation');
@@ -27,8 +27,13 @@ Route::view('/refund-return', 'frontend.policy.refund-return')->name('refund-ret
 Route::view('/shipping', 'frontend.policy.shipping')->name('shipping');
 
 // contact us
+
 Route::GET('/contact', 'EnquiryController@create')->name('contact');
 Route::POST('/contact', 'EnquiryController@store');
+
+// Bulk Orders
+
+Route::POST('/bulk-orders', 'Admin\BulkOrderController@store')->name('bulk.store');
 
 // filter
 
@@ -36,6 +41,7 @@ Route::GET('/search/filter', 'MainController@filter')->name('search.filter');
 Route::GET('/categories/filter', 'MainController@cateFilter')->name('categories.filter');
 
 // product routes
+
 Route::GET('/product/{slug}', 'MainController@getProduct')->name('product');
 Route::GET('/category/{slug}', 'MainController@getCategoryProducts')->name('cate');
 Route::GET('/search', 'MainController@search')->name('search');
@@ -276,6 +282,10 @@ Route::prefix('adhni753')->group(function () {
 
         Route::prefix('/manage-enquiries')->group(function () {
             Route::GET('/', 'EnquiryController@index')->name('admin.enquiries.all');
+        });
+
+        Route::prefix('/manage-bulks')->group(function () {
+            Route::GET('/', 'Admin\BulkOrderController@index')->name('admin.bulks.all');
         });
 
         Route::prefix('/manage-faqs')->group(function () {

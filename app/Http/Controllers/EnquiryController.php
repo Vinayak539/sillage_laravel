@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\Enquiry;
 use App\Model\TxnContactUs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class EnquiryController extends Controller
 {
@@ -22,7 +22,7 @@ class EnquiryController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name'    => 'required|string|max:191',
             'mobile'  => 'required|digits_between:8,12',
             'subject' => 'required|string|max:191',
@@ -39,6 +39,11 @@ class EnquiryController extends Controller
                 'message.required'      => 'Please Enter Message',
             ]);
 
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return redirect(route('contact'))->withInput();
+        }
+
         $data = TxnContactUs::create([
             'name'    => $request->name,
             'mobile'  => $request->mobile,
@@ -46,13 +51,16 @@ class EnquiryController extends Controller
             'email'   => $request->email,
             'message' => $request->message,
         ]);
-        
+
         Mail::send(['html' => 'backend.mails.enquiry'], ['data' => $data], function ($message) {
             $message->from('contact@hnilifestyle.com', 'HNI Lifestyle');
             $message->to('contact@hnilifestyle.com', 'HNI Lifestyle');
             $message->subject('New Enquiry From HNI Lifestyle');
         });
+        
+        connectify('success', 'Enquiry Success', 'Thank you for contacting us, we\'ll get back to you soon !');
 
-        return redirect(route('contact'))->with('messageSuccess', 'Thank you for contacting us, we\'ll get back to you soon..');
+        return redirect(route('contact'));
+
     }
 }

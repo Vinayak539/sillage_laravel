@@ -148,7 +148,7 @@ class OrderController extends Controller
                 'total' => $request->total,
                 'status' => $request->status,
                 'user_id' => $user->id,
-                'user_name' => $user->name,
+                'user_name' => $add->name,
                 'promocode' => $promocode,
                 'discount' => $request->discount,
                 'address' => $add->address,
@@ -300,7 +300,7 @@ class OrderController extends Controller
 
                     Delivery::orderCreation($order, $order->user);
 
-                    SMS::send($order->user->mobile, 'Hni Store - Your Order has been placed successfully, Your Order No : ' . $order->id . ' Login for more detail on ' . url('/'));
+                    // SMS::send($order->user->mobile, 'Hni Store - Your Order has been placed successfully, Your Order No : ' . $order->id . ' Login for more detail on ' . url('/'));
 
                     Mail::send(['html' => 'backend.mails.received'], ['order' => $order], function ($message) use ($order) {
                         $message->to($order->user->email)->subject('Your order has been placed successfully ! [order no : ' . $order->id . ']');

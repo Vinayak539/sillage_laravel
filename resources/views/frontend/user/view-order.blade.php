@@ -230,7 +230,9 @@
                                             </p>
                                             <p>Price : {{ $detail->mrp }}</p>
                                             <p>Qty : {{ $detail->quantity }}</p>
+                                            @if($offers)
                                             <p>
+
                                                 @if(!empty($exp_offers))
                                                     @foreach($exp_offers as $ofr)
                                                         @php
@@ -241,6 +243,7 @@
                                                     @endforeach
                                                 @endif
                                             </p>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

@@ -441,24 +441,22 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="ptb--30 plr--30">
-                    <form class="form" action="#" id="contact-form">
+                    <form class="form" action="{{ route('bulk.store') }}" id="formBulkOrder" method="POST" class="needs-validations">
+                        @csrf
                         <div class="form__group mb--20">
-                            <input type="text" name="name" class="form__input form__input--2" placeholder="Your name*">
+                            <input type="text" name="name" class="form__input form__input--2" placeholder="Your Name*" value="{{ old('name') }}" required>
                         </div>
                         <div class="form__group mb--20">
-                            <input type="email" name="email" class="form__input form__input--2"
-                                placeholder="Email Address*">
+                            <input type="email" name="email" class="form__input form__input--2" placeholder="Email Address*" value="{{ old('email') }}" required>
                         </div>
                         <div class="form__group mb--20">
-                            <input type="text" name="contact" class="form__input form__input--2"
-                                placeholder="Your Phone*">
+                            <input type="text" name="mobile" class="form__input form__input--2" placeholder="Your Mobile Number*" value="{{ old('mobile') }}" required>
                         </div>
                         <div class="form__group mb--20">
-                            <textarea class="form__input form__input--textarea" name="message"
-                                placeholder="Message*"></textarea>
+                            <textarea class="form__input form__input--textarea" name="message" placeholder="Message*" required>{{ old('message') }}</textarea>
                         </div>
                         <div class="form__group text-center">
-                            <input type="submit" value="Send" class="btn btn-submit btn-style-1">
+                            <button type="submit" class="btn btn-submit btnSubmit btn-style-1">Send</button>
                         </div>
                     </form>
                 </div>
@@ -851,6 +849,59 @@
                 }
 
                 // swal('Invalid', 'On Purchase of ' + pquantity*quantity + ' Product(s) Choose Any ' + oquantity*quantity + ' Product(s)', 'error');
+            }
+        });
+
+        $('#formBulkOrder').validate({
+            
+            rules: {
+
+                name:{
+                    required: true,
+                }, 
+
+                email: {
+                    required: true,
+                },
+
+                mobile: {
+                    required: true,
+                    number: true,
+                    minlength: 10,
+                    maxlength: 10
+                }, 
+
+                message: {
+                    required: true
+                }
+            }, 
+
+            messages: {
+
+                name: {
+                    required: "Please Enter Name"
+                },
+
+                email: {
+                    required: "Please Enter Email"
+                }, 
+
+                mobile: {
+                    required: "Please Enter Mobile Number",
+                    number: "Mobile Number should be of digits only",
+                    maxlength: "Mobile Number should be of 10 digits",
+                    minlength: "Mobile Number should be of 10 digits",
+                },
+
+                message: {
+                    required: "Please Enter Message"
+                }
+            },
+
+            submitHandler: function (form) {
+                $('.btnSubmit').attr('disabled', 'disabled');
+                $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+                form.submit();
             }
         });
 
