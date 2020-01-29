@@ -761,7 +761,7 @@
                             <figure class="product-image">
                                 <div class="product-image--holder">
                                     <a href="javascript:void(0)">
-                                        <img src="${window.location.origin + '/storage/images/products/' + load_offers[index].image_url}"
+                                        <img src="${window.location.origin + '/storage/images/multi-products/' + load_offers[index].image_url}"
                                             alt="Product Image">
                                     </a>
                                 </div>
@@ -918,7 +918,7 @@
                 for (let key in offers) {
                     html += ` <div class="col-md-6 col-6 mb-3">
                         <div class="card">
-                            <img class="card-img-top" src="${window.location.origin + '/storage/images/products/' + offers[key].image_url}" alt="${offers[key].name}">
+                            <img class="card-img-top" src="${window.location.origin + '/storage/images/multi-products/' + offers[key].image_url}" alt="${offers[key].name}">
                             <div class="card-body">
                             <h5 class="card-title">${offers[key].name}</h5>
                             <p class="card-text">Color : ${offers[key].color} <br />Size : ${offers[key].size}</p>
