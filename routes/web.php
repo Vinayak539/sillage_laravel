@@ -293,7 +293,7 @@ Route::prefix('adhni753')->group(function () {
             Route::POST('/', 'Admin\FaqController@store');
             Route::GET('/edit/{id}', 'Admin\FaqController@edit')->name('admin.faqs.edit');
             Route::POST('/edit/{id}', 'Admin\FaqController@update');
-            Route::POST('/delete/{id}', 'Admin\FaqController@destroy')->name('admin.faqs.delete');
+            Route::POST('/delete', 'Admin\FaqController@destroy')->name('admin.faqs.delete');
         });
 
         Route::prefix('/manage-abouts')->group(function () {
