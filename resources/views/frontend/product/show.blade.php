@@ -261,12 +261,12 @@
                                             <p class="pdp-sizeFitDescContent pdp-product-description-content">
                                                 {{ $product->material->material_name }}</p>
                                         </div> --}}
+                                        <div class="index-sizeFitDesc" id="accordionSpecifications">
+                                                <h4 class="index-sizeFitDescTitle index-product-description-title"  id="specOne" style="padding-bottom: 12px;">
+                                                    </i> Specifications <span class="btn bulk-order-btn pull-right"  data-toggle="collapse" data-target="#collapseOne">Other Information <i class="fa fa-plus"></i>	
+                                                </h4>
+                                            <div id="collapseOne" class="index-tableContainer collapse" aria-labelledby="specOne" data-parent="#accordionSpecifications">
 
-                                        <div class="index-sizeFitDesc">
-                                            <h4 class="index-sizeFitDescTitle index-product-description-title"
-                                                style="padding-bottom: 12px;">Specifications <span class="btn bulk-order-btn pull-right" data-toggle="collapse" data-target="#speci">Read More/Read Less</span>
-                                            </h4>
-                                            <div class="index-tableContainer collapse" id="speci">
                                                 {{-- @if($product->brand)
                                                 <div class="index-row">
                                                     <div class="index-rowKey">Brand</div>
@@ -641,15 +641,10 @@
         vertical-align: top;
         border-top: 1px solid #dee2e6;
     }
-    .bulk-order-btn {
-        /* padding: 4px 10px 1px;
-        font-size: 12px; */
-        padding: 2px 10px 1px;
-        font-size: 11px;
-    }
 
     .bulk-order-btn {
-        padding: 2px 10px 1px;
+        padding: 5px 15px 6px;
+        border-radius: 3px;
         font-size: 11px;
         background-color: #172337;
         border: 1px solid #172337;
@@ -683,6 +678,11 @@
         box-shadow: none;
         pointer-events: none;
         border-color: transparent;
+    }
+
+    .disabledOffer img{
+        -webkit-filter:  blur(3px); /* Ch 23+, Saf 6.0+, BB 10.0+ */
+        filter:  blur(3px); /* FF 35+ */
     }
 
     .offer .product-info {
@@ -719,6 +719,20 @@
 
 @section('extrajs')
 <script>
+    
+    $(document).ready(function(){
+        // Add minus icon for collapse element which is open by default
+        $(".collapse.show").each(function(){
+        	$(this).prev(".index-product-description-title").find(".fa").addClass("fa-minus").removeClass("fa-plus");
+        });
+        
+        // Toggle plus minus icon on show hide of collapse element
+        $(".collapse").on('show.bs.collapse', function(){
+        	$(this).prev(".index-product-description-title").find(".fa").removeClass("fa-plus").addClass("fa-minus");
+        }).on('hide.bs.collapse', function(){
+        	$(this).prev(".index-product-description-title").find(".fa").removeClass("fa-minus").addClass("fa-plus");
+        });
+    });
     $(document).ready(function () {
 
         var color_id = $('.product-color-swatch-btn').attr('data-color-id');
@@ -754,7 +768,7 @@
 
             count--;
 
-            html +=   `<div class="airi-product offer_product ${count+1>0 ? 'active': 'disabledClass'}" data-product-name="${load_offers[index].product_name }"
+            html +=   `<div class="airi-product offer_product ${count+1>0 ? 'active': 'disabledOffer'}" data-product-name="${load_offers[index].product_name }"
                         data-color="${load_offers[index].color_name }" data-size="${load_offers[index].size_name }"
                         data-index="${index }" data-purchase-quantity="${load_offers[index].purchase_quantity }"
                         data-offered-quantity="${load_offers[index].offered_quantity }"
@@ -851,7 +865,7 @@
 
                 for (const key in ofrs) {
                     if (ofrs.hasOwnProperty(key)) {
-                        $('.offer_product').not('.active').addClass('disabledClass ');
+                        $('.offer_product').not('.active').addClass('disabledOffer');
                     }
                 }
 
@@ -944,7 +958,7 @@
             var title = $(this).attr('data-title');
 
             $('.size_lable').html('');
-            $('#cart_size_id').val('')
+            $('#cart_size_id').val('');
 
             if (stock <= 0) {
 
@@ -1143,7 +1157,7 @@
 
             $('#cart_color_id').val(color_id);
 
-            $('.swatch-wrapper-color:first-child a').addClass('active');
+            // $('.swatch-wrapper-color:first-child a').addClass('active');
 
             $('.color-label').html(title);
 
@@ -1196,35 +1210,31 @@
 
                         });
 
-                        imageHtml = `<div class="multi-images nav-slider">`;
-                        imageHtml1 = `<div class="multi-images1 main-slider">`;
+                        navSlider = `<div class="nav-slider">`;
+                        mainSlider = `<div class="main-slider">`;
 
                         images.forEach(image => {
+                            navSlider += `
+                            <figure class="product-gallery__thumb--single">
+                                <img alt="Products" class="lazy" data-lazy="${window.location.origin}/storage/images/multi-products/${image.image_url}">
+                            </figure>`
 
-                            imageHtml += `<figure class="product-gallery__thumb--single">
-                    <img alt="Products" class="lazy"
-                        data-lazy="${window.location.origin}/storage/images/multi-products/${image.image_url}">
-
-                    </figure>`
-
-                            imageHtml1 += `<figure class="product-gallery__image zoom">
-
-                    <img alt="Products" class="lazy"
-                        data-lazy="${window.location.origin}/storage/images/multi-products/${image.image_url}">
-
-                    </figure>`
+                            mainSlider += `
+                            <figure class="product-gallery__image zoom">
+                                <img alt="Products" class="lazy" data-lazy="${window.location.origin}/storage/images/multi-products/${image.image_url}">
+                            </figure>`
                         });
 
-                        imageHtml += `</div>`
-                        imageHtml1 += `</div>   <div class="product-gallery__actions">
-                                            <button class="action-btn btn-zoom-popup"><i class="fa fa-search-plus"
-                                                    aria-hidden="true"></i></button>
+                        navSlider += `</div>`
+                        mainSlider += `</div>
+                                        <div class="product-gallery__actions">
+                                            <button class="action-btn btn-zoom-popup"><i class="fa fa-search-plus" aria-hidden="true"></i></button>
                                         </div>`
 
-                        $('.product-gallery__thumb--image').html(imageHtml);
-                        $('.product-gallery__wrapper').html(imageHtml1);
+                        $('.product-gallery__thumb--image').html(navSlider);
+                        $('.product-gallery__wrapper').html(mainSlider);
 
-                        $(".multi-images").not('.slick-initialized').slick(
+                        $(".nav-slider").not('.slick-initialized').slick(
                             {
                                 lazyLoad: 'ondemand',
                                 slidesToShow: 5,
@@ -1234,7 +1244,12 @@
                                 focusOnSelect:true,
                                 verticalSwiping: true,
                                 infinite: true,
-                                asNavFor: ".multi-images1",
+                                asNavFor: ".main-slider",
+                                autoplay: true,
+                                autoplaySpeed: 100,
+                                arrows: true,
+                                prevArrow: '<span class="slick-btn slick-prev slick-arrow" style=""><i class="fa fa-angle-up"></i></span>',
+                                nextArrow: '<span class="slick-btn slick-next slick-arrow" style=""><i class="fa fa-angle-down"></i></span>',
                                 responsive: [
                                     {
                                     breakpoint: 992,
@@ -1279,7 +1294,7 @@
                             }
                         );
 
-                        $(".multi-images1").not('.slick-initialized').slick(
+                        $(".main-slider").not('.slick-initialized').slick(
                             {
                                 lazyLoad: 'ondemand',
                                 slidesToShow: 1,
@@ -1287,7 +1302,7 @@
                                 swipe: true,
                                 infinite: true,
                                 arrows: true,
-                                asNavFor: ".multi-images",
+                                asNavFor: ".nav-slider",
                             }
                         );
 
@@ -1407,7 +1422,7 @@
             return false;   
         }
 
-        $('.offer_product ').removeClass('disabledClass');
+        $('.offer_product ').removeClass('disabledOffer');
 
         return true;
     }

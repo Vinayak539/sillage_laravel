@@ -13,7 +13,6 @@
 
 Route::GET('/', 'MainController@index')->name('index');
 Route::view('/about', 'frontend.about')->name('about');
-// Route::view('/contact', 'frontend.contact')->name('contact');
 Route::view('/all-product', 'frontend.all-product')->name('all-product');
 Route::view('/product-detail', 'frontend.product-detail')->name('product-detail');
 Route::view('/checkout', 'frontend.checkout')->name('checkout');

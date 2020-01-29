@@ -341,6 +341,21 @@
 	    });		
 	}
 
+	$(function () {
+		$(".quantity-input").keydown(function () {
+			// Save old value.
+			if (!$(this).val() || (parseInt($(this).val()) <= 4 && parseInt($(this).val()) >= 1))
+			$(this).data("old", $(this).val());
+		});
+		$(".quantity-input").keyup(function () {
+			// Check correct, else revert back to old value.
+			if (!$(this).val() || (parseInt($(this).val()) <= 4 && parseInt($(this).val()) >= 1))
+			;
+			else
+			$(this).val($(this).data("old"));
+		});
+	});
+
 
 
 	/**********************
@@ -735,6 +750,8 @@
         images[i] = {"src": productThumb[i].src};
     }
     $('.btn-zoom-popup').on('click', function (e) {
+		console.log('clicked zoom popup');
+		
         $(this).lightGallery({
             thumbnail: false,
             dynamic: true,
@@ -746,7 +763,9 @@
             index: 0,
             dynamicEl: images
         });
-    });
+	});
+	
+	
     
 	/**********************
 	*Star Rating
