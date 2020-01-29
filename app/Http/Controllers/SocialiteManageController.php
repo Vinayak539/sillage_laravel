@@ -53,7 +53,7 @@ class SocialiteManageController extends Controller
             'provider' => $provider,
             'provider_id' => $user->id,
             'image_url' => $user->avatar,
-            'status' => false,
+            'status' => true,
         ]);
 
         return $authUser;

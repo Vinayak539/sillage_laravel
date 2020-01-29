@@ -161,6 +161,7 @@
                             <p>Pincode - {{ $order->pincode }}</p>
                             <p><strong>Phone Number - {{ $order->user->mobile }}</strong></p>
                             <p><strong>Email Id - {{ $order->user->email }}</strong></p>
+                            @if($order->promocode)<p><strong> Promocode Used - {{ $order->promocode }}</strong></p>@endif
                         </div>
                     </div>
 

@@ -71,6 +71,13 @@
                             {{ $order->status }}
                         </td>
                     </tr>
+                    
+                    @if($order->promocode)
+                    <tr>
+                        <th>Promocode</th>
+                        <td>{{ $order->promocode }}</td>
+                    </tr>
+                    @endif
 
                     @if($order->status === 'Delivered' && $order->delivery_date)
                     <tr>
