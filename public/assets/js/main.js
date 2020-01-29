@@ -325,7 +325,10 @@
 			var oldValue = $button.parent().find("input").val();
 			var newVal;
 	        if ($button.hasClass("inc")) {
-	            newVal = parseFloat(oldValue) + 1;
+				newVal = parseFloat(oldValue);
+	            if(newVal < 4){
+					newVal = parseFloat(oldValue) + 1;
+				}
 	        } else {
 	            // Don't allow decrementing below zero
 	            if (oldValue > 1) {
