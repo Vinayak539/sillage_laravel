@@ -741,18 +741,23 @@
 
 
 	// Button LightGallery JS
-    var productThumb = $(".product-gallery__image img"),
+    
+	console.log('i m here');
+
+	$(document).on('click','.btn-zoom-popup',function(e) {
+		//handler code here
+		
+
+		var productThumb = $(".product-gallery__image").not('.slick-cloned'),
         imageSrcLength = productThumb.length,
         images = [],
         indexNumbArray = [];
 
-    for (var i = 0; i < productThumb.length; i++) {
-        images[i] = {"src": productThumb[i].src};
-    }
-    $('.btn-zoom-popup').on('click', function (e) {
-		console.log('clicked zoom popup');
-		
-        $(this).lightGallery({
+		for (var i = 0; i < productThumb.length; i++) {
+			// console.log('$(productThumb[i])', $(productThumb[i]).find('img').attr('data_img'));
+			images[i] = {"src": $(productThumb[i]).find('img').attr('data_img')};
+		}
+		$(this).lightGallery({
             thumbnail: false,
             dynamic: true,
             autoplayControls: false,
@@ -761,9 +766,25 @@
             share: false,
             hash: true,
             index: 0,
-            dynamicEl: images
+			dynamicEl: images,
+			
         });
-	});
+	  });
+    // $('.btn-zoom-popup').on('click', function (e) {
+	// 	console.log('clicked zoom popup');
+		
+    //     $(this).lightGallery({
+    //         thumbnail: false,
+    //         dynamic: true,
+    //         autoplayControls: false,
+    //         download: false,
+    //         actualSize: false,
+    //         share: false,
+    //         hash: true,
+    //         index: 0,
+    //         dynamicEl: images
+    //     });
+	// });
 	
 	
     

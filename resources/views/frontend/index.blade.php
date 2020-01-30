@@ -22,7 +22,7 @@
                         data-param9="" data-param10="" data-description="">
                         <!-- MAIN IMAGE -->
                         <img src="{!! asset('storage/images/sliders').'/'.$slider->image_url !!}"
-                            alt="{{ $slider->name }}" data-bgposition="center center" data-bgfit="contain"
+                            alt="{{ $slider->name }}" data-bgposition="center center" data-bgfit="100%"
                             data-bgrepeat="no-repeat" data-bgparallax="3" class="rev-slidebg" data-no-retina>
                         <!-- LAYERS -->
                     </li>
