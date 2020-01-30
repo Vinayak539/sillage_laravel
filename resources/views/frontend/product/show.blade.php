@@ -738,6 +738,7 @@
     .disabledOffer img{
         -webkit-filter:  blur(3px); /* Ch 23+, Saf 6.0+, BB 10.0+ */
         filter:  blur(3px); /* FF 35+ */
+        cursor: no-drop;
     }
 
     .offer .product-info {

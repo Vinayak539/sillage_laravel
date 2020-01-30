@@ -23285,7 +23285,7 @@ span,
 }
 
 .variation-form .swatch-label {
-    font-size: 12px;
+    font-size: 14px;
     color: #282828;
 }
 
@@ -29780,11 +29780,14 @@ a.button-cls-outline:hover {
     color: #282828;
 }
 
-.offerSection p {
-    font-size: 12px;
-    color: #282828;
+.offerSection p:first-child {
+    font-size: 14px;
+    font-weight: 600;
+    color: #a98900;
     text-transform: uppercase;
     margin-top: 20px;
+    /* background: black;
+    padding: 0 5px; */
 }
 
 .offerSection .selectedOfferBtn {
@@ -31018,9 +31021,26 @@ a.button-cls-outline:hover {
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
     -webkit-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
-    border: 5px outset #d7ae00;
+    border: 1px outset #d7ae00;
     border-radius: 3px;
 }
+
+.homeOffer {
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.homeOffer a img{
+    border-radius: 3px;
+}
+
+.homeOffer:hover {
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3)
+}
+
 .airi-product .product-inner .product-image img {
     border-radius: 3px;
 }
@@ -31550,7 +31570,7 @@ screen and (min-resolution:192dpi) {
     border: 1px solid grey;
     position: absolute;
     top: 0px;
-    left: 0px;
+    left: 15px;
     width: 25px;
     height: 25px;
     text-align: center;
@@ -31994,7 +32014,6 @@ screen and (min-resolution:192dpi) {
 /* home page start */
 
 .section-bg-color {
-    margin-top: -10px !important;
     background-color: #f8f8f8;
 }
 
