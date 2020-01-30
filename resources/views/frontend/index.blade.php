@@ -23,7 +23,7 @@
                         <!-- MAIN IMAGE -->
                         <img src="{!! asset('storage/images/sliders').'/'.$slider->image_url !!}"
                             alt="{{ $slider->name }}" data-bgposition="center center" data-bgfit="100%"
-                            data-bgrepeat="no-repeat" data-bgparallax="3" class="rev-slidebg" data-no-retina>
+                            data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
                         <!-- LAYERS -->
                     </li>
                     @endforeach
@@ -55,7 +55,7 @@
 @foreach($sections as $section)
 @if(count($section->msections))
 <!-- Trending Products area Start Here -->
-<section class="trending-products-area pt--30 pb--80 pt-md--20 pb-md--30">
+<section class="trending-products-area pt--40 pb--40 pt-md--20 pb-md--20 section-bg-color">
     <div class="container-fluid">
         <div class="row mb--40 mb-md--30">
             <div class="col-12">
