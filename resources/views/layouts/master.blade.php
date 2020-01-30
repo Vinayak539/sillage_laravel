@@ -754,7 +754,7 @@
             var navheight = $(".fixed-header").height();
             var mob_navheight = $(".header-mobile__inner").height();
             if ($(window).width() > 991) {
-                $("#homepage-slider-1").css("margin-top", navheight-5);
+                $("#homepage-slider-1").css("margin-top", navheight-13);
             } else {
                 $("#homepage-slider-1").css("margin-top", 0);
             }

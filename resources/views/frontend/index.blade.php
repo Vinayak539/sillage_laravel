@@ -22,8 +22,8 @@
                         data-param9="" data-param10="" data-description="">
                         <!-- MAIN IMAGE -->
                         <img src="{!! asset('storage/images/sliders').'/'.$slider->image_url !!}"
-                            alt="{{ $slider->name }}" data-bgposition="center center" data-bgfit="contain"
-                            data-bgrepeat="no-repeat" data-bgparallax="3" class="rev-slidebg" data-no-retina>
+                            alt="{{ $slider->name }}" data-bgposition="center center" data-bgfit="100%"
+                            data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
                         <!-- LAYERS -->
                     </li>
                     @endforeach
@@ -36,8 +36,8 @@
 </div>
 
 @if(count($homeOfferSliders))
-<div class="container mt--50 mt-xs--20 mb--50 mb-xs--20">
-    <div class="airi-element-carousel nav-vertical-center nav-style-1" data-slick-options='{
+<div class="container pt--20 pt-xs--20 pb--30 pb-xs--20">
+    <div class="airi-element-carousel nav-vertical-center nav-style-1 homeOffer" data-slick-options='{
         "slidesToShow" : 1,
         "arrows": true,
         "prevArrow": {"buttonClass": "slick-btn slick-prev", "iconClass": "fa fa-angle-double-left" },
@@ -55,8 +55,8 @@
 @foreach($sections as $section)
 @if(count($section->msections))
 <!-- Trending Products area Start Here -->
-<section class="trending-products-area pt--30 pb--80 pt-md--20 pb-md--30">
-    <div class="container-fluid">
+<section class="trending-products-area pt--30 pb--30 pt-md--20 pb-md--10 section-bg-color">
+    <div class="container">
         <div class="row mb--40 mb-md--30">
             <div class="col-12">
                 <h2 class="heading-secondary text-center">{{ $section->SectionName }}</h2>

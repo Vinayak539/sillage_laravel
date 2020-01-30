@@ -32,6 +32,63 @@
                                     
                                 </div>
                             </div>
+                            {{-- <div class="product-gallery__thumb">
+                                <div class="product-gallery__thumb--image">
+                                    <div class="airi-element-carousel nav-slider slick-vertical" 
+                                    data-slick-options='{
+                                        "slidesToShow": 3,
+                                        "slidesToScroll": 1,
+                                        "vertical": true,
+                                        "swipe": true,
+                                        "verticalSwiping": true,
+                                        "infinite": true,
+                                        "focusOnSelect": true,
+                                        "asNavFor": ".main-slider",
+                                        "arrows": true, 
+                                        "prevArrow": {"buttonClass": "slick-btn slick-prev", "iconClass": "fa fa-angle-up" },
+                                        "nextArrow": {"buttonClass": "slick-btn slick-next", "iconClass": "fa fa-angle-down" }
+                                    }'
+                                    data-slick-responsive='[
+                                        {
+                                            "breakpoint":992, 
+                                            "settings": {
+                                                "slidesToShow": 4,
+                                                "vertical": false,
+                                                "verticalSwiping": false
+                                            } 
+                                        },
+                                        {
+                                            "breakpoint":575, 
+                                            "settings": {
+                                                "slidesToShow": 3,
+                                                "vertical": false,
+                                                "verticalSwiping": false
+                                            } 
+                                        },
+                                        {
+                                            "breakpoint":480, 
+                                            "settings": {
+                                                "slidesToShow": 2,
+                                                "vertical": false,
+                                                "verticalSwiping": false
+                                            } 
+                                        }
+                                    ]'>
+                                        <figure class="product-gallery__thumb--single">
+                                            <img src="assets/img/products/prod-19-1-2.jpg" alt="Products">
+                                        </figure>
+                                        <figure class="product-gallery__thumb--single">
+                                            <img src="assets/img/products/prod-19-2-2.jpg" alt="Products">
+                                        </figure>
+                                        <figure class="product-gallery__thumb--single">
+                                            <img src="assets/img/products/prod-19-3-2.jpg" alt="Products">
+                                        </figure>
+                                        <figure class="product-gallery__thumb--single">
+                                            <img src="assets/img/products/prod-19-4-2.jpg" alt="Products">
+                                        </figure>
+                                    </div>
+                                </div>
+                            </div> --}}
                             <div class="product-gallery__large-image">
                                 <div class="gallery-with-thumbs">
                                     <div class="product-gallery__wrapper">
@@ -388,11 +445,11 @@
                                     <figure class="product-image">
                                         <div class="product-image--holder">
                                             <a href="{{ route('product',[$rproduct->slug_url]) }}">
-                                                <img src="{!! asset('storage/images/products/' . $rproduct->image_url) !!} "
-                                                    alt="Product Image" class="primary-image">
+                                                <img data-original="{!! asset('storage/images/products/' . $rproduct->image_url) !!} "
+                                                    alt="Product Image" class="primary-image lazy">
 
-                                                <img src="{!! asset('storage/images/products/' . $rproduct->image_url1) !!} "
-                                                    alt="Product Image" class="secondary-image">
+                                                <img data-original="{!! asset('storage/images/products/' . $rproduct->image_url1) !!} "
+                                                    alt="Product Image" class="secondary-image lazy">
                                             </a>
                                         </div>
                                     </figure>
@@ -681,6 +738,7 @@
     .disabledOffer img{
         -webkit-filter:  blur(3px); /* Ch 23+, Saf 6.0+, BB 10.0+ */
         filter:  blur(3px); /* FF 35+ */
+        cursor: no-drop;
     }
 
     .offer .product-info {
@@ -737,6 +795,8 @@
         var color_id = $('.product-color-swatch-btn').attr('data-color-id');
 
         var title = $('.product-color-swatch-btn').attr('data-title');
+
+        $('.swatch-wrapper-color:first-child a').addClass('active')
 
         volume(color_id, title);
 
@@ -798,7 +858,7 @@
 
         // $(".offer").slick('unslick');
 
-        elementCarousel();
+        elementCarousel('.airi-element-carousel-offer');
 
         sessionStorage.setItem("offers", JSON.stringify(offers));
 
@@ -993,13 +1053,16 @@
 
         $('.product-color-swatch-btn').click(function (e) {
 
-            var item = $('.product-color-swatch-btn').hasClass('active');
+            // var item = $('.product-color-swatch-btn').hasClass('active');
 
-            if (item) {
-                $('.product-color-swatch-btn').removeClass('active')
-            }
+            // if (item) {
+            $('.product-color-swatch-btn').removeClass('active')
+            // }
+            // return;
 
             $(this).addClass('active')
+
+            console.log('$(this)', $(this));
 
             var mrp = $(this).attr('data-mrp');
             var product_id = $(this).attr('data-product-id');
@@ -1051,11 +1114,12 @@
         //     $('#cart_size_id').val(size_id);
         // });
 
-       function elementCarousel(){
+       
+        function elementCarousel(elementClass){
         $html = $('html');
         $body = $('body');
 
-            $elementCarousel = $('.airi-element-carousel-offer')
+            $elementCarousel = $(`${elementClass}`);
 
             // console.log('epeke', $elementCarousel);
 
@@ -1266,7 +1330,47 @@
 
                         });
 
-                        navSlider = `<div class="nav-slider">`;
+                        navSlider = `<div class="mynavclass nav-slider slick-vertical" data-slick-options='{
+                                        "slidesToShow": 4,
+                                        "slidesToScroll": 4,
+                                        "vertical": true,
+                                        "swipe": true,
+                                        "verticalSwiping": true,
+                                        "infinite": true,
+                                        "focusOnSelect": true,
+                                        "asNavFor": ".main-slider",
+                                        "arrows": true, 
+                                        "prevArrow": {"buttonClass": "slick-btn slick-prev", "iconClass": "fa fa-angle-up" },
+                                        "nextArrow": {"buttonClass": "slick-btn slick-next", "iconClass": "fa fa-angle-down" }
+                                    }'
+                                    data-slick-responsive='[
+                                        {
+                                            "breakpoint":992, 
+                                            "settings": {
+                                                "slidesToShow": 5,
+                                                "vertical": false,
+                                                "verticalSwiping": false
+                                            } 
+                                        },
+                                        {
+                                            "breakpoint":575, 
+                                            "settings": {
+                                                "centerMode" : true,
+                                                "slidesToShow": 4,
+                                                "vertical": false,
+                                                "verticalSwiping": false
+                                            } 
+                                        },
+                                        {
+                                            "breakpoint":480, 
+                                            "settings": {
+                                                "centerMode" : true,
+                                                "slidesToShow": 3,
+                                                "vertical": false,
+                                                "verticalSwiping": false
+                                            } 
+                                        }
+                                    ]'>`;
                         mainSlider = `<div class="main-slider">`;
 
                         images.forEach(image => {
@@ -1277,7 +1381,7 @@
 
                             mainSlider += `
                             <figure class="product-gallery__image zoom">
-                                <img alt="Products" class="lazy" data-lazy="${window.location.origin}/storage/images/multi-products/${image.image_url}">
+                                <img alt="Products" class="lazy" data-lazy="${window.location.origin}/storage/images/multi-products/${image.image_url}" data_img = ${window.location.origin}/storage/images/multi-products/${image.image_url}">
                             </figure>`
                         });
 
@@ -1289,66 +1393,66 @@
 
                         $('.product-gallery__thumb--image').html(navSlider);
                         $('.product-gallery__wrapper').html(mainSlider);
-
-                        $(".nav-slider").not('.slick-initialized').slick(
-                            {
-                                lazyLoad: 'ondemand',
-                                slidesToShow: 5,
-                                slidesToScroll: 1,
-                                vertical: true,
-                                swipe: true,
-                                focusOnSelect:true,
-                                verticalSwiping: true,
-                                infinite: true,
-                                asNavFor: ".main-slider",
-                                autoplay: true,
-                                autoplaySpeed: 100,
-                                arrows: true,
-                                prevArrow: '<span class="slick-btn slick-prev slick-arrow" style=""><i class="fa fa-angle-up"></i></span>',
-                                nextArrow: '<span class="slick-btn slick-next slick-arrow" style=""><i class="fa fa-angle-down"></i></span>',
-                                responsive: [
-                                    {
-                                    breakpoint: 992,
-                                    settings: {
-                                        slidesToShow: 3,
-                                        vertical:false,
-                                        verticalSwiping: false,
-                                        centerMode: true,
-                                        arrows: true,
-                                        prevArrow: '<span class="slick-btn slick-prev slick-arrow" style=""><i class="fa fa-angle-up"></i></span>',
-                                        nextArrow: '<span class="slick-btn slick-next slick-arrow" style=""><i class="fa fa-angle-down"></i></span>',
-                                    }
-                                    },
-                                    {
-                                    breakpoint: 575,
-                                    settings: {
-                                        slidesToShow: 3,
-                                        vertical:false,
-                                        verticalSwiping: false,
-                                        centerMode: true,
-                                        arrows: true,
-                                        prevArrow: '<span class="slick-btn slick-prev slick-arrow" style=""><i class="fa fa-angle-up"></i></span>',
-                                        nextArrow: '<span class="slick-btn slick-next slick-arrow" style=""><i class="fa fa-angle-down"></i></span>',
-                                    }
-                                    },
-                                    {
-                                    breakpoint: 480,
-                                    settings: {
-                                        slidesToShow: 3,
-                                        vertical:false,
-                                        verticalSwiping: false,
-                                        centerMode: true,
-                                        arrows: true,
-                                        prevArrow: '<span class="slick-btn slick-prev slick-arrow" style=""><i class="fa fa-angle-up"></i></span>',
-                                        nextArrow: '<span class="slick-btn slick-next slick-arrow" style=""><i class="fa fa-angle-down"></i></span>',
-                                    }
-                                    }
-                                    // You can unslick at a given breakpoint now by adding:
-                                    // settings: "unslick"
-                                    // instead of a settings object
-                                ]
-                            }
-                        );
+                        elementCarousel('.mynavclass');
+                        // $(".nav-slider").not('.slick-initialized').slick(
+                        //     {
+                        //         lazyLoad: 'ondemand',
+                        //         slidesToShow: 5,
+                        //         slidesToScroll: 1,
+                        //         vertical: true,
+                        //         swipe: true,
+                        //         focusOnSelect:true,
+                        //         verticalSwiping: true,
+                        //         infinite: true,
+                        //         asNavFor: ".main-slider",
+                        //         // autoplay: true,
+                        //         // autoplaySpeed: 100,
+                        //         arrows: true,
+                        //         prevArrow: '<span class="slick-btn slick-prev slick-arrow" style=""><i class="fa fa-angle-up"></i></span>',
+                        //         nextArrow: '<span class="slick-btn slick-next slick-arrow" style=""><i class="fa fa-angle-down"></i></span>',
+                        //         responsive: [
+                        //             {
+                        //             breakpoint: 992,
+                        //             settings: {
+                        //                 slidesToShow: 3,
+                        //                 vertical:false,
+                        //                 verticalSwiping: false,
+                        //                 centerMode: true,
+                        //                 arrows: true,
+                        //                 prevArrow: '<span class="slick-btn slick-prev slick-arrow" style=""><i class="fa fa-angle-up"></i></span>',
+                        //                 nextArrow: '<span class="slick-btn slick-next slick-arrow" style=""><i class="fa fa-angle-down"></i></span>',
+                        //             }
+                        //             },
+                        //             {
+                        //             breakpoint: 575,
+                        //             settings: {
+                        //                 slidesToShow: 3,
+                        //                 vertical:false,
+                        //                 verticalSwiping: false,
+                        //                 centerMode: true,
+                        //                 arrows: true,
+                        //                 prevArrow: '<span class="slick-btn slick-prev slick-arrow" style=""><i class="fa fa-angle-up"></i></span>',
+                        //                 nextArrow: '<span class="slick-btn slick-next slick-arrow" style=""><i class="fa fa-angle-down"></i></span>',
+                        //             }
+                        //             },
+                        //             {
+                        //             breakpoint: 480,
+                        //             settings: {
+                        //                 slidesToShow: 3,
+                        //                 vertical:false,
+                        //                 verticalSwiping: false,
+                        //                 centerMode: true,
+                        //                 arrows: true,
+                        //                 prevArrow: '<span class="slick-btn slick-prev slick-arrow" style=""><i class="fa fa-angle-up"></i></span>',
+                        //                 nextArrow: '<span class="slick-btn slick-next slick-arrow" style=""><i class="fa fa-angle-down"></i></span>',
+                        //             }
+                        //             }
+                        //             // You can unslick at a given breakpoint now by adding:
+                        //             // settings: "unslick"
+                        //             // instead of a settings object
+                        //         ]
+                        //     }
+                        // );
 
                         $(".main-slider").not('.slick-initialized').slick(
                             {
