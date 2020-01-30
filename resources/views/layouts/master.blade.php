@@ -586,7 +586,7 @@
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>
                                 <div class="mini-cart__product__image">
-                                    <img src="{!! asset('storage/images/products/'.$item->attributes->image_url) !!}"
+                                    <img src="{!! asset('storage/images/multi-products/'.$item->attributes->color_image) !!}"
                                         alt="{{ $item->name }}" />
                                 </div>
                                 <div class="mini-cart__product__content">

@@ -134,19 +134,15 @@
                     </div>
 
                     <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="gallery gallery-md">
-                                    @foreach($images as $key => $img)
-                                    <div class="item">
-                                        <div  class="gallery-item" data-image="{!! asset('storage/images/multi-products/'. $img->image_url) !!}" data-title="Image{{ $key }}">
-                                        </div>
-                                        <button style="position: absolute;margin-left: -85px; z-index: 1;" type="button" class="btn btn-outline-danger btn-sm image-delete"
-                                        data-delete-id="{{ $img->id }}"><i class="fa fa-trash"></i></button>
-                                    </div>
-                                    @endforeach
+                        <div class="gallery gallery-md">
+                            @foreach($images as $key => $img)
+                            <div class="item">
+                                <div  class="gallery-item" data-image="{!! asset('storage/images/multi-products/'. $img->image_url) !!}" data-title="Image{{ $key }}">
                                 </div>
+                                <button style="position: absolute;margin-left: -85px; z-index: 1;" type="button" class="btn btn-outline-danger btn-sm image-delete"
+                                data-delete-id="{{ $img->id }}"><i class="fa fa-trash"></i></button>
                             </div>
+                            @endforeach
                         </div>
                     </div>
 

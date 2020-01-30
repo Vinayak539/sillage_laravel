@@ -28,11 +28,8 @@ class MainController extends Controller
         $sliders          = Slider::where('status', true)->orderBy('sort_index')->get();
         $testimonials     = Testimonial::where('status', true)->orderBy('sort_index')->get();
         $homeOfferSliders = HomeOfferSlider::where('status', true)->orderBy('sort_index')->get();
-        // $side_products = SideProduct::with('product')->orderBy('sort_index')->limit(2)->get();
         $sections = MsSection::where('status', true)->with('msections')->get();
-        // dd($sections);
         return view('frontend.index', compact('sliders', 'sections', 'testimonials', 'homeOfferSliders'));
-        // return view('frontend.index', compact('sliders', 'testimonials', 'sections', 'side_products'));
     }
 
     public function subscribers(Request $request)
@@ -66,7 +63,7 @@ class MainController extends Controller
     {
 
         try {
-            // sizes remove
+
             $product = TxnProduct::where('status', true)->where('slug_url', $slug)->with(['images', 'condition', 'sizes', 'unit', 'colors', 'category', 'warranty', 'reviews' => function ($q) {
                 $q->where('status', true)->get();
             }])->firstOrFail();
@@ -140,16 +137,6 @@ class MainController extends Controller
     {
 
         $results = MapColorSize::where('product_id', $request->product_id)->where('color_id', $request->color_id)->where('status', true)->where('stock', '>', 0)->orderBy('sort_index')->get();
-
-        // $results = DB::table('map_color_sizes as m')
-        //     ->selectRaw('c.title as color_name, GROUP_CONCAT(s.title) as size_name, c.id as color_id, GROUP_CONCAT(s.id) as size_id, m.mrp, m.stock, m.id as map_id')
-        //     ->join('mst_colors as c', 'm.color_id', 'c.id')
-        //     ->join('mst_sizes as s', 'm.size_id', 's.id')
-        //     ->where('m.product_id', $request->product_id)
-        //     ->where('m.color_id', $request->color_id)
-        //     ->orderBy('m.id', 'DESC')
-        //     ->groupBy('c.id')
-        //     ->get();
 
         $color_images = TxnImage::where('product_id', $request->product_id)->where('color_id', $request->color_id)->orderBy('id', 'DESC')->get();
 

@@ -10,13 +10,13 @@
                     Dashboard
                 </a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-list"></i>Edit Brand</li>
-            <li class="breadcrumb-item"><a href="{{ route('admin.brands.all') }}"> All Brands</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-list"></i>Edit Colour</li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.colors.all') }}"> All Colours</a></li>
         </ol>
     </nav>
     <div class="card">
         <div class="card-header bg-dark text-white-all">
-            <h4>Update Brand</h4>
+            <h4>Update Colour</h4>
         </div>
         <div class="card-body">
             <form method="post" id="formEditColour" class="needs-validation">

@@ -97,6 +97,7 @@ class ProductController extends Controller
                 'mrp'            => 'required|numeric|min:1',
                 'starting_price' => 'required|numeric|min:1',
                 'stock'          => 'required|numeric|min:1',
+                'sort_index'          => 'required|numeric|min:1',
             ],
             [
                 'title.required'            => 'Please Enter Product Name',
@@ -139,6 +140,8 @@ class ProductController extends Controller
                 'starting_price.min'        => 'Starting Price Should be More than 1',
                 'stock.required'            => 'Please Enter Stock',
                 'stock.min'                 => 'Stock Should be More than 1',
+                'sort_index.required'            => 'Please Enter Sort Index',
+                'sort_index.min'                 => 'Sort Index Should be More than 1',
             ]
         );
 
@@ -229,6 +232,7 @@ class ProductController extends Controller
                 'mrp'              => $request->mrp,
                 'stock'            => $request->stock,
                 'starting_price'   => $request->starting_price,
+                'sort_index'       => $request->sort_index,
                 'buy_it_now_price' => $before_gst_price,
                 'gst'              => $gst_amount,
             ]);
@@ -344,7 +348,6 @@ class ProductController extends Controller
                 'condition_id'  => 'nullable|integer|exists:txn_conditions,id',
                 'category_id'   => 'required|integer|exists:txn_categories,id',
                 'gst_id'        => 'required|integer|exists:txn_master_gsts,id',
-                // 'expiry_date' => 'nullable|date_format:Y-m-d',
                 'length'        => 'nullable|string|max:191',
                 'breadth'       => 'nullable|string|max:191',
                 'height'        => 'nullable|string|max:191',
@@ -427,7 +430,6 @@ class ProductController extends Controller
                 'weight'          => $request->weight,
                 'width'           => $request->width,
                 'upc'             => $request->upc,
-                // 'expiry_date' => $request->expiry_date,
                 'status'          => $request->status,
                 'warranty_id'     => $request->warranty_id,
                 'gst_id'          => $request->gst_id,
@@ -641,7 +643,6 @@ class ProductController extends Controller
                 'mrp'            => 'required|numeric|min:1',
                 'stock'          => 'required|numeric|min:1',
                 'starting_price' => 'required|numeric|min:1',
-                'status'         => 'required|numeric|min:0|max:1',
                 'sort_index'     => 'required|numeric|min:1',
             ],
             [
@@ -658,10 +659,6 @@ class ProductController extends Controller
                 'stock.min'               => 'Stock Should be More than 1',
                 'starting_price.required' => 'Please Enter Selling Price',
                 'starting_price.min'      => 'Selling Price Should be More than 1',
-                'status.required'         => 'Please Enter Status',
-                'status.min'              => 'Invalid Status Provided',
-                'status.max'              => 'Invalid Status Provided',
-                'status.numeric'          => 'Invalid Status Provided',
                 'sort_index.required'     => 'Please Select Sort Index',
                 'sort_index.min'          => 'Invalid data provided in Sort Index',
             ]
@@ -1009,15 +1006,6 @@ class ProductController extends Controller
         try {
 
             $mapColorSize = MapColorSize::where('id', $request->map_id)->with('product')->firstOrFail();
-
-            // $colorSize = MapColorSize::where('product_id', $mapColorSize->product->id)->where('color_id', $request->color_id)->where('size_id', $request->size_id)->first();
-
-            // if($colorSize){
-
-            //     connectify('error', 'Error', 'Color & Size already Available with "' . $mapColorSize->product->title . '"');
-
-            //     return redirect(route('admin.products.edit', $mapColorSize->product->slug_url))->withInput($request->all());
-            // }
 
             $gst = TxnMasterGst::where('id', $mapColorSize->product->gst_id)->first();
 

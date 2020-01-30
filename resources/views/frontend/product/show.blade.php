@@ -731,6 +731,7 @@
         	$(this).prev(".index-product-description-title").find(".fa").removeClass("fa-minus").addClass("fa-plus");
         });
     });
+    
     $(document).ready(function () {
 
         var color_id = $('.product-color-swatch-btn').attr('data-color-id');
@@ -1025,6 +1026,10 @@
                 $('.mrp').html('<i class="fa fa-inr"></i> ' + mrp);
 
                 $('.starting_price').html('<i class="fa fa-inr"></i> ' + starting_price);
+
+                var size_id = $('.product-size-swatch-btn:first-child').attr('data-size-id');
+                    
+                    getSizePrice(size_id, color_id, product_id);
             }
 
             volume(color_id, title);
@@ -1450,7 +1455,7 @@
 
                     }else{
 
-                        swal('Error', result.error , 'error');
+                        // swal('Error', result.error , 'error');
                     }
                 }
             });
