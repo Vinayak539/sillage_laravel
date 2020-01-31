@@ -134,31 +134,6 @@
 @endif
 @endforeach
 <!-- Trending Products area End Here -->
-
-{{-- 
-<!-- Fullwidth Banner area Start Here -->
-<section class="fullwide-banner position-relative bg-color pt--85 pt-md--70 pb--85 pb-md--70" data-bg-color="#ecf3e9">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-6 mb-sm--50">
-                <figure class="text-right">
-                    <img src="https://static.cdn.printful.com/static/v740/images/landing/make-shirt/make-money-with-shirt.svg"
-                        alt="Banner Image">
-                </figure>
-            </div>
-            <div class="col-md-6 text-center">
-                <p class="text-uppercase font-bold font-size-16 color--dark-5">Make money with your t-shirt design
-                </p>
-                <h2 class="fullwide-banner-title-6 text-uppercase">Turn your idea into profit - start selling
-                    customized shirts with your design online!</h2>
-                <a href="#" class="btn btn-link ">Shop Now</a>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Fullwidth Banner area End Here -->  
---}}
-
 </div>
 
 <!-- Main Content Wrapper Start -->

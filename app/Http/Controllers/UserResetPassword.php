@@ -24,7 +24,7 @@ class UserResetPassword extends Controller
             [
                 'email.required' => 'Please Enter Email',
                 'email.email'    => 'Please Enter Proper Email',
-                'email.exists'   => 'Email not found !',
+                'email.exists'   => 'Invalid Email ID !',
             ]);
 
         if ($validator->fails()) {
@@ -125,6 +125,7 @@ class UserResetPassword extends Controller
             connectify('error', 'Error', $validator->errors()->first());
             return back()->withInput();
         }
+
         try
         {
 
@@ -183,6 +184,7 @@ class UserResetPassword extends Controller
             connectify('error', 'Error', $validator->errors()->first());
             return back()->withInput();
         }
+        
         try
         {
 

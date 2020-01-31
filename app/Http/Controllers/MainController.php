@@ -108,8 +108,16 @@ class MainController extends Controller
                     $join->on("timg.product_id","=","m.offer_product_id")
                         ->on("timg.color_id","=","m.color_id");
                 })
+                ->join("map_color_sizes as mcs",function($join){
+                    $join->on("mcs.product_id","=","m.offer_product_id")
+                        ->on("mcs.color_id","=","c.id")
+                        ->on("mcs.size_id","=","s.id");
+                })
                 ->groupBy('m.offer_product_id', 'm.color_id', 'm.size_id')
                 ->where('o.status', true)
+                ->where('p.status', true)
+                ->where('mcs.status', true)
+                ->where('mcs.stock', '>', 0)
                 ->where('mop.product_id', $product->id)
                 ->get();
 

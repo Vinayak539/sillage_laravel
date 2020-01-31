@@ -235,6 +235,7 @@ class ProductController extends Controller
                 'sort_index'       => $request->sort_index,
                 'buy_it_now_price' => $before_gst_price,
                 'gst'              => $gst_amount,
+                'status' => true
             ]);
 
             $size = MstSize::where('id', $request->size_id)->first();

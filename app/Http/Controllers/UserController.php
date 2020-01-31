@@ -319,7 +319,7 @@ class UserController extends Controller
                     'status' => 'Cancelled',
                 ]);
 
-                // SMS::send($order->user->mobile, 'HNI Lifestyle - Your Order ID : ' . $order->id . ', has been Cancelled successfully,  Login for more detail on ' . url('/'));
+                SMS::send($order->user->mobile, 'HNI Lifestyle - Your Order ID : ' . $order->id . ', has been Cancelled successfully,  Login for more detail on ' . url('/'));
 
                 Mail::send(['html' => 'backend.mails.order-cancel'], ['order' => $order], function ($message) use ($order) {
                     $message->to('support@hnilifestyle.com')->subject('Order has been Cancelled ! [order id : ' . $order->id . ']');

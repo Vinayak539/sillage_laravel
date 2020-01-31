@@ -87,11 +87,9 @@ Route::prefix('adhni753')->group(function () {
 
     Route::group(['middleware' => 'auth:admin'], function () {
         Route::GET('/', 'AdminController@index')->name('admin.dashboard');
-        Route::GET('/profile', 'AdminController@profile')->name('admin.profile');
+        Route::GET('/profile', 'AdminController@edit')->name('admin.profile');
         Route::POST('/profile', 'AdminController@update');
         Route::POST('/logout', 'AdminAuth\LoginController@logout')->name('admin.logout');
-        Route::GET('/add-users', 'AdminController@addUserForm')->name('admin.add.user');
-        Route::POST('/add-users', 'AdminController@addUser');
 
         Route::prefix('/manage-admins')->group(function () {
             Route::GET('/', 'AdminController@manage')->name('admin.admins.all');
