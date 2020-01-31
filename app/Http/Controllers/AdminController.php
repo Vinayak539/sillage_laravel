@@ -69,8 +69,8 @@ class AdminController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name'         => 'required|string|max:191',
-            'password'     => 'required_with:old_password|string|max:191',
-            'old_password' => 'required_with:password|string|max:191',
+            'password'     => 'required_with:old_password|max:191',
+            'old_password' => 'required_with:password|max:191',
         ],
             [
                 'name.required'          => 'Please Enter Name',
