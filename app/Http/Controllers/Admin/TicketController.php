@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class TicketController extends Controller
 {
@@ -38,24 +39,29 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email|max:191',
-            'subject' => 'required|string|max:191',
+        $validator = Validator::make($request->all(), [
+            'email'       => 'required|email|max:191',
+            'subject'     => 'required|string|max:191',
             'description' => 'nullable|string',
         ],
             [
-                'email.required' => 'Please Enter Customer Email ID',
-                'email.email' => 'Please Enter Proper Email ID',
+                'email.required'   => 'Please Enter Customer Email ID',
+                'email.email'      => 'Please Enter Proper Email ID',
                 'subject.required' => 'Please Enter Subject',
-                'subject.max' => 'Please Enter Subject in 190 Characters',
+                'subject.max'      => 'Please Enter Subject in 190 Characters',
             ]);
 
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return redirect(route('admin.tickets.all'))->withInput();
+        }
+
         $ticket = Ticket::create([
-            'email' => $request->email,
-            'subject' => $request->subject,
+            'email'       => $request->email,
+            'subject'     => $request->subject,
             'description' => $request->description,
-            'open_by' => auth('admin')->user()->name,
-            'status' => true,
+            'open_by'     => auth('admin')->user()->name,
+            'status'      => true,
         ]);
 
         Mail::send(['html' => 'backend.mails.ticket'], ['ticket' => $ticket], function ($message) use ($ticket) {
@@ -116,14 +122,19 @@ class TicketController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'description' => 'nullable|string',
-            'status' => 'required|integer|max:1',
+            'status'      => 'required|integer|max:1',
         ],
             [
                 'status.required' => 'Please Select Status',
-                'status.max' => 'Invalid status provided',
+                'status.max'      => 'Invalid status provided',
             ]);
+
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return back()->withInput();
+        }
 
         try {
 
@@ -131,7 +142,7 @@ class TicketController extends Controller
 
             $ticket->update([
                 'description' => $request->description,
-                'status' => $request->status,
+                'status'      => $request->status,
             ]);
 
             if ($ticket->status == false) {
@@ -156,10 +167,19 @@ class TicketController extends Controller
             return redirect(route('admin.tickets.all'));
 
         } catch (\Exception $ex) {
+            
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.tickets.all'))->with('messageDanger', 'Whoops, Ticket Not Found !');
+
+                connectify('success', 'Ticket Updated', 'Whoops, Ticket Not Found !');
+
+                return redirect(route('admin.tickets.all'));
+
             }
-            return redirect(route('admin.tickets.all'))->with('messageDanger', 'Whoops, something went wrong, try again later !');
+
+            connectify('success', 'Ticket Updated', 'Whoops, something went wrong, try again later !');
+
+            return redirect(route('admin.tickets.all'));
+
         }
     }
 
