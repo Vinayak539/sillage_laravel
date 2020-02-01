@@ -73,7 +73,7 @@ class ProductController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'title'          => 'required|string',
+                'title'          => 'required|string|unique:txn_products,title',
                 'image_url'      => 'required|image|max:1024|mimes:jpeg,png',
                 'image_url1'     => 'required|image|max:1024|mimes:jpeg,png',
                 'description'    => 'required|string',
@@ -97,11 +97,11 @@ class ProductController extends Controller
                 'mrp'            => 'required|numeric|min:1',
                 'starting_price' => 'required|numeric|min:1',
                 'stock'          => 'required|numeric|min:1',
-                'sort_index'          => 'required|numeric|min:1',
+                'sort_index'     => 'required|numeric|min:1',
             ],
             [
                 'title.required'            => 'Please Enter Product Name',
-                'title.unique'              => ' Product Already Available',
+                'title.unique'              => $request->title . ' Product Already Available',
                 'image_url.required'        => 'Please Choose Front Image',
                 'image_url.image'           => 'Please Choose Proper front Image',
                 'image_url.mimes'           => 'Please Choose Front Image of type JPG & PNG Only',
@@ -187,7 +187,7 @@ class ProductController extends Controller
             'wrong_products'  => $request->wrong_products,
             'faulty_products' => $request->faulty_products,
             'quality_issue'   => $request->quality_issue,
-            'slug_url'        => Str::slug($category->name . '-' . $request->title, '-'),
+            'slug_url'        => Str::slug($category->name . '-' . $request->title . '-' . rand(1000,9999), '-'),
         ]);
 
         if ($request->filled('keywords')) {
@@ -440,7 +440,7 @@ class ProductController extends Controller
                 'wrong_products'  => $request->wrong_products,
                 'faulty_products' => $request->faulty_products,
                 'quality_issue'   => $request->quality_issue,
-                'slug_url'        => Str::slug($category->name . '-' . $request->title, '-'),
+                'slug_url'        => Str::slug($category->name . '-' . $request->title . '-' . rand(1000,9999), '-'),
             ]);
 
             if ($request->filled('keywords')) {
