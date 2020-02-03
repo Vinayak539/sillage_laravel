@@ -127,6 +127,7 @@
                                     </div>
 
                                 </div>
+                                @if(count($addresses))
                                 <div class="col-lg-4 mt-md--40 mt-xs--10">
                                     <div class="order-details">
                                         <div class="checkout-title mt--10">
@@ -169,17 +170,19 @@
                                                         </td>
                                                     </tr>
 
+                                                    @if(Cart::gettotal() < 1000)
                                                     <tr class="shipping">
                                                         <th>Shipping</th>
                                                         <td class="text-right">
                                                             <span> ₹60</span>
                                                         </td>
                                                     </tr>
-                                                    
+                                                    @endif
+
                                                     <tr class="order-total">
                                                         <th>Order Total</th>
                                                         <td class="text-right"><span
-                                                                class="order-total-ammount">₹{{ Cart::gettotal() + 60 }}</span>
+                                                                class="order-total-ammount">₹{{ Cart::gettotal() < 1000 ? Cart::gettotal() + 60 : Cart::gettotal() }}</span>
                                                         </td>
                                                     </tr>
                                                 </tfoot>
@@ -299,15 +302,16 @@
 
 
                                             <div class="payment-group mt--20">
-                                                @if(count($addresses))
+                                               
                                                 <button type="submit" class="btn btn-fullwidth btn-style-1 order_place">
                                                     Place Order
                                                 </button>
-                                                @endif
+                                               
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                             </div>
                         </form>
                     </div>
@@ -1125,7 +1129,7 @@
                                 $('.promo_success').fadeOut();
                             }, 4000);
                             $('#discount_span').html("{{ Cart::getTotal() * 0.10 }}");
-                            $('.order-total-ammount').html("{{ (Cart::getTotal() - Cart::getTotal() * 0.10) + 60 }}");
+                            $('.order-total-ammount').html("{{ Cart::getTotal() < 1000 ? (Cart::getTotal() - Cart::getTotal() * 0.10) + 60 : (Cart::getTotal() - Cart::getTotal() * 0.10) }}");
                         } else {
                             $('.promo_success').hide();
                             $('.promo_error').show();
