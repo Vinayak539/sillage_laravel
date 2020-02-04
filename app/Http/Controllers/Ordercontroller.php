@@ -118,7 +118,7 @@ class OrderController extends Controller
 
                 $before_gst_price = round($size->mrp / $gst_value);
 
-                $totalGst += round($size->mrp - $before_gst_price);
+                $totalGst += round(($size->mrp - $before_gst_price) * $item->quantity);
 
             }
 
