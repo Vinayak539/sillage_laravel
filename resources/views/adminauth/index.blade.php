@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="card-footer bg-dark text-white-all">
-                    <a href="{{ route('admin.orders.all') }}" title="View Details">
+                    <a href="{{ route('admin.subscribers.all') }}" title="View Details">
                         View Details <i class="fa fa-angle-double-right"></i>
                     </a>
                 </div>
