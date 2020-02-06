@@ -10,7 +10,8 @@
             <div class="col-12">
                 <ul class="breadcrumb">
                     <li><a href="{{ route('index') }}">Home</a></li>
-                    <li><a href="{{ route('cate', $product->category->slug_url) }}">{{ $product->category->name }}</a></li>
+                    <li><a href="{{ route('cate', $product->category->slug_url) }}">{{ $product->category->name }}</a>
+                    </li>
                     <li class="current"><span> {{ $product->title }}</span></li>
                 </ul>
             </div>
@@ -29,75 +30,17 @@
                         <div class="product-gallery vertical-slide-nav">
                             <div class="product-gallery__thumb">
                                 <div class="product-gallery__thumb--image">
-                                    
+
                                 </div>
                             </div>
-                            {{-- <div class="product-gallery__thumb">
-                                <div class="product-gallery__thumb--image">
-                                    <div class="airi-element-carousel nav-slider slick-vertical" 
-                                    data-slick-options='{
-                                        "slidesToShow": 3,
-                                        "slidesToScroll": 1,
-                                        "vertical": true,
-                                        "swipe": true,
-                                        "verticalSwiping": true,
-                                        "infinite": true,
-                                        "focusOnSelect": true,
-                                        "asNavFor": ".main-slider",
-                                        "arrows": true, 
-                                        "prevArrow": {"buttonClass": "slick-btn slick-prev", "iconClass": "fa fa-angle-up" },
-                                        "nextArrow": {"buttonClass": "slick-btn slick-next", "iconClass": "fa fa-angle-down" }
-                                    }'
-                                    data-slick-responsive='[
-                                        {
-                                            "breakpoint":992, 
-                                            "settings": {
-                                                "slidesToShow": 4,
-                                                "vertical": false,
-                                                "verticalSwiping": false
-                                            } 
-                                        },
-                                        {
-                                            "breakpoint":575, 
-                                            "settings": {
-                                                "slidesToShow": 3,
-                                                "vertical": false,
-                                                "verticalSwiping": false
-                                            } 
-                                        },
-                                        {
-                                            "breakpoint":480, 
-                                            "settings": {
-                                                "slidesToShow": 2,
-                                                "vertical": false,
-                                                "verticalSwiping": false
-                                            } 
-                                        }
-                                    ]'>
-                                        <figure class="product-gallery__thumb--single">
-                                            <img src="assets/img/products/prod-19-1-2.jpg" alt="Products">
-                                        </figure>
-                                        <figure class="product-gallery__thumb--single">
-                                            <img src="assets/img/products/prod-19-2-2.jpg" alt="Products">
-                                        </figure>
-                                        <figure class="product-gallery__thumb--single">
-                                            <img src="assets/img/products/prod-19-3-2.jpg" alt="Products">
-                                        </figure>
-                                        <figure class="product-gallery__thumb--single">
-                                            <img src="assets/img/products/prod-19-4-2.jpg" alt="Products">
-                                        </figure>
-                                    </div>
-                                </div>
-                            </div> --}}
                             <div class="product-gallery__large-image">
                                 <div class="gallery-with-thumbs">
                                     <div class="product-gallery__wrapper">
-                                      
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {{-- <span class="product-badge new">New</span> --}}
                     </div>
                 </div>
                 <!-- <div class="col-md-6 product-main-details mt--40 mt-md--10 mt-sm--30"> -->
@@ -148,7 +91,7 @@
                             <span>{{ $product->category->name }}</span>
                         </a>
                         @endif
-                        {{-- 
+
                         @if($product->isCodAvailable)
                         <span class="product-stock in-stock float-right text-success">
                             <i class="fa fa-check-circle-o" aria-hidden="true"></i>
@@ -159,62 +102,64 @@
                             <i class="fa fa-ban" aria-hidden="true"></i>
                             Cash on Delivery Not Available
                         </span>
-                        @endif 
-                        --}}
-
-                    <div class="clearfix"></div>
-
-                    <form action="#" class="variation-form mb--20">
-
-                        @if(count($colorsSizes) > 0)
-                        <div class="product-color-variations mb--20">
-                            <p class="swatch-label">Color: <strong class="swatch-label color-label"></strong></p>
-                            <div class="product-color-swatch variation-wrapper">
-                                @foreach ($colorsSizes as $item)
-                                <div class="swatch-wrapper swatch-wrapper-color">
-                                    <a class="product-color-swatch-btn variation-btn" data-toggle="tooltip"
-                                        data-placement="top" title="{{ $item->color_name }}"
-                                        data-color-id="{{ $item->color_id }}" data-mrp="{{ $item->mrp }}"
-                                        data-stock="{{ $item->stock }}" data-map-id="{{ $item->map_id }}"
-                                        data-product-id="{{ $product->id }}" data-title="{{ $item->color_name }}"
-                                        data-starting-price="{{ $item->starting_price }}">
-                                        <span class="product-color-swatch-label"  style="background: {{ $item->color_code }}"></span>
-                                    </a>
-                                </div>
-                                @endforeach
-
-                            </div>
-                        </div>
                         @endif
-                        @if(count($product->sizes) > 0)
-                        <div class="product-size-variations">
-                            <p class="swatch-label">Size: <strong class="swatch-label size_lable"></strong> 
-                                @if($product->category ? $product->category->name != 'Fragrance' : '')
-                                <span class="pull-right cursor-pointer" data-toggle="modal"
-                                data-target="#sizeChart"> SIZE CHART <i class="fa fa-angle-double-right"></i></span>
-                                @endif
-                            </p>
-                            <div class="product-size-swatch variation-wrapper">
-                                @foreach ($product->sizes as $item)
-                                <div class="swatch-wrapper">
-                                    <a class="product-size-swatch-btn variation-btn size_btn" data-toggle="tooltip"
-                                        data-placement="top" title="{{ $item->title }}"
-                                        data-size-id="{{ $item->size_id }}">
-                                        <span class="product-size-swatch-label">{{ $item->title }}</span>
-                                    </a>
-                                </div>
-                                @endforeach
-                            </div>
-                        </div>
-                        @endif
-                    </form>
 
-                    <div class="offerSection">
-                        @if(count($offers))
-                        <p> Choose Any {{ $offers[0]->offered_quantity }} Offer On Purchase of
-                            {{ $offers[0]->purchase_quantity }} </p>
-                        <div class="airi-element-carousel-offer product-carousel nav-vertical-center offer"
-                            data-slick-options='{
+
+                        <div class="clearfix"></div>
+
+                        <form action="#" class="variation-form mb--20">
+
+                            @if(count($colorsSizes) > 0)
+                            <div class="product-color-variations mb--20">
+                                <p class="swatch-label">Color: <strong class="swatch-label color-label"></strong></p>
+                                <div class="product-color-swatch variation-wrapper">
+                                    @foreach ($colorsSizes as $item)
+                                    <div class="swatch-wrapper swatch-wrapper-color">
+                                        <a class="product-color-swatch-btn variation-btn" data-toggle="tooltip"
+                                            data-placement="top" title="{{ $item->color_name }}"
+                                            data-color-id="{{ $item->color_id }}" data-mrp="{{ $item->mrp }}"
+                                            data-stock="{{ $item->stock }}" data-map-id="{{ $item->map_id }}"
+                                            data-product-id="{{ $product->id }}" data-title="{{ $item->color_name }}"
+                                            data-starting-price="{{ $item->starting_price }}">
+                                            <span class="product-color-swatch-label"
+                                                style="background: {{ $item->color_code }}"></span>
+                                        </a>
+                                    </div>
+                                    @endforeach
+
+                                </div>
+                            </div>
+                            @endif
+                            @if(count($product->sizes) > 0)
+                            <div class="product-size-variations">
+                                <p class="swatch-label">Size: <strong class="swatch-label size_lable"></strong>
+                                    @if($product->category ? $product->category->name != 'Fragrance' : '')
+                                    <span class="pull-right cursor-pointer" data-toggle="modal"
+                                        data-target="#sizeChart"> SIZE CHART <i
+                                            class="fa fa-angle-double-right"></i></span>
+                                    @endif
+                                </p>
+                                <div class="product-size-swatch variation-wrapper">
+                                    @foreach ($product->sizes as $item)
+                                    <div class="swatch-wrapper">
+                                        <a class="product-size-swatch-btn variation-btn size_btn" data-toggle="tooltip"
+                                            data-placement="top" title="{{ $item->title }}"
+                                            data-size-id="{{ $item->size_id }}">
+                                            <span class="product-size-swatch-label">{{ $item->title }}</span>
+                                        </a>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @endif
+                        </form>
+
+                        <div class="offerSection">
+                            @if(count($offers))
+                            <p> Choose Any {{ $offers[0]->offered_quantity }} Offer On Purchase of
+                                {{ $offers[0]->purchase_quantity }} </p>
+                            <div class="airi-element-carousel-offer product-carousel nav-vertical-center offer"
+                                data-slick-options='{
                                         "spaceBetween": 30,
                                         "slidesToShow": 6,
                                         "slidesToScroll": 1,
@@ -230,258 +175,265 @@
 
 
 
-                        </div>
-                        <a href="javascript:void(0)" class="selectedOfferBtn">View
-                            Selected Offer <i class="fa fa-angle-double-right"></i></a>
-                        @endif
-                    </div>
-
-                    <form action="#" class="form--action mt--20 mb--30 mb-sm--20">
-                        <div class="product-action flex-row align-items-center">
-                            <div class="quantity">
-                                <input type="number" class="quantity-input" name="qty" id="qty" value="{{ old('qty') ? old('qty') : '1'  }}" min="1" max="4">
                             </div>
+                            <a href="javascript:void(0)" class="selectedOfferBtn">View
+                                Selected Offer <i class="fa fa-angle-double-right"></i></a>
+                            @endif
+                        </div>
 
-                            <div id="button-box" style="margin-right: 10px;">
-                                <a href="javascript:void(0)" class="button-show-pdt sss add-cart sm-hidden">Add to cart</a>
+                        <form action="#" class="form--action mt--20 mb--30 mb-sm--20">
+                            <div class="product-action flex-row align-items-center">
+                                <div class="quantity">
+                                    <input type="number" class="quantity-input" name="qty" id="qty"
+                                        value="{{ old('qty') ? old('qty') : '1'  }}" min="1" max="4">
+                                </div>
+
+                                <div id="button-box" style="margin-right: 10px;">
+                                    <a href="javascript:void(0)" class="button-show-pdt sss add-cart sm-hidden">Add to
+                                        cart</a>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                    @if($product->within_days || $product->wrong_products || $product->faulty_products ||
-                    $product->quality_issue)
-                    <div class="row pt--20 text-center return--policy">
-                        @if($product->within_days == true)
-                        <div class="col-sm-3 col-6">
-                            <span class="badge badge-success"><i class="fa fa-calendar-o"></i> </span>
-                            <p>Within 7 <br /> Days</p>
+                        </form>
+                        @if($product->within_days || $product->wrong_products || $product->faulty_products ||
+                        $product->quality_issue)
+                        <div class="row pt--20 text-center return--policy">
+                            @if($product->within_days == true)
+                            <div class="col-sm-3 col-6">
+                                <span class="badge badge-success"><i class="fa fa-calendar-o"></i> </span>
+                                <p>Within 7 <br /> Days</p>
+                            </div>
+                            @endif
+                            @if($product->wrong_products == true)
+                            <div class="col-sm-3 col-6">
+                                <span class="badge badge-danger"><i class="fa fa-times-circle-o"></i>
+                                </span>
+                                <p>Wrong <br /> Product</p>
+                            </div>
+                            @endif
+                            @if($product->faulty_products == true)
+                            <div class="col-sm-3 col-6">
+                                <span class="badge badge-primary"><i class="fa fa-ban"></i>
+                                </span>
+                                <p> Faulty <br /> Product</p>
+                            </div>
+                            @endif
+                            @if($product->quality_issue == true)
+                            <div class="col-sm-3 col-6">
+                                <span class="badge badge-dark"><i class="fa fa-thumbs-o-down"></i>
+                                </span>
+                                <p>
+                                    Quality <br> Issue
+                                </p>
+                            </div>
+                            @endif
                         </div>
                         @endif
-                        @if($product->wrong_products == true)
-                        <div class="col-sm-3 col-6">
-                            <span class="badge badge-danger"><i class="fa fa-times-circle-o"></i>
-                            </span>
-                            <p>Wrong <br /> Product</p>
-                        </div>
-                        @endif
-                        @if($product->faulty_products == true)
-                        <div class="col-sm-3 col-6">
-                            <span class="badge badge-primary"><i class="fa fa-ban"></i>
-                            </span>
-                            <p> Faulty <br /> Product</p>
-                        </div>
-                        @endif
-                        @if($product->quality_issue == true)
-                        <div class="col-sm-3 col-6">
-                            <span class="badge badge-dark"><i class="fa fa-thumbs-o-down"></i>
-                            </span>
-                            <p>
-                                Quality <br> Issue
-                            </p>
-                        </div>
-                        @endif
-                    </div>
-                    @endif
 
-                    {{-- description and review start --}}
-                    <div class="product-data-tab border-bottom pb--20 pb-md--30 pb-sm--20 tab-style-4">
-                        @if(count($product->reviews) && $product->review_status)
-                        <div class="nav nav-tabs product-data-tab__head mb--40 mb-sm--30" id="product-tab"
-                            role="tablist">
-                            <a class="product-data-tab__link nav-link active" id="nav-description-tab"
-                                data-toggle="tab" href="#nav-description" role="tab" aria-selected="true">
-                                <span>Description</span>
-                            </a>
-                            <a class="product-data-tab__link nav-link" id="nav-reviews-tab" data-toggle="tab"
-                                href="#nav-reviews" role="tab" aria-selected="true">
-                                <span>Reviews ({{ $prod->total_rating }})</span>
-                            </a>
-                        </div>
-                        @endif
-                        <div class="tab-content product-data-tab__content" id="product-tabContent">
-                            <div class="tab-pane fade show active" id="nav-description" role="tabpanel"
-                                aria-labelledby="nav-description-tab">
-                                <div class="product-description">
-                                    <div class="pdp-productDescriptorsContainer">
-                                        <div>
-                                            <h4 class="pdp-product-description-title">
-                                                Product Details <span
-                                                    class="fa fa-list-alt myntraweb-sprite pdp-productDetailsIcon sprites-productDetailsIcon"></span>
-                                            </h4>
-                                            <p class="pdp-product-description-content">
-                                                {!! $product->description !!}
-                                            </p>
-                                        </div>
-                                        
-                                        {{-- <div class="pdp-sizeFitDesc">
+                        {{-- description and review start --}}
+                        <div class="product-data-tab border-bottom pb--20 pb-md--30 pb-sm--20 tab-style-4">
+                            @if(count($product->reviews) && $product->review_status)
+                            <div class="nav nav-tabs product-data-tab__head mb--40 mb-sm--30" id="product-tab"
+                                role="tablist">
+                                <a class="product-data-tab__link nav-link active" id="nav-description-tab"
+                                    data-toggle="tab" href="#nav-description" role="tab" aria-selected="true">
+                                    <span>Description</span>
+                                </a>
+                                <a class="product-data-tab__link nav-link" id="nav-reviews-tab" data-toggle="tab"
+                                    href="#nav-reviews" role="tab" aria-selected="true">
+                                    <span>Reviews ({{ $prod->total_rating }})</span>
+                                </a>
+                            </div>
+                            @endif
+                            <div class="tab-content product-data-tab__content" id="product-tabContent">
+                                <div class="tab-pane fade show active" id="nav-description" role="tabpanel"
+                                    aria-labelledby="nav-description-tab">
+                                    <div class="product-description">
+                                        <div class="pdp-productDescriptorsContainer">
+                                            <div>
+                                                <h4 class="pdp-product-description-title">
+                                                    Product Details <span
+                                                        class="fa fa-list-alt myntraweb-sprite pdp-productDetailsIcon sprites-productDetailsIcon"></span>
+                                                </h4>
+                                                <p class="pdp-product-description-content">
+                                                    {!! $product->description !!}
+                                                </p>
+                                            </div>
+
+                                            {{-- <div class="pdp-sizeFitDesc">
                                             <h4 class="pdp-sizeFitDescTitle pdp-product-description-title">Material
                                                 &amp; Care</h4>
                                             <p class="pdp-sizeFitDescContent pdp-product-description-content">
                                                 {{ $product->material->material_name }}</p>
                                         </div> --}}
                                         <div class="index-sizeFitDesc" id="accordionSpecifications">
-                                                <h4 class="index-sizeFitDescTitle index-product-description-title"  id="specOne" style="padding-bottom: 12px;">
-                                                    </i> Specifications <span class="btn bulk-order-btn pull-right"  data-toggle="collapse" data-target="#collapseOne">Other Information <i class="fa fa-plus"></i>	
-                                                </h4>
-                                            <div id="collapseOne" class="index-tableContainer collapse" aria-labelledby="specOne" data-parent="#accordionSpecifications">
+                                            <h4 class="index-sizeFitDescTitle index-product-description-title"
+                                                id="specOne" style="padding-bottom: 12px;">
+                                                </i> Specifications <span class="btn bulk-order-btn pull-right"
+                                                    data-toggle="collapse" data-target="#collapseOne">Other Information
+                                                    <i class="fa fa-plus"></i>
+                                            </h4>
+                                            <div id="collapseOne" class="index-tableContainer collapse"
+                                                aria-labelledby="specOne" data-parent="#accordionSpecifications">
 
                                                 {{-- @if($product->brand)
                                                 <div class="index-row">
                                                     <div class="index-rowKey">Brand</div>
                                                     <div class="index-rowValue">{{ $product->brand->brand_name }}
-                                                    </div>
-                                                </div>
-                                                @endif
-                                                {{-- @if($product->condition)
+                                            </div>
+                                        </div>
+                                        @endif
+                                        {{-- @if($product->condition)
                                                 <div class="index-row">
                                                     <div class="index-rowKey">Condition</div>
                                                     <div class="index-rowValue">{{ $product->condition->condition }}
-                                                    </div>
-                                                </div>
-                                                @endif
-                                                {{-- @if($product->length)
+                                    </div>
+                                </div>
+                                @endif
+                                {{-- @if($product->length)
                                                 <div class="index-row">
                                                     <div class="index-rowKey">Length</div>
-                                                    <div class="index-rowValue">{{ $product->length }}</div>
-                                                </div>
-                                                @endif
-                                                @if($product->breadth)
-                                                <div class="index-row">
-                                                    <div class="index-rowKey">Breadth</div>
-                                                    <div class="index-rowValue">{{ $product->breadth }}</div>
-                                                </div>
-                                                @endif
-                                                @if($product->height)
-                                                <div class="index-row">
-                                                    <div class="index-rowKey">Height</div>
-                                                    <div class="index-rowValue">{{ $product->height }}</div>
-                                                </div>
-                                                @endif
-                                                @if($product->weight)
-                                                <div class="index-row">
-                                                    <div class="index-rowKey">Weight</div>
-                                                    <div class="index-rowValue">{{ $product->weight }}</div>
-                                                </div>
-                                                @endif --}}
-                                                @if($product->warranty)
-                                                <div class="index-row">
-                                                    <div class="index-rowKey">Warranty</div>
-                                                    <div class="index-rowValue">{{ $product->warranty->title }}
-                                                    </div>
-                                                </div>
-                                                @endif
-                                                @foreach($product->custom_fields as $field)
-                                                <div class="index-row">
-                                                    <div class="index-rowKey">{{ $field->field_name }}</div>
-                                                    <div class="index-rowValue">{{ $field->field_value }}</div>
-                                                </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @if($product->review_status)
-                            <div class="tab-pane fade" id="nav-reviews" role="tabpanel"
-                                aria-labelledby="nav-reviews-tab">
-                                <div class="product-reviews">
-                                    <ul class="review__list">
-                                        @foreach($product->reviews as $review)
-                                        <li class="review__item">
-                                            <div class="review__container">
-
-                                                <img alt="Review Avatar" class="review__avatar lazy"
-                                                    data-original="{!! asset('admin/img/admin2.png') !!}">
-
-                                                <div class="review__text">
-                                                    <div class="product-rating float-right">
-                                                        <span>
-                                                            @for($i = 1; $i<= $review->rating; $i++)
-                                                                <i class="fa fa-star rated" aria-hidden="true"></i>
-                                                                @endfor
-                                                                @for($i = 1; $i<= 5 - $review->rating; $i++)
-                                                                    <i class="fa fa-star-o" aria-hidden="true"></i>
-                                                                    @endfor
-                                                        </span>
-                                                    </div>
-                                                    <div class="review__meta">
-                                                        <strong class="review__author">{{ $review->name }} </strong>
-                                                        <span class="review__dash">-</span>
-                                                        <span
-                                                            class="review__published-date">{{ date('F d, Y', strtotime($review->created_at)) }}</span>
-                                                    </div>
-                                                    <div class="clearfix"></div>
-                                                    <p class="review__description">
-                                                        {{ $review->comment }}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-                    {{-- description and review end --}}
-                </div>
-            </div>
-        </div>
-
-        {{-- Releted Products --}}
-        <div class="row pt--35 pt-md--25 pt-sm--15 pb--75 pb-md--55 pb-sm--35">
-            <div class="col-12">
-                <div class="row mb--40 mb-md--30">
-                    <div class="col-12 text-center">
-                        <h2 class="heading-secondary">Related Products</h2>
-                        <hr class="separator center mt--25 mt-md--15">
-                    </div>
-                </div>
-                <div class="row">
-                    @foreach($related_products as $rproduct)
-                        <div class="col-md-3 col-sm-6 col-xs-6 col-6 mb-5">
-                            <div class="airi-product">
-                                <div class="product-inner">
-                                    <figure class="product-image">
-                                        <div class="product-image--holder">
-                                            <a href="{{ route('product',[$rproduct->slug_url]) }}">
-                                                <img data-original="{!! asset('storage/images/products/' . $rproduct->image_url) !!} "
-                                                    alt="Product Image" class="primary-image lazy">
-
-                                                <img data-original="{!! asset('storage/images/products/' . $rproduct->image_url1) !!} "
-                                                    alt="Product Image" class="secondary-image lazy">
-                                            </a>
-                                        </div>
-                                    </figure>
-                                    <div class="product-info">
-                                        <h3 class="product-title">
-                                            <a href="{{ route('product',$rproduct->slug_url) }}">{{ Str::limit($rproduct->title,15) }}</a>
-                                            @if($rproduct->review_status)
-                                            <span class="pull-right">
-                                                @for($i = 1; $i<= $rproduct->rating; $i++)
-                                                    <i class="fa fa-star rated" aria-hidden="true"></i>
-                                                    @endfor
-                                                    @for($i = 1; $i<= 5 - $rproduct->rating; $i++)
-                                                        <i class="fa fa-star-o" aria-hidden="true"></i>
-                                                        @endfor
-                                            </span>
-                                            @endif
-                                        </h3>
-
-                                        <span class="pull-left">
-                                            <a
-                                                href="{{ route('cate',[$product->category->slug_url]) }}">{{ $product->category->name}}</a>
-                                        </span>
-
-                                    </div>
-                                </div>
+                                                    <div class="index-rowValue">{{ $product->length }}
                             </div>
                         </div>
-                    @endforeach
+                        @endif
+                        @if($product->breadth)
+                        <div class="index-row">
+                            <div class="index-rowKey">Breadth</div>
+                            <div class="index-rowValue">{{ $product->breadth }}</div>
+                        </div>
+                        @endif
+                        @if($product->height)
+                        <div class="index-row">
+                            <div class="index-rowKey">Height</div>
+                            <div class="index-rowValue">{{ $product->height }}</div>
+                        </div>
+                        @endif
+                        @if($product->weight)
+                        <div class="index-row">
+                            <div class="index-rowKey">Weight</div>
+                            <div class="index-rowValue">{{ $product->weight }}</div>
+                        </div>
+                        @endif --}}
+                        @if($product->warranty)
+                        <div class="index-row">
+                            <div class="index-rowKey">Warranty</div>
+                            <div class="index-rowValue">{{ $product->warranty->title }}
+                            </div>
+                        </div>
+                        @endif
+                        @foreach($product->custom_fields as $field)
+                        <div class="index-row">
+                            <div class="index-rowKey">{{ $field->field_name }}</div>
+                            <div class="index-rowValue">{{ $field->field_value }}</div>
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    @if($product->review_status)
+    <div class="tab-pane fade" id="nav-reviews" role="tabpanel" aria-labelledby="nav-reviews-tab">
+        <div class="product-reviews">
+            <ul class="review__list">
+                @foreach($product->reviews as $review)
+                <li class="review__item">
+                    <div class="review__container">
+
+                        <img alt="Review Avatar" class="review__avatar lazy"
+                            data-original="{!! asset('admin/img/admin2.png') !!}">
+
+                        <div class="review__text">
+                            <div class="product-rating float-right">
+                                <span>
+                                    @for($i = 1; $i<= $review->rating; $i++)
+                                        <i class="fa fa-star rated" aria-hidden="true"></i>
+                                        @endfor
+                                        @for($i = 1; $i<= 5 - $review->rating; $i++)
+                                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                                            @endfor
+                                </span>
+                            </div>
+                            <div class="review__meta">
+                                <strong class="review__author">{{ $review->name }} </strong>
+                                <span class="review__dash">-</span>
+                                <span
+                                    class="review__published-date">{{ date('F d, Y', strtotime($review->created_at)) }}</span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <p class="review__description">
+                                {{ $review->comment }}
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+    @endif
+</div>
+</div>
+{{-- description and review end --}}
+</div>
+</div>
+</div>
+
+{{-- Releted Products --}}
+<div class="row pt--35 pt-md--25 pt-sm--15 pb--75 pb-md--55 pb-sm--35">
+    <div class="col-12">
+        <div class="row mb--40 mb-md--30">
+            <div class="col-12 text-center">
+                <h2 class="heading-secondary">Related Products</h2>
+                <hr class="separator center mt--25 mt-md--15">
+            </div>
+        </div>
+        <div class="row">
+            @foreach($related_products as $rproduct)
+            <div class="col-md-3 col-sm-6 col-xs-6 col-6 mb-5">
+                <div class="airi-product">
+                    <div class="product-inner">
+                        <figure class="product-image">
+                            <div class="product-image--holder">
+                                <a href="{{ route('product',[$rproduct->slug_url]) }}">
+                                    <img data-original="{!! asset('storage/images/products/' . $rproduct->image_url) !!} "
+                                        alt="Product Image" class="primary-image lazy">
+
+                                    <img data-original="{!! asset('storage/images/products/' . $rproduct->image_url1) !!} "
+                                        alt="Product Image" class="secondary-image lazy">
+                                </a>
+                            </div>
+                        </figure>
+                        <div class="product-info">
+                            <h3 class="product-title">
+                                <a
+                                    href="{{ route('product',$rproduct->slug_url) }}">{{ Str::limit($rproduct->title,15) }}</a>
+                                @if($rproduct->review_status)
+                                <span class="pull-right">
+                                    @for($i = 1; $i<= $rproduct->rating; $i++)
+                                        <i class="fa fa-star rated" aria-hidden="true"></i>
+                                        @endfor
+                                        @for($i = 1; $i<= 5 - $rproduct->rating; $i++)
+                                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                                            @endfor
+                                </span>
+                                @endif
+                            </h3>
+
+                            <span class="pull-left">
+                                <a
+                                    href="{{ route('cate',[$product->category->slug_url]) }}">{{ $product->category->name}}</a>
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+</div>
 </div>
 <!-- Main Content Wrapper Start -->
 <!-- The Modal -->
@@ -498,19 +450,24 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="ptb--30 plr--30">
-                    <form class="form" action="{{ route('bulk.store') }}" id="formBulkOrder" method="POST" class="needs-validations">
+                    <form class="form" action="{{ route('bulk.store') }}" id="formBulkOrder" method="POST"
+                        class="needs-validations">
                         @csrf
                         <div class="form__group mb--20">
-                            <input type="text" name="name" class="form__input form__input--2" placeholder="Your Name*" value="{{ old('name') }}" required>
+                            <input type="text" name="name" class="form__input form__input--2" placeholder="Your Name*"
+                                value="{{ old('name') }}" required>
                         </div>
                         <div class="form__group mb--20">
-                            <input type="email" name="email" class="form__input form__input--2" placeholder="Email Address*" value="{{ old('email') }}" required>
+                            <input type="email" name="email" class="form__input form__input--2"
+                                placeholder="Email Address*" value="{{ old('email') }}" required>
                         </div>
                         <div class="form__group mb--20">
-                            <input type="text" name="mobile" class="form__input form__input--2" placeholder="Your Mobile Number*" value="{{ old('mobile') }}" required>
+                            <input type="text" name="mobile" class="form__input form__input--2"
+                                placeholder="Your Mobile Number*" value="{{ old('mobile') }}" required>
                         </div>
                         <div class="form__group mb--20">
-                            <textarea class="form__input form__input--textarea" name="message" placeholder="Message*" required>{{ old('message') }}</textarea>
+                            <textarea class="form__input form__input--textarea" name="message" placeholder="Message*"
+                                required>{{ old('message') }}</textarea>
                         </div>
                         <div class="form__group text-center">
                             <button type="submit" class="btn btn-submit btnSubmit btn-style-1">Send</button>
@@ -536,8 +493,8 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="ptb--10 plr--10">
-                        <div class="row offer_section">
-                        </div>
+                    <div class="row offer_section">
+                    </div>
                 </div>
             </div>
         </div>
@@ -590,80 +547,80 @@
                             <tbody>
 
                                 @if($product->category->parent_id == 5)
-                              <tr>
-                                <th class="text-center" colspan="3">WOMEN</th>
-                              </tr>
-                              <tr>
-                                <th>SIZE</th>
-                                <th>CHEST</th>
-                                <th>LENGTH</th>
-                              </tr>
-                              <tr>
-                                <td>S</td>
-                                <td>35.5</td>
-                                <td>24</td>
-                              </tr>
-                              <tr>
-                                <td>M</td>
-                                <td>36.5</td>
-                                <td>25</td>
-                              </tr>
-                              <tr>
-                                <td>L</td>
-                                <td>37.5</td>
-                                <td>26</td>
-                              </tr>
-                              <tr>
-                                <td>XL</td>
-                                <td>38.5</td>
-                                <td>27</td>
-                              </tr>
-                              <tr>
-                                <td>2XL</td>
-                                <td>39.5</td>
-                                <td>28</td>
-                              </tr>
-                              <tr>
-                                <th colspan="3"></th>
-                              </tr>
-                              @endif
-                              @if($product->category->parent_id != 5)
-                              <tr>
-                                <th class="text-center" colspan="3">MEN</th>
-                              </tr>
-                              <tr>
-                                <th>SIZE</th>
-                                <th>CHEST</th>
-                                <th>LENGTH</th>
-                              </tr>
-                              <tr>
-                                <td>S</td>
-                                <td>38</td>
-                                <td>26.5</td>
-                              </tr>
-                              <tr>
-                                <td>M</td>
-                                <td>40</td>
-                                <td>27.5</td>
-                              </tr>
-                              <tr>
-                                <td>L</td>
-                                <td>42</td>
-                                <td>28.5</td>
-                              </tr>
-                              <tr>
-                                <td>XL</td>
-                                <td>44</td>
-                                <td>30.5</td>
-                              </tr>
-                              <tr>
-                                <td>2XL</td>
-                                <td>46</td>
-                                <td>31.5</td>
-                              </tr>
-                              @endif
+                                <tr>
+                                    <th class="text-center" colspan="3">WOMEN</th>
+                                </tr>
+                                <tr>
+                                    <th>SIZE</th>
+                                    <th>CHEST</th>
+                                    <th>LENGTH</th>
+                                </tr>
+                                <tr>
+                                    <td>S</td>
+                                    <td>35.5</td>
+                                    <td>24</td>
+                                </tr>
+                                <tr>
+                                    <td>M</td>
+                                    <td>36.5</td>
+                                    <td>25</td>
+                                </tr>
+                                <tr>
+                                    <td>L</td>
+                                    <td>37.5</td>
+                                    <td>26</td>
+                                </tr>
+                                <tr>
+                                    <td>XL</td>
+                                    <td>38.5</td>
+                                    <td>27</td>
+                                </tr>
+                                <tr>
+                                    <td>2XL</td>
+                                    <td>39.5</td>
+                                    <td>28</td>
+                                </tr>
+                                <tr>
+                                    <th colspan="3"></th>
+                                </tr>
+                                @endif
+                                @if($product->category->parent_id != 5)
+                                <tr>
+                                    <th class="text-center" colspan="3">MEN</th>
+                                </tr>
+                                <tr>
+                                    <th>SIZE</th>
+                                    <th>CHEST</th>
+                                    <th>LENGTH</th>
+                                </tr>
+                                <tr>
+                                    <td>S</td>
+                                    <td>38</td>
+                                    <td>26.5</td>
+                                </tr>
+                                <tr>
+                                    <td>M</td>
+                                    <td>40</td>
+                                    <td>27.5</td>
+                                </tr>
+                                <tr>
+                                    <td>L</td>
+                                    <td>42</td>
+                                    <td>28.5</td>
+                                </tr>
+                                <tr>
+                                    <td>XL</td>
+                                    <td>44</td>
+                                    <td>30.5</td>
+                                </tr>
+                                <tr>
+                                    <td>2XL</td>
+                                    <td>46</td>
+                                    <td>31.5</td>
+                                </tr>
+                                @endif
                             </tbody>
-                          </table>
+                        </table>
                     </div>
                     <div id="measure" class="container tab-pane fade"><br>
                         <img src="{{ asset('assets/images/').'/'.'sizechart.jpg' }}" alt="size chart">
@@ -678,20 +635,26 @@
 
 @section('extracss')
 <style>
-    @media (max-width: 47.94em){
+    @media (max-width: 47.94em) {
         .btn {
             min-height: unset;
             line-height: unset;
         }
     }
+
     @media screen and (max-width: 767px) {
-        .sm-padding-footer{
-            padding-bottom:15% !important;
+        .sm-padding-footer {
+            padding-bottom: 15% !important;
         }
     }
-    .table-bordered td, .table-bordered th {
+
+    .table-bordered td,
+    .table-bordered th {
         border: 1px solid #dee2e6;
-    }.table td, .table th {
+    }
+
+    .table td,
+    .table th {
         padding: .75rem;
         vertical-align: top;
         border-top: 1px solid #dee2e6;
@@ -735,9 +698,11 @@
         border-color: transparent;
     }
 
-    .disabledOffer img{
-        -webkit-filter:  blur(3px); /* Ch 23+, Saf 6.0+, BB 10.0+ */
-        filter:  blur(3px); /* FF 35+ */
+    .disabledOffer img {
+        -webkit-filter: blur(3px);
+        /* Ch 23+, Saf 6.0+, BB 10.0+ */
+        filter: blur(3px);
+        /* FF 35+ */
         cursor: no-drop;
     }
 
@@ -758,14 +723,15 @@
         padding: 1.5rem 2rem;
     }
 
-    .slick-prev, .slick-next {
-  z-index: 1000;
-}
+    .slick-prev,
+    .slick-next {
+        z-index: 1000;
+    }
 
-.slick-prev:before, .slick-next:before {
-    color:red !important;
-}
-
+    .slick-prev:before,
+    .slick-next:before {
+        color: red !important;
+    }
 </style>
 
 <script type='text/javascript'
@@ -775,7 +741,6 @@
 
 @section('extrajs')
 <script>
-    
     $(document).ready(function(){
         // Add minus icon for collapse element which is open by default
         $(".collapse.show").each(function(){
@@ -855,8 +820,6 @@
         }
 
         $('.offer').html(html);
-
-        // $(".offer").slick('unslick');
 
         elementCarousel('.airi-element-carousel-offer');
 
@@ -1053,16 +1016,9 @@
 
         $('.product-color-swatch-btn').click(function (e) {
 
-            // var item = $('.product-color-swatch-btn').hasClass('active');
-
-            // if (item) {
             $('.product-color-swatch-btn').removeClass('active')
-            // }
-            // return;
-
+         
             $(this).addClass('active')
-
-            console.log('$(this)', $(this));
 
             var mrp = $(this).attr('data-mrp');
             var product_id = $(this).attr('data-product-id');
@@ -1106,14 +1062,6 @@
 
 
         });
-
-        // $('.product-size-swatch-btn').click(function () {
-        //     var size_id = $(this).attr('data-size-id');
-        //     console.log(size_id);
-
-        //     $('#cart_size_id').val(size_id);
-        // });
-
        
         function elementCarousel(elementClass){
         $html = $('html');
@@ -1393,66 +1341,8 @@
 
                         $('.product-gallery__thumb--image').html(navSlider);
                         $('.product-gallery__wrapper').html(mainSlider);
+
                         elementCarousel('.mynavclass');
-                        // $(".nav-slider").not('.slick-initialized').slick(
-                        //     {
-                        //         lazyLoad: 'ondemand',
-                        //         slidesToShow: 5,
-                        //         slidesToScroll: 1,
-                        //         vertical: true,
-                        //         swipe: true,
-                        //         focusOnSelect:true,
-                        //         verticalSwiping: true,
-                        //         infinite: true,
-                        //         asNavFor: ".main-slider",
-                        //         // autoplay: true,
-                        //         // autoplaySpeed: 100,
-                        //         arrows: true,
-                        //         prevArrow: '<span class="slick-btn slick-prev slick-arrow" style=""><i class="fa fa-angle-up"></i></span>',
-                        //         nextArrow: '<span class="slick-btn slick-next slick-arrow" style=""><i class="fa fa-angle-down"></i></span>',
-                        //         responsive: [
-                        //             {
-                        //             breakpoint: 992,
-                        //             settings: {
-                        //                 slidesToShow: 3,
-                        //                 vertical:false,
-                        //                 verticalSwiping: false,
-                        //                 centerMode: true,
-                        //                 arrows: true,
-                        //                 prevArrow: '<span class="slick-btn slick-prev slick-arrow" style=""><i class="fa fa-angle-up"></i></span>',
-                        //                 nextArrow: '<span class="slick-btn slick-next slick-arrow" style=""><i class="fa fa-angle-down"></i></span>',
-                        //             }
-                        //             },
-                        //             {
-                        //             breakpoint: 575,
-                        //             settings: {
-                        //                 slidesToShow: 3,
-                        //                 vertical:false,
-                        //                 verticalSwiping: false,
-                        //                 centerMode: true,
-                        //                 arrows: true,
-                        //                 prevArrow: '<span class="slick-btn slick-prev slick-arrow" style=""><i class="fa fa-angle-up"></i></span>',
-                        //                 nextArrow: '<span class="slick-btn slick-next slick-arrow" style=""><i class="fa fa-angle-down"></i></span>',
-                        //             }
-                        //             },
-                        //             {
-                        //             breakpoint: 480,
-                        //             settings: {
-                        //                 slidesToShow: 3,
-                        //                 vertical:false,
-                        //                 verticalSwiping: false,
-                        //                 centerMode: true,
-                        //                 arrows: true,
-                        //                 prevArrow: '<span class="slick-btn slick-prev slick-arrow" style=""><i class="fa fa-angle-up"></i></span>',
-                        //                 nextArrow: '<span class="slick-btn slick-next slick-arrow" style=""><i class="fa fa-angle-down"></i></span>',
-                        //             }
-                        //             }
-                        //             // You can unslick at a given breakpoint now by adding:
-                        //             // settings: "unslick"
-                        //             // instead of a settings object
-                        //         ]
-                        //     }
-                        // );
 
                         $(".main-slider").not('.slick-initialized').slick(
                             {
