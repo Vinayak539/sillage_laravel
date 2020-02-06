@@ -103,7 +103,7 @@
                                 </table>
                             </div>
                         </div>
-                        <a href="{{ route('checkout') }}" class="btn btn-cls btn-fullwidth btn-style-1">
+                        <a href="{{ route('checkout') }}" class="btn btn-cls btn-fullwidth btn-style-1 checkout-btn">
                             Proceed To Checkout
                         </a>
                         <a href="{{ route('search') }}" class="btn btn-cls btn-fullwidth btn-style-1 mt--10">
@@ -121,6 +121,10 @@
 
 @section('extrajs')
 <script>
+    $(".checkout-btn").click(function(){
+        fbq('track', 'InitiateCheckout');
+    });
+
     $('.quantity-input').change(function (e) {
         e.preventDefault();
         var quantity = parseInt($(this).val());

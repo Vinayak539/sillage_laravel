@@ -631,6 +631,10 @@
 
 <script>
     $(document).ready(function () {
+        var seconds = 5;
+        setTimeout(function() {
+            fbq('track', 'ViewContent', { content_name: 'In Checkout Page' });
+        }, seconds * 1000);
 
         $('.order_place').attr('disabled', 'disabled');
         $('.add_address').hide();

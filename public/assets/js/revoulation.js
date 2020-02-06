@@ -238,7 +238,7 @@
 		responsiveLevels:[1240,1240,778,480],
 		visibilityLevels:[1240,1240,778,480],
 		gridwidth:[1920,1342,778,480],
-		gridheight:[540,362,362,125],
+		gridheight:[886,620,620,220],
 		// gridwidth:[1920,1920,778,480],
 		// gridheight:[830,830,600,500],
 		lazyType:"none",

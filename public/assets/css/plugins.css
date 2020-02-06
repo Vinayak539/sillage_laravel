@@ -79,7 +79,8 @@
 	background: #ccc;
 	border: none;
 	width: 48px;
-	height: 45px;
+	/* height: 45px; */
+	height: 40px;
 	text-indent: -900em;
 	overflow: hidden;
 	position: relative;

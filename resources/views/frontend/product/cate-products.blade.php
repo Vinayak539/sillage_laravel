@@ -150,6 +150,8 @@
 @section('extrajs')
 <script>
     $(document).ready(function () {
+
+        fbq('track', 'ViewContent', { content_name: '{{ $category->name }}' });
         $('#reset').click(function () {
             window.location.href = '/artist?q=';
             return false;

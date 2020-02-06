@@ -148,6 +148,8 @@
 @section('extrajs')
 <script>
     $(document).ready(function () {
+
+        fbq('track', 'ViewContent', { content_name: 'Search Page' });
         $('#reset').click(function () {
             window.location.href = '/artist?q=';
             return false;

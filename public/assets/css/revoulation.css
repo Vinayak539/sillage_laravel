@@ -1356,16 +1356,16 @@ img.tp-slider-alternative-image {
 .tp-caption.slidelink a div {
     width: 3000px;
     height: 1500px;
-    background: url(../img/slider/coloredbg.png)
+    background: url(../img/coloredbg.png)
 }
 
 .tp-caption.slidelink a span {
-    background: url(../img/slider/coloredbg.png)
+    background: url(../img/coloredbg.png)
 }
 
 .tp-loader.spinner0,
 .tp-loader.spinner5 {
-    background-image: url(../img/slider/loader.gif);
+    background-image: url(../img/loader.gif);
     background-repeat: no-repeat
 }
 

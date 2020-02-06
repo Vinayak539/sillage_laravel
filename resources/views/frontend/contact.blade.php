@@ -30,6 +30,9 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             {{Session::get('messageSuccess')}}
+                            <script>
+                                fbq('track', 'Contact');
+                            </script>
                         </div>
                     @endif @if(Session::has('messageDanger'))
                         <div class="alert alert-danger alert-dismissible mb-0">

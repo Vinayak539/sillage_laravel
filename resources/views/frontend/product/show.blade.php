@@ -666,7 +666,7 @@
                           </table>
                     </div>
                     <div id="measure" class="container tab-pane fade"><br>
-                        <img src="{{ asset('assets/images/').'/'.'sizechart.jpg' }}" alt="size chart">
+                        <img src="{{ asset('assets/img/').'/'.'sizechart.jpg' }}" alt="size chart">
                     </div>
                 </div>
             </div>
@@ -1028,6 +1028,15 @@
                     $('#cart_offer').val(offer_ids);
                     $('#cart_map_id').val(map_ids);
                 }
+                 // Add Pixel Events to the button's click handler
+                 fbq('track', 'AddToCart', {
+                    content_name: '{{ $product->title }}', 
+                    content_category: '{{ $product->category->name }}',
+                    content_ids: ['{{ $product->id }}'],
+                    content_type: 'product',
+                    value: 0,
+                    currency: 'INR' 
+                });          
                 $('#cartForm').submit();
                 $(this).html(
                     '<i class="fa fa-spinner fa-pulse fa-fw text-light"></i><span class="sr-only">Loading...</span>'

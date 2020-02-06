@@ -310,4 +310,9 @@
         }
     }
 </style>
+@endsection @section('extrajs')
+<script>
+fbq('track', 'Purchase', {value: '{{ $order->total }}', currency: 'INR'});
+</script>
+
 @endsection

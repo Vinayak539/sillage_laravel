@@ -40,4 +40,8 @@
         </div>
     </div>
 </section>
+@endsection @section('extrajs')
+<script>
+fbq('track', 'ViewContent', { content_name: 'Transaction Failed' });
+</script>
 @endsection

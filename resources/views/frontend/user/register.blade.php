@@ -177,6 +177,7 @@
 
             },
             submitHandler: function (form) {
+                fbq('track', 'CompleteRegistration');
                 $('.btnSubmit').attr('disabled', 'disabled');
                 $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
                 form.submit();

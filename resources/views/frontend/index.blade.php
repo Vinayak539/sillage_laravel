@@ -35,6 +35,71 @@
     </div>
 </div>
 
+{{-- Feature Start --}}
+<section class="collection-banner">
+    <div class="container">
+        <div class="row collection2">
+            <div class="col-md-4">
+                <div class="collection-banner-main banner-1 p-left" onclick="window.location.href='{{ route('cate','t-shirt-3') }}'">
+                    <div class="collection-img bg-size"
+                        style="background-image: url('{{ asset("assets/img/men-tshirt.jpg") }}');background-size: cover;background-position: center center;display: block;">
+                    </div>
+                    <div class="collection-banner-contain ">
+                        <div>
+                            <h3>Apparel</h3>
+                            <h4>Men's T-Shirts</h4>
+                            <div class="shop">
+                            <a href="{{ route('cate','t-shirt-3') }}">
+                                    shop now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="collection-banner-main banner-1 p-left"  onclick="window.location.href='{{ route('cate','t-shirt-6') }}'">
+                    <div class="collection-img bg-size"
+                        style="background-image: url('{{ asset("assets/img/women-tshirt.jpg") }}');background-size: cover;background-position: center center;display: block;">
+                    </div>
+                    <div class="collection-banner-contain ">
+                        <div>
+                            <h3>Apparel</h3>
+                            <h4>Women's T-Shirts</h4>
+                            <div class="shop">
+                                <a href="{{ route('cate','t-shirt-6') }}">
+                                    shop now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="collection-banner-main banner-1 p-left" onclick="window.location.href='{{ route('cate','fr-7') }}'">
+                    <div class="collection-img bg-size"
+                        style="background-image: url('{{ asset("assets/img/perfumes.jpg") }}');background-size: cover;background-position: center center;display: block;">
+                        {{-- <img src="{{ asset("assets/img/men-tshirt.jpg") }}" class="img-fluid bg-img "
+                            alt="banner" style="display: none;"> --}}
+                    </div>
+                    <div class="collection-banner-contain ">
+                        <div>
+                            <h3>Fragrance</h3>
+                            <h4>Men Fragrance</h4>
+                            <div class="shop">
+                                <a href="{{ route('cate','fr-7') }}">
+                                    shop now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{{-- Feature End --}}
+
 @if(count($homeOfferSliders))
 <div class="container pt--20 pt-xs--20 pb--30 pb-xs--20">
     <div class="airi-element-carousel nav-vertical-center nav-style-1 homeOffer" data-slick-options='{
@@ -52,14 +117,14 @@
 </div>
 @endif
 
-@foreach($sections as $section)
+@foreach($sections as $key=>$section)
 @if(count($section->msections))
 <!-- Trending Products area Start Here -->
 <section class="trending-products-area pt--30 pb--30 pt-md--20 pb-md--10 section-bg-color">
     <div class="container">
-        <div class="row mb--40 mb-md--30">
+        <div class="row mb--25 mb-md--30">
             <div class="col-12">
-                <h2 class="heading-secondary text-center">{{ $section->SectionName }}</h2>
+                <h2 class="heading-secondary section-product-title text-center  {{ $key==0 || $key==1   ? 'section-product-title-bg1' : 'section-product-title-bg2' }}">{{ $section->SectionName }}</h2>
             </div>
         </div>
         <div class="row">
@@ -82,7 +147,8 @@
                     @php
 
                     $product = DB::table('txn_products as p')
-                    ->selectRaw("p.id,p.title,p.slug_url, p.image_url, p.image_url1, p.review_status, FLOOR(AVG(txn_reviews.rating)) as
+                    ->selectRaw("p.id,p.title,p.slug_url, p.image_url, p.image_url1, p.review_status,
+                    FLOOR(AVG(txn_reviews.rating)) as
                     rating , COUNT(txn_reviews.id) as total_rating")
                     ->leftJoin("txn_reviews", "txn_reviews.product_id", "p.id")
                     ->where('p.id', $msec->product_id)
@@ -108,9 +174,10 @@
                             </figure>
                             <div class="product-info">
                                 <h3 class="product-title text-center">
-                                    <a href="{{ route('product',$product->slug_url) }}">{{ Str::limit($product->title,20) }}</a>
-                                   @if($product->review_status)
-                                   <span class="pull-right">
+                                    <a
+                                        href="{{ route('product',$product->slug_url) }}">{{ Str::limit($product->title,20) }}</a>
+                                    @if($product->review_status)
+                                    <span class="pull-right">
                                         @for($i = 1; $i<= $product->rating; $i++)
                                             <i class="fa fa-star rated" aria-hidden="true"></i>
                                             @endfor
@@ -120,7 +187,7 @@
                                     </span>
                                     @endif
                                 </h3>
-                                
+
                             </div>
                         </div>
                     </div>
