@@ -486,7 +486,7 @@
                     <div class="row">
                         <div class="col-sm-12 text-sm-left text-center">
                             <p class="copyright-text">
-                                Copyright © 2019
+                                Copyright © {{ Date('Y') === '2019' ? '2019' : '2019' . ' - ' . Date('Y') }}
                                 <a href="#">Hnilifestyle </a> All Right
                                 Reserved | Designed &amp; Developed by
                                 <a href="https://sanjaresolutions.com" style="color:#f1894c" target="_blank">Sanjar E
