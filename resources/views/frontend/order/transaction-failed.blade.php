@@ -2,13 +2,14 @@
 @section('title','Transaction Failed') 
 @section('content')
 <div class="breadcrumb-area pt--70 pt-md--25">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col-12">
-                <ul class="breadcrumb">
+                <ul class="breadcrumb d-inline">
                     <li><a href="{{ route('index') }}">Home</a></li>
                     <li class="current"><span> Transaction Failed </span></li>
                 </ul>
+                <a class="pull-right d-inline" href="{{ route('checkout') }}">Back To Checkout </a>
             </div>
         </div>
     </div>
