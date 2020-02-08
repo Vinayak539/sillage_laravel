@@ -2,20 +2,18 @@
 @section('title','Transaction Failed') 
 @section('content')
 
-<div class="element-section">
-    <div class="breadcrumbs-bg-image theme-breadcrumbs" style="background-image: url(/assets/images/bg/common-bg.jpg);">
-        <div class="container">
-            <div class="d-md-flex align-items-center justify-content-between">
-                <h2 class="page-title">Transaction Failed</h2>
-                <ul class="page-breadcrumbs">
-                    <li><a href="/">Home</a></li>
-                    <li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
-                    <li>Transaction Failed</li>
-                </ul>
-            </div>
-        </div> <!-- /.container -->
-    </div> <!-- /.breadcrumbs-bg-image -->
-</div>
+<div class="breadcrumb-area pt--70 pt-md--25">
+    <div class="container">
+        <div class="d-md-flex align-items-center justify-content-between">
+            <h2 class="page-title">Transaction Failed</h2>
+            <ul class="page-breadcrumbs">
+                <li><a href="/">Home</a></li>
+                <li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
+                <li>Transaction Failed</li>
+            </ul>
+        </div>
+    </div> <!-- /.container -->
+</div> <!-- /.breadcrumbs-bg-image -->
 
 <section class="checkout-section">
     <div class="container">
