@@ -40,6 +40,20 @@
         </div>
     </div>
 </section>
+@endsection @section('extracss')
+<style>
+    .table {
+        margin: 15px;
+    }
+    .table td, .table th {
+        padding: .75rem;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .table-bordered td, .table-bordered th {
+        border: 1px solid #dee2e6;
+    }
+</style>
 @endsection @section('extrajs')
 <script>
 fbq('track', 'ViewContent', { content_name: 'Transaction Failed' });
