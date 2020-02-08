@@ -54,7 +54,6 @@
         border: 1px solid #dee2e6;
     }
 </style>
-@endsection
 @endsection @section('extrajs')
 <script>
 fbq('track', 'ViewContent', { content_name: 'Transaction Failed' });
