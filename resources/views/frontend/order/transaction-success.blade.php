@@ -215,6 +215,14 @@
         padding: 5px 15px;
         margin: 0 0 10px 0;
     }
+
+    img.lazy {
+        width: 100%;
+        min-height: 120px;
+        max-height: 120px;
+        background: #fff url("{{ asset('assets/img/loader.gif') }}") no-repeat 50% 50% !important;
+        display: block;
+    }
     
     .table thead th,
     .table th,
