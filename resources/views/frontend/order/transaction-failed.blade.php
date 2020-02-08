@@ -13,7 +13,7 @@
         </div>
     </div>
 </div>
-<section class="checkout-section">
+<section class="checkout-section pt--40">
     <div class="container">
         <div class="row">
             @if(isset($data))
