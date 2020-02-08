@@ -171,6 +171,8 @@
                             <a href="{{ route('user.invoices.download', $order->id) }}" class="download-invoice"
                                 onclick="downloadInvoice()"><i class="fa fa-download" aria-hidden="true"></i>
                                 Download</a>
+                            <a href="{{ route('user.order.tracking', $order->id) }}" class="download-invoice"><i class="fa fa-download" aria-hidden="true"></i>
+                                Tracking</a>
                             <a href="javascript:void(0);" data-toggle="modal" data-target="#orderHelp"><i
                                     class="fa fa-question-circle" aria-hidden="true"></i>
                                 Need Help</a>
@@ -437,6 +439,13 @@
 @endsection
 @section('extracss')
 <style>
+    img.lazy {
+        width: 100%;
+        min-height: 120px;
+        max-height: 120px;
+        background: #fff url("{{ asset('assets/img/loader.gif') }}") no-repeat 50% 50% !important;
+        display: block;
+    }
     .table thead th,
     .table th,
     .table thead td,

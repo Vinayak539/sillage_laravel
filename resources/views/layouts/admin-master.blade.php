@@ -325,6 +325,8 @@
     </div>
     <!-- General JS Scripts -->
     <script src="{!! asset('admin/js/app.min.js') !!}"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
     <!-- JS Libraies -->
     <!-- Template JS File -->
     <!-- Custom JS File -->
@@ -339,8 +341,9 @@
     <script>
         $(document).ready(function () {
 
-            $(".lazy").lazyload({
-                effect: "fadeIn",
+            $(".lazy").Lazy({
+                effect: 'fadeIn',
+                visibleOnly: true,
             });
         });
 

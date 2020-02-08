@@ -442,7 +442,7 @@
                         
                                 <div class="form-row">
                                     <div class="col-md-12 text-center">
-                                        <button type="submit" class="btn btn-block btn-secondary btnSubmit">SAVE ADDRESS</button>
+                                        <button type="submit" class="btn btn-block btn-secondary btnSubmit">SAVE DELIVERY ADDRESS</button>
                                     </div>
                                 </div>
                             </form>

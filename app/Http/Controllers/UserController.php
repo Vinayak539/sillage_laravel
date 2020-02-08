@@ -228,6 +228,33 @@ class UserController extends Controller
         }
     }
 
+    public function getOrderTracking($id)
+    {
+        try {
+
+            $order = TxnOrder::where('id', $id)->with('details', 'user', 'transaction')->firstOrFail();
+            $res = Delivery::orderTrack($order->id);
+            $result = json_decode($res, true);
+            if (array_key_exists('Error', $result)) {
+                $track_response = [];
+            } else {
+                $track_response = $result['ShipmentData'][0]['Shipment'];
+            }
+
+            return view('frontend.user.order-tracking', compact('order', 'track_response'));
+
+        } catch (\Exception $ex) {
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+                connectify('error', 'Error', 'Whoops, Something Went Wrong !');
+                return redirect('/');
+            }
+            // return $ex->getMessage();
+            connectify('error', 'Error', 'Whoops, Something went wrong from our end !');
+
+            return redirect('/');
+        }
+    }
+
     public function returnOrder(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [

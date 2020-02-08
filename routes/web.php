@@ -368,6 +368,7 @@ Route::prefix('myaccount')->group(function () {
         Route::POST('/change-password', 'UserController@updateChangePassword')->name('user.change-password.updateRequest');
         Route::POST('/review', 'UserController@review');
         Route::GET('/order/{id}', 'UserController@getOrder')->name('user.order');
+        Route::GET('/order-tracking/{id}', 'UserController@getOrderTracking')->name('user.order.tracking');
         Route::POST('/order/return/{id}', 'UserController@returnOrder')->name('user.orders.return');
         Route::POST('/order/help/{id}', 'UserController@orderHelp')->name('user.orders.help');
         Route::POST('/order/cancel', 'UserController@cancelOrder')->name('user.orders.cancel');

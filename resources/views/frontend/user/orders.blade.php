@@ -280,6 +280,15 @@
 </form>
 
 @endsection
+@section('extracss')
+<style>img.lazy {
+    width: 100%;
+    min-height: 76px;
+    max-height: 76px;
+    background: #fff url("{{ asset('assets/img/loader.gif') }}") no-repeat 50% 50% !important;
+    display: block;
+}</style>
+@endsection
 @section('extrajs')
 
 <script>
