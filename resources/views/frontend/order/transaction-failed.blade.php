@@ -1,6 +1,9 @@
 @extends('layouts.master') 
 @section('title','Transaction Failed') 
 @section('content')
+<style>
+    .breadcrumb-area:after {content:unset}
+</style>
 <div class="breadcrumb-area pt--70 pt-md--25">
     <div class="container">
         <div class="row">
