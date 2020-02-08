@@ -1,20 +1,18 @@
 @extends('layouts.master') 
 @section('title','Transaction Failed') 
 @section('content')
-
 <div class="breadcrumb-area pt--70 pt-md--25">
-    <div class="container">
-        <div class="d-md-flex align-items-center justify-content-between">
-            <h2 class="page-title">Transaction Failed</h2>
-            <ul class="page-breadcrumbs">
-                <li><a href="/">Home</a></li>
-                <li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
-                <li>Transaction Failed</li>
-            </ul>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <ul class="breadcrumb">
+                    <li><a href="{{ route('index') }}">Home</a></li>
+                    <li class="current"><span> Transaction Failed </span></li>
+                </ul>
+            </div>
         </div>
-    </div> <!-- /.container -->
-</div> <!-- /.breadcrumbs-bg-image -->
-
+    </div>
+</div>
 <section class="checkout-section">
     <div class="container">
         <div class="row">
