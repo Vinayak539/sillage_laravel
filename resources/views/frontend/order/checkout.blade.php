@@ -164,19 +164,19 @@
                                                         <th>Subtotal</th>
                                                         <td class="text-right">₹{{ Cart::getTotal() }}</td>
                                                     </tr>
-                                                    
+
                                                     <tr class="discount">
-                                                        <th>Discount</th>
+                                                        <th>- Discount</th>
                                                         <td class="text-right">
-                                                            <span id="discount_span"> 0</span>
+                                                             <span id="discount_span"> 0</span>
                                                         </td>
                                                     </tr>
 
                                                     @if(Cart::gettotal() < 1000)
                                                     <tr class="shipping">
-                                                        <th>Shipping</th>
+                                                        <th>+ Shipping</th>
                                                         <td class="text-right">
-                                                            <span> ₹60</span>
+                                                            <span> ₹ {{ 60 + round((60 - 60 / 1.18), 2) }}</span>
                                                         </td>
                                                     </tr>
                                                     @endif
@@ -184,7 +184,7 @@
                                                     <tr class="order-total">
                                                         <th>Order Total</th>
                                                         <td class="text-right"><span
-                                                                class="order-total-ammount">₹{{ Cart::gettotal() < 1000 ? Cart::gettotal() + 60 : Cart::gettotal() }}</span>
+                                                                class="order-total-ammount">₹{{ Cart::gettotal() < 1000 ? round(Cart::gettotal() + 60 + (60 - 60 / 1.18), 2) : Cart::gettotal() }}</span>
                                                         </td>
                                                     </tr>
                                                 </tfoot>
@@ -304,11 +304,11 @@
 
 
                                             <div class="payment-group mt--20">
-                                               
+
                                                 <button type="submit" class="btn btn-fullwidth btn-style-1 order_place">
                                                     Place Order
                                                 </button>
-                                               
+
                                             </div>
                                         </div>
                                     </div>
@@ -350,7 +350,7 @@
                             <form action="{{ route('user.addresses.add') }}" method="post" id="formAddAddress">
                                 @csrf
                                 <div class="form">
-                        
+
                                     <div class="form-row mb--30">
                                         <div class="form__group col-md-12">
                                             <label for="name" class="form__label form__label--2">Name
@@ -359,7 +359,7 @@
                                                 placeholder="Name" value="">
                                         </div>
                                     </div>
-                        
+
                                     <div class="form-row mb--30">
                                         <div class="form__group col-12">
                                             <label for="mobile" class="form__label form__label--2">Mobile <span
@@ -368,7 +368,7 @@
                                                 placeholder="Mobile Number" required>
                                         </div>
                                     </div>
-                        
+
                                     <div class="form-row mb--30">
                                         <div class="form__group col-12">
                                             <label for="email" class="form__label form__label--2">Email Address
@@ -377,7 +377,7 @@
                                                 placeholder="Email Address" required>
                                         </div>
                                     </div>
-                        
+
                                     <div class="form-row mb--30">
                                         <div class="form__group col-12">
                                             <label for="country" class="form__label form__label--2">Country
@@ -394,12 +394,12 @@
                                         <div class="form__group col-12">
                                             <label for="address" class="form__label form__label--2">Street Address <span
                                                     class="required">*</span></label>
-                        
+
                                             <input type="text" name="address" id="address" class="form__input form__input--2 mb--30"
                                                 placeholder="House number and street name" required value="">
                                         </div>
                                     </div>
-                        
+
                                     <div class="form-row mb--30">
                                         <div class="form__group col-12">
                                             <label for="landmark" class="form__label form__label--2">Landmark</label>
@@ -407,7 +407,7 @@
                                                 placeholder="Landmark" value="">
                                         </div>
                                     </div>
-                        
+
                                     <div class="form-row mb--30">
                                         <div class="form__group col-12">
                                             <label for="city" class="form__label form__label--2">Town / City
@@ -416,7 +416,7 @@
                                                 placeholder="Town/City" value="">
                                         </div>
                                     </div>
-                        
+
                                     <div class="form-row mb--30">
                                         <div class="form__group col-12">
                                             <label for="territory" class="form__label form__label--2">State
@@ -425,8 +425,8 @@
                                                 required placeholder="State" value="">
                                         </div>
                                     </div>
-                        
-                        
+
+
                                     <div class="form-row mb--30">
                                         <div class="form__group type-of-address col-12">
                                             <label for="type_of_address" class="form__label form__label--2">Choose Type of Address
@@ -437,9 +437,9 @@
                                             <label for="corporate" class="btnn1">Office/Commercial</label>
                                         </div>
                                     </div>
-                        
+
                                 </div>
-                        
+
                                 <div class="form-row">
                                     <div class="col-md-12 text-center">
                                         <button type="submit" class="btn btn-block btn-secondary btnSubmit">SAVE DELIVERY ADDRESS</button>
@@ -449,7 +449,7 @@
                         </div>
                     </div>
                     @endif
-                    
+
                 @else
                 <!-- Checkout Area End -->
                 <div class="Checkout_section mt-32">
@@ -804,6 +804,8 @@
             var val = $('#pincode').val();
             if (val == '') {
                 $('#pincode').focus();
+                $('.pincode_success').css('display', 'none');
+                $('.pincode_error').css('display', 'block');
                 $('.pincode_error').html('Please Enter Pincode');
                 $('.pincode_button').html('<i class="fa fa-search" aria-hidden="true"></i>');
                 $('.pincode_button').removeAttr('disabled', 'disabled');
@@ -812,7 +814,8 @@
                 chkPindode(val);
 
             } else {
-
+                $('.pincode_success').css('display', 'none');
+                $('.pincode_error').css('display', 'block');
                 $('.pincode_error').html('Pincode should be of 6 digits');
             }
         });
@@ -1242,11 +1245,11 @@
         $('.verify_promo').click(function (e) {
 
             e.preventDefault();
-            
+
             var promo = $('#discountcode').val();
-            
+
             if(promo == '' ){
-                
+
                 $('.promo_error').html('Please Enter Promocode !');
 
             }else{
@@ -1259,7 +1262,7 @@
                         'X-CSRF-TOKEN': $('input[name="_token"]').val()
                     }
                 });
-                
+
                 $.ajax({
                     url: "{{ route('verify.promocode') }}",
                     method: 'POST',
@@ -1278,7 +1281,7 @@
                                 $('.promo_success').fadeOut();
                             }, 4000);
                             $('#discount_span').html("{{ Cart::getTotal() * 0.10 }}");
-                            $('.order-total-ammount').html("{{ Cart::getTotal() < 1000 ? (Cart::getTotal() - Cart::getTotal() * 0.10) + 60 : (Cart::getTotal() - Cart::getTotal() * 0.10) }}");
+                            $('.order-total-ammount').html("{{ Cart::getTotal() < 1000 ? round((Cart::getTotal() - Cart::getTotal() * 0.10) + 60 + (60 - (60 / 1.18)), 2) : (Cart::getTotal() - Cart::getTotal() * 0.10) }}");
                         } else {
                             $('.promo_success').hide();
                             $('.promo_error').show();
@@ -1292,7 +1295,7 @@
                     }
                 });
             }
-            
+
         });
 
     });

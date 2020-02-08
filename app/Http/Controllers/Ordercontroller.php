@@ -137,7 +137,7 @@ class OrderController extends Controller
             $request['discount'] = $is_valid_promocode ? $total * 0.10 : 0;
 
             if ($total < 1000) {
-                $total = $total + $request->shipingcharge;
+                $total = $total + $request->shipingcharge + (60 - $request->shipingcharge / 1.18);
             }
 
             $request['total'] = round($total - $request->discount, 2);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Model\TxnUser;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Socialite;
 
 class SocialiteManageController extends Controller
@@ -29,8 +30,7 @@ class SocialiteManageController extends Controller
             $authUser = $this->findOrCreateUser($user, $provider);
             Auth::guard('user')->login($authUser, true);
             connectify('success', 'Logged in', 'You are successfully Logged in !');
-            return redirect(session()->get('previous_url'));
-
+            return Redirect::to(session()->get('previous_url'));
         } catch (\Exception $ex) {
             \Log::info($ex->getMessage());
             connectify('error', 'Login Error', 'We are not able to Logged you in !');
