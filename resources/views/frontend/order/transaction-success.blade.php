@@ -57,7 +57,7 @@
                                 <div class="col-sm-5">
                                     <div class="pro_sec">
                                         <div class="img">
-                                            <img data-original="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}" alt="{{ $detail->product->title }}" class="lazy">
+                                            <img data-src="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}" alt="{{ $detail->product->title }}" class="lazy">
                                         </div>
                                         <div class="content">
                                             <p class="title">

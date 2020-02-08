@@ -47,7 +47,7 @@
                                 <td>
                                     <a href="{{ '/storage/images/products/'. $product->image_url }}"
                                         target="_blank"><img
-                                            data-original="{{ '/storage/images/products/'. $product->image_url }}"
+                                            data-src="{{ '/storage/images/products/'. $product->image_url }}"
                                             alt="{{ $product->title }}" class="lazy" width="50">
                                     </a>
                                 </td>

@@ -102,7 +102,7 @@
                                     <div>
                                         @if ($admin->image_url)
                                         <img
-                                        data-original="{!! asset('storage/images/admins/' . $admin->image_url ) !!}"
+                                        data-src="{!! asset('storage/images/admins/' . $admin->image_url ) !!}"
                                             alt="{{ $admin->name }}"
                                             class="img img-responsive img-circle lazy"
                                             width="200px !important"

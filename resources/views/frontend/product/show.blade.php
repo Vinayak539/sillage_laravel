@@ -24,7 +24,7 @@
 <div id="content" class="main-content-wrapper">
     <div class="page-content-inner enable-full-width">
         <div class="container-fluid">
-            <div class="row pt--40">
+            <div class="row pt--20">
                 <div class="col-md-6 product-main-image">
                     <div class="product-image">
                         <div class="product-gallery vertical-slide-nav">
@@ -87,7 +87,7 @@
                         </div>
 
                         @if($product->category)
-                        <a href="{{ route('cate',[$product->category->slug_url]) }}" class="mb--10">
+                        <a href="{{ route('cate',[$product->category->slug_url]) }}" class="mb--10 link-styles">
                             <span>{{ $product->category->name }}</span>
                         </a>
                         @endif
@@ -111,7 +111,7 @@
 
                             @if(count($colorsSizes) > 0)
                             <div class="product-color-variations mb--20">
-                                <p class="swatch-label">Color: <strong class="swatch-label color-label"></strong></p>
+                                <p class="swatch-label">Color <strong class="swatch-label color-label"></strong></p>
                                 <div class="product-color-swatch variation-wrapper">
                                     @foreach ($colorsSizes as $item)
                                     <div class="swatch-wrapper swatch-wrapper-color">
@@ -132,9 +132,9 @@
                             @endif
                             @if(count($product->sizes) > 0)
                             <div class="product-size-variations">
-                                <p class="swatch-label">Size: <strong class="swatch-label size_lable"></strong>
+                                <p class="swatch-label">Size <strong class="swatch-label size_lable"></strong>
                                     @if($product->category ? $product->category->name != 'Fragrance' : '')
-                                    <span class="pull-right cursor-pointer" data-toggle="modal"
+                                    <span class="pull-right cursor-pointer link-styles" data-toggle="modal"
                                         data-target="#sizeChart"> SIZE CHART <i
                                             class="fa fa-angle-double-right"></i></span>
                                     @endif
@@ -176,8 +176,8 @@
 
 
                             </div>
-                            <a href="javascript:void(0)" class="selectedOfferBtn">View
-                                Selected Offer <i class="fa fa-angle-double-right"></i></a>
+                            <a href="javascript:void(0)" class="selectedOfferBtn link-styles">VIEW
+                                SELECTED OFFER <i class="fa fa-angle-double-right"></i></a>
                             @endif
                         </div>
 
@@ -341,7 +341,7 @@
                     <div class="review__container">
 
                         <img alt="Review Avatar" class="review__avatar lazy"
-                            data-original="{!! asset('admin/img/admin2.png') !!}">
+                            data-src="{!! asset('admin/img/admin2.png') !!}">
 
                         <div class="review__text">
                             <div class="product-rating float-right">
@@ -396,20 +396,20 @@
                         <figure class="product-image">
                             <div class="product-image--holder">
                                 <a href="{{ route('product',[$rproduct->slug_url]) }}">
-                                    <img data-original="{!! asset('storage/images/products/' . $rproduct->image_url) !!} "
-                                        alt="Product Image" class="primary-image lazy">
+                                    <img data-src="{!! asset('storage/images/products/' . $rproduct->image_url) !!} "
+                                        alt="Product Image" class="primary-image lazy related_img">
 
-                                    <img data-original="{!! asset('storage/images/products/' . $rproduct->image_url1) !!} "
-                                        alt="Product Image" class="secondary-image lazy">
+                                    <img data-src="{!! asset('storage/images/products/' . $rproduct->image_url1) !!} "
+                                        alt="Product Image" class="secondary-image lazy related_img">
                                 </a>
                             </div>
                         </figure>
                         <div class="product-info">
-                            <h3 class="product-title">
+                            <h3 class="product-title text-center">
                                 <a
-                                    href="{{ route('product',$rproduct->slug_url) }}">{{ Str::limit($rproduct->title,15) }}</a>
+                                    href="{{ route('product',$rproduct->slug_url) }}">{{ $rproduct->title }}</a>
                                 @if($rproduct->review_status)
-                                <span class="pull-right">
+                                <span class="text-center d-block">
                                     @for($i = 1; $i<= $rproduct->rating; $i++)
                                         <i class="fa fa-star rated" aria-hidden="true"></i>
                                         @endfor
@@ -419,12 +419,6 @@
                                 </span>
                                 @endif
                             </h3>
-
-                            <span class="pull-left">
-                                <a
-                                    href="{{ route('cate',[$product->category->slug_url]) }}">{{ $product->category->name}}</a>
-                            </span>
-
                         </div>
                     </div>
                 </div>
@@ -634,8 +628,55 @@
 @endsection
 
 @section('extracss')
+@if($product->category->name == 'Perfumes')
+    <style>
+        img.lazy.thumb_img {
+        width: 68px;
+        min-height: 68px;
+        max-height: 68px;
+    }
+    </style>
+@else
+    <style>
+        img.lazy.thumb_img {
+            width: 68px;
+            min-height: 102px;
+            max-height: 102px;
+        }
+    </style>
+@endif
 <style>
+    img.lazy.big_img {
+        width: 100%;
+        min-height: 300px;
+        max-height: 100%;
+        border: 1px solid #e0e0e0;
+    }
+    
+    img.lazy.related_img {
+        width: 100%;
+        min-height: 180px;
+        max-height: 270px;
+    }
+    .product-title a {
+    /* color: #fff; */
+    color: #282828;
+    }
+
+    .offer .slick-track{
+        margin-bottom: 8px;
+    }
+    .offer .product-info {
+        padding: 0 0 5px 0
+    }
+    .offer .product-info .product-title { 
+        height: 24px;
+        overflow: hidden;
+    }
     @media (max-width: 47.94em) {
+        img.lazy.big_img {
+            border: none;
+        }
         .btn {
             min-height: unset;
             line-height: unset;
@@ -730,7 +771,11 @@
 
     .slick-prev:before,
     .slick-next:before {
-        color: red !important;
+        color: #806326  !important;
+    }
+    .offerSection .slick-gutter-30 .slick-slide {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 </style>
 
@@ -1333,12 +1378,12 @@
                         images.forEach(image => {
                             navSlider += `
                             <figure class="product-gallery__thumb--single">
-                                <img alt="Products" class="lazy" data-lazy="${window.location.origin}/storage/images/multi-products/${image.image_url}">
+                                <img alt="Products" class="lazy thumb_img" data-lazy="${window.location.origin}/storage/images/multi-products/${image.image_url}">
                             </figure>`
 
                             mainSlider += `
                             <figure class="product-gallery__image zoom">
-                                <img alt="Products" class="lazy" data-lazy="${window.location.origin}/storage/images/multi-products/${image.image_url}" data_img = ${window.location.origin}/storage/images/multi-products/${image.image_url}">
+                                <img alt="Products" class="lazy big_img" data-lazy="${window.location.origin}/storage/images/multi-products/${image.image_url}" data_img = ${window.location.origin}/storage/images/multi-products/${image.image_url}">
                             </figure>`
                         });
 

@@ -101,26 +101,28 @@
 {{-- Feature End --}}
 
 @if(count($homeOfferSliders))
-<div class="container pt--20 pt-xs--20 pb--30 pb-xs--20">
-    <div class="airi-element-carousel nav-vertical-center nav-style-1 homeOffer" data-slick-options='{
-        "slidesToShow" : 1,
-        "arrows": true,
-        "prevArrow": {"buttonClass": "slick-btn slick-prev", "iconClass": "fa fa-angle-double-left" },
-        "nextArrow": {"buttonClass": "slick-btn slick-next", "iconClass": "fa fa-angle-double-right" }
-    }'>
-        @foreach($homeOfferSliders as $homeOfferSlider)
-        <a href="{{ $homeOfferSlider->url }}" class="item">
-            <img src="{!! asset('storage/images/home-offer-sliders').'/'.$homeOfferSlider->image_url !!}" alt="">
-        </a>
-        @endforeach
+<section class="offer-section">
+    <div class="container">
+        <div class="airi-element-carousel nav-vertical-center nav-style-1 homeOffer" data-slick-options='{
+            "slidesToShow" : 1,
+            "arrows": true,
+            "prevArrow": {"buttonClass": "slick-btn slick-prev", "iconClass": "fa fa-angle-double-left" },
+            "nextArrow": {"buttonClass": "slick-btn slick-next", "iconClass": "fa fa-angle-double-right" }
+        }'>
+            @foreach($homeOfferSliders as $homeOfferSlider)
+            <a href="{{ $homeOfferSlider->url }}" class="item">
+                <img src="{!! asset('storage/images/home-offer-sliders').'/'.$homeOfferSlider->image_url !!}" alt="offer">
+            </a>
+            @endforeach
+        </div>
     </div>
-</div>
+</section>
 @endif
 
 @foreach($sections as $key=>$section)
 @if(count($section->msections))
 <!-- Trending Products area Start Here -->
-<section class="trending-products-area pt--30 pb--30 pt-md--20 pb-md--10 section-bg-color">
+<section class="trending-products-area pt--30 pb--30 pt-md--20 pb-md--20 section-bg-color">
     <div class="container">
         <div class="row mb--25 mb-md--30">
             <div class="col-12">
@@ -164,10 +166,10 @@
                                 <div class="product-image--holder">
                                     <a href="{{ route('product', $product->slug_url) }}">
 
-                                        <img data-original="{!! asset('storage/images/products/' . $product->image_url) !!}"
+                                        <img data-src="{!! asset('storage/images/products/' . $product->image_url) !!}"
                                             alt="{{ $product->title }}" class="primary-image lazy">
 
-                                        <img data-original="{!! asset('storage/images/products/'. $product->image_url1) !!}"
+                                        <img data-src="{!! asset('storage/images/products/'. $product->image_url1) !!}"
                                             alt="{{ $product->title }}" class="secondary-image lazy">
                                     </a>
                                 </div>
@@ -175,9 +177,9 @@
                             <div class="product-info">
                                 <h3 class="product-title text-center">
                                     <a
-                                        href="{{ route('product',$product->slug_url) }}">{{ Str::limit($product->title,20) }}</a>
+                                        href="{{ route('product',$product->slug_url) }}">{{ $product->title }}</a>
                                     @if($product->review_status)
-                                    <span class="pull-right">
+                                    <span class="text-center d-block">
                                         @for($i = 1; $i<= $product->rating; $i++)
                                             <i class="fa fa-star rated" aria-hidden="true"></i>
                                             @endfor

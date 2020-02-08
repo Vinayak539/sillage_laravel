@@ -476,7 +476,7 @@
                                     </ul>
                                 </div>
                                 <div class="textwidget mt--15">
-                                    <img src="{!! asset('assets/img/others/payments.png') !!}" alt="Payment">
+                                    <img src="{!! asset('assets/img/icons/payment-method.jpg') !!}" alt="Payment">
                                 </div>
                             </div>
                         </div>
@@ -650,6 +650,8 @@
 
     <!-- jQuery JS -->
     <script src="{!! asset('/assets/js/vendor/jquery.min.js') !!}"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
 
     <!-- Bootstrap and Popper Bundle JS -->
 
@@ -696,16 +698,17 @@
     <!-- REVOLUTION ACTIVE JS FILES -->
 
     <script src="{!! asset('assets/js/revoulation.js') !!}"></script>
-    <script src="{!! asset('assets/js/jquery.lazyload.js') !!}"></script>
-
+    {{-- <script src="{!! asset('assets/js/jquery.lazyload.js') !!}"></script> --}}
+    
     @yield('extrajs')
     @include('notify::messages')
     @notifyJs
     <script>
         $(document).ready(function () {
 
-            $(".lazy").lazyload({
-                effect: "fadeIn",
+            $(".lazy").Lazy({
+                effect: 'fadeIn',
+                visibleOnly: true,
             });
 
             $("#search-box").on("input", function () {

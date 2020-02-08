@@ -247,13 +247,13 @@
                                         <input type="radio" name="icon-input" value="1"
                                             class="selectgroup-input select-sidebar">
                                         <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                                            data-original-title="Light Sidebar"><i class="fas fa-sun"></i></span>
+                                            data-src-title="Light Sidebar"><i class="fas fa-sun"></i></span>
                                     </label>
                                     <label class="selectgroup-item">
                                         <input type="radio" name="icon-input" value="2"
                                             class="selectgroup-input select-sidebar" checked>
                                         <span class="selectgroup-button selectgroup-button-icon" data-toggle="tooltip"
-                                            data-original-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
+                                            data-src-title="Dark Sidebar"><i class="fas fa-moon"></i></span>
                                     </label>
                                 </div>
                             </div>

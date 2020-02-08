@@ -4,7 +4,7 @@
 
 <!-- Breadcrumb area Start -->
 <div class="breadcrumb-area pt--70 pt-md--25">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col-12">
                 <ul class="breadcrumb">
@@ -19,13 +19,13 @@
 <!-- Main Content Wrapper Start -->
 <div id="content" class="main-content-wrapper">
     <div class="shop-page-wrapper">
-        <div class="container-fluid">
-            <div class="row shop-fullwidth pt--45 pt-md--35 pt-sm--20 pb--60 pb-md--50 pb-sm--40">
+        <div class="container">
+            <div class="row shop-fullwidth pb--60 pb-md--50 pb-sm--40">
                 <div class="col-12">
                     <div class="shop-toolbar">
                         <div class="shop-toolbar__inner">
-                            <div class="row align-items-center">
-                                <div class="col-md-6 text-md-left text-center mb-sm--20">
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="shop-toolbar__left">
                                         <p class="product-pages">Showing {{count($products)}} results</p>
                                     </div>
@@ -97,7 +97,7 @@
                     <div class="shop-products">
                         <div class="row grid-space-20 xxl-block-grid-5">
                             @forelse($products as $product)
-                            <div class="col-lg-3 col-sm-6 mb--40 mb-md--30">
+                            <div class="col-lg-3 col-6 col-sm-6 mb--40 mb-md--30">
                                 <div class="airi-product">
                                     <div class="product-inner">
                                         <figure class="product-image">
@@ -105,10 +105,10 @@
                                                 <a href="{{ route('product',[$product->slug_url]) }}">
 
                                                     <img alt="Product Image" class="primary-image lazy"
-                                                        data-original="{!! asset('storage/images/products/' .$product->image_url) !!}">
+                                                        data-src="{!! asset('storage/images/products/' .$product->image_url) !!}">
 
                                                     <img alt="Product Image" class="secondary-image lazy"
-                                                        data-original="{!! asset('storage/images/products/' .$product->image_url1) !!}">
+                                                        data-src="{!! asset('storage/images/products/' .$product->image_url1) !!}">
                                                 </a>
                                             </div>
                                         </figure>
@@ -144,6 +144,13 @@
 </div>
 <!-- Main Content Wrapper Start -->
 
+@endsection @section('extracss')
+<style>
+    .product-title a {
+    /* color: #fff; */
+    color: #282828;
+}
+</style>
 @endsection
 @section('extrajs')
 <script>

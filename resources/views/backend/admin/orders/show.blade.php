@@ -192,7 +192,7 @@
                         <td>
                             <a href="{{ asset('/storage/images/products/'. $detail->product->image_url) }}"
                                 target="_blank"><img
-                                    data-original="{{ asset('/storage/images/products/'. $detail->product->image_url) }}"
+                                    data-src="{{ asset('/storage/images/products/'. $detail->product->image_url) }}"
                                     alt="{{ $detail->product->title }}" width="50" class="img img-responsive lazy"></a>
                         </td>
                         <td>

@@ -168,7 +168,7 @@
                                         <div class="col-md-4">
                                             <div class="pro_sec">
                                                 <div class="img">
-                                                    <img class="lazy" data-original="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}"
+                                                    <img class="lazy" data-src="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}"
                                                         alt="{{ $detail->product->title }}" />
                                                 </div>
                                                 <div class="content">
