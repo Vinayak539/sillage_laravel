@@ -309,7 +309,7 @@
                                 placeholder="Enter UPC">
                         </div>
                     </div>
-                  
+
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="length">length </label>
@@ -401,7 +401,6 @@
                         </div>
                     </div>
 
-
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="offer_id">Offer <span class="text-warning">( Select Any if want to give offer
@@ -409,9 +408,8 @@
                             <select name="offer_id" id="offer_id" class="form-control">
                                 <option value="">--Select Offer--</option>
                                 @foreach($offers as $ofr)
-
                                 <option value="{{ $ofr->id }}"
-                                    {{ $product->offer ? $product->offer->product_id == $product->id ? 'selected' : '' : '' }}>
+                                    {{ $product->offer ? ($product->offer->mst_offer_id == $ofr->id ? 'selected' : '') : '' }}>
                                     {{ $ofr->title }}
                                 </option>
                                 @endforeach
@@ -482,7 +480,7 @@
 
                     <div class="col-md-12">
                         <div class="row">
-                            
+
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Existing Front Image</label>
@@ -858,7 +856,7 @@
                 material_id: {
                     required: true
                 },
-               
+
                 gst_id: {
                     required: true
                 },
@@ -898,7 +896,7 @@
                 material_id: {
                     required: "Please Select Material"
                 },
-               
+
                 gst_id: {
                     required: "Please Select Gst"
                 },
