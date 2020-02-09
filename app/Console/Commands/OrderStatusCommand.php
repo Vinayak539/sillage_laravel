@@ -57,28 +57,28 @@ class OrderStatusCommand extends Command
                 $result         = json_decode($res, true);
                 $track_response = $result['ShipmentData'][0]['Shipment']['Status']['Status'];
 
-                // $track_response = 'Delivered';
+                 $track_response = 'Delivered';
 
                 $order->update([
                     'status' => $track_response,
                 ]);
 
                 \Log::info(['Status' => $track_response]);
-                
+
                 if ($track_response == 'Delivered') {
-                   
+
                     $delivery_date = $result['ShipmentData'][0]['Shipment']['Status']['StatusDateTime'];
 
                     $order->update([
                         'delivery_date' => $delivery_date,
                     ]);
 
-                    $shop = Shop::where('shop_code', $order->promocode)->where('status', true)->first();
+                    $shop = Shop::where('shop_code', $order->promocode)->first();
 
                     if ($shop) {
 
                         $final_dis = $shop->total + ($order->tbt * 0.1);
-                        
+
                         $shop->update([
                             'total' => round($final_dis, 0),
                         ]);
@@ -94,7 +94,7 @@ class OrderStatusCommand extends Command
                     SMS::send($order->user->mobile, 'Hni Lifestyle - Your Order has been Delivered successfully, Your Order ID : ' . $order->id . ' Login for more detail on ' . url('/'));
 
                     $pdf = PDF::loadView('backend.admin.invoices.download', ['invoice' => $order]);
-                    Mail::send(['html' => 'backend.admin.invoices.show'], ['invoice' => $order], function ($message) use ($order, $pdf) {
+                    Mail::send(['html' => 'backend.admin.invoices.empty'], ['invoice' => $order], function ($message) use ($order, $pdf) {
                         $message->from('order-confirmation@hnilifestyle.com', 'Hni Lifestyle');
                         $message->to($order->user->email, $order->user->name);
                         $message->subject('Invoice copy of Order No ' . $order->id . ' From HNI Lifestyle');

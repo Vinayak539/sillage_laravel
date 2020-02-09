@@ -353,20 +353,17 @@
                         </th>
                         <td>
                             Rs.
-                            {{ $invoice->total >= 1000 ? '0' : 60 + (60 - 60 / 1.18) }}
+                            {{ $invoice->total >= 1000 ? '0' : round(60 + (60 - 60 / 1.18), 2) }}
                         </td>
                     </tr>
-                    @if($invoice->discount)
                     <tr>
                         <th colspan="3">
                             - Discount
                         </th>
                         <td>
-                            Rs. {{ $invoice->discount }}
+                            Rs. {{ $invoice->discount ? $invoice->discount : 0 }}
                         </td>
                     </tr>
-                    @endif
-
                     <tr>
                         <th colspan="3">
                             Grand Total
