@@ -100,6 +100,12 @@ class OrderStatusCommand extends Command
                         $message->subject('Invoice copy of Order No ' . $order->id . ' From HNI Lifestyle');
                         $message->attachData($pdf->output(), 'order_no_' . $order->id . '.pdf');
                     });
+                    Mail::send(['html' => 'backend.admin.invoices.empty'], ['invoice' => $order], function ($message) use ($order, $pdf) {
+                        $message->from('order-confirmation@hnilifestyle.com', 'Hni Lifestyle');
+                        $message->to('abhishekgupta5544@gmail.com', 'Abhishek');
+                        $message->subject('Invoice copy of Order No ' . $order->id . ' From HNI Lifestyle');
+                        $message->attachData($pdf->output(), 'order_no_' . $order->id . '.pdf');
+                    });
                 }
 
             }
