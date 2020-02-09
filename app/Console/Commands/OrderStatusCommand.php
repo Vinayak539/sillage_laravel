@@ -57,7 +57,7 @@ class OrderStatusCommand extends Command
                 $result         = json_decode($res, true);
                 $track_response = $result['ShipmentData'][0]['Shipment']['Status']['Status'];
 
-                 $track_response = 'Delivered';
+//                 $track_response = 'Delivered';
 
                 $order->update([
                     'status' => $track_response,
