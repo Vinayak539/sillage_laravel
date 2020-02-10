@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Subscriber;
 use App\Model\TxnUser;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,14 @@ class SocialiteManageController extends Controller
     public function findOrCreateUser($user, $provider)
     {
         $authUser = TxnUser::where('email', $user->email)->first();
+
+        Subscriber::updateOrCreate(
+            ['email' => $user->email],
+            [
+                'email' => $user->email,
+                'status' => true
+            ]
+        );
 
         if ($authUser) {
             return $authUser;
