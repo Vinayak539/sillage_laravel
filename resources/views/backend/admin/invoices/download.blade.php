@@ -353,7 +353,7 @@
                         </th>
                         <td>
                             Rs.
-                            {{ $invoice->total >= 1000 ? '0' : round(60 + (60 - 60 / 1.18), 2) }}
+                            {{ $invoice->total >= 1000 ? '0' : '60' }}
                         </td>
                     </tr>
                     <tr>

@@ -226,7 +226,7 @@
                             <p>Total Amount : &#8377; {{ $order->tbt }}</p>
                             <p>+ CGST : &#8377; {{ round($order->tax/2, 2) }}</p>
                             <p>+ SGST : &#8377; {{ round($order->tax/2, 2) }}</p>
-                            <p>+ Shipping : &#8377; {{ $order->total >= 1000 ? '0' : round(60 + (60 - 60 / 1.18), 2) }}</p>
+                            <p>+ Shipping : &#8377; {{ $order->total >= 1000 ? 0 : 60 }}</p>
                             <p>- Discount : &#8377; {{ $order->discount ? $order->discount : 0 }}</p>
                             <p>Grand Total : &#8377; {{ $order->total }}</p>
                         </th>

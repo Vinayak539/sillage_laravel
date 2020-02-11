@@ -176,7 +176,7 @@
                                                     <tr class="shipping">
                                                         <th>+ Shipping</th>
                                                         <td class="text-right">
-                                                            <span> ₹ {{ 60 + round((60 - 60 / 1.18), 2) }}</span>
+                                                            <span> ₹60</span>
                                                         </td>
                                                     </tr>
                                                     @endif
@@ -184,7 +184,7 @@
                                                     <tr class="order-total">
                                                         <th>Order Total</th>
                                                         <td class="text-right"><span
-                                                                class="order-total-ammount">₹{{ Cart::gettotal() < 1000 ? round(Cart::gettotal() + 60 + (60 - 60 / 1.18), 2) : Cart::gettotal() }}</span>
+                                                                class="order-total-ammount">₹{{ Cart::gettotal() < 1000 ? Cart::gettotal() + 60 : Cart::gettotal() }}</span>
                                                         </td>
                                                     </tr>
                                                 </tfoot>
@@ -1281,7 +1281,7 @@
                                 $('.promo_success').fadeOut();
                             }, 4000);
                             $('#discount_span').html("{{ Cart::getTotal() * 0.10 }}");
-                            $('.order-total-ammount').html("{{ Cart::getTotal() < 1000 ? round((Cart::getTotal() - Cart::getTotal() * 0.10) + 60 + (60 - (60 / 1.18)), 2) : (Cart::getTotal() - Cart::getTotal() * 0.10) }}");
+                            $('.order-total-ammount').html("{{ Cart::getTotal() < 1000 ? (Cart::getTotal() - Cart::getTotal() * 0.10) + 60 : (Cart::getTotal() - Cart::getTotal() * 0.10) }}");
                         } else {
                             $('.promo_success').hide();
                             $('.promo_error').show();
