@@ -787,6 +787,13 @@
 @section('extrajs')
 <script>
     $(document).ready(function(){
+        // fbq start
+        var seconds = 3;
+        setTimeout(function() {
+            fbq('track', 'ViewContent', { content_name: '{{ $product->title }}' });
+        }, seconds * 1000);
+        // fbq end
+
         // Add minus icon for collapse element which is open by default
         $(".collapse.show").each(function(){
         	$(this).prev(".index-product-description-title").find(".fa").addClass("fa-minus").removeClass("fa-plus");
