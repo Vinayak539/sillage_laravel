@@ -156,7 +156,7 @@
 
                         <div class="offerSection">
                             @if(count($offers))
-                            <p> Choose Any {{ $offers[0]->offered_quantity }} Offer On Purchase of
+                            <p> Choose {{ $offers[0]->offered_quantity }} Free Perfume On Purchase Of
                                 {{ $offers[0]->purchase_quantity }} </p>
                             <div class="airi-element-carousel-offer product-carousel nav-vertical-center offer"
                                 data-slick-options='{
