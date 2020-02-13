@@ -844,7 +844,7 @@
 
             count--;
 
-            html +=   `<div class="airi-product offer_product ${count+1>0 ? 'active': 'disabledOffer'}" data-product-name="${load_offers[index].product_name }"
+            html +=   `<div  title="First Uncheck then Select Another"  class="airi-product offer_product ${count+1>0 ? 'active': 'disabledOffer'}" data-product-name="${load_offers[index].product_name }"
                         data-color="${load_offers[index].color_name }" data-size="${load_offers[index].size_name }"
                         data-index="${index }" data-purchase-quantity="${load_offers[index].purchase_quantity }"
                         data-offered-quantity="${load_offers[index].offered_quantity }"
