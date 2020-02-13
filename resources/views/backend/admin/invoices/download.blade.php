@@ -356,17 +356,14 @@
                             {{ $invoice->total >= 1000 ? '0' : '60' }}
                         </td>
                     </tr>
-                    @if($invoice->discount)
                     <tr>
                         <th colspan="3">
                             - Discount
                         </th>
                         <td>
-                            Rs. {{ $invoice->discount }}
+                            Rs. {{ $invoice->discount ? $invoice->discount : 0 }}
                         </td>
                     </tr>
-                    @endif
-
                     <tr>
                         <th colspan="3">
                             Grand Total

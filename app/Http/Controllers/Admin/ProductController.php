@@ -440,7 +440,6 @@ class ProductController extends Controller
                 'wrong_products'  => $request->wrong_products,
                 'faulty_products' => $request->faulty_products,
                 'quality_issue'   => $request->quality_issue,
-                'slug_url'        => Str::slug($category->name . '-' . $request->title . '-' . rand(1000,9999), '-'),
             ]);
 
             if ($request->filled('keywords')) {

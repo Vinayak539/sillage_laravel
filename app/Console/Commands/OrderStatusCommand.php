@@ -57,46 +57,54 @@ class OrderStatusCommand extends Command
                 $result         = json_decode($res, true);
                 $track_response = $result['ShipmentData'][0]['Shipment']['Status']['Status'];
 
-                // $track_response = 'Delivered';
+//                 $track_response = 'Delivered';
 
                 $order->update([
                     'status' => $track_response,
                 ]);
 
                 \Log::info(['Status' => $track_response]);
-                
+
                 if ($track_response == 'Delivered') {
-                   
+
                     $delivery_date = $result['ShipmentData'][0]['Shipment']['Status']['StatusDateTime'];
 
                     $order->update([
                         'delivery_date' => $delivery_date,
+                        'payment_status' => 'Paid',
                     ]);
 
-                    $shop = Shop::where('shop_code', $order->promocode)->where('status', true)->first();
+                    $shop = Shop::where('shop_code', $order->promocode)->first();
 
                     if ($shop) {
 
-                        $final_dis = $shop->total + ($order->tbt * 0.1);
-                        
+                        $final_dis = $shop->total + floor(($order->total * 1.18) * 0.1);
+
                         $shop->update([
-                            'total' => round($final_dis, 0),
+                            'total' => floor($final_dis),
                         ]);
 
                         $order->update([
-                            'reward_points' => round($order->tbt * 0.1, 0),
+                            'reward_points' => floor(($order->total * 1.18) * 0.1),
                         ]);
 
-                        SMS::send($shop->mobile, 'Hni Lifestyle - Congratulation You have received Rs.' . $order->tbt * 0.1 . ' Commission on Order ID : ' . $order->id . ' Your total commission is Rs.' . $final_dis . ' for more login on hnilifestyle.com');
+                        SMS::send($shop->mobile, 'Hni Lifestyle - Congratulation You have Earned Rs.' . floor(($order->total * 1.18) * 0.1) . ' on Order ID : ' . $order->id . ' Your Total Earning is Rs.' . $final_dis . ' for more login on hnilifestyle.com');
 
                     }
 
                     SMS::send($order->user->mobile, 'Hni Lifestyle - Your Order has been Delivered successfully, Your Order ID : ' . $order->id . ' Login for more detail on ' . url('/'));
 
                     $pdf = PDF::loadView('backend.admin.invoices.download', ['invoice' => $order]);
-                    Mail::send(['html' => 'backend.admin.invoices.show'], ['invoice' => $order], function ($message) use ($order, $pdf) {
+                    Mail::send(['html' => 'backend.admin.invoices.empty'], ['invoice' => $order], function ($message) use ($order, $pdf) {
                         $message->from('order-confirmation@hnilifestyle.com', 'Hni Lifestyle');
                         $message->to($order->user->email, $order->user->name);
+                        $message->subject('Invoice copy of Order No ' . $order->id . ' From HNI Lifestyle');
+                        $message->attachData($pdf->output(), 'order_no_' . $order->id . '.pdf');
+                    });
+                    
+                    Mail::send(['html' => 'backend.admin.invoices.empty'], ['invoice' => $order], function ($message) use ($order, $pdf) {
+                        $message->from('order-confirmation@hnilifestyle.com', 'Hni Lifestyle');
+                        $message->to('abhishekgupta5544@gmail.com', 'Abhishek');
                         $message->subject('Invoice copy of Order No ' . $order->id . ' From HNI Lifestyle');
                         $message->attachData($pdf->output(), 'order_no_' . $order->id . '.pdf');
                     });
