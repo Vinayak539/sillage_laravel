@@ -187,12 +187,13 @@
                     @php
                         $offers = json_decode($detail->offers);
                         $exp_offers = explode(",", $offers);
+                        $image = \App\Model\TxnImage::image($detail->product_id, $detail->color_id);
                     @endphp
                     <tr>
                         <td>
-                            <a href="{{ asset('/storage/images/products/'. $detail->product->image_url) }}"
+                            <a href="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}"
                                 target="_blank"><img
-                                    data-src="{{ asset('/storage/images/products/'. $detail->product->image_url) }}"
+                                    data-src="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}"
                                     alt="{{ $detail->product->title }}" width="50" class="img img-responsive lazy"></a>
                         </td>
                         <td>

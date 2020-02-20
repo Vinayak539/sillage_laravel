@@ -85,7 +85,7 @@ class AdminController extends Controller
 
         try {
 
-            $admin = Admin::where('id', auth()->user()->id)->firstOrFail();
+            $admin = Admin::where('id', auth('admin')->user()->id)->firstOrFail();
 
             if ($request->hasFile('image_url')) {
 
