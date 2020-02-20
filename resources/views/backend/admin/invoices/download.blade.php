@@ -29,7 +29,7 @@
         .container {
             padding-left: 2px;
             margin: 0 auto;
-            width: 350px !important;
+            width: 370px !important;
         }
 
         .row:after {
@@ -203,6 +203,12 @@
         .fw-600 {
             font-weight: 900;
         }
+        .plus:before{
+            content: ' + ';
+        }
+        .plus:first-child:before{
+            content: '';
+        }
     </style>
 
 </head>
@@ -277,13 +283,12 @@
 
                 <table class="table table-bordered table-responsive mb-0">
                     <tr>
-                        <th colspan="4" class="text-center text-uppercase bg-silver">
+                        <th colspan="3" class="text-center text-uppercase bg-silver">
                             Order Information
                         </th>
                     </tr>
                     <tr>
                         <th>Product Name</th>
-                        <th>MRP (Rs.)</th>
                         <th>QTY</th>
                         <th>AMT (Rs.)</th>
                     </tr>
@@ -295,25 +300,25 @@
                             $exp_offers = explode(",", $offers);
                         @endphp
                     <tr>
-                        <td>
+                        <td style="width: 145px !important">
                             {{ $detail->product->title }} <br>
                             {{ $detail->size ? 'Size: ' . $detail->size->title : '' }} <br>
                             {{ $detail->color ? 'Colour: ' . $detail->color->title : '' }} <br>
                         </td>
-                        <td>{{ $detail->mrp }}</td>
                         <td>{{ $detail->quantity }}</td>
                         <td>{{ $detail->mrp * $detail->quantity }}</td>
                     </tr>
                     @if($offers)
                     <tr>
-                        <td colspan="4">
+                        <td colspan="3" style="border-bottom: 2px solid #000;font-weight: 600;">
+                            Offer :
                             @if(!empty($exp_offers))
                                 @foreach($exp_offers as $ofr)
                                     @php
                                         $offer = \App\Model\MapMstOfferProduct::where('id', $ofr)->with('product', 'color', 'size')->first();
                                     @endphp
 
-                                    + {{ $offer->product->title }} [{{ $offer->size->title }} ML] <br />
+                                    <span class="plus"> {!! $offer->product->title . ' ['. $offer->size->title .'ML]' !!} </span>
                                 @endforeach
                             @endif
                         </td>
@@ -321,10 +326,10 @@
                     @endif
                     @endforeach
                     <tr style="border-bottom: 3px solid #000;">
-                        <td colspan="4"></td>
+                        <td colspan="3"></td>
                     </tr>
                     <tr>
-                        <th colspan="3">
+                        <th colspan="2">
                             Total
                         </th>
                         <td>
@@ -332,7 +337,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th colspan="3">
+                        <th colspan="2">
                             + CGST
                         </th>
                         <td>
@@ -340,7 +345,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th colspan="3">
+                        <th colspan="2">
                             + SGST
                         </th>
                         <td>
@@ -348,7 +353,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th colspan="3">
+                        <th colspan="2">
                             + Shipping
                         </th>
                         <td>
@@ -357,7 +362,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th colspan="3">
+                        <th colspan="2">
                             - Discount
                         </th>
                         <td>
@@ -365,7 +370,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th colspan="3">
+                        <th colspan="2">
                             Grand Total
                         </th>
                         <td>
