@@ -32182,7 +32182,7 @@ screen and (min-resolution:192dpi) {
     font-size: 2.5rem;
     font-weight: 600;
     background: #8c7443;
-    ;
+    text-shadow: 1px 2px 0px #000;
 }
 
 @media (max-width: 767px){
@@ -32192,7 +32192,8 @@ screen and (min-resolution:192dpi) {
 }
 
 .section-product-title-bg1 {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/title1.jpg);
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(../img/title1.jpg);
+    background-position: center;
 }
 
 .section-product-title-bg2 {
