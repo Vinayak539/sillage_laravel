@@ -149,16 +149,20 @@
                     @php
 
                     $product = DB::table('txn_products as p')
-                    ->selectRaw("p.id,p.title,p.slug_url, p.image_url, p.image_url1, p.review_status,
+                    ->selectRaw("p.id,p.title,p.slug_url, p.image_url, p.image_url1, p.review_status, map.mrp, map.starting_price,
+                    GROUP_CONCAT(DISTINCT(c.color_code)) as color_codes,
                     FLOOR(AVG(txn_reviews.rating)) as
                     rating , COUNT(txn_reviews.id) as total_rating")
                     ->leftJoin("txn_reviews", "txn_reviews.product_id", "p.id")
+                    ->leftJoin("map_color_sizes as map", "map.product_id", "p.id")
+                    ->leftJoin("mst_colors as c", "c.id", "map.color_id")
                     ->where('p.id', $msec->product_id)
                     ->where('p.status', true)
                     ->groupBy('p.id')
                     ->first();
 
                     @endphp
+
                     @if($product)
                     <div class="airi-product">
                         <div class="product-inner">
@@ -174,10 +178,36 @@
                                     </a>
                                 </div>
                             </figure>
+
+                            <!-- Color  -->
+                            {{-- @php 
+                                $colors = explode(",", $product->color_codes)                               
+                            @endphp
+
+                            @if(count($colors)>4)
+                                @for($i=0; $i < 4; $i++)
+                                    {{ \Log::info($colors[$i]) }}
+                                    <div style="color: {{ $colors[$i] }}">color</div>
+                                @endfor
+                            @else
+
+                            @foreach($colors as $color)
+                                <div style="color: {{ $color }}">color</div>
+                            @endforeach
+
+                            @endif --}}
+                            <!-- Color End -->
                             <div class="product-info">
                                 <h3 class="product-title text-center">
                                     <a
                                         href="{{ route('product',$product->slug_url) }}">{{ $product->title }}</a>
+
+                                    {{-- Price --}}
+
+                                    {{-- {{ $product->mrp . ' - ' .$product->starting_price }} --}}
+
+                                    {{-- End Price --}}
+
                                     @if($product->review_status)
                                     <span class="text-center d-block">
                                         @for($i = 1; $i<= $product->rating; $i++)
