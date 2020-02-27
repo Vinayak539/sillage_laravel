@@ -206,6 +206,8 @@ class OrderController extends Controller
                 ]);
 
                 SMS::send($order->user->mobile, 'Hni Life Style - Your Order has been placed successfully, Your Order No : ' . $order->id . ' Login for more detail on ' . url('/'));
+                
+                SMS::send('9223324655', 'Hni Life Style - New Order Placed with Order No : ' . $order->id);
 
                 Mail::send(['html' => 'backend.mails.received'], ['order' => $order], function ($message) use ($order) {
                     $message->to($order->user->email)->subject('Your order has been placed successfully ! [order no : ' . $order->id . ']');
@@ -303,7 +305,9 @@ class OrderController extends Controller
 
                     Delivery::orderCreation($order, $order->user);
 
-                    // SMS::send($order->user->mobile, 'Hni Store - Your Order has been placed successfully, Your Order No : ' . $order->id . ' Login for more detail on ' . url('/'));
+                    SMS::send($order->user->mobile, 'Hni Store - Your Order has been placed successfully, Your Order No : ' . $order->id . ' Login for more detail on ' . url('/'));
+
+                    SMS::send('9223324655', 'Hni Life Style - New Order Placed with Order No : ' . $order->id);
 
                     Mail::send(['html' => 'backend.mails.received'], ['order' => $order], function ($message) use ($order) {
                         $message->to($order->user->email)->subject('Your order has been placed successfully ! [order no : ' . $order->id . ']');

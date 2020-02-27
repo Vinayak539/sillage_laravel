@@ -78,17 +78,17 @@ class OrderStatusCommand extends Command
 
                     if ($shop) {
 
-                        $final_dis = $shop->total + floor(($order->total * 1.18) * 0.1);
+                        $final_dis = $shop->total + floor($order->tbt * 0.1);
 
                         $shop->update([
                             'total' => floor($final_dis),
                         ]);
 
                         $order->update([
-                            'reward_points' => floor(($order->total * 1.18) * 0.1),
+                            'reward_points' => floor($order->tbt * 0.1),
                         ]);
 
-                        SMS::send($shop->mobile, 'Hni Lifestyle - Congratulation You have Earned Rs.' . floor(($order->total * 1.18) * 0.1) . ' on Order ID : ' . $order->id . ' Your Total Earning is Rs.' . $final_dis . ' for more login on hnilifestyle.com');
+                        SMS::send($shop->mobile, 'Hni Lifestyle - Congratulation You have Earned Rs.' . floor($order->tbt * 0.1) . ' on Order ID : ' . $order->id . ' Your Total Earning is Rs.' . $final_dis . ' for more login on hnilifestyle.com');
 
                     }
 
