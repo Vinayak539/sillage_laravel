@@ -177,7 +177,12 @@ class ShopController extends Controller
             ]);
 
         try {
+
             $shop = Shop::where('id', $id)->firstOrFail();
+
+            $subname     = strtoupper(substr(str_replace(' ', '', $request->name), 0, 2));
+
+            $dis_code = $subname.$shop->id.rand(000,999);
 
             $shop->update([
                 'name'       => $request->name,
@@ -187,6 +192,7 @@ class ShopController extends Controller
                 'status'     => $request->status,
                 'account_no' => $request->account_no,
                 'ifsc_code'  => $request->ifsc_code,
+                'shop_code' => $dis_code
             ]);
 
             if ($request->filled('password')) {
