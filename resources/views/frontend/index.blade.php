@@ -122,16 +122,37 @@
 @foreach($sections as $key=>$section)
 @if(count($section->msections))
 <!-- Trending Products area Start Here -->
-<section class="trending-products-area pt--30 pb--30 pt-md--20 pb-md--20 section-bg-color">
+<section class="trending-products-area pt--30 pb--30 pt-md--20 pb-md--20">
     <div class="container">
         <div class="row mb--25 mb-md--30">
             <div class="col-12">
-                <h2 class="heading-secondary section-product-title text-center  {{ $key==0 || $key==1   ? 'section-product-title-bg1' : 'section-product-title-bg2' }}">{{ $section->SectionName }}</h2>
+                <h2 class="heading-secondary section-product-title">{{ $section->SectionName }} <span>({{ count($section->msections) }})</span></h2>
+                <div class="title-border"></div>
             </div>
         </div>
         <div class="row">
-            <div class="col-12">
-                <div class="airi-element-carousel product-carousel nav-vertical-center" data-slick-options='{
+            @foreach($section->msections as $msec)
+
+            @php
+
+            $product = DB::table('txn_products as p')
+            ->selectRaw("p.id,p.title,p.slug_url, p.image_url, p.image_url1, p.review_status, map.mrp, map.starting_price,
+            GROUP_CONCAT(DISTINCT(c.color_code)) as color_codes,
+            FLOOR(AVG(txn_reviews.rating)) as
+            rating , COUNT(txn_reviews.id) as total_rating")
+            ->leftJoin("txn_reviews", "txn_reviews.product_id", "p.id")
+            ->leftJoin("map_color_sizes as map", "map.product_id", "p.id")
+            ->leftJoin("mst_colors as c", "c.id", "map.color_id")
+            ->where('p.id', $msec->product_id)
+            ->where('p.status', true)
+            ->groupBy('p.id')
+            ->first();
+
+            @endphp
+
+            @if($product)
+            <div class="col-md-3 col-6 mb--30">
+                {{-- <div class="airi-element-carousel product-carousel nav-vertical-center" data-slick-options='{
                             "spaceBetween": 30,
                             "slidesToShow": 4,
                             "slidesToScroll": 1,
@@ -142,28 +163,9 @@
                                 {"breakpoint":1200, "settings": {"slidesToShow": 3} },
                                 {"breakpoint":991, "settings": {"slidesToShow": 2} },
                                 {"breakpoint":450, "settings": {"slidesToShow": 2} }
-                            ]'>
+                            ]'> --}}
 
-                    @foreach($section->msections as $msec)
-
-                    @php
-
-                    $product = DB::table('txn_products as p')
-                    ->selectRaw("p.id,p.title,p.slug_url, p.image_url, p.image_url1, p.review_status, map.mrp, map.starting_price,
-                    GROUP_CONCAT(DISTINCT(c.color_code)) as color_codes,
-                    FLOOR(AVG(txn_reviews.rating)) as
-                    rating , COUNT(txn_reviews.id) as total_rating")
-                    ->leftJoin("txn_reviews", "txn_reviews.product_id", "p.id")
-                    ->leftJoin("map_color_sizes as map", "map.product_id", "p.id")
-                    ->leftJoin("mst_colors as c", "c.id", "map.color_id")
-                    ->where('p.id', $msec->product_id)
-                    ->where('p.status', true)
-                    ->groupBy('p.id')
-                    ->first();
-
-                    @endphp
-
-                    @if($product)
+                   
                     <div class="airi-product">
                         <div class="product-inner">
                             <figure class="product-image">
@@ -177,39 +179,34 @@
                                             alt="{{ $product->title }}" class="secondary-image lazy">
                                     </a>
                                 </div>
+                                <span class="product-trending">Trending</span>
+                                <span class="product-badge fav"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
                             </figure>
 
                             <!-- Color  -->
-                            {{-- @php 
-                                $colors = explode(",", $product->color_codes)                               
+                            @php 
+                                $colors = explode(",", $product->color_codes);
+                                $getDiff = $product->starting_price - $product->mrp;
+                                $getOffer = round(($getDiff / $product->starting_price) * 100, 0);                             
                             @endphp
 
-                            @if(count($colors)>4)
-                                @for($i=0; $i < 4; $i++)
-                                    {{ \Log::info($colors[$i]) }}
-                                    <div style="color: {{ $colors[$i] }}">color</div>
-                                @endfor
-                            @else
-
-                            @foreach($colors as $color)
-                                <div style="color: {{ $color }}">color</div>
-                            @endforeach
-
-                            @endif --}}
+                            
                             <!-- Color End -->
                             <div class="product-info">
-                                <h3 class="product-title text-center">
+                                <h3 class="product-title">
                                     <a
                                         href="{{ route('product',$product->slug_url) }}">{{ $product->title }}</a>
-
-                                    {{-- Price --}}
-
-                                    {{-- {{ $product->mrp . ' - ' .$product->starting_price }} --}}
-
-                                    {{-- End Price --}}
-
+                                </h3>
+                                <span class="product-price-wrapper">
+                                    <span class="money"><i class="fa fa-inr"></i> {{ $product->mrp }}</span>
+                                    <span class="product-price-old">
+                                        <span class="money"><i class="fa fa-inr"></i> {{ $product->starting_price }}</span>
+                                    </span>
+                                    <span style="color:#388e3c">
+                                        {{ $getOffer }}% off
+                                    </span>
                                     @if($product->review_status)
-                                    <span class="text-center d-block">
+                                    <span class="pull-right">
                                         @for($i = 1; $i<= $product->rating; $i++)
                                             <i class="fa fa-star rated" aria-hidden="true"></i>
                                             @endfor
@@ -218,15 +215,30 @@
                                                 @endfor
                                     </span>
                                     @endif
-                                </h3>
-
+                                </span>
+                                @if(!$product->review_status)
+                                @if(count($colors)>4)
+                                    <span class="pull-right">
+                                        @for($i=0; $i < 4; $i++)
+                                            <span style="background: {{ $colors[$i] }};border-radius:50%;height:10px;width:10px;display:inline-block;box-shadow: 1px 2px 3px 0px #5f5f5f"></span>
+                                        @endfor
+                                    </span>
+                                @else
+                                <span class="pull-right">
+                                    @foreach($colors as $color)
+                                        <span style="background: {{ $color }};border-radius:50%;height:10px;width:10px;display:inline-block;box-shadow: 1px 2px 3px 0px #5f5f5f"></span>
+                                    @endforeach
+                                </span>
+                                @endif
+                                @endif
                             </div>
                         </div>
                     </div>
-                    @endif
-                    @endforeach
-                </div>
+                   
+                {{-- </div> --}}
             </div>
+            @endif
+            @endforeach
         </div>
     </div>
 </section>

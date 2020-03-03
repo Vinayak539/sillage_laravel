@@ -116,7 +116,7 @@
         }
 
         .searchform-3 .searchform__submit {
-            padding-top: 0;
+            padding-top: 3px;
         }
 
         .error {
@@ -161,7 +161,7 @@
         <header class="header header-fullwidth header-style-4">
             <div class="header-outer">
                 <div class="header-inner fixed-header">
-                    <div class="container-fluid">
+                    <div class="container">
                         <div class="row align-items-center">
                             <div class="col-lg-2 col-md-3 col-4 order-1">
                                 <div class="header-left d-flex">
@@ -178,7 +178,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-8 order-3 order-lg-2">
+                            <div class="col-lg-5 order-3 order-lg-2">
                                 <!-- Main Navigation Start Here -->
                                 <nav class="main-navigation">
                                     {!! $dynamicCategory !!}
@@ -186,19 +186,8 @@
                                 <!-- Main Navigation End Here -->
                             </div>
 
-                            <div class="col-lg-2 col-md-9 col-8 order-2 order-lg-3">
+                            <div class="col-lg-5 col-md-9 col-8 order-2 order-lg-3">
                                 <ul class="header-toolbar text-right">
-                                    <li class="header-toolbar__item">
-                                        <a href="#sideNav" class="toolbar-btn ">
-                                            <i class="fa fa-user-circle-o"></i>
-                                        </a>
-                                    </li>
-                                    <li class="header-toolbar__item">
-                                        <a href="#miniCart" class="mini-cart-btn toolbar-btn">
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <sup class="mini-cart-count">{{ Cart::getContent()->count() }}</sup>
-                                        </a>
-                                    </li>
                                     <li class="header-toolbar__item">
                                         <div class="header-component__item header-component__search-form">
                                             <div class="header-search-form-wrap">
@@ -206,7 +195,7 @@
                                                     class="searchform searchform-3">
                                                     <input name="q" type="text" value="{{ Request::get('q') }}"
                                                         list="suggestion" id="search-box" class="searchform__input"
-                                                        autocomplete="off" placeholder="Search products..." />
+                                                        autocomplete="off" placeholder="Search by product, category..." />
                                                     <datalist id="suggestion">
                                                         @foreach($keywords as $key)
                                                         <option value="{{ $key->keyword }}">
@@ -215,11 +204,30 @@
                                                     </datalist>
 
                                                     <button type="submit" class="searchform__submit">
-                                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                                        <i class="dl-icon-search4" aria-hidden="true"></i>
                                                     </button>
                                                 </form>
                                             </div>
                                         </div>
+                                    </li>
+                                    <li class="header-toolbar__item">
+                                        <a href="#sideNav" class="toolbar-btn ml--10">
+                                            <i class="dl-icon-user3"></i>
+                                        </a>
+                                    </li>
+                                    <li class="header-toolbar__item">
+                                        <a href="#" class="mini-cart-btn toolbar-btn">
+                                            <i class="dl-icon-heart3"></i>
+                                            <sup class="mini-cart-count">2</sup>
+                                        </a>
+                                    </li>
+                                    <li class="header-toolbar__item">
+                                        <a href="#miniCart" class="mini-cart-btn toolbar-btn">
+                                            <i class="dl-icon-cart4" aria-hidden="true"></i>
+                                            @if(Cart::getContent()->count() != 0)
+                                            <sup class="mini-cart-count">{{ Cart::getContent()->count() }}</sup>
+                                            @endif
+                                        </a>
                                     </li>
                                     <li class="header-toolbar__item d-lg-none">
                                         <a href="#" class="menu-btn"></a>
@@ -251,13 +259,13 @@
                                 <ul class="header-toolbar text-right">
                                     <li class="header-toolbar__item user-info-menu-btn">
                                         <a href="#">
-                                            <i class="fa fa-user-circle-o toolbar-btn-cls text-black"></i>
+                                            <i class="dl-icon-user3 toolbar-btn-cls text-black"></i>
                                         </a>
                                         <ul class="user-info-menu">
                                             @if(auth('user')->check())
                                             <li>
                                                 <a href="javascript:void(0);">
-                                                    <i class="fa fa-user-circle-o text-black"></i>
+                                                    <i class="dl-icon-user3 text-black"></i>
                                                     {{ Str::limit(auth('user')->user()->name,16,'') }}</a>
                                             </li>
 
@@ -310,15 +318,25 @@
                                         </ul>
                                     </li>
                                     <li class="header-toolbar__item">
-                                        <a href="#miniCart" class="mini-cart-btn toolbar-btn">
-                                            <i class="fa fa-shopping-cart toolbar-btn-cls text-black"
+                                        <a href="#" class="mini-cart-btn toolbar-btn">
+                                            <i class="dl-icon-heart3 toolbar-btn-cls text-black"
                                                 aria-hidden="true"></i>
+                                            <sup class="mini-cart-count">2</sup>
+                                        </a>
+                                    </li>
+                                    <li class="header-toolbar__item">
+                                        <a href="#miniCart" class="mini-cart-btn toolbar-btn">
+                                            <i class="dl-icon-cart4 toolbar-btn-cls text-black"
+                                                aria-hidden="true"></i>
+                                            @if(Cart::getContent()->count() != 0)
                                             <sup class="mini-cart-count">{{ Cart::getContent()->count() }}</sup>
+                                            @endif
+                                            
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item">
                                         <a href="#searchForm" class="search-btn toolbar-btn">
-                                            <i class="fa fa-search toolbar-btn-cls text-black" aria-hidden="true"></i>
+                                            <i class="dl-icon-search4 toolbar-btn-cls text-black" aria-hidden="true"></i>
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item d-lg-none">
@@ -515,7 +533,7 @@
                     </datalist>
 
                     <button type="submit" class="searchform__submit">
-                        <i class="fa fa-search" aria-hidden="true"></i>
+                        <i class="dl-icon-search4" aria-hidden="true"></i>
                     </button>
                 </form>
             </div>
@@ -532,7 +550,7 @@
                             @if(auth('user')->check())
                             <li>
                                 <a href="javascript:void(0);">
-                                    <i class="fa fa-user-circle-o"></i>
+                                    <i class="dl-icon-user3"></i>
                                     {{ Str::limit(auth('user')->user()->name,16,'') }}</a>
                             </li>
                             <li>

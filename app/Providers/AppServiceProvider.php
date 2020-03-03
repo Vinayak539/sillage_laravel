@@ -90,7 +90,7 @@ class AppServiceProvider extends ServiceProvider
                 }
             } else if ($count == 1) {
                 if (count($category['parent_cats'][$parent]) > 1) {
-                    $html .= "<ul class='mainmenu mainmenu--centered'>";
+                    $html .= "<ul class='mainmenu mainmenu--3'>";
                     foreach ($category['parent_cats'][$parent] as $cat_id) {
                         if (!isset($category['parent_cats'][$cat_id])) {
                             $html .= "<li class='mainmenu__item menu-item-has-children has-children'><a href='".asset('category'). '/' . $category['categories'][$cat_id]['slug_url'] . "' class='mainmenu__link'><span class='mm-text '>" . $category['categories'][$cat_id]['name'] . "</span></a></li>";

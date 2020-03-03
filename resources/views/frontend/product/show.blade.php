@@ -5,7 +5,7 @@
 
 <!-- Breadcrumb area Start -->
 <div class="breadcrumb-area pt--70 pt-md--25">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col-12">
                 <ul class="breadcrumb">
@@ -23,7 +23,7 @@
 <!-- Main Content Wrapper Start -->
 <div id="content" class="main-content-wrapper">
     <div class="page-content-inner enable-full-width">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row pt--20">
                 <div class="col-md-6 product-main-image">
                     <div class="product-image">
@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 <!-- <div class="col-md-6 product-main-details mt--40 mt-md--10 mt-sm--30"> -->
-                <div class="col-md-6 product-main-details mt-md--10 mt-sm--30">
+                <div class="col-md-5 product-main-details mt-md--10 mt-sm--30">
                     <div class="product-summary">
                         @if($product->review_status)
                         <div class="product-rating float-left" id="product-rating">
@@ -73,36 +73,45 @@
 
                         </div>
                         @endif
-                        <a href="#" data-toggle="modal" data-target="#bulk-order"
-                            class="btn btn-sm float-right bulk-order-btn">Bulk Order</a>
+                        
                         <div class="clearfix"></div>
 
-                        <h3 class="product-titles">{{ $product->title }}</h3>
+                        <h3 class="product-titles">{{ $product->title }} <span data-toggle="modal" data-target="#bulk-order"
+                            class="btn btn-sm float-right bulk-order-btn">Bulk Order</span></h3>
                         <div class="product-price-wrapper mb--10 mb-md--10">
                             <span class="money mrp"> <i class="fa fa-inr"></i> {{ $product->colors[0]->mrp }}</span>
                             <span class="old-price">
                                 <span class="money starting_price"><i class="fa fa-inr"></i>
                                     {{ $product->colors[0]->starting_price }}</span>
                             </span>
+                            @php 
+                            $getDiff = $product->colors[0]->starting_price - $product->colors[0]->mrp;
+                            $getOffer = round(($getDiff / $product->colors[0]->starting_price) * 100, 0);                             
+                            @endphp
+                            <span style="color:#388e3c;font-size: 18px" class="priceOffer">
+                                {{ $getOffer }}% off
+                            </span>
                         </div>
 
-                        @if($product->category)
-                        <a href="{{ route('cate',[$product->category->slug_url]) }}" class="mb--10 link-styles">
-                            <span>{{ $product->category->name }}</span>
-                        </a>
-                        @endif
+                        <div class="bg-gray">
+                            @if($product->category)
+                            <a href="{{ route('cate',[$product->category->slug_url]) }}" class="mb--10 text-black">
+                                <span>{{ $product->category->name }}</span>
+                            </a>
+                            @endif
 
-                        @if($product->isCodAvailable)
-                        <span class="product-stock in-stock float-right text-success">
-                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                            Cash on Delivery Available
-                        </span>
-                        @else
-                        <span class="product-stock in-stock float-right text-danger">
-                            <i class="fa fa-ban" aria-hidden="true"></i>
-                            Cash on Delivery Not Available
-                        </span>
-                        @endif
+                            @if($product->isCodAvailable)
+                            <span class="product-stock in-stock float-right text-success">
+                                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                Cash on Delivery Available
+                            </span>
+                            @else
+                            <span class="product-stock in-stock float-right text-danger">
+                                <i class="fa fa-ban" aria-hidden="true"></i>
+                                Cash on Delivery Not Available
+                            </span>
+                            @endif
+                        </div>
 
 
                         <div class="clearfix"></div>
@@ -111,7 +120,7 @@
 
                             @if(count($colorsSizes) > 0)
                             <div class="product-color-variations mb--20">
-                                <p class="swatch-label">Color <strong class="swatch-label color-label"></strong></p>
+                                <p class="swatch-label"><strong class="swatch-label color-label"></strong></p>
                                 <div class="product-color-swatch variation-wrapper">
                                     @foreach ($colorsSizes as $item)
                                     <div class="swatch-wrapper swatch-wrapper-color">
@@ -120,9 +129,8 @@
                                             data-color-id="{{ $item->color_id }}" data-mrp="{{ $item->mrp }}"
                                             data-stock="{{ $item->stock }}" data-map-id="{{ $item->map_id }}"
                                             data-product-id="{{ $product->id }}" data-title="{{ $item->color_name }}"
-                                            data-starting-price="{{ $item->starting_price }}">
-                                            <span class="product-color-swatch-label"
-                                                style="background: {{ $item->color_code }}"></span>
+                                            data-starting-price="{{ $item->starting_price }}" style="border: 2px solid {{ $item->color_code }};background: {{ $item->color_code }}">
+                                            <div style="background: {{ $item->color_code }};height: calc(100%);border-radius:5px"></div>
                                         </a>
                                     </div>
                                     @endforeach
@@ -132,14 +140,13 @@
                             @endif
                             @if(count($product->sizes) > 0)
                             <div class="product-size-variations">
-                                <p class="swatch-label">Size <strong class="swatch-label size_lable"></strong>
+                                <p class="swatch-label">Select Size <strong class="swatch-label size size_lable"></strong>
                                     @if($product->category ? $product->category->name != 'Fragrance' : '')
-                                    <span class="pull-right cursor-pointer link-styles" data-toggle="modal"
-                                        data-target="#sizeChart"> SIZE CHART <i
-                                            class="fa fa-angle-double-right"></i></span>
+                                    <span class="size-chart" data-toggle="modal"
+                                        data-target="#sizeChart"> Size Chart</span>
                                     @endif
                                 </p>
-                                <div class="product-size-swatch variation-wrapper">
+                                <div class="product-size-swatch variation-wrapper size-block">
                                     @foreach ($product->sizes as $item)
                                     <div class="swatch-wrapper">
                                         <a class="product-size-swatch-btn variation-btn size_btn" data-toggle="tooltip"
@@ -176,8 +183,8 @@
 
 
                             </div>
-                            <a href="javascript:void(0)" class="selectedOfferBtn link-styles">VIEW
-                                SELECTED OFFER <i class="fa fa-angle-double-right"></i></a>
+                            <a href="javascript:void(0)" class="selectedOfferBtn text-black">View
+                                Selected Offer</a>
                             @endif
                         </div>
 
@@ -521,7 +528,7 @@
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">SIZE CHART</h4>
+                <h4 class="modal-title">Size Chart</h4>
                 <button type="button" class="close cclose" data-dismiss="modal">&times;</button>
             </div>
 
@@ -617,7 +624,7 @@
                         </table>
                     </div>
                     <div id="measure" class="container tab-pane fade"><br>
-                        <img src="{{ asset('assets/img/').'/'.'sizechart.jpg' }}" alt="size chart">
+                        <img src="{{ asset('assets/img/').'/'.'sizechart.jpg' }}" alt="Size Chart">
                     </div>
                 </div>
             </div>
@@ -1420,6 +1427,7 @@
                         $('.product-size-swatch').html(html);
 
                         $('.product-size-swatch-btn:first').addClass('active');
+                        $('.product-size-swatch-btn:first').parent().addClass('active');
 
                         attachClickListener('.size_btn');
 
@@ -1462,13 +1470,18 @@
 
                         $('#cart_size_id').val(size_id);
 
-                        var item = $('.product-size-swatch-btn').hasClass('active');
+                        var item2 = $('.product-size-swatch-btn').hasClass('active');
+                        var item1 = $('.product-size-swatch-btn').parent().hasClass('active');
 
-                        if (item) {
+                        if (item2) {
                             $('.product-size-swatch-btn').removeClass('active')
+                        }
+                        if (item1) {
+                            $('.product-size-swatch-btn').parent().removeClass('active')
                         }
 
                         $(element).addClass('active');
+                        $(element).parent().addClass('active');
                     }
 
                 });
@@ -1505,6 +1518,11 @@
                         $('#cart_size_id').val(size_id);
 
                         $('.mrp').html('<i class="fa fa-inr"></i> ' + success.mrp);
+
+                        var getDiff = success.starting_price - success.mrp;
+                                var getOffer = Math.round((getDiff / success.starting_price) * 100, 0);      
+
+                        $('.priceOffer').html(getOffer + '% off');
 
                         $('.starting_price').html('<i class="fa fa-inr"></i> ' + success.starting_price);
 
