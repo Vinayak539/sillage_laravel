@@ -671,20 +671,16 @@
         </aside>
 
         <div class="modal fade" id="modalLogin">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-md">
                 <div class="modal-content">
 
                     <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">Login </h4>
-                        <button type="button" class="close cclose" data-dismiss="modal">&times;</button>
-                    </div>
-
                     <!-- Modal body -->
                     <div class="modal-body">
+                        <button type="button" class="close ml-lg-close pull-right" data-dismiss="modal">&times;</button>
 
-                        <div class="signUp-page signUp-minimal pt-0">
-                            <div class="signin-form-wrapper">
+                        <div class="signUp-page signUp-minimal px-3 py-3">
+                            <div class="signin-form-wrapper px-5 py-5 border-0">
                                 <!-- <div class="title-area text-center">
                                     <h3>Login.</h3>
                                 </div>  -->
