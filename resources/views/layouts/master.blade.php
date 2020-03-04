@@ -122,25 +122,36 @@
         .error {
             color: rgb(238, 53, 53);
         }
+
     </style>
 
     <!-- Facebook Pixel Code -->
     <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window,document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '2404218679835175'); 
+        ! function (f, b, e, v, n, t, s) {
+            if (f.fbq) return;
+            n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n;
+            n.loaded = !0;
+            n.version = '2.0';
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = !0;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '2404218679835175');
         fbq('track', 'PageView');
+
     </script>
     <noscript>
-     <img height="1" width="1" 
-    src="https://www.facebook.com/tr?id=2404218679835175&ev=PageView
-    &noscript=1"/>
+        <img height="1" width="1" src="https://www.facebook.com/tr?id=2404218679835175&ev=PageView
+    &noscript=1" />
     </noscript>
     <!-- End Facebook Pixel Code -->
 </head>
@@ -195,7 +206,8 @@
                                                     class="searchform searchform-3">
                                                     <input name="q" type="text" value="{{ Request::get('q') }}"
                                                         list="suggestion" id="search-box" class="searchform__input"
-                                                        autocomplete="off" placeholder="Search by product, category..." />
+                                                        autocomplete="off"
+                                                        placeholder="Search by product, category..." />
                                                     <datalist id="suggestion">
                                                         @foreach($keywords as $key)
                                                         <option value="{{ $key->keyword }}">
@@ -319,24 +331,23 @@
                                     </li>
                                     <li class="header-toolbar__item">
                                         <a href="#" class="mini-cart-btn toolbar-btn">
-                                            <i class="dl-icon-heart3 toolbar-btn-cls text-black"
-                                                aria-hidden="true"></i>
+                                            <i class="dl-icon-heart3 toolbar-btn-cls text-black" aria-hidden="true"></i>
                                             <sup class="mini-cart-count">2</sup>
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item">
                                         <a href="#miniCart" class="mini-cart-btn toolbar-btn">
-                                            <i class="dl-icon-cart4 toolbar-btn-cls text-black"
-                                                aria-hidden="true"></i>
+                                            <i class="dl-icon-cart4 toolbar-btn-cls text-black" aria-hidden="true"></i>
                                             @if(Cart::getContent()->count() != 0)
                                             <sup class="mini-cart-count">{{ Cart::getContent()->count() }}</sup>
                                             @endif
-                                            
+
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item">
                                         <a href="#searchForm" class="search-btn toolbar-btn">
-                                            <i class="dl-icon-search4 toolbar-btn-cls text-black" aria-hidden="true"></i>
+                                            <i class="dl-icon-search4 toolbar-btn-cls text-black"
+                                                aria-hidden="true"></i>
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item d-lg-none">
@@ -465,11 +476,12 @@
                                     Keep Up To Date
                                 </h3>
                                 <div class="form-widget mb--20">
-                                    <form action="{{ route('subscribe') }}" id="formSubscribe" class="newsletter-form newsletter-form--6 mc-form" method="post">
+                                    <form action="{{ route('subscribe') }}" id="formSubscribe"
+                                        class="newsletter-form newsletter-form--6 mc-form" method="post">
                                         @csrf
                                         <input type="email" name="newsletter-email" id="newsletter-email"
-                                               class="newsletter-form__input" placeholder="Enter Your Email Address.."
-                                               required />
+                                            class="newsletter-form__input" placeholder="Enter Your Email Address.."
+                                            required />
                                         <button type="submit" class="newsletter-form__submit btnSubscribe">
                                             Subscribe
                                         </button>
@@ -652,9 +664,93 @@
             </div>
         </aside>
 
-        <form action="/cart/delete" id="frmDeleteItem" method="POST">
+        <div class="modal fade" id="modalLogin">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Login </h4>
+                        <button type="button" class="close cclose" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+
+                        <div class="signUp-page signUp-minimal pt-0">
+                            <div class="signin-form-wrapper">
+                                <!-- <div class="title-area text-center">
+                                    <h3>Login.</h3>
+                                </div>  -->
+                                <form id="login-form" action="/myaccount/login" method="POST" autocomplete="off"
+                                    class="login">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="input-group">
+                                                <input type="text" name="email" value="{{ old('email') }}" required />
+                                                <label>Email *</label>
+                                            </div>
+                                            <!-- /.input-group -->
+                                        </div>
+                                        <!-- /.col- -->
+                                        <div class="col-12">
+                                            <div class="input-group">
+                                                <input type="password" name="password" required />
+                                                <label>Password *</label>
+                                            </div>
+                                            <!-- /.input-group -->
+                                        </div>
+                                        <!-- /.col- -->
+                                    </div>
+                                    <!-- /.row -->
+                                    <div class="agreement-checkbox d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <input type="checkbox" name="remember"
+                                                {{ old("remember") ? "checked" : "" }} checked id="remember">
+                                            <label for="remember">Remember Me</label>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="line-button-one button-rose button_update_login">
+                                        Login
+                                    </button>
+                                </form>
+                                <p class="signUp-text text-center">
+                                    Don’t have any account?
+                                    <a href="{{ route('user.register') }}">Register</a> now. &
+                                    <a href="{{ route('user.login.otp') }}"> Login With Otp</a>
+                                </p>
+                                <p class="or-text"><span>or</span></p>
+                                <ul class="social-icon-wrapper row">
+                                    <li class="col-12">
+                                        <a href="{{ route('user.auth.socialite', 'google') }}" class="gmail"><i
+                                                class="fa fa-envelope-o" aria-hidden="true"></i>
+                                            Gmail</a>
+                                    </li>
+                                    <li class="col-12">
+                                        <a href="{{ route('user.auth.socialite', 'facebook') }}" class="facebook"><i
+                                                class="fa fa-facebook" aria-hidden="true"></i>
+                                            Facebook</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- /.sign-up-form-wrapper -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form action="{{ route('cart.delete') }}" id="frmDeleteItem" method="POST">
             @csrf
             <input type="hidden" name="item_id" required="required" id="hiddenFieldDeleteItemId" />
+        </form>
+
+        <form action="{{ route('wishlist.add') }}" id="frmAddWishlist" method="POST">
+            @csrf
+            <input type="hidden" name="product_id" id="txtProductId" />
+            <input type="hidden" name="color_id" id="txtColorId" />
+            <input type="hidden" name="size_id" id="txtSizeId" />
         </form>
         <!-- Mini Cart End -->
 
@@ -669,7 +765,8 @@
     <!-- jQuery JS -->
     <script src="{!! asset('/assets/js/vendor/jquery.min.js') !!}"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js">
+    </script>
 
     <!-- Bootstrap and Popper Bundle JS -->
 
@@ -717,7 +814,7 @@
 
     <script src="{!! asset('assets/js/revoulation.js') !!}"></script>
     {{-- <script src="{!! asset('assets/js/jquery.lazyload.js') !!}"></script> --}}
-    
+
     @yield('extrajs')
     @include('notify::messages')
     @notifyJs
@@ -756,6 +853,19 @@
                 }
             });
 
+            $(".wishlist").click(function () {
+                var pid = $(this).attr('data-p-id');
+                var cid = $(this).attr('data-c-id');
+                var sid = $(this).attr('data-s-id');
+
+            });
+
+            $(".wishlist-login").click(function () {
+
+                $('#modalLogin').modal('show');
+
+            });
+
             $("#formSubscribe").validate({
                 rules: {
 
@@ -782,25 +892,26 @@
                 }
             });
 
-            $('.gmail').click(function(){
+            $('.gmail').click(function () {
                 $(this).attr('disabled', 'disabled');
                 $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
             });
 
-            $('.facebook').click(function(){
-                    $(this).attr('disabled', 'disabled');
-                    $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+            $('.facebook').click(function () {
+                $(this).attr('disabled', 'disabled');
+                $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
             });
 
             var navheight = $(".fixed-header").height();
             var mob_navheight = $(".header-mobile__inner").height();
             if ($(window).width() > 991) {
-                $("#homepage-slider-1").css("margin-top", navheight-13);
+                $("#homepage-slider-1").css("margin-top", navheight - 13);
             } else {
                 $("#homepage-slider-1").css("margin-top", 0);
             }
 
         });
+
     </script>
 </body>
 

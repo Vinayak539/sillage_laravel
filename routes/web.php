@@ -72,6 +72,10 @@ Route::POST('/checkout', 'OrderController@checkout')->name('order.checkout');
 Route::POST('/transaction-callback', 'OrderController@handleCallbackFromPaytm')->name('paytm.callback');
 Route::POST('/pincode', 'MainController@verifyPincode')->name('verify.pincode');
 
+// Wishlist
+
+Route::post('/wishlist/add', 'WishlistController@store');
+
 Route::prefix('adhni753')->group(function () {
 
     Route::middleware(['guest:admin'])->group(function () {

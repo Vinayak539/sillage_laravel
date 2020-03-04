@@ -131,12 +131,12 @@
             </div>
         </div>
         <div class="row">
-            @foreach($section->msections as $msec)
+            @foreach($section->msections as $key => $msec)
 
             @php
 
             $product = DB::table('txn_products as p')
-            ->selectRaw("p.id,p.title,p.slug_url, p.image_url, p.image_url1, p.review_status, map.mrp, map.starting_price,
+            ->selectRaw("p.id,p.title,p.slug_url, p.image_url, p.image_url1, p.review_status,map.color_id as c_id, map.size_id as s_id, map.mrp, map.starting_price,
             GROUP_CONCAT(DISTINCT(c.color_code)) as color_codes,
             FLOOR(AVG(txn_reviews.rating)) as
             rating , COUNT(txn_reviews.id) as total_rating")
@@ -180,7 +180,12 @@
                                     </a>
                                 </div>
                                 <span class="product-trending">Trending</span>
-                                <span class="product-badge fav"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
+                                @if(auth('user')->check())
+                                <span class="product-badge fav wishlist" data-p-id="{{ $product->id }}" data-c-id="{{ $product->c_id }}" data-s-id="{{ $product->s_id }}"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
+
+                                @else
+                                <span class="product-badge fav wishlist-login"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
+                                @endif
                             </figure>
 
                             <!-- Color  -->
