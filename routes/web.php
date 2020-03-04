@@ -74,7 +74,7 @@ Route::POST('/pincode', 'MainController@verifyPincode')->name('verify.pincode');
 
 // Wishlist
 
-Route::post('/wishlist/add', 'WishlistController@store');
+Route::post('/wishlist/add', 'WishlistController@store')->name('wishlist.add');
 
 Route::prefix('adhni753')->group(function () {
 

@@ -32646,3 +32646,11 @@ img.lazy {
         font-weight: 600;
     }
 }
+
+.ml-lg-close{
+    font-size: 30px;
+    position: absolute;
+    right: 20px;
+    z-index: 27;
+    cursor: pointer !important;
+}
