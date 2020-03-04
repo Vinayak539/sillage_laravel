@@ -254,27 +254,25 @@
                                 <div class="tab-pane fade show active" id="nav-description" role="tabpanel"
                                     aria-labelledby="nav-description-tab">
                                     <div class="product-description">
-                                        <div class="pdp-productDescriptorsContainer">
-                                            <div>
-                                                <h4 class="pdp-product-description-title">
-                                                    Product Details <span
-                                                        class="fa fa-list-alt myntraweb-sprite pdp-productDetailsIcon sprites-productDetailsIcon"></span>
-                                                </h4>
+                                        <div class="pdp-productDescriptorsContainer"  id="accordionSpecifications">
+                                            <h4 class="pdp-product-description-title">
+                                                Product Details <span
+                                                    class="fa fa-list-alt myntraweb-sprite pdp-productDetailsIcon sprites-productDetailsIcon"></span>  <span class="btn bulk-order-btn pull-right"
+                                                    data-toggle="collapse" data-target="#collapseOne">Other
+                                                    Information
+                                                    <i class="fa fa-plus"></i>
+                                            </h4>
+
+                                            <div id="collapseOne" class="index-sizeFitDesc collapse"
+                                            aria-labelledby="specOne" data-parent="#accordionSpecifications">
                                                 <p class="pdp-product-description-content">
                                                     {!! $product->description !!}
                                                 </p>
-                                            </div>
-
-                                            <div class="index-sizeFitDesc" id="accordionSpecifications">
                                                 <h4 class="index-sizeFitDescTitle index-product-description-title"
                                                     id="specOne" style="padding-bottom: 12px;">
-                                                    </i> Specifications <span class="btn bulk-order-btn pull-right"
-                                                        data-toggle="collapse" data-target="#collapseOne">Other
-                                                        Information
-                                                        <i class="fa fa-plus"></i>
+                                                    </i> Specifications
                                                 </h4>
-                                                <div id="collapseOne" class="index-tableContainer collapse"
-                                                    aria-labelledby="specOne" data-parent="#accordionSpecifications">
+                                                <div class="index-tableContainer">
 
                                                     @if($product->warranty)
                                                     <div class="index-row">
@@ -346,9 +344,9 @@
             <div class="row pt--35 pt-md--25 pt-sm--15 pb--75 pb-md--55 pb-sm--35">
                 <div class="col-12">
                     <div class="row mb--40 mb-md--30">
-                        <div class="col-12 text-center">
-                            <h2 class="heading-secondary">Related Products</h2>
-                            <hr class="separator center mt--25 mt-md--15">
+                        <div class="col-12">
+                            <h2 class="heading-secondary section-product-title">Related Products</h2>
+                            <div class="title-border"></div>
                         </div>
                     </div>
                     <div class="row">
@@ -360,19 +358,37 @@
                                         <div class="product-image--holder">
                                             <a href="{{ route('product',[$rproduct->slug_url]) }}">
                                                 <img data-src="{!! asset('storage/images/products/' . $rproduct->image_url) !!} "
-                                                    alt="Product Image" class="primary-image lazy related_img">
+                                                    alt="Product Image" class="primary-image lazy">
 
                                                 <img data-src="{!! asset('storage/images/products/' . $rproduct->image_url1) !!} "
-                                                    alt="Product Image" class="secondary-image lazy related_img">
+                                                    alt="Product Image" class="secondary-image lazy">
                                             </a>
                                         </div>
+                                        <span class="product-trending">Trending</span>
+                                        <span class="product-badge fav"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
                                     </figure>
+                                    <!-- Color  -->
+                                        @php 
+                                            $colors = explode(",", $rproduct->color_codes);
+                                            $getDiff = $rproduct->starting_price - $rproduct->mrp;
+                                            $getOffer = round(($getDiff / $rproduct->starting_price) * 100, 0);                             
+                                        @endphp
                                     <div class="product-info">
-                                        <h3 class="product-title text-center">
+                                        <h3 class="product-title">
                                             <a
                                                 href="{{ route('product',$rproduct->slug_url) }}">{{ $rproduct->title }}</a>
+                                            
+                                        </h3>
+                                        <span class="product-price-wrapper">
+                                            <span class="money"><i class="fa fa-inr"></i> {{ $rproduct->mrp }}</span>
+                                            <span class="product-price-old">
+                                                <span class="money"><i class="fa fa-inr"></i> {{ $rproduct->starting_price }}</span>
+                                            </span>
+                                            <span style="color:#388e3c">
+                                                {{ $getOffer }}% off
+                                            </span>
                                             @if($rproduct->review_status)
-                                            <span class="text-center d-block">
+                                            <span class="pull-right">
                                                 @for($i = 1; $i<= $rproduct->rating; $i++)
                                                     <i class="fa fa-star rated" aria-hidden="true"></i>
                                                     @endfor
@@ -381,7 +397,22 @@
                                                         @endfor
                                             </span>
                                             @endif
-                                        </h3>
+                                        </span>
+                                        @if(!$rproduct->review_status)
+                                        @if(count($colors)>4)
+                                            <span class="pull-right">
+                                                @for($i=0; $i < 4; $i++)
+                                                    <span style="background: {{ $colors[$i] }};border-radius:50%;height:10px;width:10px;display:inline-block;box-shadow: 1px 2px 3px 0px #5f5f5f"></span>
+                                                @endfor
+                                            </span>
+                                        @else
+                                        <span class="pull-right">
+                                            @foreach($colors as $color)
+                                                <span style="background: {{ $color }};border-radius:50%;height:10px;width:10px;display:inline-block;box-shadow: 1px 2px 3px 0px #5f5f5f"></span>
+                                            @endforeach
+                                        </span>
+                                        @endif
+                                        @endif
                                     </div>
                                 </div>
                             </div>
