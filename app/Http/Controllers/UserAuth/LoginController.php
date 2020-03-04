@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Model\SMS;
 use App\Model\Subscriber;
 use App\Model\TxnUser;
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 

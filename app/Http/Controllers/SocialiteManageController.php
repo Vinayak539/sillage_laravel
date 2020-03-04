@@ -53,6 +53,7 @@ class SocialiteManageController extends Controller
         );
 
         if ($authUser) {
+            
             return $authUser;
         }
 

@@ -11,70 +11,74 @@
 |
  */
 
-Route::GET('/', 'MainController@index')->name('index');
-Route::view('/about', 'frontend.about')->name('about');
-Route::view('/all-product', 'frontend.all-product')->name('all-product');
-Route::view('/product-detail', 'frontend.product-detail')->name('product-detail');
-Route::view('/checkout', 'frontend.checkout')->name('checkout');
-Route::GET('/faq', 'Admin\FaqController@manage')->name('faq');
+Route::middleware(['AuthUser'])->group(function () {
+
+    Route::GET('/', 'MainController@index')->name('index');
+    Route::view('/about', 'frontend.about')->name('about');
+    Route::view('/all-product', 'frontend.all-product')->name('all-product');
+    Route::view('/product-detail', 'frontend.product-detail')->name('product-detail');
+    Route::view('/checkout', 'frontend.checkout')->name('checkout');
+    Route::GET('/faq', 'Admin\FaqController@manage')->name('faq');
 
 // policy
 
-Route::view('/terms-condition', 'frontend.policy.terms-condition')->name('terms-condition');
-Route::view('/privacy', 'frontend.policy.privacy')->name('privacy');
-Route::view('/cancellation', 'frontend.policy.cancellation')->name('cancellation');
-Route::view('/refund-return', 'frontend.policy.refund-return')->name('refund-return');
-Route::view('/shipping', 'frontend.policy.shipping')->name('shipping');
+    Route::view('/terms-condition', 'frontend.policy.terms-condition')->name('terms-condition');
+    Route::view('/privacy', 'frontend.policy.privacy')->name('privacy');
+    Route::view('/cancellation', 'frontend.policy.cancellation')->name('cancellation');
+    Route::view('/refund-return', 'frontend.policy.refund-return')->name('refund-return');
+    Route::view('/shipping', 'frontend.policy.shipping')->name('shipping');
 
 // contact us
 
-Route::GET('/contact', 'EnquiryController@create')->name('contact');
-Route::POST('/contact', 'EnquiryController@store');
+    Route::GET('/contact', 'EnquiryController@create')->name('contact');
+    Route::POST('/contact', 'EnquiryController@store');
 
 // Bulk Orders
 
-Route::POST('/bulk-orders', 'Admin\BulkOrderController@store')->name('bulk.store');
+    Route::POST('/bulk-orders', 'Admin\BulkOrderController@store')->name('bulk.store');
 
 // filter
 
-Route::GET('/search/filter', 'MainController@filter')->name('search.filter');
-Route::GET('/categories/filter', 'MainController@cateFilter')->name('categories.filter');
+    Route::GET('/search/filter', 'MainController@filter')->name('search.filter');
+    Route::GET('/categories/filter', 'MainController@cateFilter')->name('categories.filter');
 
 // product routes
 
-Route::GET('/product/{slug}', 'MainController@getProduct')->name('product');
-Route::GET('/category/{slug}', 'MainController@getCategoryProducts')->name('cate');
-Route::GET('/search', 'MainController@search')->name('search');
-Route::POST('/get-sizes', 'MainController@getSizes')->name('get.sizes');
-Route::POST('/verify-promocode', 'MainController@verifyPromocode')->name('verify.promocode');
-Route::POST('/get-size-price', 'MainController@getSizePrice')->name('get.size.price');
+    Route::GET('/product/{slug}', 'MainController@getProduct')->name('product');
+    Route::GET('/category/{slug}', 'MainController@getCategoryProducts')->name('cate');
+    Route::GET('/search', 'MainController@search')->name('search');
+    Route::POST('/get-sizes', 'MainController@getSizes')->name('get.sizes');
+    Route::POST('/verify-promocode', 'MainController@verifyPromocode')->name('verify.promocode');
+    Route::POST('/get-size-price', 'MainController@getSizePrice')->name('get.size.price');
 
 // Start Socialite
 
-Route::GET('auth/{provider}', 'SocialiteManageController@redirectToProvider')->name('user.auth.socialite');
-Route::GET('auth/{provider}/callback', 'SocialiteManageController@handleProviderCallback')->name('user.auth.socialite.callback');
+    Route::GET('auth/{provider}', 'SocialiteManageController@redirectToProvider')->name('user.auth.socialite');
+    Route::GET('auth/{provider}/callback', 'SocialiteManageController@handleProviderCallback')->name('user.auth.socialite.callback');
 
 // End Socialite
 
 // Subscriber
 
-Route::POST('/subscriber', 'MainController@subscribers')->name('subscribe');
-Route::GET('/unsubscriber/{email}', 'Admin\SubscriberController@unsubscribe')->name('unsubscribe');
+    Route::POST('/subscriber', 'MainController@subscribers')->name('subscribe');
+    Route::GET('/unsubscriber/{email}', 'Admin\SubscriberController@unsubscribe')->name('unsubscribe');
 
 // Cart & Checkout
 
-Route::post('/cart', 'CartController@store')->name('cart.store');
-Route::get('/cart', 'CartController@index')->name('cart');
-Route::POST('/cart/delete', 'CartController@destroy')->name('cart.delete');
-Route::POST('/cart/update', 'CartController@update')->name('cart.update');
-Route::get('/checkout', 'OrderController@index')->name('checkout');
-Route::POST('/checkout', 'OrderController@checkout')->name('order.checkout');
-Route::POST('/transaction-callback', 'OrderController@handleCallbackFromPaytm')->name('paytm.callback');
-Route::POST('/pincode', 'MainController@verifyPincode')->name('verify.pincode');
+    Route::post('/cart', 'CartController@store')->name('cart.store');
+    Route::get('/cart', 'CartController@index')->name('cart');
+    Route::POST('/cart/delete', 'CartController@destroy')->name('cart.delete');
+    Route::POST('/cart/update', 'CartController@update')->name('cart.update');
+    Route::get('/checkout', 'OrderController@index')->name('checkout');
+    Route::POST('/checkout', 'OrderController@checkout')->name('order.checkout');
+    Route::POST('/transaction-callback', 'OrderController@handleCallbackFromPaytm')->name('paytm.callback');
+    Route::POST('/pincode', 'MainController@verifyPincode')->name('verify.pincode');
 
 // Wishlist
 
-Route::post('/wishlist/add', 'WishlistController@store');
+    Route::post('/wishlist/add', 'WishlistController@store')->name('wishlist.add');
+    Route::post('/wishlist/remove', 'WishlistController@destroy')->name('wishlist.remove');
+});
 
 Route::prefix('adhni753')->group(function () {
 
