@@ -30534,6 +30534,7 @@ a.button-cls-outline:hover {
     font-size: 16px;
     margin: 0;
     font-weight: 500;
+    line-height: 2;
     text-transform: uppercase;
 }
 
@@ -30541,8 +30542,8 @@ a.button-cls-outline:hover {
     color: #282C3F;
     line-height: 1.4;
     font-size: 16px;
-    margin-top: 12px;
-    width: 84%;
+    /* margin-top: 12px; */
+    /* width: 84%; */
 }
 
 .pdp-product-description-content b {
@@ -31110,7 +31111,7 @@ a.button-cls-outline:hover {
 .index-sizeFitDesc {
     font-weight: 400;
     border: none;
-    margin-top: 12px;
+    margin-top: 0px;
 }
 
 .index-sizeFitDescTitle {

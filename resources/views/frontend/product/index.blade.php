@@ -111,15 +111,57 @@
                                                         data-src="{!! asset('storage/images/products/' .$product->image_url1) !!}">
                                                 </a>
                                             </div>
+                                            <span class="product-trending">Trending</span>
+                                            <span class="product-badge fav"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
                                         </figure>
+                                        <!-- Color  -->
+                                            @php 
+                                                $colors = explode(",", $product->color_codes);
+                                                $getDiff = $product->starting_price - $product->mrp;
+                                                $getOffer = round(($getDiff / $product->starting_price) * 100, 0);                             
+                                            @endphp
+                                        <!-- Color End -->
                                         <div class="product-info">
-                                            <h3 class="product-title text-center">
-                                                <a href="{{ route('product',[$product->slug_url]) }}">
-                                                    {{ $product->title }}
-                                                </a>
-
+                                            <h3 class="product-title">
+                                                <a
+                                                    href="{{ route('product',$product->slug_url) }}">{{ $product->title }}</a>
                                             </h3>
+                                            <span class="product-price-wrapper">
+                                                <span class="money"><i class="fa fa-inr"></i> {{ $product->mrp }}</span>
+                                                <span class="product-price-old">
+                                                    <span class="money"><i class="fa fa-inr"></i> {{ $product->starting_price }}</span>
+                                                </span>
+                                                <span style="color:#388e3c">
+                                                    {{ $getOffer }}% off
+                                                </span>
+                                                @if($product->review_status)
+                                                <span class="pull-right">
+                                                    @for($i = 1; $i<= $product->rating; $i++)
+                                                        <i class="fa fa-star rated" aria-hidden="true"></i>
+                                                        @endfor
+                                                        @for($i = 1; $i<= 5 - $product->rating; $i++)
+                                                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                            @endfor
+                                                </span>
+                                                @endif
+                                            </span>
+                                            @if(!$product->review_status)
+                                            @if(count($colors)>4)
+                                                <span class="pull-right">
+                                                    @for($i=0; $i < 4; $i++)
+                                                        <span style="background: {{ $colors[$i] }};border-radius:50%;height:10px;width:10px;display:inline-block;box-shadow: 1px 2px 3px 0px #5f5f5f"></span>
+                                                    @endfor
+                                                </span>
+                                            @else
+                                            <span class="pull-right">
+                                                @foreach($colors as $color)
+                                                    <span style="background: {{ $color }};border-radius:50%;height:10px;width:10px;display:inline-block;box-shadow: 1px 2px 3px 0px #5f5f5f"></span>
+                                                @endforeach
+                                            </span>
+                                            @endif
+                                            @endif
                                         </div>
+                                       
                                     </div>
                                 </div>
                             </div>
