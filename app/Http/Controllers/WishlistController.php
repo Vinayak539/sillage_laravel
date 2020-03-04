@@ -37,13 +37,34 @@ class WishlistController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-
-        ]);
+            'p_id' => 'required|exists:txn_products,id',
+            'c_id' => 'required|exists:mst_colors,id',
+            's_id' => 'required|exists:mst_sizes,id',
+        ],
+            [
+                'p_id.required' => 'Product Not Available',
+                'p_id.exists' => 'Product Not Exists',
+                'c_id.required' => 'Colour Not Available',
+                'c_id.exists' => 'Colour Not Exists',
+                's_id.required' => 'size Not Available',
+                's_id.exists' => 'size Not Exists',
+            ]);
 
         if ($validator->fails()) {
-            connectify('error', 'Checkout Error', $validator->errors()->first());
-            return redirect(route('checkout'))->withInput();
+            connectify('error', 'Wishlist Error', $validator->errors()->first());
+            return back()->withInput();
         }
+
+        if (auth('user')->check()) {
+            
+        }
+
+        Wishlist::create([
+            'product_id' => $request->p_id,
+            'color_id' => $request->c_id,
+            'size_id' => $request->s_id,
+            'user_id' => $request->u_id,
+        ]);
 
     }
 

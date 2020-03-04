@@ -748,9 +748,9 @@
 
         <form action="{{ route('wishlist.add') }}" id="frmAddWishlist" method="POST">
             @csrf
-            <input type="hidden" name="product_id" id="txtProductId" />
-            <input type="hidden" name="color_id" id="txtColorId" />
-            <input type="hidden" name="size_id" id="txtSizeId" />
+            <input type="hidden" name="p_id" id="txtProductId" />
+            <input type="hidden" name="c_id" id="txtColorId" />
+            <input type="hidden" name="s_id" id="txtSizeId" />
         </form>
         <!-- Mini Cart End -->
 
