@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\TxnProduct;
 use App\Model\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -55,17 +56,22 @@ class WishlistController extends Controller
             return back()->withInput();
         }
 
-        if (auth('user')->check()) {
-            
+        if (!auth('user')->check()) {
+            connectify('error', 'Error', 'Please Login First !');
+            return back();
         }
 
+        $product = TxnProduct::where('id', $request->p_id)->first();
+
         Wishlist::create([
-            'product_id' => $request->p_id,
+            'product_id' => $product->id,
             'color_id' => $request->c_id,
             'size_id' => $request->s_id,
-            'user_id' => $request->u_id,
+            'user_id' => auth('user')->user()->id,
         ]);
 
+        connectify('success', 'Added to Wishlist', '"' . $product->title . '" has been Added to your wishlist');
+        return back();
     }
 
     /**
@@ -108,8 +114,29 @@ class WishlistController extends Controller
      * @param  \App\Model\Wishlist  $wishlist
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Wishlist $wishlist)
+    public function destroy(Request $request)
     {
-        //
+        try {
+
+            $wishlist = Wishlist::where('id', $request->w_id)->firstOrFail();
+            
+            $product = TxnProduct::where('id', $wishlist->product_id)->first();
+
+            $wishlist->delete();
+
+            connectify('success', 'Removed Wishlist', '"' . $product->title . '" has been Removed from your wishlist');
+
+            return back();
+
+        } catch (\Exception $ex) {
+
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+                connectify('error', 'Error', 'Whoops, Product Not Found !');
+                return back();
+            }
+            return $ex->getMessage();
+            connectify('error', 'Error', 'Whoops, something Went Wrong !');
+            return back();
+        }
     }
 }

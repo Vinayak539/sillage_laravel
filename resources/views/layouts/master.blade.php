@@ -228,10 +228,16 @@
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item">
+                                        @if($wishlists == 0)
                                         <a href="#" class="mini-cart-btn toolbar-btn">
                                             <i class="dl-icon-heart3"></i>
-                                            <sup class="mini-cart-count">2</sup>
                                         </a>
+                                        @else
+                                        <a href="#" class="mini-cart-btn toolbar-btn">
+                                            <i class="dl-icon-heart colorfull-heart"></i>
+                                        </a>
+                                        @endif
+
                                     </li>
                                     <li class="header-toolbar__item">
                                         <a href="#miniCart" class="mini-cart-btn toolbar-btn">
@@ -331,8 +337,11 @@
                                     </li>
                                     <li class="header-toolbar__item">
                                         <a href="#" class="mini-cart-btn toolbar-btn">
-                                            <i class="dl-icon-heart3 toolbar-btn-cls text-black" aria-hidden="true"></i>
-                                            <sup class="mini-cart-count">2</sup>
+                                            @if($wishlists == 0)
+                                                <i class="dl-icon-heart3 toolbar-btn-cls text-black" aria-hidden="true"></i>
+                                            @else
+                                                <i class="dl-icon-heart toolbar-btn-cls colorfull-heart" aria-hidden="true"></i>
+                                            @endif
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item">
@@ -748,6 +757,11 @@
             <input type="hidden" name="c_id" id="txtColorId" />
             <input type="hidden" name="s_id" id="txtSizeId" />
         </form>
+
+        <form action="{{ route('wishlist.remove') }}" id="frmRemoveWishlist" method="POST">
+            @csrf
+            <input type="hidden" name="w_id" id="txtWishlistId" />
+        </form>
         <!-- Mini Cart End -->
 
         <!-- Global Overlay Start -->
@@ -850,10 +864,21 @@
             });
 
             $(".wishlist").click(function () {
-                var pid = $(this).attr('data-p-id');
-                var cid = $(this).attr('data-c-id');
-                var sid = $(this).attr('data-s-id');
+                $('#txtProductId').val($(this).attr('data-p-id'));
+                $('#txtColorId').val($(this).attr('data-c-id'));
+                $('#txtSizeId').val($(this).attr('data-s-id'));
+                $(this).attr('disabled', 'disabled');
+                $(this).html(
+                    '<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only"></span>');
+                $('#frmAddWishlist').submit();
+            });
 
+            $(".wishlist-remove").click(function () {
+                $('#txtWishlistId').val($(this).attr('data-w-id'));
+                $(this).attr('disabled', 'disabled');
+                $(this).html(
+                    '<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only"></span>');
+                $('#frmRemoveWishlist').submit();
             });
 
             $(".wishlist-login").click(function () {

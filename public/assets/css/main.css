@@ -32639,6 +32639,10 @@ img.lazy {
     }
 }
 
+.colorfull-heart{
+    color: #e0a018 !important;
+}
+
 .ml-lg-close{
     font-size: 30px;
     position: absolute;

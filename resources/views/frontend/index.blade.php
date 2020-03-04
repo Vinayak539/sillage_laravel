@@ -40,7 +40,8 @@
     <div class="container">
         <div class="row collection2">
             <div class="col-md-4">
-                <div class="collection-banner-main banner-1 p-left" onclick="window.location.href='{{ route('cate','t-shirt-3') }}'">
+                <div class="collection-banner-main banner-1 p-left"
+                    onclick="window.location.href='{{ route('cate','t-shirt-3') }}'">
                     <div class="collection-img bg-size"
                         style="background-image: url('{{ asset("assets/img/men-tshirt.jpg") }}');background-size: cover;background-position: center center;display: block;">
                     </div>
@@ -49,7 +50,7 @@
                             <h3>Apparel</h3>
                             <h4>Men's T-Shirts</h4>
                             <div class="shop">
-                            <a href="{{ route('cate','t-shirt-3') }}">
+                                <a href="{{ route('cate','t-shirt-3') }}">
                                     shop now
                                 </a>
                             </div>
@@ -58,7 +59,8 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="collection-banner-main banner-1 p-left"  onclick="window.location.href='{{ route('cate','t-shirt-6') }}'">
+                <div class="collection-banner-main banner-1 p-left"
+                    onclick="window.location.href='{{ route('cate','t-shirt-6') }}'">
                     <div class="collection-img bg-size"
                         style="background-image: url('{{ asset("assets/img/women-tshirt.jpg") }}');background-size: cover;background-position: center center;display: block;">
                     </div>
@@ -76,11 +78,12 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="collection-banner-main banner-1 p-left" onclick="window.location.href='{{ route('cate','fr-7') }}'">
+                <div class="collection-banner-main banner-1 p-left"
+                    onclick="window.location.href='{{ route('cate','fr-7') }}'">
                     <div class="collection-img bg-size"
                         style="background-image: url('{{ asset("assets/img/perfumes.jpg") }}');background-size: cover;background-position: center center;display: block;">
                         {{-- <img src="{{ asset("assets/img/men-tshirt.jpg") }}" class="img-fluid bg-img "
-                            alt="banner" style="display: none;"> --}}
+                        alt="banner" style="display: none;"> --}}
                     </div>
                     <div class="collection-banner-contain ">
                         <div>
@@ -111,7 +114,8 @@
         }'>
             @foreach($homeOfferSliders as $homeOfferSlider)
             <a href="{{ $homeOfferSlider->url }}" class="item">
-                <img src="{!! asset('storage/images/home-offer-sliders').'/'.$homeOfferSlider->image_url !!}" alt="offer">
+                <img src="{!! asset('storage/images/home-offer-sliders').'/'.$homeOfferSlider->image_url !!}"
+                    alt="offer">
             </a>
             @endforeach
         </div>
@@ -126,7 +130,8 @@
     <div class="container">
         <div class="row mb--25 mb-md--30">
             <div class="col-12">
-                <h2 class="heading-secondary section-product-title">{{ $section->SectionName }} <span>({{ count($section->msections) }})</span></h2>
+                <h2 class="heading-secondary section-product-title">{{ $section->SectionName }}
+                    <span>({{ count($section->msections) }})</span></h2>
                 <div class="title-border"></div>
             </div>
         </div>
@@ -136,13 +141,15 @@
             @php
 
             $product = DB::table('txn_products as p')
-            ->selectRaw("p.id,p.title,p.slug_url, p.image_url, p.image_url1, p.review_status,map.color_id as c_id, map.size_id as s_id, map.mrp, map.starting_price,
+            ->selectRaw("p.id,p.title,p.slug_url, p.image_url, w.id as w_id, w.product_id as w_product_id, p.image_url1,
+            p.review_status,map.color_id as c_id, map.size_id as s_id, map.mrp, map.starting_price,
             GROUP_CONCAT(DISTINCT(c.color_code)) as color_codes,
             FLOOR(AVG(txn_reviews.rating)) as
             rating , COUNT(txn_reviews.id) as total_rating")
             ->leftJoin("txn_reviews", "txn_reviews.product_id", "p.id")
             ->leftJoin("map_color_sizes as map", "map.product_id", "p.id")
             ->leftJoin("mst_colors as c", "c.id", "map.color_id")
+            ->leftJoin("wishlists as w", "w.product_id", "p.id")
             ->where('p.id', $msec->product_id)
             ->where('p.status', true)
             ->groupBy('p.id')
@@ -165,81 +172,89 @@
                                 {"breakpoint":450, "settings": {"slidesToShow": 2} }
                             ]'> --}}
 
-                   
-                    <div class="airi-product">
-                        <div class="product-inner">
-                            <figure class="product-image">
-                                <div class="product-image--holder">
-                                    <a href="{{ route('product', $product->slug_url) }}">
 
-                                        <img data-src="{!! asset('storage/images/products/' . $product->image_url) !!}"
-                                            alt="{{ $product->title }}" class="primary-image lazy">
+                <div class="airi-product">
+                    <div class="product-inner">
+                        <figure class="product-image">
+                            <div class="product-image--holder">
+                                <a href="{{ route('product', $product->slug_url) }}">
 
-                                        <img data-src="{!! asset('storage/images/products/'. $product->image_url1) !!}"
-                                            alt="{{ $product->title }}" class="secondary-image lazy">
-                                    </a>
-                                </div>
-                                <span class="product-trending">Trending</span>
-                                @if(auth('user')->check())
-                                <span class="product-badge fav wishlist" data-p-id="{{ $product->id }}" data-c-id="{{ $product->c_id }}" data-s-id="{{ $product->s_id }}"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
+                                    <img data-src="{!! asset('storage/images/products/' . $product->image_url) !!}"
+                                        alt="{{ $product->title }}" class="primary-image lazy">
 
-                                @else
-                                <span class="product-badge fav wishlist-login"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
-                                @endif
-                            </figure>
-
-                            <!-- Color  -->
-                            @php 
-                                $colors = explode(",", $product->color_codes);
-                                $getDiff = $product->starting_price - $product->mrp;
-                                $getOffer = round(($getDiff / $product->starting_price) * 100, 0);                             
-                            @endphp
-
-                            
-                            <!-- Color End -->
-                            <div class="product-info">
-                                <h3 class="product-title">
-                                    <a
-                                        href="{{ route('product',$product->slug_url) }}">{{ $product->title }}</a>
-                                </h3>
-                                <span class="product-price-wrapper">
-                                    <span class="money"><i class="fa fa-inr"></i> {{ $product->mrp }}</span>
-                                    <span class="product-price-old">
-                                        <span class="money"><i class="fa fa-inr"></i> {{ $product->starting_price }}</span>
-                                    </span>
-                                    <span style="color:#388e3c">
-                                        {{ $getOffer }}% off
-                                    </span>
-                                    @if($product->review_status)
-                                    <span class="pull-right">
-                                        @for($i = 1; $i<= $product->rating; $i++)
-                                            <i class="fa fa-star rated" aria-hidden="true"></i>
-                                            @endfor
-                                            @for($i = 1; $i<= 5 - $product->rating; $i++)
-                                                <i class="fa fa-star-o" aria-hidden="true"></i>
-                                                @endfor
-                                    </span>
-                                    @endif
-                                </span>
-                                @if(!$product->review_status)
-                                @if(count($colors)>4)
-                                    <span class="pull-right">
-                                        @for($i=0; $i < 4; $i++)
-                                            <span style="background: {{ $colors[$i] }};border-radius:50%;height:10px;width:10px;display:inline-block;box-shadow: 1px 2px 3px 0px #5f5f5f"></span>
-                                        @endfor
-                                    </span>
-                                @else
-                                <span class="pull-right">
-                                    @foreach($colors as $color)
-                                        <span style="background: {{ $color }};border-radius:50%;height:10px;width:10px;display:inline-block;box-shadow: 1px 2px 3px 0px #5f5f5f"></span>
-                                    @endforeach
-                                </span>
-                                @endif
-                                @endif
+                                    <img data-src="{!! asset('storage/images/products/'. $product->image_url1) !!}"
+                                        alt="{{ $product->title }}" class="secondary-image lazy">
+                                </a>
                             </div>
+                            <span class="product-trending">Trending</span>
+                            @if(auth('user')->check())
+                                @if(auth('user')->user()->id && $product->w_product_id == $product->id)
+                                <span class="product-badge fav wishlist-remove" data-w-id="{{ $product->w_id }}"><i
+                                        class="fa fa-heart colorfull-heart" aria-hidden="true" title="Remove from Wishlist"></i></span>
+                                @else
+                                <span class="product-badge fav wishlist" data-p-id="{{ $product->id }}"
+                                    data-c-id="{{ $product->c_id }}" data-s-id="{{ $product->s_id }}" title="Add to Wishlist"><i
+                                        class="fa fa-heart-o" aria-hidden="true"></i></span>
+                                @endif
+                            @else
+                            <span class="product-badge fav wishlist-login"><i class="fa fa-heart-o"
+                                    aria-hidden="true" title="Add to Wishlist"></i></span>
+                            @endif
+                        </figure>
+
+                        <!-- Color  -->
+                        @php
+                        $colors = explode(",", $product->color_codes);
+                        $getDiff = $product->starting_price - $product->mrp;
+                        $getOffer = round(($getDiff / $product->starting_price) * 100, 0);
+                        @endphp
+
+
+                        <!-- Color End -->
+                        <div class="product-info">
+                            <h3 class="product-title">
+                                <a href="{{ route('product',$product->slug_url) }}">{{ $product->title }}</a>
+                            </h3>
+                            <span class="product-price-wrapper">
+                                <span class="money"><i class="fa fa-inr"></i> {{ $product->mrp }}</span>
+                                <span class="product-price-old">
+                                    <span class="money"><i class="fa fa-inr"></i> {{ $product->starting_price }}</span>
+                                </span>
+                                <span style="color:#388e3c">
+                                    {{ $getOffer }}% off
+                                </span>
+                                @if($product->review_status)
+                                <span class="pull-right">
+                                    @for($i = 1; $i<= $product->rating; $i++)
+                                        <i class="fa fa-star rated" aria-hidden="true"></i>
+                                        @endfor
+                                        @for($i = 1; $i<= 5 - $product->rating; $i++)
+                                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                                            @endfor
+                                </span>
+                                @endif
+                            </span>
+                            @if(!$product->review_status)
+                            @if(count($colors)>4)
+                            <span class="pull-right">
+                                @for($i=0; $i < 4; $i++) <span
+                                    style="background: {{ $colors[$i] }};border-radius:50%;height:10px;width:10px;display:inline-block;box-shadow: 1px 2px 3px 0px #5f5f5f">
+                            </span>
+                            @endfor
+                            </span>
+                            @else
+                            <span class="pull-right">
+                                @foreach($colors as $color)
+                                <span
+                                    style="background: {{ $color }};border-radius:50%;height:10px;width:10px;display:inline-block;box-shadow: 1px 2px 3px 0px #5f5f5f"></span>
+                                @endforeach
+                            </span>
+                            @endif
+                            @endif
                         </div>
                     </div>
-                   
+                </div>
+
                 {{-- </div> --}}
             </div>
             @endif
@@ -338,6 +353,7 @@
         });
         // $(".out-of-stock").prev().addClass("active");
     });
+
 </script>
 
 @endsection
