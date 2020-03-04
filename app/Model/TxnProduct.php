@@ -99,5 +99,10 @@ class TxnProduct extends Model
     {
         return $this->belongsTo(MapOfferProduct::class, 'id', 'product_id');
     }
+   
+    public function wishlist()
+    {
+        return $this->belongsTo(Wishlist::class, 'id', 'product_id');
+    }
 
 }

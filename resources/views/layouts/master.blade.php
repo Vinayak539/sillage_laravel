@@ -337,8 +337,11 @@
                                     </li>
                                     <li class="header-toolbar__item">
                                         <a href="#" class="mini-cart-btn toolbar-btn">
-                                            <i class="dl-icon-heart3 toolbar-btn-cls text-black" aria-hidden="true"></i>
-                                            <sup class="mini-cart-count">2</sup>
+                                            @if($wishlists == 0)
+                                                <i class="dl-icon-heart3 toolbar-btn-cls text-black" aria-hidden="true"></i>
+                                            @else
+                                                <i class="dl-icon-heart toolbar-btn-cls colorfull-heart" aria-hidden="true"></i>
+                                            @endif
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item">
