@@ -86,11 +86,12 @@ class MainController extends Controller
                 ->get();
 
             $related_products = \DB::table('txn_products as p')
-                ->selectRaw("p.id as product_id , p.title, c.id as cate_id , p.slug_url, p.image_url,map.mrp, map.starting_price,GROUP_CONCAT(DISTINCT(co.color_code)) as color_codes, p.image_url1, p.status, p.review_status , FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment, c.name as category_name, c.slug_url as category_url")
+                ->selectRaw("p.id as product_id , p.title,w.id as w_id, w.user_id as w_u_id, w.product_id as w_product_id,map.color_id as c_id, map.size_id as s_id,  c.id as cate_id , p.slug_url, p.image_url,map.mrp, map.starting_price,GROUP_CONCAT(DISTINCT(co.color_code)) as color_codes, p.image_url1, p.status, p.review_status , FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment, c.name as category_name, c.slug_url as category_url")
                 ->leftJoin("txn_reviews as r", "r.product_id", "p.id")
                 ->leftJoin("map_color_sizes as map", "map.product_id", "p.id")
                 ->leftJoin("mst_colors as co", "co.id", "map.color_id")
                 ->leftJoin("txn_categories as c", "c.id", "p.category_id")
+                ->leftJoin("wishlists as w", "p.id", "w.product_id")
                 ->where('p.status', true)
                 ->where('p.id', '<>' ,$product->id)
                 ->Where('c.id', $product->category_id)
@@ -99,6 +100,7 @@ class MainController extends Controller
                 ->limit(6)
                 ->get();
 
+//            dd($related_products);
             $offers = DB::table('txn_products as p')
                 ->selectRaw('p.title as product_name, p.id as product_id, m.color_id, m.size_id, c.title as color_name, s.title as size_name, m.id as offer_id, mop.purchase_quantity, mop.offered_quantity, mop.id as map_id, mop.map_offer_id, timg.image_url')
                 ->join("map_mst_offer_products as m", "m.offer_product_id", "p.id")
@@ -172,23 +174,25 @@ class MainController extends Controller
         if ($request->filled('q')) {
 
             $products = \DB::table('txn_products as p')
-                ->selectRaw("p.id , p.title , p.slug_url , p.image_url, p.image_url1,p.review_status, FLOOR(AVG(r.rating)) as rating , map.mrp, map.starting_price,
+                ->selectRaw("p.id , p.title , p.slug_url,w.user_id as w_u_id, w.id as w_id, w.product_id as w_product_id,map.color_id as c_id, map.size_id as s_id , p.image_url, p.image_url1,p.review_status, FLOOR(AVG(r.rating)) as rating , map.mrp, map.starting_price,
                 GROUP_CONCAT(DISTINCT(c.color_code)) as color_codes, COUNT(Distinct(r.comment)) as total_comment")
                 ->leftJoin("txn_reviews as r", "r.product_id", "p.id")
                 ->leftJoin("map_color_sizes as map", "map.product_id", "p.id")
                 ->leftJoin("mst_colors as c", "c.id", "map.color_id")
                 ->leftJoin("txn_keywords as k", "k.product_id", "p.id")
+                ->leftJoin("wishlists as w", "p.id", "w.product_id")
                 ->where('p.status', '=', true)
                 ->where('k.keyword', 'like', '%' . $request->q . '%');
         } else {
 
             $products = \DB::table('txn_products as p')
-                ->selectRaw("p.id , p.title , p.slug_url , p.image_url,p.review_status, p.image_url1, FLOOR(AVG(r.rating)) as rating , map.mrp, map.starting_price,
+                ->selectRaw("p.id , p.title , p.slug_url,w.user_id as w_u_id,w.id as w_id, w.product_id as w_product_id,map.color_id as c_id, map.size_id as s_id , p.image_url,p.review_status, p.image_url1, FLOOR(AVG(r.rating)) as rating , map.mrp, map.starting_price,
                 GROUP_CONCAT(DISTINCT(c.color_code)) as color_codes, COUNT(Distinct(r.comment)) as total_comment")
                 ->leftJoin("map_color_sizes as map", "map.product_id", "p.id")
                 ->leftJoin("mst_colors as c", "c.id", "map.color_id")
                 ->leftJoin("txn_reviews as r", "r.product_id", "p.id")
                 ->leftJoin("txn_keywords as k", "k.product_id", "p.id")
+                ->leftJoin("wishlists as w", "p.id", "w.product_id")
                 ->where('p.status', '=', true);
         }
 
@@ -323,12 +327,13 @@ class MainController extends Controller
             }
 
             $products = \DB::table('txn_products as p')
-                ->selectRaw("p.id , p.title , p.slug_url, p.image_url, p.image_url1,p.review_status, map.mrp, map.starting_price,
+                ->selectRaw("p.id , p.title , p.slug_url,w.user_id as w_u_id,w.id as w_id, w.product_id as w_product_id,map.color_id as c_id, map.size_id as s_id, p.image_url, p.image_url1,p.review_status, map.mrp, map.starting_price,
                 GROUP_CONCAT(DISTINCT(co.color_code)) as color_codes, p.category_id ,c.parent_id, FLOOR(AVG(r.rating)) as rating , COUNT(Distinct(r.comment)) as total_comment")
                 ->leftJoin("map_color_sizes as map", "map.product_id", "p.id")
                 ->leftJoin("mst_colors as co", "co.id", "map.color_id")
                 ->leftJoin("txn_reviews as r", "r.product_id", "p.id")
                 ->leftJoin("txn_categories as c", "p.category_id", "c.id")
+                ->leftJoin("wishlists as w", "p.id", "w.product_id")
                 ->where('p.status', true)
                 ->whereIN('p.category_id', $cateLists)
                 ->groupBy("p.id")

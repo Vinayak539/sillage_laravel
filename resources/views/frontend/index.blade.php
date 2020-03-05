@@ -141,7 +141,7 @@
             @php
 
             $product = DB::table('txn_products as p')
-            ->selectRaw("p.id,p.title,p.slug_url, p.image_url, w.id as w_id, w.product_id as w_product_id, p.image_url1,
+            ->selectRaw("p.id,p.title,p.slug_url, p.image_url,w.user_id as w_u_id, w.id as w_id, w.product_id as w_product_id, p.image_url1,
             p.review_status,map.color_id as c_id, map.size_id as s_id, map.mrp, map.starting_price,
             GROUP_CONCAT(DISTINCT(c.color_code)) as color_codes,
             FLOOR(AVG(txn_reviews.rating)) as
@@ -188,7 +188,7 @@
                             </div>
                             <span class="product-trending">Trending</span>
                             @if(auth('user')->check())
-                                @if(auth('user')->user()->id && $product->w_product_id == $product->id)
+                                @if(auth('user')->user()->id == $product->w_u_id && $product->w_product_id == $product->id)
                                 <span class="product-badge fav wishlist-remove" data-w-id="{{ $product->w_id }}"><i
                                         class="fa fa-heart colorfull-heart" aria-hidden="true" title="Remove from Wishlist"></i></span>
                                 @else

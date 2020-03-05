@@ -184,7 +184,7 @@
                                             {"breakpoint":450, "settings": {"slidesToShow": 4} }
                                         ]'>
                             </div>
-                            
+
                             @endif
                         </div>
 
@@ -365,19 +365,31 @@
                                             </a>
                                         </div>
                                         <span class="product-trending">Trending</span>
-                                        <span class="product-badge fav"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
+                                        @if(auth('user')->check())
+                                            @if(auth('user')->user()->id == $rproduct->w_u_id && $rproduct->w_product_id == $rproduct->product_id)
+                                                <span class="product-badge fav wishlist-remove" data-w-id="{{ $rproduct->w_id }}"><i
+                                                        class="fa fa-heart colorfull-heart" aria-hidden="true" title="Remove from Wishlist"></i></span>
+                                            @else
+                                                <span class="product-badge fav wishlist" data-p-id="{{ $rproduct->product_id }}"
+                                                      data-c-id="{{ $rproduct->c_id }}" data-s-id="{{ $rproduct->s_id }}" title="Add to Wishlist"><i
+                                                        class="fa fa-heart-o" aria-hidden="true"></i></span>
+                                            @endif
+                                        @else
+                                            <span class="product-badge fav wishlist-login"><i class="fa fa-heart-o"
+                                                                                              aria-hidden="true" title="Add to Wishlist"></i></span>
+                                        @endif
                                     </figure>
                                     <!-- Color  -->
-                                        @php 
+                                        @php
                                             $colors = explode(",", $rproduct->color_codes);
                                             $getDiff = $rproduct->starting_price - $rproduct->mrp;
-                                            $getOffer = round(($getDiff / $rproduct->starting_price) * 100, 0);                             
+                                            $getOffer = round(($getDiff / $rproduct->starting_price) * 100, 0);
                                         @endphp
                                     <div class="product-info">
                                         <h3 class="product-title">
                                             <a
                                                 href="{{ route('product',$rproduct->slug_url) }}">{{ $rproduct->title }}</a>
-                                            
+
                                         </h3>
                                         <span class="product-price-wrapper">
                                             <span class="money"><i class="fa fa-inr"></i> {{ $rproduct->mrp }}</span>
@@ -798,7 +810,7 @@
         $(".collapse.show").each(function(){
         	$(this).prev(".index-product-description-title").find(".fa").addClass("fa-minus").removeClass("fa-plus");
         });
-        
+
         // Toggle plus minus icon on show hide of collapse element
         $(".collapse").on('show.bs.collapse', function(){
         	$(this).prev(".index-product-description-title").find(".fa").removeClass("fa-plus").addClass("fa-minus");
@@ -806,7 +818,7 @@
         	$(this).prev(".index-product-description-title").find(".fa").removeClass("fa-minus").addClass("fa-plus");
         });
     });
-    
+
     $(document).ready(function () {
 
         var color_id = $('.product-color-swatch-btn').attr('data-color-id');
@@ -885,11 +897,11 @@
             var oquantity = $(this).attr('data-offered-quantity');
             var quantity = $('.quantity-input').val();
             var index = $(this).attr('data-index');
-            
+
             if (total_offers[index]) {
-                
+
                 delete total_offers[index];
-                
+
                 $(this).removeClass('active');
 
                 sessionStorage.setItem("offers", JSON.stringify(total_offers));
@@ -899,16 +911,16 @@
             var offer_count = Object.keys(total_offers).length;
 
             var result = checkOfferQuantity(offer_count, quantity);
-            
+
             if(result){
-                
+
                 var pname = $(this).attr('data-product-name');
                 var pcolor = $(this).attr('data-color');
                 var psize = $(this).attr('data-size');
                 var offer_id = $(this).attr('data-offered-id');
                 var map_id = $(this).attr('data-map-id');
                 var image_path = $(this).attr('data-image');
-                               
+
                 if (quantity >= pquantity) {
                     if (!offers[index]) {
                         offers[index] = {};
@@ -920,7 +932,7 @@
                             'map_id': map_id,
                             'image_url': image_path,
                         };
-                        
+
                         $(this).addClass('active');
 
                     } else {
@@ -929,12 +941,12 @@
                     }
 
                     sessionStorage.setItem("offers", JSON.stringify(offers));
-                    
+
                 } else {
                     swal('Invalid', 'On Purchase of ' + pquantity + ' Choose Any ' + oquantity, 'error');
                 }
              }else{
-               
+
                 var ofrs =  $('.offer_product').not('.active');
 
                 for (const key in ofrs) {
@@ -948,12 +960,12 @@
         });
 
         $('#formBulkOrder').validate({
-            
+
             rules: {
 
                 name:{
                     required: true,
-                }, 
+                },
 
                 email: {
                     required: true,
@@ -964,12 +976,12 @@
                     number: true,
                     minlength: 10,
                     maxlength: 10
-                }, 
+                },
 
                 message: {
                     required: true
                 }
-            }, 
+            },
 
             messages: {
 
@@ -979,7 +991,7 @@
 
                 email: {
                     required: "Please Enter Email"
-                }, 
+                },
 
                 mobile: {
                     required: "Please Enter Mobile Number",
@@ -1045,13 +1057,13 @@
                 }
                  // Add Pixel Events to the button's click handler
                  fbq('track', 'AddToCart', {
-                    content_name: '{{ $product->title }}', 
+                    content_name: '{{ $product->title }}',
                     content_category: '{{ $product->category->name }}',
                     content_ids: ['{{ $product->id }}'],
                     content_type: 'product',
                     value: 0,
-                    currency: 'INR' 
-                });          
+                    currency: 'INR'
+                });
                 $('#cartForm').submit();
                 $(this).html(
                     '<i class="fa fa-spinner fa-pulse fa-fw text-light"></i><span class="sr-only">Loading...</span>'
@@ -1078,7 +1090,7 @@
         $('.product-color-swatch-btn').click(function (e) {
 
             $('.product-color-swatch-btn').removeClass('active')
-         
+
             $(this).addClass('active')
 
             var mrp = $(this).attr('data-mrp');
@@ -1108,7 +1120,7 @@
                 $('.starting_price').html('<i class="fa fa-inr"></i> ' + starting_price);
 
                 var size_id = $('.product-size-swatch-btn:first-child').attr('data-size-id');
-                    
+
                     getSizePrice(size_id, color_id, product_id);
             }
 
@@ -1123,7 +1135,7 @@
 
 
         });
-       
+
         function elementCarousel(elementClass){
         $html = $('html');
         $body = $('body');
@@ -1348,36 +1360,36 @@
                                         "infinite": true,
                                         "focusOnSelect": true,
                                         "asNavFor": ".main-slider",
-                                        "arrows": true, 
+                                        "arrows": true,
                                         "prevArrow": {"buttonClass": "slick-btn slick-prev", "iconClass": "fa fa-angle-up" },
                                         "nextArrow": {"buttonClass": "slick-btn slick-next", "iconClass": "fa fa-angle-down" }
                                     }'
                                     data-slick-responsive='[
                                         {
-                                            "breakpoint":992, 
+                                            "breakpoint":992,
                                             "settings": {
                                                 "slidesToShow": 5,
                                                 "vertical": false,
                                                 "verticalSwiping": false
-                                            } 
+                                            }
                                         },
                                         {
-                                            "breakpoint":575, 
+                                            "breakpoint":575,
                                             "settings": {
                                                 "centerMode" : true,
                                                 "slidesToShow": 4,
                                                 "vertical": false,
                                                 "verticalSwiping": false
-                                            } 
+                                            }
                                         },
                                         {
-                                            "breakpoint":480, 
+                                            "breakpoint":480,
                                             "settings": {
                                                 "centerMode" : true,
                                                 "slidesToShow": 3,
                                                 "vertical": false,
                                                 "verticalSwiping": false
-                                            } 
+                                            }
                                         }
                                     ]'>`;
                         mainSlider = `<div class="main-slider">`;
@@ -1513,7 +1525,7 @@
                         $('.mrp').html('<i class="fa fa-inr"></i> ' + success.mrp);
 
                         var getDiff = success.starting_price - success.mrp;
-                                var getOffer = Math.round((getDiff / success.starting_price) * 100, 0);      
+                                var getOffer = Math.round((getDiff / success.starting_price) * 100, 0);
 
                         $('.priceOffer').html('('+getOffer + '% OFF)');
 
@@ -1541,7 +1553,7 @@
 
         if(offer_counts >= count*quantity)
         {
-            return false;   
+            return false;
         }
 
         $('.offer_product ').removeClass('disabledOffer');
