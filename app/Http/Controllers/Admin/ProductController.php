@@ -151,12 +151,12 @@ class ProductController extends Controller
         }
 
         if ($request->hasFile('image_url')) {
-            $request['img'] = "front_" . Str::slug(Str::limit($request->title, 20), '-') . '-' . rand(0, 10) . '.' . pathinfo($request->image_url->getClientOriginalName(), PATHINFO_EXTENSION);
+            $request['img'] = "front_" . Str::slug(Str::limit($request->title, 20), '-') . '-' . rand(0000, 9999) . '.' . pathinfo($request->image_url->getClientOriginalName(), PATHINFO_EXTENSION);
             $request->image_url->storeAs('public/images/products', $request->img);
         }
 
         if ($request->hasFile('image_url1')) {
-            $request['img1'] = "back_" . Str::slug(Str::limit($request->title, 20), '-') . '-' . rand(0, 10) . '.' . pathinfo($request->image_url1->getClientOriginalName(), PATHINFO_EXTENSION);
+            $request['img1'] = "back_" . Str::slug(Str::limit($request->title, 20), '-') . '-' . rand(0000, 9999) . '.' . pathinfo($request->image_url1->getClientOriginalName(), PATHINFO_EXTENSION);
             $request->image_url1->storeAs('public/images/products', $request->img1);
         }
 
@@ -393,6 +393,7 @@ class ProductController extends Controller
         try {
 
             $product = TxnProduct::where('slug_url', $id)->with('offer')->firstOrFail();
+
             if ($request->hasFile('image_url')) {
 
                 $old_image = public_path('/storage/images/products/' . $product->image_url);
@@ -401,7 +402,13 @@ class ProductController extends Controller
                     File::delete($old_image);
                 }
 
-                $request->image_url->storeAs('public/images/products', $product->image_url);
+                $request['img'] = "front-" . Str::slug(Str::limit($request->title, 20), '-') . '-' . rand(0000, 9999) . '.' . pathinfo($request->image_url->getClientOriginalName(), PATHINFO_EXTENSION);
+
+                $request->image_url->storeAs('public/images/products', $request->img);
+
+                $product->update([
+                    'image_url' => $request->img
+                ]);
             }
 
             if ($request->hasFile('image_url1')) {
@@ -412,7 +419,14 @@ class ProductController extends Controller
                     File::delete($old_image);
                 }
 
-                $request->image_url1->storeAs('public/images/products', $product->image_url1);
+                $request['img1'] = "back-" . Str::slug(Str::limit($request->title, 20), '-') . '-' . rand(0000, 9999) . '.' . pathinfo($request->image_url->getClientOriginalName(), PATHINFO_EXTENSION);
+
+                $request->image_url1->storeAs('public/images/products', $request->img1);
+
+                $product->update([
+                    'image_url1' => $request->img1
+                ]);
+
             }
 
             $category = TxnCategory::where('id', $request->category_id)->first();
