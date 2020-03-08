@@ -25,8 +25,8 @@ class MainController extends Controller
 {
     public function index()
     {
-        $sliders          = Slider::where('status', true)->orderBy('sort_index')->get();
-        $testimonials     = Testimonial::where('status', true)->orderBy('sort_index')->get();
+        $sliders = Slider::where('status', true)->orderBy('sort_index')->get();
+        $testimonials = Testimonial::where('status', true)->orderBy('sort_index')->get();
         $homeOfferSliders = HomeOfferSlider::where('status', true)->orderBy('sort_index')->get();
         $sections = MsSection::where('status', true)->with('msections')->get();
         return view('frontend.index', compact('sliders', 'sections', 'testimonials', 'homeOfferSliders'));
@@ -93,11 +93,10 @@ class MainController extends Controller
                 ->leftJoin("txn_categories as c", "c.id", "p.category_id")
                 ->leftJoin("wishlists as w", "p.id", "w.product_id")
                 ->where('p.status', true)
-                ->where('p.id', '<>' ,$product->id)
+                ->where('p.id', '<>', $product->id)
                 ->Where('c.id', $product->category_id)
                 ->orderBy('p.id', 'DESC')
                 ->groupBy("p.id")
-                ->limit(6)
                 ->get();
 
 //            dd($related_products);
@@ -108,14 +107,14 @@ class MainController extends Controller
                 ->join("mst_sizes as s", "m.size_id", "s.id")
                 ->join("mst_offers as o", "m.offer_id", "o.id")
                 ->join("map_offer_products as mop", "mop.mst_offer_id", "m.offer_id")
-                ->join("txn_images as timg",function($join){
-                    $join->on("timg.product_id","=","m.offer_product_id")
-                        ->on("timg.color_id","=","m.color_id");
+                ->join("txn_images as timg", function ($join) {
+                    $join->on("timg.product_id", "=", "m.offer_product_id")
+                        ->on("timg.color_id", "=", "m.color_id");
                 })
-                ->join("map_color_sizes as mcs",function($join){
-                    $join->on("mcs.product_id","=","m.offer_product_id")
-                        ->on("mcs.color_id","=","c.id")
-                        ->on("mcs.size_id","=","s.id");
+                ->join("map_color_sizes as mcs", function ($join) {
+                    $join->on("mcs.product_id", "=", "m.offer_product_id")
+                        ->on("mcs.color_id", "=", "c.id")
+                        ->on("mcs.size_id", "=", "s.id");
                 })
                 ->groupBy('m.offer_product_id', 'm.color_id', 'm.size_id')
                 ->where('o.status', true)
@@ -125,7 +124,7 @@ class MainController extends Controller
                 ->where('mop.product_id', $product->id)
                 ->get();
 
-                // dd($offers);
+            // dd($offers);
 
             return view('frontend.product.show', compact('product', 'related_products', 'prod', 'colorsSizes', 'offers'));
 
@@ -160,7 +159,7 @@ class MainController extends Controller
 
     public function verifyPincode(Request $request)
     {
-        $res  = Delivery::verify($request->pincode);
+        $res = Delivery::verify($request->pincode);
         $res1 = json_decode($res, true);
         if (count($res1['delivery_codes'])) {
             session(['pincode' => $request->pincode]);
@@ -196,7 +195,7 @@ class MainController extends Controller
                 ->where('p.status', '=', true);
         }
 
-        $products  = $products->orderBy('p.id', 'DESC')->groupBy("p.id")->paginate(50);
+        $products = $products->orderBy('p.id', 'DESC')->groupBy("p.id")->paginate(50);
         $prodLists = [];
 
         foreach ($products as $prod) {
@@ -267,7 +266,7 @@ class MainController extends Controller
             where   find_in_set(parent_id, @pv) > 0
             and     @pv := concat(@pv, ',', id)"));
 
-        $cateLists    = [];
+        $cateLists = [];
         $cateLists[0] = $category->id;
 
         foreach ($categories as $cate) {
@@ -282,14 +281,14 @@ class MainController extends Controller
             ->whereIN('p.category_id', $cateLists);
 
         $brands = \DB::table('txn_products as p')
-                ->selectRaw("Distinct(b.id) as id, b.brand_name")
-                ->leftJoin("txn_brands as b", "p.brand_id", "b.id")
-                ->where('p.status', true)
-                ->whereIN('p.category_id', $cateLists)
-                ->groupBy("p.id")
-                ->get();
+            ->selectRaw("Distinct(b.id) as id, b.brand_name")
+            ->leftJoin("txn_brands as b", "p.brand_id", "b.id")
+            ->where('p.status', true)
+            ->whereIN('p.category_id', $cateLists)
+            ->groupBy("p.id")
+            ->get();
 
-            $conditions = TxnCondition::where('status', true)->get();
+        $conditions = TxnCondition::where('status', true)->get();
 
         if ($request->filled('brands') && gettype($request->brands) == 'array') {
             $products = $products->whereIn('p.brand_id', $request->brands);
@@ -319,7 +318,7 @@ class MainController extends Controller
             where   find_in_set(parent_id, @pv) > 0
             and     @pv := concat(@pv, ',', id)"));
 
-            $cateLists    = [];
+            $cateLists = [];
             $cateLists[0] = $category->id;
 
             foreach ($categories as $cate) {
@@ -381,9 +380,9 @@ class MainController extends Controller
             $product = TxnProduct::where('id', $id)->firstOrFail();
 
             $qna = ProductFaq::create([
-                'question'   => $request->question,
+                'question' => $request->question,
                 'product_id' => $product->id,
-                'status'     => false,
+                'status' => false,
             ]);
 
             Mail::send(['html' => 'backend.mails.question'], ['qna' => $qna, 'product' => $product], function ($message) {
@@ -426,14 +425,14 @@ class MainController extends Controller
 
     public function getSizePrice(Request $request)
     {
-        try{
+        try {
 
             $result = MapColorSize::select('mrp', 'starting_price')->where('product_id', $request->product_id)->where('color_id', $request->color_id)->where('size_id', $request->size_id)->where('status', true)->firstOrFail();
 
             return response()->json(['success' => $result]);
 
-        }catch(\Exception $ex){
-            if($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException){
+        } catch (\Exception $ex) {
+            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
 
                 return response()->json(['error' => 'Whoops something went wrong !']);
             }
