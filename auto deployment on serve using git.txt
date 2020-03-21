@@ -15,7 +15,7 @@ On Server using ssh
 => create a file named post-receive
 
 => write in post-receive file 
-#!/bin/sh 
+#!/bin/bash 
 git --work-tree=/home/ranay3eu --git-dir=/home/ranay3eu/repo/site.git checkout -f
 
 => run command "chmod +x post-receive"
