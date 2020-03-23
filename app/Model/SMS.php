@@ -2,22 +2,22 @@
 namespace App\Model;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Log;
-use Validator;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use \GuzzleHttp\Client;
 
 class SMS implements ShouldQueue
 {
-    public static $user     = "hniperfumes";
+    public static $user = "hniperfumes";
     public static $password = "hni@2019";
     public static $senderid = "hnipfm";
-    public static $route    = "06";
+    public static $route = "06";
 
     public static function send($mobile, $text)
     {
         $val = Validator::make(['mobile' => $mobile, 'text' => $text], [
             'mobile' => 'required|digits:10',
-            'text'   => 'required|string|max:250',
+            'text' => 'required|string|max:250',
         ]);
         if ($val->fails()) {
             Log::info($val->errors());
