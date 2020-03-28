@@ -72,6 +72,13 @@
                         </td>
                     </tr>
 
+                    @if($order->promocode)
+                    <tr>
+                        <th>Promocode</th>
+                        <td>{{ $order->promocode }}</td>
+                    </tr>
+                    @endif
+
                     @if($order->status === 'Delivered' && $order->delivery_date)
                     <tr>
                         <th>Delivered At</th>
@@ -180,12 +187,13 @@
                     @php
                         $offers = json_decode($detail->offers);
                         $exp_offers = explode(",", $offers);
+                        $image = \App\Model\TxnImage::image($detail->product_id, $detail->color_id);
                     @endphp
                     <tr>
                         <td>
-                            <a href="{{ asset('/storage/images/products/'. $detail->product->image_url) }}"
+                            <a href="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}"
                                 target="_blank"><img
-                                    data-original="{{ asset('/storage/images/products/'. $detail->product->image_url) }}"
+                                    data-src="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}"
                                     alt="{{ $detail->product->title }}" width="50" class="img img-responsive lazy"></a>
                         </td>
                         <td>
@@ -193,17 +201,18 @@
 
                             {{ $detail->size ? 'Size: ' . $detail->size->title : '' }} <br>
                             {{ $detail->color ? 'Colour: ' . $detail->color->title : '' }}
+                            @if($offers)
+                                @if(!empty($exp_offers))
+                                <br>
+                                <br>
+                                    @foreach($exp_offers as $ofr)
+                                        @php
+                                            $offer = \App\Model\MapMstOfferProduct::where('id', $ofr)->with('product', 'color', 'size')->first();
+                                        @endphp
 
-                            @if(!empty($exp_offers))
-                            <br>
-                            <br>
-                                @foreach($exp_offers as $ofr)
-                                    @php
-                                        $offer = \App\Model\MapMstOfferProduct::where('id', $ofr)->with('product', 'color', 'size')->first();
-                                    @endphp
-
-                                    + {{ $offer->product->title }} [{{ $offer->size->title }} ML] <br />
-                                @endforeach
+                                        + {{ $offer->product->title }} [{{ $offer->size->title }} ML] <br />
+                                    @endforeach
+                                @endif
                             @endif
                         </td>
                         <td>{{ $detail->mrp }}</td>
@@ -218,7 +227,8 @@
                             <p>Total Amount : &#8377; {{ $order->tbt }}</p>
                             <p>+ CGST : &#8377; {{ round($order->tax/2, 2) }}</p>
                             <p>+ SGST : &#8377; {{ round($order->tax/2, 2) }}</p>
-                            @if($order->discount)<p>- Discount : &#8377; {{ $order->discount }}</p>@endif
+                            <p>+ Shipping : &#8377; {{ $order->total >= 1000 ? 0 : 60 }}</p>
+                            <p>- Discount : &#8377; {{ $order->discount ? $order->discount : 0 }}</p>
                             <p>Grand Total : &#8377; {{ $order->total }}</p>
                         </th>
                     </tr>

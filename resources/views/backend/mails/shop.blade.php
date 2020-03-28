@@ -259,7 +259,7 @@
                             Link:
                         </td>
                         <td>
-                            {{ route('shop.login') }}
+                            <a href="{{ route('shop.login') }}" target="_blank">Click here</a>
                         </td>
                     </tr>
 

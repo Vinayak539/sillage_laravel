@@ -51,18 +51,7 @@
                                     />
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="password">Old Password </label>
-                                    <input
-                                        type="password"
-                                        name="password"
-                                        id="password"
-                                        class="form-control"
-                                        placeholder="Password"
-                                    />
-                                </div>
-                            </div>
+                            
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="password">Password </label>
@@ -72,6 +61,19 @@
                                         id="password"
                                         class="form-control"
                                         placeholder="Password"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="old_password">Old Password </label>
+                                    <input
+                                        type="password"
+                                        name="old_password"
+                                        id="old_password"
+                                        class="form-control"
+                                        placeholder="Old Password"
                                     />
                                 </div>
                             </div>
@@ -100,7 +102,7 @@
                                     <div>
                                         @if ($admin->image_url)
                                         <img
-                                        data-original="{!! asset('storage/images/admins/' . $admin->image_url ) !!}"
+                                        data-src="{!! asset('storage/images/admins/' . $admin->image_url ) !!}"
                                             alt="{{ $admin->name }}"
                                             class="img img-responsive img-circle lazy"
                                             width="200px !important"

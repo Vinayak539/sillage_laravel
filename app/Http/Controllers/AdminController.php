@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Model\Admin;
+use App\Model\Subscriber;
 use App\Model\TxnOrder;
 use App\Model\TxnUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -28,46 +31,23 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $admins            = Admin::count();
-        $users             = TxnUser::count();
-        $subscribers       = TxnUser::where('is_subcribed', true)->count();
-        $today_users       = TxnUser::whereDate('created_at', \Carbon\Carbon::today())->count();
-        $todays_sales      = TxnOrder::where('status', 'Booked')->whereDate('created_at', \Carbon\Carbon::today())->sum('total');
-        $pending_shippings = TxnOrder::where('status', 'Booked')->count();
-        $orders            = TxnOrder::whereNotIn('status', ['nc', 'pending', 'returned'])->count();
-        // $month_orders  = TxnOrder::where('status', 'Booked')->whereMonth('created_at', \Carbon\Carbon::today())->sum('total');
-        return view('adminauth.index', compact(['admins', 'pending_shippings', 'todays_sales', 'users', 'today_users', 'orders', 'subscribers']));
+        $subscribers  = Subscriber::where('status', true)->count();
+        $today_users  = TxnUser::whereDate('created_at', \Carbon\Carbon::today())->count();
+        $todays_sales = TxnOrder::where('status', 'Booked')->whereDate('created_at', \Carbon\Carbon::today())->sum('total');
+        $orders       = TxnOrder::whereNotIn('status', ['nc', 'Pending', 'Returned'])->whereDate('created_at', \Carbon\Carbon::today())->count();
+
+        $new_orders = TxnOrder::whereNotIn('status', ['nc', 'Pending', 'Returned'])->with('user')->latest()->limit(10)->get();
+        $new_users  = TxnUser::latest()->limit(10)->get();
+
+        return view('adminauth.index', compact(['todays_sales', 'today_users', 'orders', 'subscribers', 'new_orders', 'new_users']));
     }
 
-    public function profile()
-    {
-        return view('adminauth.edit')->with('admin', auth('admin')->user());
-    }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name'     => 'required|string|max:191',
-            'email'    => 'required|email|max:191',
-            'password' => 'required|string|max:191',
-        ]);
-
-        Admin::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
-
-        connectify('success', 'Admin Added', 'Admin has been added successfully 1');
-
-        return redirect(route('admin.admins.all'));
-    }
-
-    public function edit($id)
+    public function edit()
     {
         try {
 
-            $admin = Admin::where('id', $id)->firstOrFail();
+            $admin = Admin::where('id', auth('admin')->user()->id)->firstOrFail();
             return view('adminauth.edit', compact('admin'));
 
         } catch (\Exception $ex) {
@@ -76,23 +56,36 @@ class AdminController extends Controller
 
                 connectify('error', 'Error', 'Whoops, Account Not Found !');
 
-                return redirect(route('admin.admins.all'));
+                return redirect(route('admin.dashboard'));
             }
 
             connectify('error', 'Error', 'Whoops, Something Went Wrong from our end');
 
-            return redirect(route('admin.admins.all'));
+            return redirect(route('admin.dashboard'));
         }
     }
 
     public function update(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:191',
-        ]);
+        $validator = Validator::make($request->all(), [
+            'name'         => 'required|string|max:191',
+            'password'     => 'required_with:old_password|max:191',
+            'old_password' => 'required_with:password|max:191',
+        ],
+            [
+                'name.required'          => 'Please Enter Name',
+                'password.required_with' => 'Please Enter New Password to change Password',
+                'old_password.required_with' => 'Please Enter Old Password to chnage Password'
+            ]);
+
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return redirect(route('admin.profile'))->withInput();
+        }
 
         try {
-            $admin = Admin::where('id', auth()->user()->id)->firstOrFail();
+
+            $admin = Admin::where('id', auth('admin')->user()->id)->firstOrFail();
 
             if ($request->hasFile('image_url')) {
 
@@ -109,10 +102,26 @@ class AdminController extends Controller
                 $request->image_url->storeAs('public/images/admins', $admin->image_url);
             }
 
+            $old_password = $request->old_password;
+
+            $current_password = $admin->password;
+
             if ($request->filled('password')) {
-                $admin->update([
-                    'password' => bcrypt($request->password),
-                ]);
+
+                if (!Hash::check($old_password, $current_password)) {
+
+                    connectify('error', 'Invalid Password', 'Invalid Password, Please Enter Correct Password.');
+
+                    return redirect(route('admin.profile'));
+
+                } else {
+
+                    $new_password = bcrypt($request->password);
+                    $admin->update([
+                        'password' => $new_password,
+                    ]);
+
+                }
             }
 
             $admin->update([
@@ -121,7 +130,7 @@ class AdminController extends Controller
 
             connectify('success', 'Profile Updated', 'Profile has been updated successfully !');
 
-            return redirect(route('admin.admins.edit', $admin->id));
+            return redirect(route('admin.profile'));
 
         } catch (\Exception $ex) {
 
@@ -129,55 +138,12 @@ class AdminController extends Controller
 
                 connectify('error', 'Error', 'Whoops, Account Not Found !');
 
-                return redirect(route('admin.admins.all'));
+                return redirect(route('admin.dashboard'));
             }
 
             connectify('error', 'Error', 'Whoops, Something Went Wrong from our end');
 
-            return redirect(route('admin.admins.all'));
-        }
-    }
-
-    public function manage()
-    {
-        $admins = Admin::get();
-        return view('adminauth.manage', compact('admins'));
-    }
-
-    public function destroy($id)
-    {
-        try {
-            $admin = Admin::where('id', $id)->firstOrFail();
-
-            if ($admin->super_admin == 1) {
-                return redirect(route('admin.admins.all'))->with('messageDanger', 'Whoops, Can not delete super admin');
-            }
-
-            if ($admin->image_url) {
-                $old_image = public_path("/storage/images/admins/" . $admin->image_url);
-                if (File::exists($old_image)) {
-                    File::delete($old_image);
-                }
-            }
-
-            $admin->delete();
-
-            connectify('success', 'Admin Delete', 'Admin has been removed successfully !');
-
-            return redirect(route('admin.admins.all'));
-
-        } catch (\Exception $ex) {
-
-            if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-
-                connectify('error', 'Error', 'Whoops, Account Not Found !');
-
-                return redirect(route('admin.admins.all'));
-            }
-
-            connectify('error', 'Error', 'Whoops, Something Went Wrong from our end');
-
-            return redirect(route('admin.admins.all'));
+            return redirect(route('admin.dashboard'));
         }
     }
 

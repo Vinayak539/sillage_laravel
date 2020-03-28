@@ -6,22 +6,11 @@ use GuzzleHttp\Client;
 
 class Delivery
 {
-    public static $logistic_client_id = "KHUSHINATURALSSURFACE-B2C";
-    public static $logistic_user_id   = "KHUSHINATURALSSURFACE";
-    public static $logistic_api_token = "ca0d07eade1578f5e1a5ed4b69d5780354a568c1";
-    public static $logistic_pickup    = "KHUSHINATURALS SURFACE";
-    public static $logistic_base_url    = "https://staging-express.delhivery.com";
-
-    public static $live_logistic_client_id = "KHUSHINATURALS SURFACE";
-    public static $live_logistic_user_id   = "KHUSHINATURALSSURFACE";
-    public static $live_logistic_api_token = "68b7e9fc555e3b81d4f451fe66871d9881c47e05";
-    public static $live_logistic_pickup    = "KHUSHINATURALS SURFACE";
-    public static $live_logistic_base_url    = "https://track.delhivery.com";
-// 
     public static function verify($pincode)
     {
         try {
-            $baseUrl = self::$live_logistic_base_url.'/c/api/pin-codes/json/?token=' . self::$live_logistic_api_token . '&filter_codes=' . $pincode;
+
+            $baseUrl = env('LOGISTIC_BASE_URL').'/c/api/pin-codes/json/?token=' . env('LOGISTIC_API_TOKEN') . '&filter_codes=' . $pincode;
             $client  = new \GuzzleHttp\Client([
                 'http_errors' => false,
             ]);
@@ -40,7 +29,7 @@ class Delivery
     {
         try {
 
-            $baseUrl = self::$live_logistic_base_url.'/api/packages/json/?ref_nos=' . $order . '&verbose=1&token=' . self::$live_logistic_api_token;
+            $baseUrl = env('LOGISTIC_BASE_URL').'/api/packages/json/?ref_nos=' . $order . '&verbose=1&token=' . env('LOGISTIC_API_TOKEN');
 
             $client = new \GuzzleHttp\Client([
                 'http_errors' => false,
@@ -67,13 +56,13 @@ class Delivery
                 "phone"        => $user->mobile,
                 "add"          => $order->address,
                 "payment_mode" => "Prepaid",
-                "client"       => self::$live_logistic_client_id,
+                "client"       => env('LOGISTIC_CLIENT_ID'),
                 "order"        => $order->id,
             ));
 
         $pickup = array(
             "city"    => "Thane",
-            "name"    => self::$live_logistic_pickup,
+            "name"    => env('LOGISTIC_PICKUP'),
             "pin"     => "421302",
             "country" => "India",
             "phone"   => "9619614785",
@@ -83,14 +72,14 @@ class Delivery
         $data = json_encode(array("shipments" => $original_array, "pickup_location" => $pickup));
         // dd('format=json&data=' . $data);
 
-        $curl = curl_init(self::$live_logistic_base_url.'/api/cmu/create.json');
+        $curl = curl_init(env('LOGISTIC_BASE_URL').'/api/cmu/create.json');
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_ENCODING, '');
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($curl, CURLOPT_POSTFIELDS, 'format=json&data=' . $data);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             "Accept: application/json",
-            "Authorization: Token " . self::$live_logistic_api_token,
+            "Authorization: Token " . env('LOGISTIC_API_TOKEN'),
             "Content-Type: application/json",
         ));
 
@@ -119,7 +108,7 @@ class Delivery
                 "phone"                => $user->mobile,
                 "add"                  => $order->address,
                 "payment_mode"         => "COD",
-                "client"               => self::$live_logistic_client_id,
+                "client"               => env('LOGISTIC_CLIENT_ID'),
                 "order"                => $order->id,
                 'consignee_gst_amount' => $order->tax,
                 'cod_amount'           => $order->total,
@@ -128,7 +117,7 @@ class Delivery
 
         $pickup = array(
             "city"    => "Thane",
-            "name"    => self::$live_logistic_pickup,
+            "name"    => env('LOGISTIC_PICKUP'),
             "pin"     => "421302",
             "country" => "India",
             "phone"   => "9619614785",
@@ -138,14 +127,14 @@ class Delivery
         $data = json_encode(array("shipments" => $original_array, "pickup_location" => $pickup));
         // dd('format=json&data=' . $data);
 
-        $curl = curl_init(self::$live_logistic_base_url.'/api/cmu/create.json');
+        $curl = curl_init(env('LOGISTIC_BASE_URL').'/api/cmu/create.json');
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_ENCODING, '');
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($curl, CURLOPT_POSTFIELDS, 'format=json&data=' . $data);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             "Accept: application/json",
-            "Authorization: Token " . self::$live_logistic_api_token,
+            "Authorization: Token " . env('LOGISTIC_API_TOKEN'),
             "Content-Type: application/json",
         ));
 
@@ -174,14 +163,14 @@ class Delivery
 
             $data = json_encode($details);
 
-            $curl = curl_init(self::$live_logistic_base_url.'/api/p/edit');
+            $curl = curl_init(env('LOGISTIC_BASE_URL').'/api/p/edit');
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_ENCODING, '');
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
             curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
             curl_setopt($curl, CURLOPT_HTTPHEADER, array(
                 "Accept: application/json",
-                "Authorization: Token " . self::$live_logistic_api_token,
+                "Authorization: Token " . env('LOGISTIC_API_TOKEN'),
                 "Content-Type: application/json",
             ));
 

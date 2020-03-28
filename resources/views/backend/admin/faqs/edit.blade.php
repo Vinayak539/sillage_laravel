@@ -13,14 +13,14 @@
 
     <div class="card">
         <div class="card-body">
-            <form method="post" class="needs-validation">
+            <form method="post" class="needs-validation" id="formEditFaq">
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="question">Question <span class="text-danger">*</span></label>
                             <textarea name="question" id="question" rows="10" class="form-control"
-                                placeholder="Enter Question here...">{{ $faq->question }}</textarea>
+                                placeholder="Enter Question here..." required>{{ $faq->question }}</textarea>
                         </div>
                     </div>
     
@@ -28,14 +28,14 @@
                         <div class="form-group">
                             <label for="answer">Answer <span class="text-danger">*</span></label>
                             <textarea name="answer" id="answer" rows="10" class="form-control"
-                                placeholder="Enter Answer here...">{{ $faq->answer }}</textarea>
+                                placeholder="Enter Answer here..." required>{{ $faq->answer }}</textarea>
                         </div>
                     </div>
     
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="status">Status </label>
-                            <select name="status" id="status" class="form-control">
+                            <select name="status" id="status" class="form-control" required>
                                 <option value="">--Select--</option>
                                 <option value="1" {{ $faq->status == true ? 'selected': '' }}>Active</option>
                                 <option value="0" {{ $faq->status == false ? 'selected': '' }}>Inactive</option>
@@ -52,4 +52,59 @@
         </div>
     </div>
 </section>
+@endsection
+
+@section('extrajs')
+<script>
+    $(document).ready(function () {
+
+
+        $("#formEditFaq").validate({
+            rules: {
+
+                question: {
+                    required: true
+                },
+
+                answer: {
+                    required: true
+                },
+
+                status: {
+                    required: true
+                },
+            },
+            messages: {
+
+                question: {
+                    required: "Please Enter Question"
+                },
+
+                answer: {
+                    required: "Please Enter Answer"
+                },
+
+                status: {
+                    required: "Please Select Status"
+                },
+            },
+            submitHandler: function (form) {
+                $('.btnSubmit').attr('disabled', 'disabled');
+                $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+                form.submit();
+            }
+        });
+
+        $(".delete-object").click(function () {
+            if (window.confirm(
+                    "Are you sure, You want to Delete ? ")) {
+                $("#txtFaqID").val($(this).attr("data-obj-id"));
+                $("#formDelete").submit();
+                $(this).attr('disabled', 'disabled');
+                $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+            }
+        });
+    });
+
+</script>
 @endsection

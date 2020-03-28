@@ -168,7 +168,7 @@
                                         <div class="col-md-4">
                                             <div class="pro_sec">
                                                 <div class="img">
-                                                    <img class="lazy" data-original="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}"
+                                                    <img class="lazy" data-src="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}"
                                                         alt="{{ $detail->product->title }}" />
                                                 </div>
                                                 <div class="content">
@@ -279,6 +279,15 @@
     <input type="hidden" name="order_id" id="txtCancelOrder">
 </form>
 
+@endsection
+@section('extracss')
+<style>img.lazy {
+    width: 100%;
+    min-height: 76px;
+    max-height: 76px;
+    background: #fff url("{{ asset('assets/img/loader.gif') }}") no-repeat 50% 50% !important;
+    display: block;
+}</style>
 @endsection
 @section('extrajs')
 

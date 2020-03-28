@@ -1,23 +1,23 @@
 @extends('layouts.master') 
 @section('title','Transaction Failed') 
 @section('content')
-
-<div class="element-section">
-    <div class="breadcrumbs-bg-image theme-breadcrumbs" style="background-image: url(/assets/images/bg/common-bg.jpg);">
-        <div class="container">
-            <div class="d-md-flex align-items-center justify-content-between">
-                <h2 class="page-title">Transaction Failed</h2>
-                <ul class="page-breadcrumbs">
-                    <li><a href="/">Home</a></li>
-                    <li><i class="fa fa-angle-right" aria-hidden="true"></i></li>
-                    <li>Transaction Failed</li>
+<style>
+    .breadcrumb-area:after {content:unset}
+</style>
+<div class="breadcrumb-area pt--70 pt-md--25">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ul class="breadcrumb d-inline">
+                    <li><a href="{{ route('index') }}">Home</a></li>
+                    <li class="current"><span> Transaction Failed </span></li>
                 </ul>
+                <a class="pull-right d-inline" href="{{ route('checkout') }}">Back To Checkout </a>
             </div>
-        </div> <!-- /.container -->
-    </div> <!-- /.breadcrumbs-bg-image -->
+        </div>
+    </div>
 </div>
-
-<section class="checkout-section">
+<section class="checkout-section pt--40">
     <div class="container">
         <div class="row">
             @if(isset($data))
@@ -40,4 +40,22 @@
         </div>
     </div>
 </section>
+@endsection @section('extracss')
+<style>
+    .table {
+        margin: 15px;
+    }
+    .table td, .table th {
+        padding: .75rem;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .table-bordered td, .table-bordered th {
+        border: 1px solid #dee2e6;
+    }
+</style>
+@endsection @section('extrajs')
+<script>
+fbq('track', 'ViewContent', { content_name: 'Transaction Failed' });
+</script>
 @endsection

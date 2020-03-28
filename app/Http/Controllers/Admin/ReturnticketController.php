@@ -7,6 +7,7 @@ use App\Model\Returnticket;
 use App\Model\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class ReturnticketController extends Controller
 {
@@ -67,10 +68,18 @@ class ReturnticketController extends Controller
             return view('backend.admin.return-tickets.edit', compact('ticket'));
 
         } catch (\Exception $ex) {
+
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.return-tickets.all'))->with('messageDanger', 'Whoops, Ticket Not Found !');
+
+                connectify('error', 'Error', 'Whoops, Ticket Not Found !');
+
+                return redirect(route('admin.return-tickets.all'));
             }
-            return redirect(route('admin.return-tickets.all'))->with('messageDanger', 'Whoops, something went wrong, try again later !');
+
+            connectify('error', 'Error', 'Whoops, something went wrong, try again later');
+
+            return redirect(route('admin.return-tickets.all'));
+
         }
     }
 
@@ -83,7 +92,7 @@ class ReturnticketController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'description' => 'nullable|string',
             'status'      => 'required|integer|max:1',
         ],
@@ -91,6 +100,11 @@ class ReturnticketController extends Controller
                 'status.required' => 'Please Select Status',
                 'status.max'      => 'Invalid status provided',
             ]);
+
+        if ($validator->fails()) {
+            connectify('error', 'Error', $validator->errors()->first());
+            return back()->withInput();
+        }
 
         try {
 
@@ -104,7 +118,7 @@ class ReturnticketController extends Controller
             if ($ticket->status == false) {
 
                 $ticket->update([
-                    'closed_at'   => now(),
+                    'closed_at' => now(),
                 ]);
 
                 Mail::send(['html' => 'backend.mails.ticket-closed'], ['ticket' => $ticket], function ($message) use ($ticket) {
@@ -113,16 +127,28 @@ class ReturnticketController extends Controller
                     $message->subject('Closed:' . $ticket->subject . ' Ticket ID : ' . $ticket->id);
                 });
 
-                return redirect(route('admin.return-tickets.all'))->with('messageSuccess', 'Ticket has been Closed successfully with Ticket id : ' . $ticket->id);
+                connectify('success', 'Ticket Closed', 'Ticket has been Closed successfully with Ticket id : ' . $ticket->id);
+
+                return redirect(route('admin.return-tickets.all'));
+
             }
 
-            return redirect(route('admin.return-tickets.all'))->with('messageSuccess', 'Ticket has been updated successfully with Ticket id : ' . $ticket->id);
+            connectify('success', 'Ticket Closed', 'Ticket has been updated successfully with Ticket id : ' . $ticket->id);
+
+            return redirect(route('admin.return-tickets.all'));
 
         } catch (\Exception $ex) {
+            
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return redirect(route('admin.return-tickets.all'))->with('messageDanger', 'Whoops, Ticket Not Found !');
+
+                connectify('error', 'Error', 'Whoops, Ticket Not Found !');
+
+                return redirect(route('admin.return-tickets.all'));
             }
-            return redirect(route('admin.return-tickets.all'))->with('messageDanger', 'Whoops, something went wrong, try again later !');
+
+            connectify('error', 'Error', 'Whoops, something went wrong, try again later');
+
+            return redirect(route('admin.return-tickets.all'));
         }
     }
 

@@ -66,8 +66,8 @@
                         <div class="form-group">
                             <label for="mobile">Mobile Number <span class="text-danger">*</span></label>
                             <input type="number" name="mobile" id="mobile" class="form-control"
-                                value="{{ $shop->mobile }}" placeholder="Enter Mobile Number" minlength="8"
-                                min="0000000000" maxlength="6" required>
+                                value="{{ $shop->mobile }}" placeholder="Enter Mobile Number" minlength="10"
+                                min="0000000000" maxlength="10" required>
                         </div>
                     </div>
 
@@ -105,7 +105,7 @@
                                 value="{{ $shop->account_no }}" placeholder="Enter Account Number">
                         </div>
                     </div>
-                    
+
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="ifsc_code">IFSC Code </label>

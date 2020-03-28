@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\UserExport;
 use App\Http\Controllers\Controller;
 use App\Model\TxnUser;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserManageController extends Controller
 {
@@ -229,5 +231,12 @@ class UserManageController extends Controller
 
             return redirect(route('admin.users.all'));
         }
+    }
+
+    
+    public function export()
+    {
+        return Excel::download(new UserExport, 'Users.xlsx');
+
     }
 }

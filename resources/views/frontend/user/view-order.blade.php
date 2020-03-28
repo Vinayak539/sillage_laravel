@@ -161,6 +161,7 @@
                             <p>Pincode - {{ $order->pincode }}</p>
                             <p><strong>Phone Number - {{ $order->user->mobile }}</strong></p>
                             <p><strong>Email Id - {{ $order->user->email }}</strong></p>
+                            @if($order->promocode)<p><strong> Promocode Used - {{ $order->promocode }}</strong></p>@endif
                         </div>
                     </div>
 
@@ -170,6 +171,8 @@
                             <a href="{{ route('user.invoices.download', $order->id) }}" class="download-invoice"
                                 onclick="downloadInvoice()"><i class="fa fa-download" aria-hidden="true"></i>
                                 Download</a>
+                            <a href="{{ route('user.order.tracking', $order->id) }}" class="download-invoice"><i class="fa fa-download" aria-hidden="true"></i>
+                                Tracking</a>
                             <a href="javascript:void(0);" data-toggle="modal" data-target="#orderHelp"><i
                                     class="fa fa-question-circle" aria-hidden="true"></i>
                                 Need Help</a>
@@ -219,7 +222,7 @@
                                 <div class="col-sm-5">
                                     <div class="pro_sec">
                                         <div class="img">
-                                            <img data-original="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}"
+                                            <img data-src="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}"
                                                 alt="{{ $detail->product->title }}" class="lazy">
                                         </div>
                                         <div class="content">
@@ -230,7 +233,9 @@
                                             </p>
                                             <p>Price : {{ $detail->mrp }}</p>
                                             <p>Qty : {{ $detail->quantity }}</p>
+                                            @if($offers)
                                             <p>
+
                                                 @if(!empty($exp_offers))
                                                     @foreach($exp_offers as $ofr)
                                                         @php
@@ -241,6 +246,7 @@
                                                     @endforeach
                                                 @endif
                                             </p>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -433,6 +439,13 @@
 @endsection
 @section('extracss')
 <style>
+    img.lazy {
+        width: 100%;
+        min-height: 120px;
+        max-height: 120px;
+        background: #fff url("{{ asset('assets/img/loader.gif') }}") no-repeat 50% 50% !important;
+        display: block;
+    }
     .table thead th,
     .table th,
     .table thead td,

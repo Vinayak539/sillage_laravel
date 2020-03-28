@@ -91,7 +91,7 @@ class OrderController extends Controller
             $promocode = null;
             $is_valid_promocode = false;
             $is_discount = false;
-
+            $gst_value = 0;
             if ($request->session()->has('promocode')) {
                 // $a = $request->session()->get('promocode');
                 $a = $request->session()->pull('promocode', 'default');
@@ -116,12 +116,11 @@ class OrderController extends Controller
 
                 $gst_value = 1 + ($gst->gst_value / 100);
 
-                $before_gst_price = round($size->mrp / $gst_value);
+                // $before_gst_price = round($size->mrp / $gst_value);
 
-                $totalGst += round($size->mrp - $before_gst_price);
+                // $totalGst += round(($size->mrp - $before_gst_price) * $item->quantity);
 
             }
-
             if ($request->payment_mode === 'cod') {
                 $cod = true;
             }
@@ -132,23 +131,25 @@ class OrderController extends Controller
 
             $request['shipingcharge'] = $cod ? 60 : 60;
 
-            $request['tbt'] = round($total - $totalGst, 2);
-
-            $request['discount'] = $is_valid_promocode ? $total * 0.10 : 0;
-
+            $request['discount'] = $is_valid_promocode ? round($total * 0.10, 2) : 0;
+            
+            $balance = $total - $request->discount; 
+            
             if ($total < 1000) {
-                $total = $total + $request->shipingcharge;
+                $balance = $balance + $request->shipingcharge;
             }
 
-            $request['total'] = round($total - $request->discount, 2);
+            $request['tbt'] = round($balance / $gst_value, 2);
 
+            $request['tax'] = round($balance - $request->tbt, 2);
+            
             $add = Address::where('id', $request->choose_address)->first();
 
             $order = TxnOrder::create([
-                'total' => $request->total,
+                'total' => $balance,
                 'status' => $request->status,
                 'user_id' => $user->id,
-                'user_name' => $user->name,
+                'user_name' => $add->name,
                 'promocode' => $promocode,
                 'discount' => $request->discount,
                 'address' => $add->address,
@@ -159,7 +160,7 @@ class OrderController extends Controller
                 'country' => $add->country,
                 'type_of_address' => $add->type_of_address,
                 'tbt' => $request->tbt,
-                'tax' => $totalGst,
+                'tax' => $request->tax,
                 'payment_mode' => $request->payment_mode,
                 'payment_status' => "Pending",
                 'is_discount' => $is_discount,
@@ -192,7 +193,9 @@ class OrderController extends Controller
             }
 
             if ($request->payment_mode == 'cod') {
+                
                 \Log::info(['Order' => $order]);
+
                 Delivery::codOrderCreation($order, $user);
 
                 $user->update(['total_rewards' => $total_rewards - $request->reward_points]);
@@ -203,6 +206,8 @@ class OrderController extends Controller
                 ]);
 
                 SMS::send($order->user->mobile, 'Hni Life Style - Your Order has been placed successfully, Your Order No : ' . $order->id . ' Login for more detail on ' . url('/'));
+                
+                SMS::send('9223324655', 'Hni Life Style - New Order Placed with Order No : ' . $order->id);
 
                 Mail::send(['html' => 'backend.mails.received'], ['order' => $order], function ($message) use ($order) {
                     $message->to($order->user->email)->subject('Your order has been placed successfully ! [order no : ' . $order->id . ']');
@@ -231,7 +236,7 @@ class OrderController extends Controller
                 $paramList["CHANNEL_ID"] = 'WEB';
                 $paramList["MOBILE_NO"] = $user->mobile;
                 $paramList["EMAIL"] = $user->email;
-                $paramList["TXN_AMOUNT"] = $request->total;
+                $paramList["TXN_AMOUNT"] = $balance;
                 $paramList["WEBSITE"] = env('PAYTM_MERCHANT_WEBSITE');
                 $paramList["CALLBACK_URL"] = route('paytm.callback');
                 $paramList["CHECKSUMHASH"] = $paytm->getChecksumFromArray($paramList, env('PAYTM_MERCHANT_KEY'));
@@ -301,6 +306,8 @@ class OrderController extends Controller
                     Delivery::orderCreation($order, $order->user);
 
                     SMS::send($order->user->mobile, 'Hni Store - Your Order has been placed successfully, Your Order No : ' . $order->id . ' Login for more detail on ' . url('/'));
+
+                    SMS::send('9223324655', 'Hni Life Style - New Order Placed with Order No : ' . $order->id);
 
                     Mail::send(['html' => 'backend.mails.received'], ['order' => $order], function ($message) use ($order) {
                         $message->to($order->user->email)->subject('Your order has been placed successfully ! [order no : ' . $order->id . ']');

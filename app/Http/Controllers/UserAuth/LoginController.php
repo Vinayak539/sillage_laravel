@@ -4,9 +4,10 @@ namespace App\Http\Controllers\UserAuth;
 
 use App\Http\Controllers\Controller;
 use App\Model\SMS;
+use App\Model\Subscriber;
 use App\Model\TxnUser;
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -36,7 +37,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $this->validate($request, [
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required',
         ]);
 
@@ -56,27 +57,28 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::guard('user')->logout();
-        return back()->with('messageSuccess1', 'You have logged out successfully !');
+        connectify('success', 'Logged Out', 'You have logged out successfully !');
+        return back();
     }
 
     public function store(Request $request)
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:191',
-            'mobile' => 'required|digits:10|unique:txn_users,mobile',
-            'email' => 'required|email|max:191|unique:txn_users,email',
+            'name'     => 'required|string|max:191',
+            'mobile'   => 'required|digits:10|unique:txn_users,mobile',
+            'email'    => 'required|email|max:191|unique:txn_users,email',
             'password' => 'required',
         ],
             [
-                'name.required' => 'Please Enter Name',
-                'mobile.required' => 'Please Enter Mobile Number',
-                'mobile.digits' => 'Please Enter 10 digits Mobile Number',
-                'email.required' => 'Please Enter Email ID',
-                'email.email' => 'Please Enter Proper Email ID',
+                'name.required'     => 'Please Enter Name',
+                'mobile.required'   => 'Please Enter Mobile Number',
+                'mobile.digits'     => 'Please Enter 10 digits Mobile Number',
+                'email.required'    => 'Please Enter Email ID',
+                'email.email'       => 'Please Enter Proper Email ID',
                 'password.required' => 'Please Enter Password',
-                'email.unique' => 'Email Already Registered with us',
-                'mobile.unique' => 'Mobile Already Registered with us',
+                'email.unique'      => 'Email Already Registered with us',
+                'mobile.unique'     => 'Mobile Already Registered with us',
             ]);
 
         if ($validator->fails()) {
@@ -87,14 +89,14 @@ class LoginController extends Controller
         $rand_otp = rand(100000, 999999);
 
         $user = [
-            'name' => $request->name,
-            'mobile' => $request->mobile,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'status' => true,
+            'name'        => $request->name,
+            'mobile'      => $request->mobile,
+            'email'       => $request->email,
+            'password'    => bcrypt($request->password),
+            'status'      => true,
             'is_verified' => false,
-            'otp' => $rand_otp,
-            'url' => url()->previous(),
+            'otp'         => $rand_otp,
+            'url'         => url()->previous(),
         ];
 
         session(['user' => $user]);
@@ -160,16 +162,25 @@ class LoginController extends Controller
             ],
                 [
 
-                    'name' => $userData['name'],
-                    'email' => $userData['email'],
-                    'mobile' => $userData['mobile'],
-                    'password' => $userData['password'],
-                    'status' => true,
-                    'is_verified' => true,
-                    'otp' => null,
-                    'last_login' => \Carbon\Carbon::now(),
+                    'name'         => $userData['name'],
+                    'email'        => $userData['email'],
+                    'mobile'       => $userData['mobile'],
+                    'password'     => $userData['password'],
+                    'status'       => true,
+                    'is_verified'  => true,
+                    'otp'          => null,
+                    'last_login'   => \Carbon\Carbon::now(),
                     'is_subcribed' => true,
                 ]);
+
+            Subscriber::updateOrCreate([
+                    'email' => $userData['email']
+            ],
+                [
+                    'email'  => $userData['email'],
+                    'status' => true,
+                ]
+            );
 
             Auth::guard('user')->login($user, true);
 
@@ -198,8 +209,8 @@ class LoginController extends Controller
         ],
             [
                 'mobile.required' => 'Please Enter Mobile Number',
-                'mobile.digits' => 'Please Enter 10 digits Mobile Number',
-                'mobile.exists' => 'Mobile Number does Not exists in our records !',
+                'mobile.digits'   => 'Please Enter 10 digits Mobile Number',
+                'mobile.exists'   => 'Mobile Number does Not exists in our records !',
             ]);
 
         if ($validator->fails()) {
@@ -214,12 +225,12 @@ class LoginController extends Controller
             $rand_otp = rand(100000, 999999);
 
             $user = [
-                'name' => $user->name,
-                'mobile' => $user->mobile,
-                'email' => $user->email,
+                'name'     => $user->name,
+                'mobile'   => $user->mobile,
+                'email'    => $user->email,
                 'password' => $user->password,
-                'otp' => $rand_otp,
-                'url' => url()->previous(),
+                'otp'      => $rand_otp,
+                'url'      => url()->previous(),
             ];
 
             session(['user' => $user]);

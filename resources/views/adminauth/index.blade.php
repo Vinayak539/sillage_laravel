@@ -4,7 +4,7 @@
 <section class="section">
     <div class="row ">
 
-        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="card bg">
                 <div class="card-body">
                     <span class="info-box-icon bg-transparent pull-right">
@@ -12,7 +12,7 @@
                     </span>
                     <div class="info-box-content">
                         <h6 class="info-box-text text-dark"> New Orders</h6>
-                        <h1 class="text-dark">{{ $orders }}</h1>
+                        <h3 class="text-dark">{{ $orders }}</h3>
                     </div>
                 </div>
                 <div class="card-footer bg-dark text-white-all">
@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="card bg">
                 <div class="card-body">
                     <span class="info-box-icon bg-transparent pull-right">
@@ -31,7 +31,7 @@
                     </span>
                     <div class="info-box-content">
                         <h6 class="info-box-text text-dark">New Customers</h6>
-                        <h1 class="text-dark">{{ $today_users }}</h1>
+                        <h3 class="text-dark">{{ $today_users }}</h3>
                     </div>
                 </div>
                 <div class="card-footer bg-dark text-white-all">
@@ -42,7 +42,7 @@
             </div>
         </div>
 
-        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="card bg">
                 <div class="card-body">
                     <span class="info-box-icon bg-transparent pull-right">
@@ -50,7 +50,7 @@
                     </span>
                     <div class="info-box-content">
                         <h6 class="info-box-text text-dark">Today Sale</h6>
-                        <h1 class="text-dark">₹ {{ $todays_sales }}</h1>
+                        <h3 class="text-dark">₹ {{ $todays_sales }}</h3>
                     </div>
                 </div>
                 <div class="card-footer bg-dark text-white-all">
@@ -61,7 +61,7 @@
             </div>
         </div>
 
-        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="card bg">
                 <div class="card-body">
                     <span class="info-box-icon bg-transparent pull-right">
@@ -69,11 +69,11 @@
                     </span>
                     <div class="info-box-content">
                         <h6 class="info-box-text text-dark">Total Subscribers</h6>
-                        <h1 class="text-dark">{{ $subscribers }}</h1>
+                        <h3 class="text-dark">{{ $subscribers }}</h3>
                     </div>
                 </div>
                 <div class="card-footer bg-dark text-white-all">
-                    <a href="{{ route('admin.orders.all') }}" title="View Details">
+                    <a href="{{ route('admin.subscribers.all') }}" title="View Details">
                         View Details <i class="fa fa-angle-double-right"></i>
                     </a>
                 </div>

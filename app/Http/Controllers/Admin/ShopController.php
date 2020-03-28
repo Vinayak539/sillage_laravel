@@ -71,9 +71,9 @@ class ShopController extends Controller
             return redirect(route('admin.shops.all'))->withInput();
         }
 
-        $subname     = strtoupper(substr(str_replace(' ', '', $request->name), 0, 4));
-        $rand_number = str_pad(rand(0, 9), 4, '0', STR_PAD_LEFT);
-        $dis_code    = $subname . $rand_number . date('d') . date('m');
+        // $subname     = strtoupper(substr(str_replace(' ', '', $request->name), 0, 2));
+        // $rand_number = str_pad(rand(0, 9), 4, '0', STR_PAD_LEFT);
+        // $dis_code    = $subname . $rand_number . date('d') . date('m');
 
         $shop = Shop::create([
             'name'       => $request->name,
@@ -81,11 +81,18 @@ class ShopController extends Controller
             'address'    => $request->address,
             'mobile'     => $request->mobile,
             'email'      => $request->email,
-            'shop_code'  => $dis_code,
             'password'   => bcrypt($request->password),
             'account_no' => $request->account_no,
             'ifsc_code'  => $request->ifsc_code,
             'status'     => true,
+        ]);
+
+        $subname     = strtoupper(substr(str_replace(' ', '', $shop->name), 0, 2));
+
+        $dis_code = $subname.$shop->id.rand(000,999);
+
+        $shop->update([
+            'shop_code' => $dis_code
         ]);
 
         Mail::send(['html' => 'backend.mails.shop'], ['shop' => $shop, 'password' => $request->password], function ($message) use ($shop) {
@@ -170,7 +177,12 @@ class ShopController extends Controller
             ]);
 
         try {
+
             $shop = Shop::where('id', $id)->firstOrFail();
+
+            $subname     = strtoupper(substr(str_replace(' ', '', $request->name), 0, 2));
+
+            $dis_code = $subname.$shop->id.rand(000,999);
 
             $shop->update([
                 'name'       => $request->name,
@@ -180,6 +192,7 @@ class ShopController extends Controller
                 'status'     => $request->status,
                 'account_no' => $request->account_no,
                 'ifsc_code'  => $request->ifsc_code,
+                'shop_code' => $dis_code
             ]);
 
             if ($request->filled('password')) {

@@ -4,7 +4,7 @@
 
 <!-- Breadcrumb area Start -->
 <div class="breadcrumb-area pt--70 pt-md--25">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col-12">
                 <ul class="breadcrumb">
@@ -19,13 +19,13 @@
 <!-- Main Content Wrapper Start -->
 <div id="content" class="main-content-wrapper">
     <div class="shop-page-wrapper">
-        <div class="container-fluid">
-            <div class="row shop-fullwidth pt--45 pt-md--35 pt-sm--20 pb--60 pb-md--50 pb-sm--40">
+        <div class="container">
+            <div class="row shop-fullwidth pb--60 pb-md--50 pb-sm--40">
                 <div class="col-12">
                     <div class="shop-toolbar">
                         <div class="shop-toolbar__inner">
-                            <div class="row align-items-center">
-                                <div class="col-md-6 text-md-left text-center mb-sm--20">
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="shop-toolbar__left">
                                         <p class="product-pages">Showing {{count($products)}} results</p>
                                     </div>
@@ -36,7 +36,7 @@
                                             <span>Filters</span>
                                             <i></i>
                                         </a>
-                                        
+
                                     </div>
                                 </div>  --}}
                             </div>
@@ -97,7 +97,7 @@
                     <div class="shop-products">
                         <div class="row grid-space-20 xxl-block-grid-5">
                             @forelse($products as $product)
-                            <div class="col-lg-3 col-sm-6 mb--40 mb-md--30">
+                            <div class="col-lg-3 col-6 col-sm-6 mb--40 mb-md--30">
                                 <div class="airi-product">
                                     <div class="product-inner">
                                         <figure class="product-image">
@@ -105,21 +105,75 @@
                                                 <a href="{{ route('product',[$product->slug_url]) }}">
 
                                                     <img alt="Product Image" class="primary-image lazy"
-                                                        data-original="{!! asset('storage/images/products/' .$product->image_url) !!}">
+                                                        data-src="{!! asset('storage/images/products/' .$product->image_url) !!}">
 
                                                     <img alt="Product Image" class="secondary-image lazy"
-                                                        data-original="{!! asset('storage/images/products/' .$product->image_url1) !!}">
+                                                        data-src="{!! asset('storage/images/products/' .$product->image_url1) !!}">
                                                 </a>
                                             </div>
+                                            <span class="product-trending">Trending</span>
+                                            @if(auth('user')->check())
+                                                @if(auth('user')->user()->id == $product->w_u_id && $product->w_product_id == $product->id)
+                                                    <span class="product-badge fav wishlist-remove" data-w-id="{{ $product->w_id }}"><i
+                                                            class="fa fa-heart colorfull-heart" aria-hidden="true" title="Remove from Wishlist"></i></span>
+                                                @else
+                                                    <span class="product-badge fav wishlist" data-p-id="{{ $product->id }}"
+                                                          data-c-id="{{ $product->c_id }}" data-s-id="{{ $product->s_id }}" title="Add to Wishlist"><i
+                                                            class="fa fa-heart-o" aria-hidden="true"></i></span>
+                                                @endif
+                                            @else
+                                                <span class="product-badge fav wishlist-login"><i class="fa fa-heart-o"
+                                                                                                  aria-hidden="true" title="Add to Wishlist"></i></span>
+                                            @endif
                                         </figure>
+                                        <!-- Color  -->
+                                            @php
+                                                $colors = explode(",", $product->color_codes);
+                                                $getDiff = $product->starting_price - $product->mrp;
+                                                $getOffer = round(($getDiff / $product->starting_price) * 100, 0);
+                                            @endphp
+                                        <!-- Color End -->
                                         <div class="product-info">
-                                            <h3 class="product-title text-center">
-                                                <a href="{{ route('product',[$product->slug_url]) }}">
-                                                    {{ $product->title }}
-                                                </a>
-
+                                            <h3 class="product-title">
+                                                <a
+                                                    href="{{ route('product',$product->slug_url) }}">{{ $product->title }}</a>
                                             </h3>
+                                            <span class="product-price-wrapper">
+                                                <span class="money"><i class="fa fa-inr"></i> {{ $product->mrp }}</span>
+                                                <span class="product-price-old">
+                                                    <span class="money"><i class="fa fa-inr"></i> {{ $product->starting_price }}</span>
+                                                </span>
+                                                <span style="color:#388e3c">
+                                                    {{ $getOffer }}% off
+                                                </span>
+                                                @if($product->review_status)
+                                                <span class="pull-right">
+                                                    @for($i = 1; $i<= $product->rating; $i++)
+                                                        <i class="fa fa-star rated" aria-hidden="true"></i>
+                                                        @endfor
+                                                        @for($i = 1; $i<= 5 - $product->rating; $i++)
+                                                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                                                            @endfor
+                                                </span>
+                                                @endif
+                                            </span>
+                                            @if(!$product->review_status)
+                                            @if(count($colors)>4)
+                                                <span class="pull-right">
+                                                    @for($i=0; $i < 4; $i++)
+                                                        <span style="background: {{ $colors[$i] }};border-radius:50%;height:10px;width:10px;display:inline-block;box-shadow: 1px 2px 3px 0px #5f5f5f"></span>
+                                                    @endfor
+                                                </span>
+                                            @else
+                                            <span class="pull-right">
+                                                @foreach($colors as $color)
+                                                    <span style="background: {{ $color }};border-radius:50%;height:10px;width:10px;display:inline-block;box-shadow: 1px 2px 3px 0px #5f5f5f"></span>
+                                                @endforeach
+                                            </span>
+                                            @endif
+                                            @endif
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -144,10 +198,19 @@
 </div>
 <!-- Main Content Wrapper Start -->
 
+@endsection @section('extracss')
+<style>
+    .product-title a {
+    /* color: #fff; */
+    color: #282828;
+}
+</style>
 @endsection
 @section('extrajs')
 <script>
     $(document).ready(function () {
+
+        fbq('track', 'ViewContent', { content_name: 'Search Page' });
         $('#reset').click(function () {
             window.location.href = '/artist?q=';
             return false;

@@ -4,7 +4,7 @@
 
 <!-- Breadcrumb area Start -->
 <div class="breadcrumb-area pt--70 pt-md--25">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col-12">
                 <ul class="breadcrumb">
@@ -23,7 +23,7 @@
     <div class="page-content-inner">
         <div class="container">
             <!-- <div class="row pt--80 pt-md--60 pt-sm--40"> -->
-            <div class="row pt--40 pb--80 pb-md--60 pb-sm--40">
+            <div class="row justify-content-md-center pt--40 pt-sm--20 pb--80 pb-md--60 pb-sm--40">
                 <!-- Checkout Area Start -->
 
                 @if(auth('user')->check())
@@ -34,39 +34,41 @@
                             <div class="row">
 
                                 <div class="col-lg-8">
-                                    <div class="row">
+                                    @if(count($addresses))
+                                    <div class="form-row">
                                         <div class="col-md-12">
                                             <div class="checkout-title mt--10">
                                                 <h2>Select Delivery Address</h2>
                                             </div>
                                         </div>
                                     </div>
+                                    @endif
                                     <div class="row">
-
+                                        @if(count($addresses))
                                         <div class="col-md-12">
                                             <div class="checkout-form form-row mb--30 mb-xs--10">
-                                                <div class="form__group col-md-6 mb-sm--30 mb-xs--10">
-                                                    <div class="pincode-deliveryContainer">
-                                                        <label for="name" style="padding-left: 0;" class="form__label form__label--2">Please enter
-                                                            PIN code to check delivery
-                                                            <span class="required">*</span></label>
+                                                <div class="form__group col-md-12 mb-sm--30 mb-xs--10">
+                                                    <label for="name" style="padding-left: 0;font-size: 18px" class="form__label form__label--2">Please enter
+                                                        PIN code to check delivery
+                                                        <span class="required">*</span></label>
+                                                    <div class="input-group">
                                                         <input type="text" placeholder="Enter pincode"
-                                                            class="pincode-code form__input form__input--2 valid"
-                                                            value="{{ Session::get('pincode') }}" name="pincode"
-                                                            id="pincode" required style="width: 290px">
-                                                        <button type="button"
-                                                            class="pincode-check pincode-button check-availibility pincode_button">
-                                                            <i class="fa fa-search" aria-hidden="true"></i></button>
+                                                        class="pincode-code form-control form__input form__input--2"
+                                                        value="{{ Session::get('pincode') }}" name="pincode"
+                                                        id="pincode" required>
+                                                        <div class="input-group-append">
+                                                            <button class="btn check-availibility pincode_button" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="form__group col-md-6 mt--40 mt-xs--10 pincd">
+                                                <div class="form__group col-md-12 pincd">
                                                     <label for="pincode" class="error pincode_error"></label>
                                                     <p class="text-success pincode_success"></p>
                                                     <!-- <p class="text-danger pincode_error"></p> -->
                                                 </div>
                                             </div>
                                         </div>
-
+                                        @endif
                                         @foreach($addresses as $add)
                                         <div class="col-md-6">
                                             <label class="radio-cont">
@@ -112,21 +114,22 @@
                                             </label>
                                         </div>
                                         @endforeach
-
+                                        @if(count($addresses))
                                         <div class="col-md-6 add_address">
                                             <label class="radio-cont" data-toggle="modal" data-target="#new-address">
                                                 <div class="card">
-                                                    <div class="card-body text-center pt--130" style="height: 334px;">
+                                                    <div class="card-body text-center delivery-address-height">
                                                         <i class="fa fa-plus-circle text-black"></i>
-                                                        <p class="text-black"> Add new address</p>
+                                                        <p class="text-black"> Add new delivery address</p>
                                                     </div>
                                                 </div>
                                             </label>
                                         </div>
-
+                                        @endif
                                     </div>
 
                                 </div>
+                                @if(count($addresses))
                                 <div class="col-lg-4 mt-md--40 mt-xs--10">
                                     <div class="order-details">
                                         <div class="checkout-title mt--10">
@@ -161,25 +164,27 @@
                                                         <th>Subtotal</th>
                                                         <td class="text-right">₹{{ Cart::getTotal() }}</td>
                                                     </tr>
-                                                    
+
                                                     <tr class="discount">
-                                                        <th>Discount</th>
+                                                        <th>- Discount</th>
                                                         <td class="text-right">
-                                                            <span id="discount_span"> 0</span>
+                                                             <span id="discount_span"> 0</span>
                                                         </td>
                                                     </tr>
 
+                                                    @if(Cart::gettotal() < 1000)
                                                     <tr class="shipping">
-                                                        <th>Shipping</th>
+                                                        <th>+ Shipping</th>
                                                         <td class="text-right">
                                                             <span> ₹60</span>
                                                         </td>
                                                     </tr>
-                                                    
+                                                    @endif
+
                                                     <tr class="order-total">
                                                         <th>Order Total</th>
                                                         <td class="text-right"><span
-                                                                class="order-total-ammount">₹{{ Cart::gettotal() + 60 }}</span>
+                                                                class="order-total-ammount">₹{{ Cart::gettotal() < 1000 ? Cart::gettotal() + 60 : Cart::gettotal() }}</span>
                                                         </td>
                                                     </tr>
                                                 </tfoot>
@@ -274,7 +279,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="payment-group mb--10">
+                                            <div class="payment-group pymt-btn mb--10">
                                                 <div class="payment-radio">
                                                     <label for="paytm" class="cb-container">
                                                         DEBIT/CREDIT/NETBANKING/PAYTM
@@ -286,7 +291,7 @@
                                             </div>
 
                                             @if($isCodAvailable)
-                                            <div class="payment-group mb--10">
+                                            <div class="payment-group pymt-btn mb--10">
                                                 <div class="payment-radio">
                                                     <label for="cod" class="cb-container">
                                                         CASH ON DELIVERY
@@ -299,18 +304,151 @@
 
 
                                             <div class="payment-group mt--20">
-                                                @if(count($addresses))
+
                                                 <button type="submit" class="btn btn-fullwidth btn-style-1 order_place">
                                                     Place Order
                                                 </button>
-                                                @endif
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                             </div>
                         </form>
                     </div>
+
+                    @if(!count($addresses))
+                    <div class="col-md-6">
+                        <div class="new-delivery-address">
+                                <div class="form-row">
+                                    <div class="form__group col-md-12 title">
+                                        <h4>Add New Delivery Address</h4>
+                                    </div>
+                                </div>
+                            <div class="checkout-form form-row ">
+                                <div class="form__group col-md-12 mb-sm--30 mb-xs--10">
+                                    <label for="name" style="padding-left: 0;font-size: 18px" class="form__label form__label--2">Please enter
+                                        PIN code to check delivery
+                                        <span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <input type="text" placeholder="Enter pincode"
+                                        class="pincode-code form-control form__input form__input--2"
+                                        value="{{ Session::get('pincode') }}" name="pincode"
+                                        id="pincode" required>
+                                        <div class="input-group-append">
+                                            <button class="btn check-availibility pincode_button" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form__group col-md-12 pincd">
+                                    <label for="pincode" class="error pincode_error"></label>
+                                    <p class="text-success pincode_success"></p>
+                                    <!-- <p class="text-danger pincode_error"></p> -->
+                                </div>
+                            </div>
+                            <form action="{{ route('user.addresses.add') }}" method="post" id="formAddAddress">
+                                @csrf
+                                <div class="form">
+
+                                    <div class="form-row mb--30">
+                                        <div class="form__group col-md-12">
+                                            <label for="name" class="form__label form__label--2">Name
+                                                <span class="required">*</span></label>
+                                            <input type="text" name="name" id="name" class="form__input form__input--2" required
+                                                placeholder="Name" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row mb--30">
+                                        <div class="form__group col-12">
+                                            <label for="mobile" class="form__label form__label--2">Mobile <span
+                                                    class="required">*</span></label>
+                                            <input type="text" name="mobile" id="mobile" class="form__input form__input--2"
+                                                placeholder="Mobile Number" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row mb--30">
+                                        <div class="form__group col-12">
+                                            <label for="email" class="form__label form__label--2">Email Address
+                                                <span class="required">*</span></label>
+                                            <input type="email" name="email" id="email" class="form__input form__input--2" value=""
+                                                placeholder="Email Address" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row mb--30">
+                                        <div class="form__group col-12">
+                                            <label for="country" class="form__label form__label--2">Country
+                                                <span class="required">*</span></label>
+                                            <select id="country" name="country" class="form__input form__input--2 nice-select"
+                                                required>
+                                                <option value="">Select a country…</option>
+                                                <option value="India" selected>India</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="txtPincode" name="pincode">
+                                    <div class="form-row mb--30">
+                                        <div class="form__group col-12">
+                                            <label for="address" class="form__label form__label--2">Street Address <span
+                                                    class="required">*</span></label>
+
+                                            <input type="text" name="address" id="address" class="form__input form__input--2 mb--30"
+                                                placeholder="House number and street name" required value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row mb--30">
+                                        <div class="form__group col-12">
+                                            <label for="landmark" class="form__label form__label--2">Landmark</label>
+                                            <input type="text" name="landmark" id="landmark" class="form__input form__input--2"
+                                                placeholder="Landmark" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row mb--30">
+                                        <div class="form__group col-12">
+                                            <label for="city" class="form__label form__label--2">Town / City
+                                                <span class="required">*</span></label>
+                                            <input type="text" name="city" id="city" class="form__input form__input--2" required
+                                                placeholder="Town/City" value="">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row mb--30">
+                                        <div class="form__group col-12">
+                                            <label for="territory" class="form__label form__label--2">State
+                                                <span class="required">*</span></label>
+                                            <input type="text" name="territory" id="territory" class="form__input form__input--2"
+                                                required placeholder="State" value="">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-row mb--30">
+                                        <div class="form__group type-of-address col-12">
+                                            <label for="type_of_address" class="form__label form__label--2">Choose Type of Address
+                                                <span class="required">*</span></label>
+                                            <input id="home" class="toggle toggle-left" name="type_of_address" type="radio" value="0" checked>
+                                            <label for="home" class="btnn1">Home</label>
+                                            <input id="corporate" class="toggle toggle-right" name="type_of_address" type="radio" value="1">
+                                            <label for="corporate" class="btnn1">Office/Commercial</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="col-md-12 text-center">
+                                        <button type="submit" class="btn btn-block btn-secondary btnSubmit">SAVE DELIVERY ADDRESS</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    @endif
 
                 @else
                 <!-- Checkout Area End -->
@@ -455,7 +593,7 @@
                     <div class="form">
 
                         <div class="form-row mb--30">
-                            <div class="form__group col-md-12 mb-sm--30">
+                            <div class="form__group col-md-12">
                                 <label for="name" class="form__label form__label--2">Name
                                     <span class="required">*</span></label>
                                 <input type="text" name="name" id="name" class="form__input form__input--2" required
@@ -531,14 +669,13 @@
 
 
                         <div class="form-row mb--30">
-                            <div class="form__group col-12">
-                                <label for="type_of_address" class="form__label form__label--2">Type of Address
+                            <div class="form__group type-of-address col-12">
+                                <label for="type_of_address" class="form__label form__label--2">Choose Type of Address
                                     <span class="required">*</span></label>
-                                <label for="home"><input type="radio" name="type_of_address" id="home" class=""
-                                        value="0" checked> Home</label>
-                                <label for="corporate"><input type="radio" name="type_of_address" id="corporate"
-                                        class="" value="1">
-                                    Office/Commercial</label>
+                                <input id="home-new" class="toggle toggle-left" name="type_of_address" type="radio" value="0" checked>
+                                <label for="home-new" class="btnn1">Home</label>
+                                <input id="corporate-new" class="toggle toggle-right" name="type_of_address" type="radio" value="1">
+                                <label for="corporate-new" class="btnn1">Office/Commercial</label>
                             </div>
                         </div>
 
@@ -616,10 +753,23 @@
     }
     .Checkout_section .login-or h3{
         margin-left: 10px;
+        z-index: 6;
     }
     .input-group {
         flex-wrap: inherit !important;
     }
+    .form__label,.pincode_error,.pincode_success,lable{
+        padding-left: 0px;
+        font-size: 15px;
+    }
+   @media screen and (max-width: 767px){
+    .btn {
+        padding: 8px;
+    }
+    .checkout-payment .payment-group.pymt-btn label{
+        font-size: 14px;
+    }
+   }
 </style>
 @endsection
 
@@ -627,6 +777,10 @@
 
 <script>
     $(document).ready(function () {
+        var seconds = 5;
+        setTimeout(function() {
+            fbq('track', 'ViewContent', { content_name: 'In Checkout Page' });
+        }, seconds * 1000);
 
         $('.order_place').attr('disabled', 'disabled');
         $('.add_address').hide();
@@ -650,6 +804,8 @@
             var val = $('#pincode').val();
             if (val == '') {
                 $('#pincode').focus();
+                $('.pincode_success').css('display', 'none');
+                $('.pincode_error').css('display', 'block');
                 $('.pincode_error').html('Please Enter Pincode');
                 $('.pincode_button').html('<i class="fa fa-search" aria-hidden="true"></i>');
                 $('.pincode_button').removeAttr('disabled', 'disabled');
@@ -658,7 +814,8 @@
                 chkPindode(val);
 
             } else {
-
+                $('.pincode_success').css('display', 'none');
+                $('.pincode_error').css('display', 'block');
                 $('.pincode_error').html('Pincode should be of 6 digits');
             }
         });
@@ -704,7 +861,7 @@
 
                             var html =
                                 `<div class="form-row mb--30">
-                                    <div class="form__group col-md-12 mb-sm--30">
+                                    <div class="form__group col-md-12">
                                         <label for="name" class="form__label form__label--2">Name
                                             <span class="required">*</span></label>
                                         <input type="text" name="name" id="name" class="form__input form__input--2" required
@@ -713,7 +870,7 @@
                                 </div>
 
                                 <div class="form-row mb--30">
-                                    <div class="form__group col-md-12 mb-sm--30">
+                                    <div class="form__group col-md-12">
                                         <label for="mobile" class="form__label form__label--2">Mobile
                                             <span class="required">*</span></label>
                                         <input type="number" name="mobile" id="mobile" class="form__input form__input--2" required
@@ -767,14 +924,13 @@
                                 </div>
 
                                 <div class="form-row mb--30">
-                                    <div class="form__group col-12">
-                                        <label class="form__label form__label--2">Type of Address
+                                    <div class="form__group type-of-address col-12">
+                                        <label for="type_of_address" class="form__label form__label--2">Choose Type of Address
                                             <span class="required">*</span></label>
-                                        <label for="home"><input type="radio" name="type_of_address" id="home"
-                                                value="0" ${ data.type_of_address == '0' ? 'checked' : '' }> Home</label>
-                                        <label for="corporate"><input type="radio" name="type_of_address" id="corporate"
-                                                 value="1" ${ data.type_of_address == '1' ? 'checked' : '' }>
-                                            Office/Commercial</label>
+                                        <input id="home-update" class="toggle toggle-left" name="type_of_address" type="radio" value="0" ${ data.type_of_address == '0' ? 'checked' : '' }>
+                                        <label for="home-update" class="btnn1">Home</label>
+                                        <input id="corporate-update" class="toggle toggle-right" name="type_of_address" type="radio" value="1" ${ data.type_of_address == '1' ? 'checked' : '' }>
+                                        <label for="corporate-update" class="btnn1">Office/Commercial</label>
                                     </div>
                                 </div>
                                 <input type="hidden" name="address_id" value="${data.id}">`
@@ -1089,11 +1245,11 @@
         $('.verify_promo').click(function (e) {
 
             e.preventDefault();
-            
+
             var promo = $('#discountcode').val();
-            
+
             if(promo == '' ){
-                
+
                 $('.promo_error').html('Please Enter Promocode !');
 
             }else{
@@ -1106,7 +1262,7 @@
                         'X-CSRF-TOKEN': $('input[name="_token"]').val()
                     }
                 });
-                
+
                 $.ajax({
                     url: "{{ route('verify.promocode') }}",
                     method: 'POST',
@@ -1125,7 +1281,7 @@
                                 $('.promo_success').fadeOut();
                             }, 4000);
                             $('#discount_span').html("{{ Cart::getTotal() * 0.10 }}");
-                            $('.order-total-ammount').html("{{ (Cart::getTotal() - Cart::getTotal() * 0.10) + 60 }}");
+                            $('.order-total-ammount').html("{{ Cart::getTotal() < 1000 ? (Cart::getTotal() - Cart::getTotal() * 0.10) + 60 : (Cart::getTotal() - Cart::getTotal() * 0.10) }}");
                         } else {
                             $('.promo_success').hide();
                             $('.promo_error').show();
@@ -1139,7 +1295,7 @@
                     }
                 });
             }
-            
+
         });
 
     });

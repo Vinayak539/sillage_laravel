@@ -14,7 +14,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" role="form" class="needs-validation">
+                <form method="POST" role="form" class="needs-validation" id="formAddFaq">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
@@ -23,7 +23,7 @@
                                 <div class="form-group">
                                     <label for="question">Question <span class="text-danger">*</span></label>
                                     <textarea name="question" id="question" rows="10" class="form-control"
-                                        placeholder="Enter Question here...">{{ old('question') }}</textarea>
+                                        placeholder="Enter Question here..." required>{{ old('question') }}</textarea>
                                 </div>
                             </div>
 
@@ -31,7 +31,7 @@
                                 <div class="form-group">
                                     <label for="answer">Answer <span class="text-danger">*</span></label>
                                     <textarea name="answer" id="answer" rows="10" class="form-control"
-                                        placeholder="Enter Answer here...">{{ old('answer') }}</textarea>
+                                        placeholder="Enter Answer here..." required>{{ old('answer') }}</textarea>
                                 </div>
                             </div>
 
@@ -60,7 +60,7 @@
                     Home</a></li>
             <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-list"></i> Manage Faqs </li>
             <li class="breadcrumb-item"><a href="#addModal" data-toggle="modal" data-target="#addModal"><i
-                class="fas fa-plus"></i> Add Faqs </a></li>
+                        class="fas fa-plus"></i> Add Faqs </a></li>
         </ol>
     </nav>
 
@@ -92,17 +92,18 @@
                             </td>
                             <td>{{ date('d-M-Y h:i A', strtotime($faq->created_at)) }}</td>
                             <td>
-                                <div class="dropdown">
-                                    <button type="button" class="btn btn-outline-primary dropdown-toggle"
-                                        data-toggle="dropdown">
+                                <div class="dropdown d-inline">
+                                    <button class="btn btn-outline-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
                                         Action
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a href="{{ route('admin.faqs.edit', $faq->id) }}" class="dropdown-item"
-                                            title="Edit Faq">
-                                            <i class="fa fa-edit text-primary"></i> Edit
+                                        <a href="{{ route('admin.faqs.edit', $faq->id) }}"
+                                            class="dropdown-item has-icon" title="Edit Detail">
+                                            <i class="fa fa-edit"></i> Edit
                                         </a>
-                                        <button type="button" data-role="delete-obj" data-obj-id="{{$faq->id}}"
+                                        <button type="button" data-role="delete-obj" data-obj-id="{{ $faq->id }}"
                                             class="dropdown-item delete-object" title="Delete Faq">
                                             <i class="fa fa-trash text-danger"></i> Delete
                                         </button>
@@ -110,6 +111,7 @@
                                 </div>
                             </td>
                         </tr>
+                        
                         @empty
                         <tr class="text-center">
                             <td class="text-danger" colspan="6">
@@ -142,21 +144,53 @@
 
 </section>
 
-<form id="formDelete" method="POST" action="/adrana951/manage-faqs/delete/">
+<form id="formDelete" method="POST" action="{{ route('admin.faqs.delete') }}">
     @csrf
+
+    <input type="hidden" name="faq_id" id="txtFaqID">
 </form>
 @endsection
 
 @section('extrajs')
 <script>
     $(document).ready(function () {
+
+
+        $("#formAddFaq").validate({
+            rules: {
+
+                question: {
+                    required: true
+                },
+
+                answer: {
+                    required: true
+                },
+            },
+            messages: {
+
+                question: {
+                    required: "Please Enter Question"
+                },
+
+                answer: {
+                    required: "Please Enter Answer"
+                },
+            },
+            submitHandler: function (form) {
+                $('.btnSubmit').attr('disabled', 'disabled');
+                $(".btnSubmit").html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+                form.submit();
+            }
+        });
+
         $(".delete-object").click(function () {
             if (window.confirm(
-                "Are you sure, You want to Delete ? ")) {
-                var action = $("#formDelete").attr("action") + $(this).attr("data-obj-id");
-                $("#formDelete").attr("action", action);
+                    "Are you sure, You want to Delete ? ")) {
+                $("#txtFaqID").val($(this).attr("data-obj-id"));
                 $("#formDelete").submit();
-                $(this).html('wait...');
+                $(this).attr('disabled', 'disabled');
+                $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
             }
         });
     });

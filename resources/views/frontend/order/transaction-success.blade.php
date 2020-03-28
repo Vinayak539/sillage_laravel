@@ -57,7 +57,7 @@
                                 <div class="col-sm-5">
                                     <div class="pro_sec">
                                         <div class="img">
-                                            <img data-original="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}" alt="{{ $detail->product->title }}" class="lazy">
+                                            <img data-src="{!! asset('/storage/images/multi-products/' . $image->image_url) !!}" alt="{{ $detail->product->title }}" class="lazy">
                                         </div>
                                         <div class="content">
                                             <p class="title">
@@ -69,6 +69,7 @@
                                             </p>
                                             <p>Price : {{ $detail->mrp }}</p>
                                             <p>Quantity : {{ $detail->quantity }}</p>
+                                            @if($offers)
                                             <p>
                                                 @if(!empty($exp_offers))
                                                     @foreach($exp_offers as $ofr)
@@ -76,10 +77,11 @@
                                                             $offer = \App\Model\MapMstOfferProduct::offer($ofr);
                                                         @endphp
 
-                                                        + {{ $offer->product->title }} [{{ $offer->size->title }} ML] <br />
+                                                        + {{ $offer->product ? $offer->product->title : '' }} [{{ $offer->size->title }} ML] <br />
                                                     @endforeach
                                                 @endif
                                             </p>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -213,6 +215,14 @@
         padding: 5px 15px;
         margin: 0 0 10px 0;
     }
+
+    img.lazy {
+        width: 100%;
+        min-height: 120px;
+        max-height: 120px;
+        background: #fff url("{{ asset('assets/img/loader.gif') }}") no-repeat 50% 50% !important;
+        display: block;
+    }
     
     .table thead th,
     .table th,
@@ -308,4 +318,9 @@
         }
     }
 </style>
+@endsection @section('extrajs')
+<script>
+fbq('track', 'Purchase', {value: '{{ $order->total }}', currency: 'INR'});
+</script>
+
 @endsection

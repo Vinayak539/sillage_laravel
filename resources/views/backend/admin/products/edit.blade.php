@@ -176,12 +176,8 @@
             <li class="breadcrumb-item"><a href="{{ route('admin.products.all') }}">All Products</a></li>
             <li class="breadcrumb-item"><a href="#addModal" data-toggle="modal" data-target="#addModal"> Add More Custom
                     Fields</a></li>
-            {{-- <li class="breadcrumb-item"><a href="#addImageModal" data-toggle="modal" data-target="#addImageModal"> Add
-                    More Images</a></li> --}}
             <li class="breadcrumb-item"><a href="#addColorModal" data-toggle="modal" data-target="#addColorModal"> Add
                     More Color & Sizes</a></li>
-            <!-- <li class="breadcrumb-item"><a href="#addSizesModal" data-toggle="modal" data-target="#addSizesModal"> Add
-                    Sizes</a></li> -->
         </ol>
     </nav>
 
@@ -313,14 +309,6 @@
                                 placeholder="Enter UPC">
                         </div>
                     </div>
-                    <!--
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="expiry_date">Expiry Date</label>
-                            <input type="date" name="expiry_date" id="expiry_date" class="form-control"
-                                value="{{ $product->expiry_date }}" placeholder="Select Expiry Date">
-                        </div>
-                    </div> -->
 
                     <div class="col-md-4">
                         <div class="form-group">
@@ -413,7 +401,6 @@
                         </div>
                     </div>
 
-
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="offer_id">Offer <span class="text-warning">( Select Any if want to give offer
@@ -421,9 +408,8 @@
                             <select name="offer_id" id="offer_id" class="form-control">
                                 <option value="">--Select Offer--</option>
                                 @foreach($offers as $ofr)
-
                                 <option value="{{ $ofr->id }}"
-                                    {{ $product->offer ? $product->offer->product_id == $product->id ? 'selected' : '' : '' }}>
+                                    {{ $product->offer ? ($product->offer->mst_offer_id == $ofr->id ? 'selected' : '') : '' }}>
                                     {{ $ofr->title }}
                                 </option>
                                 @endforeach
@@ -494,7 +480,7 @@
 
                     <div class="col-md-12">
                         <div class="row">
-                            
+
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Existing Front Image</label>
@@ -516,24 +502,6 @@
                             </div>
                         </div>
                     </div>
-                    {{--
-                    @if(count($product->images))
-                    <div class="col-md-12">
-                        <label>Other Images</label>
-                        <div class="row">
-                            @foreach($product->images as $image)
-                            <div class="col-md-2">
-                                <img data-original="{{ asset('/storage/images/multi-products/' . $image->image_url) }}"
-                                    alt="{{ $product->title }}" width="100" class="lazy">
-                                <div class="m-l-80 m-t-10">
-                                    <button type="button" class="btn btn-outline-danger image-delete"
-                                        data-delete-id="{{ $image->id }}"><i class="fa fa-trash"></i></button>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    @endif --}}
 
                     <div class="col-md-12 text-danger mt-5">
                         Note : All * Mark Fields are Compulsory !
@@ -557,19 +525,15 @@
             <li class="breadcrumb-item"><a href="{{ route('admin.products.all') }}">All Products</a></li>
             <li class="breadcrumb-item"><a href="#addModal" data-toggle="modal" data-target="#addModal"> Add More Custom
                     Fields</a></li>
-            {{-- <li class="breadcrumb-item"><a href="#addImageModal" data-toggle="modal" data-target="#addImageModal"> Add
-                    More Images</a></li> --}}
             <li class="breadcrumb-item"><a href="#addColorModal" data-toggle="modal" data-target="#addColorModal"> Add
                     More Color & Sizes</a></li>
-            <!-- <li class="breadcrumb-item"><a href="#addSizesModal" data-toggle="modal" data-target="#addSizesModal"> Add
-                    Sizes</a></li> -->
         </ol>
     </nav>
 
 
     <div class="card">
         <div class="card-header">
-            <h5>Available Color & Szess for {{ Str::limit($product->title, 20) }}</h5>
+            <h5>Available Color & Szess for {{ $product->title }}</h5>
         </div>
 
         @if($product_details)
@@ -577,7 +541,6 @@
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
-
                         <th>
                             <label for="id">ID </label>
                         </th>
@@ -684,10 +647,6 @@
                                         data-object-index="{{ $key }}" title="Update Detail">
                                         <i class="fa fa-save"></i> Update
                                     </a>
-                                    {{-- <a href="javascript:void(0)" class="dropdown-item has-icon delete-color-object"
-                                        title="Delete" data-object-index="{{ $key }}">
-                                    <i class="fa fa-trash text-danger"></i> Delete
-                                    </a> --}}
                                 </div>
                             </div>
                         </td>
@@ -702,7 +661,7 @@
 
     <div class="card">
         <div class="card-header">
-            <h5>Available Custom Fields for {{ Str::limit($product->title, 20) }}</h5>
+            <h5>Available Custom Fields for {{ $product->title }}</h5>
         </div>
 
         @if($product->custom_fields)
@@ -897,7 +856,7 @@
                 material_id: {
                     required: true
                 },
-               
+
                 gst_id: {
                     required: true
                 },
@@ -937,7 +896,7 @@
                 material_id: {
                     required: "Please Select Material"
                 },
-               
+
                 gst_id: {
                     required: "Please Select Gst"
                 },

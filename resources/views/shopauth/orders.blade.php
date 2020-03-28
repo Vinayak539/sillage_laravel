@@ -46,14 +46,14 @@
                                 @forelse ($orders as $order)
                                 <tr>
                                     <td>{{ $order->id }}</td>
-                                    <td>Rs.{{ $order->total }}</td>
+                                    <td>Rs.{{ $order->tbt }}</td>
                                     <td>Rs.{{ round($order->tbt * 0.1,0) }}</td>
                                     <td>{{ date('d-m-Y h:m A' , strtotime($order->created_at)) }}</td>
                                 </tr>
                                 @empty
                                 <tr class="text-center">
                                     <td class="text-danger" colspan="4">
-                                        <h4>No Record Found..</h4>
+                                        <h4>No Order Found <strong>Share your Code {{ auth('shop')->user()->shop_code }} </strong> to earn Commission on Each Order</h4>
                                     </td>
                                 </tr>
                                 @endforelse

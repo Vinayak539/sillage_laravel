@@ -24,14 +24,17 @@
             </div>
             <button type="submit" class="line-button-one button-rose btnSubmit" tabindex="1">Login</button>
         </form>
-        <p class="signUp-text text-center">Don’t have any account? <a href="/myaccount/register">Sign up</a> now. & <a
+        <p class="signUp-text text-center">Don’t have any account? <a href="{{ route('user.register') }}">Sign up</a> now. & <a
                 href="{{ route('user.login') }}"> Login</a></p>
         <p class="or-text"><span>or</span></p>
         <ul class="social-icon-wrapper row">
-            <li class="col-12"><a href="/auth/google" class="gmail"><i class="fa fa-envelope-o" aria-hidden="true"></i>
-                    Gmail</a></li>
-            <!--<li class="col-6"><a href="/auth/facebook" class="facebook"><i class="fa fa-facebook"-->
-            <!--            aria-hidden="true"></i> Facebook</a></li>-->
+            <li class="col-12">
+                <a href="{{ route('user.auth.socialite', 'google') }}" class="gmail"><i class="fa fa-envelope-o" aria-hidden="true"></i> Gmail</a>
+            </li>
+            <li class="col-12">
+                <a href="{{ route('user.auth.socialite', 'facebook') }}" class="facebook"><i class="fa fa-facebook" aria-hidden="true"></i>
+                    Facebook</a>
+            </li>
         </ul>
     </div> <!-- /.sign-up-form-wrapper -->
 </div> <!-- /.signUp-page -->

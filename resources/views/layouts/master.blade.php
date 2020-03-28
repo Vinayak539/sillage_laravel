@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="meta description" />
+    <meta name="description" content="Hni Lifestyle" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="{!! asset('assets/img/logo/favicon/apple-icon-57x57.png') !!}">
     <link rel="apple-touch-icon" sizes="60x60" href="{!! asset('assets/img/logo/favicon/apple-icon-60x60.png') !!}">
@@ -116,13 +116,44 @@
         }
 
         .searchform-3 .searchform__submit {
-            padding-top: 0;
+            padding-top: 3px;
         }
 
         .error {
             color: rgb(238, 53, 53);
         }
+
     </style>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+        ! function (f, b, e, v, n, t, s) {
+            if (f.fbq) return;
+            n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n;
+            n.loaded = !0;
+            n.version = '2.0';
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = !0;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '2404218679835175');
+        fbq('track', 'PageView');
+
+    </script>
+    <noscript>
+        <img height="1" width="1" src="https://www.facebook.com/tr?id=2404218679835175&ev=PageView
+    &noscript=1" />
+    </noscript>
+    <!-- End Facebook Pixel Code -->
 </head>
 
 <body class="home-22 template-color-2">
@@ -141,7 +172,7 @@
         <header class="header header-fullwidth header-style-4">
             <div class="header-outer">
                 <div class="header-inner fixed-header">
-                    <div class="container-fluid">
+                    <div class="container">
                         <div class="row align-items-center">
                             <div class="col-lg-2 col-md-3 col-4 order-1">
                                 <div class="header-left d-flex">
@@ -158,7 +189,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-8 order-3 order-lg-2">
+                            <div class="col-lg-5 order-3 order-lg-2">
                                 <!-- Main Navigation Start Here -->
                                 <nav class="main-navigation">
                                     {!! $dynamicCategory !!}
@@ -166,19 +197,8 @@
                                 <!-- Main Navigation End Here -->
                             </div>
 
-                            <div class="col-lg-2 col-md-9 col-8 order-2 order-lg-3">
+                            <div class="col-lg-5 col-md-9 col-8 order-2 order-lg-3">
                                 <ul class="header-toolbar text-right">
-                                    <li class="header-toolbar__item">
-                                        <a href="#sideNav" class="toolbar-btn ">
-                                            <i class="fa fa-user-circle-o"></i>
-                                        </a>
-                                    </li>
-                                    <li class="header-toolbar__item">
-                                        <a href="#miniCart" class="mini-cart-btn toolbar-btn">
-                                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            <sup class="mini-cart-count">{{ Cart::getContent()->count() }}</sup>
-                                        </a>
-                                    </li>
                                     <li class="header-toolbar__item">
                                         <div class="header-component__item header-component__search-form">
                                             <div class="header-search-form-wrap">
@@ -186,7 +206,8 @@
                                                     class="searchform searchform-3">
                                                     <input name="q" type="text" value="{{ Request::get('q') }}"
                                                         list="suggestion" id="search-box" class="searchform__input"
-                                                        autocomplete="off" placeholder="Search products..." />
+                                                        autocomplete="off"
+                                                        placeholder="Search by product, category..." />
                                                     <datalist id="suggestion">
                                                         @foreach($keywords as $key)
                                                         <option value="{{ $key->keyword }}">
@@ -195,11 +216,36 @@
                                                     </datalist>
 
                                                     <button type="submit" class="searchform__submit">
-                                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                                        <i class="dl-icon-search4" aria-hidden="true"></i>
                                                     </button>
                                                 </form>
                                             </div>
                                         </div>
+                                    </li>
+                                    <li class="header-toolbar__item">
+                                        <a href="#sideNav" class="toolbar-btn ml--10">
+                                            <i class="dl-icon-user3"></i>
+                                        </a>
+                                    </li>
+                                    <li class="header-toolbar__item">
+                                        @if($wishlists == 0)
+                                        <a href="#" class="mini-cart-btn toolbar-btn">
+                                            <i class="dl-icon-heart3"></i>
+                                        </a>
+                                        @else
+                                        <a href="#" class="mini-cart-btn toolbar-btn">
+                                            <i class="dl-icon-heart colorfull-heart"></i>
+                                        </a>
+                                        @endif
+
+                                    </li>
+                                    <li class="header-toolbar__item">
+                                        <a href="#miniCart" class="mini-cart-btn toolbar-btn">
+                                            <i class="dl-icon-cart4" aria-hidden="true"></i>
+                                            @if(Cart::getContent()->count() != 0)
+                                            <sup class="mini-cart-count">{{ Cart::getContent()->count() }}</sup>
+                                            @endif
+                                        </a>
                                     </li>
                                     <li class="header-toolbar__item d-lg-none">
                                         <a href="#" class="menu-btn"></a>
@@ -231,13 +277,13 @@
                                 <ul class="header-toolbar text-right">
                                     <li class="header-toolbar__item user-info-menu-btn">
                                         <a href="#">
-                                            <i class="fa fa-user-circle-o toolbar-btn-cls text-black"></i>
+                                            <i class="dl-icon-user3 toolbar-btn-cls text-black"></i>
                                         </a>
                                         <ul class="user-info-menu">
                                             @if(auth('user')->check())
                                             <li>
                                                 <a href="javascript:void(0);">
-                                                    <i class="fa fa-user-circle-o text-black"></i>
+                                                    <i class="dl-icon-user3 text-black"></i>
                                                     {{ Str::limit(auth('user')->user()->name,16,'') }}</a>
                                             </li>
 
@@ -290,15 +336,27 @@
                                         </ul>
                                     </li>
                                     <li class="header-toolbar__item">
+                                        <a href="#" class="mini-cart-btn toolbar-btn">
+                                            @if($wishlists == 0)
+                                                <i class="dl-icon-heart3 toolbar-btn-cls text-black" aria-hidden="true"></i>
+                                            @else
+                                                <i class="dl-icon-heart toolbar-btn-cls colorfull-heart" aria-hidden="true"></i>
+                                            @endif
+                                        </a>
+                                    </li>
+                                    <li class="header-toolbar__item">
                                         <a href="#miniCart" class="mini-cart-btn toolbar-btn">
-                                            <i class="fa fa-shopping-cart toolbar-btn-cls text-black"
-                                                aria-hidden="true"></i>
+                                            <i class="dl-icon-cart4 toolbar-btn-cls text-black" aria-hidden="true"></i>
+                                            @if(Cart::getContent()->count() != 0)
                                             <sup class="mini-cart-count">{{ Cart::getContent()->count() }}</sup>
+                                            @endif
+
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item">
                                         <a href="#searchForm" class="search-btn toolbar-btn">
-                                            <i class="fa fa-search toolbar-btn-cls text-black" aria-hidden="true"></i>
+                                            <i class="dl-icon-search4 toolbar-btn-cls text-black"
+                                                aria-hidden="true"></i>
                                         </a>
                                     </li>
                                     <li class="header-toolbar__item d-lg-none">
@@ -427,11 +485,12 @@
                                     Keep Up To Date
                                 </h3>
                                 <div class="form-widget mb--20">
-                                    <form action="{{ route('subscribe') }}" id="formSubscribe" class="newsletter-form newsletter-form--6 mc-form" method="post">
+                                    <form action="{{ route('subscribe') }}" id="formSubscribe"
+                                        class="newsletter-form newsletter-form--6 mc-form" method="post">
                                         @csrf
                                         <input type="email" name="newsletter-email" id="newsletter-email"
-                                               class="newsletter-form__input" placeholder="Enter Your Email Address.."
-                                               required />
+                                            class="newsletter-form__input" placeholder="Enter Your Email Address.."
+                                            required />
                                         <button type="submit" class="newsletter-form__submit btnSubscribe">
                                             Subscribe
                                         </button>
@@ -456,7 +515,7 @@
                                     </ul>
                                 </div>
                                 <div class="textwidget mt--15">
-                                    <img src="{!! asset('assets/img/others/payments.png') !!}" alt="Payment">
+                                    <img src="{!! asset('assets/img/icons/payment-method.jpg') !!}" alt="Payment">
                                 </div>
                             </div>
                         </div>
@@ -466,7 +525,7 @@
                     <div class="row">
                         <div class="col-sm-12 text-sm-left text-center">
                             <p class="copyright-text">
-                                Copyright © 2019
+                                Copyright © {{ Date('Y') === '2019' ? '2019' : '2019' . ' - ' . Date('Y') }}
                                 <a href="#">Hnilifestyle </a> All Right
                                 Reserved | Designed &amp; Developed by
                                 <a href="https://sanjaresolutions.com" style="color:#f1894c" target="_blank">Sanjar E
@@ -495,7 +554,7 @@
                     </datalist>
 
                     <button type="submit" class="searchform__submit">
-                        <i class="fa fa-search" aria-hidden="true"></i>
+                        <i class="dl-icon-search4" aria-hidden="true"></i>
                     </button>
                 </form>
             </div>
@@ -512,7 +571,7 @@
                             @if(auth('user')->check())
                             <li>
                                 <a href="javascript:void(0);">
-                                    <i class="fa fa-user-circle-o"></i>
+                                    <i class="dl-icon-user3"></i>
                                     {{ Str::limit(auth('user')->user()->name,16,'') }}</a>
                             </li>
                             <li>
@@ -586,7 +645,7 @@
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>
                                 <div class="mini-cart__product__image">
-                                    <img src="{!! asset('storage/images/products/'.$item->attributes->image_url) !!}"
+                                    <img src="{!! asset('storage/images/multi-products/'.$item->attributes->color_image) !!}"
                                         alt="{{ $item->name }}" />
                                 </div>
                                 <div class="mini-cart__product__content">
@@ -614,9 +673,94 @@
             </div>
         </aside>
 
-        <form action="/cart/delete" id="frmDeleteItem" method="POST">
+        <div class="modal fade" id="modalLogin">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <button type="button" class="close ml-lg-close pull-right" data-dismiss="modal">&times;</button>
+
+                        <div class="signUp-page signUp-minimal px-3 py-3">
+                            <div class="signin-form-wrapper px-5 py-5 border-0">
+                                <!-- <div class="title-area text-center">
+                                    <h3>Login.</h3>
+                                </div>  -->
+                                <form id="login-form" action="/myaccount/login" method="POST" autocomplete="off"
+                                    class="login">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="input-group">
+                                                <input type="text" name="email" value="{{ old('email') }}" required />
+                                                <label>Email *</label>
+                                            </div>
+                                            <!-- /.input-group -->
+                                        </div>
+                                        <!-- /.col- -->
+                                        <div class="col-12">
+                                            <div class="input-group">
+                                                <input type="password" name="password" required />
+                                                <label>Password *</label>
+                                            </div>
+                                            <!-- /.input-group -->
+                                        </div>
+                                        <!-- /.col- -->
+                                    </div>
+                                    <!-- /.row -->
+                                    <div class="agreement-checkbox d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <input type="checkbox" name="remember"
+                                                {{ old("remember") ? "checked" : "" }} checked id="remember">
+                                            <label for="remember">Remember Me</label>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="line-button-one button-rose button_update_login">
+                                        Login
+                                    </button>
+                                </form>
+                                <p class="signUp-text text-center">
+                                    Don’t have any account?
+                                    <a href="{{ route('user.register') }}">Register</a> now. &
+                                    <a href="{{ route('user.login.otp') }}"> Login With Otp</a>
+                                </p>
+                                <p class="or-text"><span>or</span></p>
+                                <ul class="social-icon-wrapper row">
+                                    <li class="col-12">
+                                        <a href="{{ route('user.auth.socialite', 'google') }}" class="gmail"><i
+                                                class="fa fa-envelope-o" aria-hidden="true"></i>
+                                            Gmail</a>
+                                    </li>
+                                    <li class="col-12">
+                                        <a href="{{ route('user.auth.socialite', 'facebook') }}" class="facebook"><i
+                                                class="fa fa-facebook" aria-hidden="true"></i>
+                                            Facebook</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- /.sign-up-form-wrapper -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form action="{{ route('cart.delete') }}" id="frmDeleteItem" method="POST">
             @csrf
             <input type="hidden" name="item_id" required="required" id="hiddenFieldDeleteItemId" />
+        </form>
+
+        <form action="{{ route('wishlist.add') }}" id="frmAddWishlist" method="POST">
+            @csrf
+            <input type="hidden" name="p_id" id="txtProductId" />
+            <input type="hidden" name="c_id" id="txtColorId" />
+            <input type="hidden" name="s_id" id="txtSizeId" />
+        </form>
+
+        <form action="{{ route('wishlist.remove') }}" id="frmRemoveWishlist" method="POST">
+            @csrf
+            <input type="hidden" name="w_id" id="txtWishlistId" />
         </form>
         <!-- Mini Cart End -->
 
@@ -630,6 +774,9 @@
 
     <!-- jQuery JS -->
     <script src="{!! asset('/assets/js/vendor/jquery.min.js') !!}"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js">
+    </script>
 
     <!-- Bootstrap and Popper Bundle JS -->
 
@@ -676,7 +823,7 @@
     <!-- REVOLUTION ACTIVE JS FILES -->
 
     <script src="{!! asset('assets/js/revoulation.js') !!}"></script>
-    <script src="{!! asset('assets/js/jquery.lazyload.js') !!}"></script>
+    {{-- <script src="{!! asset('assets/js/jquery.lazyload.js') !!}"></script> --}}
 
     @yield('extrajs')
     @include('notify::messages')
@@ -684,8 +831,9 @@
     <script>
         $(document).ready(function () {
 
-            $(".lazy").lazyload({
-                effect: "fadeIn",
+            $(".lazy").Lazy({
+                effect: 'fadeIn',
+                visibleOnly: true,
             });
 
             $("#search-box").on("input", function () {
@@ -715,6 +863,30 @@
                 }
             });
 
+            $(".wishlist").click(function () {
+                $('#txtProductId').val($(this).attr('data-p-id'));
+                $('#txtColorId').val($(this).attr('data-c-id'));
+                $('#txtSizeId').val($(this).attr('data-s-id'));
+                $(this).attr('disabled', 'disabled');
+                $(this).html(
+                    '<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only"></span>');
+                $('#frmAddWishlist').submit();
+            });
+
+            $(".wishlist-remove").click(function () {
+                $('#txtWishlistId').val($(this).attr('data-w-id'));
+                $(this).attr('disabled', 'disabled');
+                $(this).html(
+                    '<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="sr-only"></span>');
+                $('#frmRemoveWishlist').submit();
+            });
+
+            $(".wishlist-login").click(function () {
+
+                $('#modalLogin').modal('show');
+
+            });
+
             $("#formSubscribe").validate({
                 rules: {
 
@@ -741,25 +913,26 @@
                 }
             });
 
-            $('.gmail').click(function(){
+            $('.gmail').click(function () {
                 $(this).attr('disabled', 'disabled');
                 $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
             });
 
-            $('.facebook').click(function(){
-                    $(this).attr('disabled', 'disabled');
-                    $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
+            $('.facebook').click(function () {
+                $(this).attr('disabled', 'disabled');
+                $(this).html('<span class="fa fa-spinner fa-spin"></span> Loading...');
             });
 
             var navheight = $(".fixed-header").height();
             var mob_navheight = $(".header-mobile__inner").height();
             if ($(window).width() > 991) {
-                $("#homepage-slider-1").css("margin-top", navheight-5);
+                $("#homepage-slider-1").css("margin-top", navheight - 13);
             } else {
                 $("#homepage-slider-1").css("margin-top", 0);
             }
 
         });
+
     </script>
 
     

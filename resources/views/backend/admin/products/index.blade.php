@@ -37,7 +37,7 @@
                             <td>
                                 <a href="{!! asset('storage/images/products/'. $product->image_url) !!}"
                                     target="_blank">
-                                    <img data-original="{!! asset('storage/images/products/'. $product->image_url) !!}"
+                                    <img data-src="{!! asset('storage/images/products/'. $product->image_url) !!}"
                                         alt="{{ $product->title }}" class="img img-responsive img-circle lazy" width="40"
                                         height="40" loading="lazy">
                                 </a>
