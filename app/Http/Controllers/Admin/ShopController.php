@@ -96,9 +96,9 @@ class ShopController extends Controller
         ]);
 
         Mail::send(['html' => 'backend.mails.shop'], ['shop' => $shop, 'password' => $request->password], function ($message) use ($shop) {
-            $message->from('support@hnilifestyle.com', 'Hni Lifestyle');
+            $message->from('support@sillageniche.com', 'SILLAGE');
             $message->to($shop->email, $shop->name);
-            $message->subject('Hni Lifestyle - Shop Credentials');
+            $message->subject('SILLAGE - Shop Credentials');
         });
 
         connectify('success', 'Shop Added', 'Shop has been added successfully !');

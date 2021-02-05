@@ -29,12 +29,12 @@
                         <strong>After Shipment :</strong>
                         <p class="color--light-3">Incase you change your mind and wish to cancel an order that has been
                             shipped or out for Delivery, email us at <a
-                                href="mailto:support@hnilifestyle.com">support@hnilifestyle.com</a>.</p>
+                                href="mailto:support@sillageniche.com">support@sillageniche.com</a>.</p>
                         <strong>Request :</strong>
                         <p class="color--light-3"> If the order is out for delivery and courier boy attempts to deliver
                             kindly do not accept the delivery of the order.</p>
                         <p class="color--light-3">Once we receive the product back we will verify the packaging /
-                            Conditions [ <span>HNILIFESTYLE</span> reserves the right to dishonor cancelation request
+                            Conditions [ <span>SILLAGE NICHE</span> reserves the right to dishonor cancelation request
                             that are fraudulent or Intentional and decision taken by company management will be Final ].
                             After inspection we will return your balance money after deducting Shipping Charges and
                             Return Expenses within 10 to 15 days after cancellation request is duly processed by our
@@ -43,7 +43,7 @@
                         <strong>Before Shipment : </strong>
                         <p class="color--light-3">Incase you change your mind and wish to cancel an order that has not
                             been shipped, immediately email us at <a
-                                href="mailto:support@hnilifestyle.com">support@hnilifestyle.com</a>.</p>
+                                href="mailto:support@sillageniche.com">support@sillageniche.com</a>.</p>
                         <p class="color--light-3">In such circumstances the order will be cancelled and the total money
                             paid by you will be returned to your account within 48 to 72 Business Hours after
                             cancellation request is duly processed by our Team.</p>
@@ -66,7 +66,7 @@
                         </p>
                         <p><strong>3] Procedure to cancel Order ?</strong><br />
                             A] Kindly mail us on <a
-                                href="mailto:support@hnilifestyle.com">support@hnilifestyle.com</a>
+                                href="mailto:support@sillageniche.com">support@sillageniche.com</a>
                             along with your order ID that you wish to cancel your order.
                         </p>
                         <p><strong>4] When will I get my money refunded post Cancellation of Order ?</strong><br />

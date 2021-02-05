@@ -29,7 +29,7 @@
 
                         <p class="color--light-3">
                             With our policy of ensuring customer satisfaction, this return and refund Policy of
-                            www.hnilifestyle.com list procedures and policies in accepting Product returns, once a
+                            www.sillageniche.com list procedures and policies in accepting Product returns, once a
                             Product has been delivered to a customer after purchase from our website. Any return of
                             Products by customer shall be governed by and subject to the terms and conditions set in
                             this Return and Refund Policy.
@@ -102,7 +102,7 @@
                             within 72 Hrs of receiving the order:</p>
                         <ul>
                             <li><strong>Step 1:</strong> Contact our Customer Support team via email (<a
-                                    href="mailto:support@hnilifestyle.com">support@hnilifestyle.com</a>)
+                                    href="mailto:support@sillageniche.com">support@sillageniche.com</a>)
                                 within 72 hrs from the time of receiving the order.</a>) within 72 hrs from the time of
                                 receiving the order.</li>
                             <li><strong>Step 2:</strong> Kindly share your Invoice number and an image of the product.
@@ -133,7 +133,7 @@
                         
                         <p class="color--light-3">
                             <strong>1] How do I return my Product ?</strong>    <br />
-                            A] Incase you wish to return your product kindly send us email on <a href="mailto:support@hnilifestyle.com">support@hnilifestyle.com</a>
+                            A] Incase you wish to return your product kindly send us email on <a href="mailto:support@sillageniche.com">support@sillageniche.com</a>
     Along with your Order ID and reason for return.
 
                         </p>
@@ -151,7 +151,7 @@
                         </p>
                         <p class="color--light-3">
                             <strong>5] I have still not received my refund Amount kindly help ?</strong><br />
-                            A] We apologize for delay and request you to send a mail with subject : “Urgent Refund Pending” to <a href="mailto:support@hnilifestyle.com">support@hnilifestyle.com</a> with your Order Number and we shall do the needful.
+                            A] We apologize for delay and request you to send a mail with subject : “Urgent Refund Pending” to <a href="mailto:support@sillageniche.com">support@sillageniche.com</a> with your Order Number and we shall do the needful.
                         </p>
                         <p class="color--light-3">
                             

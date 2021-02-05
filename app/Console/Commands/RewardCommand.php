@@ -52,12 +52,12 @@ class RewardCommand extends Command
                 $user['remaining_reward'] = $user->total_sales - 1500;
 
                 Mail::send(['html' => 'backend.mails.expire'], ['user' => $user], function ($message) use ($user) {
-                    $message->from('contact@hnilifestyle.com', 'HNI Lifestyle');
+                    $message->from('contact@sillageniche.com', 'SILLAGE');
                     $message->to($user->email, $user->name);
-                    $message->subject('HNI Lifestyle Pvt. Ltd - Hurry Up Your Reward Expiring Soon Shop Now to avoid losing Rewards');
+                    $message->subject('SILLAGE Pvt. Ltd - Hurry Up Your Reward Expiring Soon Shop Now to avoid losing Rewards');
                 });
 
-                SMS::send($user->mobile, 'Hni - Wish you Happy Birthday on your Occasion, Hurry Up Your Reward Expiring Soon Shop Now to avoid losing Rewards, Visit our website - ' . url('/'));
+                SMS::send($user->mobile, 'Sillage - Wish you Happy Birthday on your Occasion, Hurry Up Your Reward Expiring Soon Shop Now to avoid losing Rewards, Visit our website - ' . url('/'));
 
                 Log::info('Reward Expiry Mail Sent to ' . $user->name . ' on ' . \Carbon\Carbon::parse(now())->format('Y-m-d'));
             }

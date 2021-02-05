@@ -307,13 +307,13 @@ class UserController extends Controller
                 'description' => 'Applied for Return and Refund against Order ID : ' . $order->id,
             ]);
 
-            SMS::send($order->user->mobile, 'HNI Lifestyle - You have applied for Return and Refund against Order ID : ' . $order->id . ', Stay tuned for approval on ' . route('user.login'));
+            SMS::send($order->user->mobile, 'SILLAGE - You have applied for Return and Refund against Order ID : ' . $order->id . ', Stay tuned for approval on ' . route('user.login'));
 
             Mail::send(['html' => 'backend.mails.ticket'], ['ticket' => $ticket], function ($message) use ($ticket) {
-                $message->from('support@hnilifestyle.com', 'HNI Lifestyle');
-                $message->to($ticket->email, 'HNI Lifestyle');
-                $message->bcc('support@hnilifestyle.com', 'HNI Lifestyle');
-                $message->subject('HNI Lifestyle RE:' . $ticket->subject . ' Ticket ID : ' . $ticket->id);
+                $message->from('support@sillageniche.com', 'SILLAGE');
+                $message->to($ticket->email, 'SILLAGE');
+                $message->bcc('support@sillageniche.com', 'SILLAGE');
+                $message->subject('SILLAGE RE:' . $ticket->subject . ' Ticket ID : ' . $ticket->id);
             });
 
             connectify('success', 'Return Order', 'Order Return applied successfully, stay tuned for approval !');
@@ -346,11 +346,11 @@ class UserController extends Controller
                     'status' => 'Cancelled',
                 ]);
 
-                SMS::send($order->user->mobile, 'HNI Lifestyle - Your Order ID : ' . $order->id . ', has been Cancelled successfully,  Login for more detail on ' . url('/'));
+                SMS::send($order->user->mobile, 'SILLAGE - Your Order ID : ' . $order->id . ', has been Cancelled successfully,  Login for more detail on ' . url('/'));
 
                 Mail::send(['html' => 'backend.mails.order-cancel'], ['order' => $order], function ($message) use ($order) {
-                    $message->to('support@hnilifestyle.com')->subject('Order has been Cancelled ! [order id : ' . $order->id . ']');
-                    $message->from('support@hnilifestyle.com', 'HNI Lifestyle');
+                    $message->to('support@sillageniche.com')->subject('Order has been Cancelled ! [order id : ' . $order->id . ']');
+                    $message->from('support@sillageniche.com', 'SILLAGE');
                 });
 
                 connectify('success', 'Order Cancel', 'Order Cancelled Successfully !');
@@ -400,10 +400,10 @@ class UserController extends Controller
             ]);
 
             Mail::send(['html' => 'backend.mails.ticket'], ['ticket' => $ticket], function ($message) use ($ticket) {
-                $message->from('support@hnilifestyle.com', 'HNI Lifestyle');
-                $message->to($ticket->email, 'HNI Lifestyle');
-                $message->bcc('support@hnilifestyle.com', 'HNI Lifestyle');
-                $message->subject('HNI Lifestyle' . $ticket->subject . ' Ticket ID : ' . $ticket->id);
+                $message->from('support@sillageniche.com', 'SILLAGE');
+                $message->to($ticket->email, 'SILLAGE');
+                $message->bcc('support@sillageniche.com', 'SILLAGE');
+                $message->subject('SILLAGE' . $ticket->subject . ' Ticket ID : ' . $ticket->id);
             });
 
             connectify('success', 'Need Help', 'Your query has been sent successfully, our expert will get in touch with you soon, stay tuned !');

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HNI LIFESTYLE - Shop Credentials</title>
+    <title>SILLAGE - Shop Credentials</title>
     <style>
         * {
             font-family: 'Segoe UI';
@@ -164,7 +164,7 @@
 
     <div class="container">
         <div>
-            <h3>HNI Lifestyle</h3>
+            <h3>SILLAGE</h3>
         </div>
         <div class="row">
             <div class="col-sm-12">

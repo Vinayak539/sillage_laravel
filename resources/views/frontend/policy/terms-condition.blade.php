@@ -26,7 +26,7 @@
             <div class="row ptb--40 ptb-md--30 ptb-sm--20">
                 <div class="col-lg-12  col-md-12 order-md-2 mb-sm--25">
                     <div class="about-text">
-                        <p class="color--light-3">The terms <span>"HNILifeStyle"</span> <span>"We"</span> / <span>"Us"</span> / <span>"Our"</span> / <span>”Company”</span> individually and collectively refer to Khushi
+                        <p class="color--light-3">The terms <span>"SILLAGE NICHE"</span> <span>"We"</span> / <span>"Us"</span> / <span>"Our"</span> / <span>”Company”</span> individually and collectively refer to Khushi
                             Naturals and the terms "Visitor” ”User” refer to the users. </p>
                         <p class="color--light-3">This page states the Terms and Conditions under which you (Visitor) may visit this website
                             (“Website”). Please read this page carefully. If you do not accept the Terms and Conditions
@@ -79,7 +79,7 @@
                         <p class="color--light-3">The User unilaterally agree to indemnify and hold harmless, without objection, the Company,
                             its officers, partners, employees and agents from and against any claims, actions and/or
                             demands and/or liabilities and/or losses and/or damages whatsoever arising from or resulting
-                            from their use of <a href="http://www.hnilifestyle.com">www.hnilifestyle.com</a> heir breach
+                            from their use of <a href="http://www.sillageniche.com">www.sillageniche.com</a> heir breach
                             of the terms . </p>
                         <strong>Liability</strong>
                         <p class="color--light-3">
@@ -111,9 +111,9 @@
                             Maharashtra ]
                         </p>
                         <strong>Children</strong>
-                        <p class="color--light-3">Hnilifestyle.com is available only to persons who can form a legally binding contract under
+                        <p class="color--light-3">sillageniche.com is available only to persons who can form a legally binding contract under
                             the Indian Contract Act, 1872. If you are a minor i.e. under the age of 18 years, you may
-                            use hnilifestyle.com only with the involvement of a parent or guardian.
+                            use sillageniche.com only with the involvement of a parent or guardian.
                         </p>
                         <strong>Disclaimer Of Consequential Damages</strong>
                         <p class="color--light-3">In no event shall Company or any parties, organizations or entities associated with the

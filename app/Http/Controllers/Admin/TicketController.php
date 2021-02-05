@@ -65,8 +65,8 @@ class TicketController extends Controller
         ]);
 
         Mail::send(['html' => 'backend.mails.ticket'], ['ticket' => $ticket], function ($message) use ($ticket) {
-            $message->from('support@hnilifestyle.com', 'HNI Lifestyle');
-            $message->to($ticket->email, 'HNI Lifestyle');
+            $message->from('support@sillageniche.com', 'SILLAGE');
+            $message->to($ticket->email, 'SILLAGE');
             $message->subject('RE:' . $ticket->subject . ' Ticket ID : ' . $ticket->id);
         });
 
@@ -152,8 +152,8 @@ class TicketController extends Controller
                 ]);
 
                 Mail::send(['html' => 'backend.mails.ticket-closed'], ['ticket' => $ticket], function ($message) use ($ticket) {
-                    $message->from('support@hnilifestyle.com', 'HNI Lifestyle');
-                    $message->to($ticket->email, 'HNI Lifestyle');
+                    $message->from('support@sillageniche.com', 'SILLAGE');
+                    $message->to($ticket->email, 'SILLAGE');
                     $message->subject('Closed:' . $ticket->subject . ' Ticket ID : ' . $ticket->id);
                 });
 

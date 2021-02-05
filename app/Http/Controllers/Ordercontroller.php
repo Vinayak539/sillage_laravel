@@ -205,18 +205,18 @@ class OrderController extends Controller
                     'status' => 'Booked',
                 ]);
 
-                SMS::send($order->user->mobile, 'Hni Life Style - Your Order has been placed successfully, Your Order No : ' . $order->id . ' Login for more detail on ' . url('/'));
+                SMS::send($order->user->mobile, 'SILLAGE NICHE - Your Order has been placed successfully, Your Order No : ' . $order->id . ' Login for more detail on ' . url('/'));
                 
-                SMS::send('9223324655', 'Hni Life Style - New Order Placed with Order No : ' . $order->id);
+                SMS::send('9223324655', 'SILLAGE NICHE - New Order Placed with Order No : ' . $order->id);
 
                 Mail::send(['html' => 'backend.mails.received'], ['order' => $order], function ($message) use ($order) {
                     $message->to($order->user->email)->subject('Your order has been placed successfully ! [order no : ' . $order->id . ']');
-                    $message->from('order-confirmation@hnilifestyle.com', 'Hni Life Style');
+                    $message->from('order-confirmation@sillageniche.com', 'SILLAGE NICHE');
                 });
 
                 Mail::send(['html' => 'backend.mails.admin'], ['order' => $order], function ($message) use ($order) {
-                    $message->to('order-confirmation@hnilifestyle.com')->subject('You have a new order ! [order id : ' . $order->id . ']');
-                    $message->from('order-confirmation@hnilifestyle.com', 'Hni Life Style');
+                    $message->to('order-confirmation@sillageniche.com')->subject('You have a new order ! [order id : ' . $order->id . ']');
+                    $message->from('order-confirmation@sillageniche.com', 'SILLAGE NICHE');
                 });
 
                 Cart::clear();
@@ -305,18 +305,18 @@ class OrderController extends Controller
 
                     Delivery::orderCreation($order, $order->user);
 
-                    SMS::send($order->user->mobile, 'Hni Store - Your Order has been placed successfully, Your Order No : ' . $order->id . ' Login for more detail on ' . url('/'));
+                    SMS::send($order->user->mobile, 'SILLAGE NICHE - Your Order has been placed successfully, Your Order No : ' . $order->id . ' Login for more detail on ' . url('/'));
 
-                    SMS::send('9223324655', 'Hni Life Style - New Order Placed with Order No : ' . $order->id);
+                    SMS::send('9223324655', 'SILLAGE NICHE - New Order Placed with Order No : ' . $order->id);
 
                     Mail::send(['html' => 'backend.mails.received'], ['order' => $order], function ($message) use ($order) {
                         $message->to($order->user->email)->subject('Your order has been placed successfully ! [order no : ' . $order->id . ']');
-                        $message->from('order-confirmation@hnilifestyle.com', 'Hni Store');
+                        $message->from('order-confirmation@sillageniche.com', 'SILLAGE NICHE');
                     });
 
                     Mail::send(['html' => 'backend.mails.admin'], ['order' => $order], function ($message) use ($order) {
-                        $message->to('order-confirmation@hnilifestyle.com')->subject('You have a new order ! [order id : ' . $order->id . ']');
-                        $message->from('order-confirmation@hnilifestyle.com', 'Hni Store');
+                        $message->to('order-confirmation@sillageniche.com')->subject('You have a new order ! [order id : ' . $order->id . ']');
+                        $message->from('order-confirmation@sillageniche.com', 'SILLAGE NICHE');
                     });
 
                     $order->user->update(['total_rewards' => $order->user->total_rewards - $request->session()->get("reward_points", 'default')]);

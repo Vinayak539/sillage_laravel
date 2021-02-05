@@ -88,24 +88,24 @@ class OrderStatusCommand extends Command
                             'reward_points' => floor($order->tbt * 0.1),
                         ]);
 
-                        SMS::send($shop->mobile, 'Hni Lifestyle - Congratulation You have Earned Rs.' . floor($order->tbt * 0.1) . ' on Order ID : ' . $order->id . ' Your Total Earning is Rs.' . $final_dis . ' for more login on hnilifestyle.com');
+                        SMS::send($shop->mobile, 'SILLAGE - Congratulation You have Earned Rs.' . floor($order->tbt * 0.1) . ' on Order ID : ' . $order->id . ' Your Total Earning is Rs.' . $final_dis . ' for more login on sillageniche.com');
 
                     }
 
-                    SMS::send($order->user->mobile, 'Hni Lifestyle - Your Order has been Delivered successfully, Your Order ID : ' . $order->id . ' Login for more detail on ' . url('/'));
+                    SMS::send($order->user->mobile, 'SILLAGE - Your Order has been Delivered successfully, Your Order ID : ' . $order->id . ' Login for more detail on ' . url('/'));
 
                     $pdf = PDF::loadView('backend.admin.invoices.download', ['invoice' => $order]);
                     Mail::send(['html' => 'backend.admin.invoices.empty'], ['invoice' => $order], function ($message) use ($order, $pdf) {
-                        $message->from('order-confirmation@hnilifestyle.com', 'Hni Lifestyle');
+                        $message->from('order-confirmation@sillage.com', 'SILLAGE');
                         $message->to($order->user->email, $order->user->name);
-                        $message->subject('Invoice copy of Order No ' . $order->id . ' From HNI Lifestyle');
+                        $message->subject('Invoice copy of Order No ' . $order->id . ' From SILLAGE');
                         $message->attachData($pdf->output(), 'order_no_' . $order->id . '.pdf');
                     });
                     
                     Mail::send(['html' => 'backend.admin.invoices.empty'], ['invoice' => $order], function ($message) use ($order, $pdf) {
-                        $message->from('order-confirmation@hnilifestyle.com', 'Hni Lifestyle');
+                        $message->from('order-confirmation@sillage.com', 'SILLAGE');
                         $message->to('abhishekgupta5544@gmail.com', 'Abhishek');
-                        $message->subject('Invoice copy of Order No ' . $order->id . ' From HNI Lifestyle');
+                        $message->subject('Invoice copy of Order No ' . $order->id . ' From SILLAGE');
                         $message->attachData($pdf->output(), 'order_no_' . $order->id . '.pdf');
                     });
                 }

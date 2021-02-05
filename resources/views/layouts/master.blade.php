@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Hni Lifestyle" />
+    <meta name="description" content="SILLAGE" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="{!! asset('assets/img/logo/favicon/apple-icon-57x57.png') !!}">
     <link rel="apple-touch-icon" sizes="60x60" href="{!! asset('assets/img/logo/favicon/apple-icon-60x60.png') !!}">
@@ -29,7 +29,7 @@
 
     <!-- Title -->
     @notifyCss
-    <title>@yield('title') || Hnilifestyle</title>
+    <title>@yield('title') || SILLAGE</title>
 
     <!-- ************************* CSS Files ************************* -->
 
@@ -467,8 +467,8 @@
                                     </li>
                                     <li class="contact-info__item">
                                         <i class="fa fa-envelope"></i>
-                                        <span><a href="mailto:support@hnilifestyle.com"
-                                                class="contact-info__link">support@hnilifestyle.com</a></span>
+                                        <span><a href="mailto:support@sillageniche.com"
+                                                class="contact-info__link">support@sillageniche.com</a></span>
                                     </li>
                                     <li class="contact-info__item">
                                         <i class="fa fa-map-marker"></i>
@@ -525,8 +525,8 @@
                     <div class="row">
                         <div class="col-sm-12 text-sm-left text-center">
                             <p class="copyright-text">
-                                Copyright © {{ Date('Y') === '2019' ? '2019' : '2019' . ' - ' . Date('Y') }}
-                                <a href="#">Hnilifestyle </a> All Right
+                                Copyright © {{ Date('Y') === '2021' ? '2021' : '2021' . ' - ' . Date('Y') }}
+                                <a href="#">SILLAGE </a> All Right
                                 Reserved | Designed &amp; Developed by
                                 <a href="https://sanjaresolutions.com" style="color:#f1894c" target="_blank">Sanjar E
                                     Solutions</a>

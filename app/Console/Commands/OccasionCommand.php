@@ -46,12 +46,12 @@ class OccasionCommand extends Command
         foreach ($users as $user) {
 
             Mail::send(['html' => 'backend.mails.occasion'], ['user' => $user], function ($message) use ($user) {
-                $message->from('contact@hnilifestyle.com', 'HNI Lifestyle');
+                $message->from('contact@sillageniche.com', 'SILLAGE');
                 $message->to($user->email, $user->name);
-                $message->subject('HNI Lifestyle Pvt. Ltd - Shop Now and Get 20% off');
+                $message->subject('SILLAGE Pvt. Ltd - Shop Now and Get 20% off');
             });
 
-            SMS::send($user->mobile, 'Hni - Wish you Happy Birthday on your Occasion, Shop Now and Get 20% off, Visit our website to avail offer - ' . url('/'));
+            SMS::send($user->mobile, 'Sillage - Wish you Happy Birthday on your Occasion, Shop Now and Get 20% off, Visit our website to avail offer - ' . url('/'));
 
             Log::info('Birthday Occasion Mail Sent to ' . $user->name . ' on ' . \Carbon\Carbon::parse(now())->format('Y-m-d'));
         }

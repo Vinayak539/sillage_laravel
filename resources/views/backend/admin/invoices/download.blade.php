@@ -238,7 +238,7 @@
                     <tr>
                         <td colspan="2">
                             Contact: 9619614785
-                            <span class="invoice_span">Email id : support@hnilifestyle.com</span>
+                            <span class="invoice_span">Email id : support@sillageniche.com</span>
                         </td>
                     </tr>
                 </table>

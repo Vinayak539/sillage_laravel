@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>@yield('title') || HNILIFESTYLE</title>
+    <title>@yield('title') || SILLAGE</title>
 
     <!-- Favicon -->
 
@@ -76,7 +76,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right pullDown">
                             <div class="dropdown-title">Hello {{ auth('admin')->user()->name }}</div>
-                            <a href="/adhni753/profile" class="dropdown-item has-icon">
+                            <a href="/adsillage753/profile" class="dropdown-item has-icon">
                                 <i class="far fa-user"></i> Profile
                             </a>
                             <div class="dropdown-divider"></div>
@@ -97,9 +97,9 @@
             <div class="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="/adhni753">
-                            {{-- <img alt="image" src="/admin/img/logo.png" class="header-logo" />  --}}
-                            <span class="logo-name">HNILIFESTYLE</span>
+                        <a href="/adsillage753">
+                            <img alt="image" src="/admin/img/logo.png" class="header-logo" /> 
+                            <span class="logo-name">SILLAGE</span>
                         </a>
                     </div>
                     <ul class="sidebar-menu">
@@ -316,8 +316,8 @@
             </div>
             <footer class="main-footer bg-dark">
                 <div class="footer-left">
-                    Copyright &copy; {{ date('Y') == '2019' ? '2019' : '2019 - ' . date('Y') }}
-                    <div class="bullet"></div> HNILIFESTYLE - Designed & Developed By <a
+                    Copyright &copy; {{ date('Y') == '2021' ? '2021' : '2021 - ' . date('Y') }}
+                    <div class="bullet"></div> SILLAGE - Designed & Developed By <a
                         href="https://www.sanjaresolutions.com" target="_blank">Sanjar E Solutions</a>
                 </div>
             </footer>

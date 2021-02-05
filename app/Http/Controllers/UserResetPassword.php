@@ -42,11 +42,11 @@ class UserResetPassword extends Controller
                 'otp' => $rand_otp,
             ]);
 
-            SMS::send($user->mobile, 'One Time Password (OTP) for Reset Password : ' . $rand_otp . ' HNI Lifestyle Note: this OTP is case sensitive, Do not Share your otp with anyone !');
+            SMS::send($user->mobile, 'One Time Password (OTP) for Reset Password : ' . $rand_otp . ' SILLAGE Note: this OTP is case sensitive, Do not Share your otp with anyone !');
 
             Mail::send(['html' => 'backend.mails.password-reset-otp'], ['user' => $user], function ($message) use ($user) {
-                $message->to($user->email)->subject('HNI Lifestyle, One Time Password(OTP)');
-                $message->from('support@hnilifestyle.com', 'HNI Lifestyle');
+                $message->to($user->email)->subject('SILLAGE, One Time Password(OTP)');
+                $message->from('support@sillageniche.com', 'SILLAGE');
             });
 
             session()->put('user', $user);
@@ -88,11 +88,11 @@ class UserResetPassword extends Controller
                 'otp' => $rand_otp,
             ]);
 
-            SMS::send($user->mobile, 'One Time Password (OTP) for Reset Password : ' . $rand_otp . ' HNI Lifestyle Note: this OTP is case sensitive, Do not Share your otp with anyone !');
+            SMS::send($user->mobile, 'One Time Password (OTP) for Reset Password : ' . $rand_otp . ' SILLAGE Note: this OTP is case sensitive, Do not Share your otp with anyone !');
 
             Mail::send(['html' => 'backend.mails.password-reset-otp'], ['user' => $user], function ($message) use ($user) {
-                $message->to($user->email)->subject('HNI Lifestyle, One Time Password(OTP)');
-                $message->from('support@hnilifestyle.com', 'HNI Lifestyle');
+                $message->to($user->email)->subject('SILLAGE, One Time Password(OTP)');
+                $message->from('support@sillageniche.com', 'SILLAGE');
             });
 
             return redirect()->action('UserResetPassword@sendOtp');

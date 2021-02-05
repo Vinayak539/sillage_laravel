@@ -114,7 +114,7 @@
                         </div>
                         <div class="contact-info">
                             <h3>Email Id</h3>
-                            <a href="mailto:contact@hnilifestyle.com">contact@hnilifestyle.com</a>
+                            <a href="mailto:contact@sillageniche.com">contact@sillageniche.com</a>
                         </div>
                     </div>
                     <!-- Contact info widget end here -->

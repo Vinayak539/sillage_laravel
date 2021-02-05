@@ -63,7 +63,7 @@ class ManageAccountType extends Command
                     'elite'       => false,
                 ]);
 
-                Log::info('Customer ' . $user->name . ' till on ' . $user->created_at . ' Not Purchased of Rs.1500 & Total Rewards Converted to half of total rewards and transfer HNI Prime Customer to Non Prime Customer');
+                Log::info('Customer ' . $user->name . ' till on ' . $user->created_at . ' Not Purchased of Rs.1500 & Total Rewards Converted to half of total rewards and transfer SILLAGE Prime Customer to Non Prime Customer');
             }
         }
     }

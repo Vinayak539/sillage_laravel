@@ -29,7 +29,7 @@ class SendNewsletter extends Mailable
     public function build()
     {
         return $this->view('backend.mails.subscribe-message')
-            ->subject('Newsletter From HNI LIFESTYLE')
-            ->from('support@ranayas.com', 'HNI LIFESTYLE');
+            ->subject('Newsletter From SILLAGE')
+            ->from('support@ranayas.com', 'SILLAGE');
     }
 }

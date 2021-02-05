@@ -159,7 +159,7 @@
 
     <div class="container">
         <div>
-            <h3>HNI Lifestyle</h3>
+            <h3>SILLAGE</h3>
         </div>
         <div class="row">
             <div class="col-sm-12">

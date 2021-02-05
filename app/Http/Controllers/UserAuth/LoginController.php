@@ -101,11 +101,11 @@ class LoginController extends Controller
 
         session(['user' => $user]);
 
-        SMS::send($user['mobile'], 'One Time Password (OTP) for Reset Password : ' . $rand_otp . ' HNI LIFESTYLE Note: this OTP is case sensitive, Do not Share your otp with anyone !');
+        SMS::send($user['mobile'], 'One Time Password (OTP) for Reset Password : ' . $rand_otp . ' SILLAGE Note: this OTP is case sensitive, Do not Share your otp with anyone !');
 
         Mail::send(['html' => 'backend.mails.otp'], ['user' => $user], function ($message) use ($user) {
-            $message->to($user['email'])->subject('HNI LIFESTYLE, One Time Password(OTP)');
-            $message->from('support@hnilifestyle.com', 'HNI LIFESTYLE');
+            $message->to($user['email'])->subject('SILLAGE, One Time Password(OTP)');
+            $message->from('support@sillageniche.com', 'SILLAGE');
         });
 
         return redirect()->action('UserAuth\LoginController@otp');
@@ -123,11 +123,11 @@ class LoginController extends Controller
 
             $user = $request->session()->get('user');
 
-            SMS::send($user['mobile'], 'One Time Password (OTP) for Reset Password : ' . $user['otp'] . ' HNI LIFESTYLE Note: this OTP is case sensitive, Do not Share your otp with anyone !');
+            SMS::send($user['mobile'], 'One Time Password (OTP) for Reset Password : ' . $user['otp'] . ' SILLAGE Note: this OTP is case sensitive, Do not Share your otp with anyone !');
 
             Mail::send(['html' => 'backend.mails.otp'], ['user' => $user], function ($message) use ($user) {
-                $message->to($user['email'])->subject('HNI LIFESTYLE, One Time Password(OTP)');
-                $message->from('support@hnilifestyle.com', 'HNI LIFESTYLE');
+                $message->to($user['email'])->subject('SILLAGE, One Time Password(OTP)');
+                $message->from('support@sillageniche.com', 'SILLAGE');
             });
             connectify('success', 'Resend Otp', 'Otp has been resend on registed mobile and email');
             return redirect()->action('UserAuth\LoginController@otp');
@@ -235,11 +235,11 @@ class LoginController extends Controller
 
             session(['user' => $user]);
 
-            SMS::send($user['mobile'], 'One Time Password (OTP) for Reset Password : ' . $rand_otp . ' HNI LIFESTYLE Note: this OTP is case sensitive, Do not Share your otp with anyone !');
+            SMS::send($user['mobile'], 'One Time Password (OTP) for Reset Password : ' . $rand_otp . ' SILLAGE Note: this OTP is case sensitive, Do not Share your otp with anyone !');
 
             Mail::send(['html' => 'backend.mails.otp'], ['user' => $user], function ($message) use ($user) {
-                $message->to($user['email'])->subject('HNI LIFESTYLE, One Time Password(OTP)');
-                $message->from('support@hnilifestyle.com', 'HNI LIFESTYLE');
+                $message->to($user['email'])->subject('SILLAGE, One Time Password(OTP)');
+                $message->from('support@sillageniche.com', 'SILLAGE');
             });
 
             connectify('success', 'Otp Send', 'Otp has been sent on mobile & email !');

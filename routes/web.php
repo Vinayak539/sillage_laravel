@@ -80,7 +80,7 @@ Route::middleware(['AuthUser'])->group(function () {
     Route::post('/wishlist/remove', 'WishlistController@destroy')->name('wishlist.remove');
 });
 
-Route::prefix('adhni753')->group(function () {
+Route::prefix('adsillage753')->group(function () {
 
     Route::middleware(['guest:admin'])->group(function () {
         Route::GET('/login', 'AdminAuth\LoginController@showLoginForm')->name('login');
@@ -393,7 +393,7 @@ Route::prefix('myaccount')->group(function () {
 
 // Shop
 
-Route::prefix('hnishop')->group(function () {
+Route::prefix('sillageshop')->group(function () {
 
     Route::middleware(['guest:shop'])->group(function () {
         Route::GET('/login', 'ShopAuth\LoginController@showLoginForm')->name('shop.login');

@@ -27,7 +27,7 @@
                 <div class="col-lg-12  col-md-12 order-md-2 mb-sm--25">
                     <div class="about-text">
                         <!-- <h3 class="heading-tertiary heading-color mb--20">Privacy</h3> -->
-                        <p class="color--light-3">The terms <span>"HNILIFESTYLE"</span> / <span>"We"</span> / <span>"Us"</span> / <span>"Our"</span> / <span>”Company”</span> individually and collectively refer to <span>KHUSHI NATURALS</span> and the terms <span>"You"</span> / <span>"Your"</span> / <span>"Yourself"</span> / <span>"users”</span> refer to the users.</p>
+                        <p class="color--light-3">The terms <span>"SILLAGE NICHE"</span> / <span>"We"</span> / <span>"Us"</span> / <span>"Our"</span> / <span>”Company”</span> individually and collectively refer to <span>KHUSHI NATURALS</span> and the terms <span>"You"</span> / <span>"Your"</span> / <span>"Yourself"</span> / <span>"users”</span> refer to the users.</p>
 
                         <p class="color--light-3">This Privacy Policy is an electronic record in the form of an electronic contract formed under the information Technology Act, 2000 and the rules made thereunder and the amended provisions pertaining to electronic documents / records in various statutes as amended by the information Technology Act, 2000. This Privacy Policy does not require any physical, <span>electronic</span> or <span>digital signature</span>.
                         </p>
@@ -98,7 +98,7 @@
                             <p class="color--light-3">Harihar Complex, Dapode,</p>
                             <p class="color--light-3">Thane – 421302,</p>
                             <p class="color--light-3">Maharashtra India</p><br />
-                            <p class="color--light-3">Email: <a href="mailto:grievance.hnilifestyle@gmail.com">grievance.hnilifestyle@gmail.com</a></p>
+                            <p class="color--light-3">Email: <a href="mailto:grievance.sillageniche@gmail.com">grievance.sillageniche@gmail.com</a></p>
                             <p class="color--light-3">Ph:  <a href="tel:+917208263426">+91 720 8263 426</a></p>
                             <p class="color--light-3">Timing : 10:30 AM TO 6:30 PM | MON TO FRI</p>
                         </address>

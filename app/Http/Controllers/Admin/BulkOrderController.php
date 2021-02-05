@@ -67,9 +67,9 @@ class BulkOrderController extends Controller
         ]);
 
         Mail::send(['html' => 'backend.mails.enquiry'], ['data' => $data], function ($message) {
-            $message->from('contact@hnilifestyle.com', 'HNI Lifestyle');
-            $message->to('contact@hnilifestyle.com', 'HNI Lifestyle');
-            $message->subject('New Bulk Order Enquiry From HNI Lifestyle');
+            $message->from('contact@sillageniche.com', 'SILLAGE');
+            $message->to('contact@sillageniche.com', 'SILLAGE');
+            $message->subject('New Bulk Order Enquiry From SILLAGE');
         });
         
         connectify('success', 'Enquiry Success', 'Thank you for contacting us, we\'ll get back to you soon !');

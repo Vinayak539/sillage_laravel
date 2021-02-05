@@ -34,7 +34,7 @@ On local PC
 
 => Move to laravel project
 
-=> create a remote "git remote add live ssh://hnili887@hnilifestyle.com/~/repo/site.git"
+=> create a remote "git remote add live ssh://hnili887@sillageniche.com/~/repo/site.git"
 
 => push on serve using "git push live master"
 

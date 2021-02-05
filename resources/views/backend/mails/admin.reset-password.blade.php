@@ -172,15 +172,15 @@
     <hr>
     <div class="container">
         <div>
-            <a href="{{ url('/') }}" title="HNI Lifestyle">
-                <img src="{{ url('/') }}/assets/img/logo/logo.png" alt="HNI Lifestyle" />
+            <a href="{{ url('/') }}" title="SILLAGE">
+                <img src="{{ url('/') }}/assets/img/logo/logo.png" alt="SILLAGE" />
             </a>
         </div>
         <div class="row">
             <div class="col-sm-12">
                 <hr>
                 <div class="heading">
-                    <h2>Hello! HNI Lifestyle Team</h2>
+                    <h2>Hello! SILLAGE Team</h2>
                     <p>
                         You are receiving this email because we received a password reset request for your account.
                     </p>
@@ -193,7 +193,7 @@
 
                     <p>If you did not request a password reset, no further action is required.</p>
                     <h3>Regards,</h3>
-                    <h3>HNI Lifestyle Teams</h3>
+                    <h3>SILLAGE Teams</h3>
                 </div>
                 <hr>
                 <p>

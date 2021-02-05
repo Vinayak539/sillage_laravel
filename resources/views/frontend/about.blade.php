@@ -27,23 +27,23 @@
                     <div class="about-text">
                         <h3 class="heading-tertiary heading-color mb--20">Invest in yourself to get the best Returns
                         </h3>
-                        <p class="mb-20"><strong class="text-color-primary">HNILIFESTYLE</strong> is operated by
+                        <p class="mb-20"><strong class="text-color-primary">SILLAGE NICHE</strong> is operated by
                             <strong>KHUSHI NATURALS</strong>, a partnership company. Started by 3
                             partners <strong>Mr.Bharat Joshi</strong>, <strong>Mr.Hitesh Dewda</strong> and
                             <strong>Mrs.Bhavna Dewda</strong> who are passionate for Perfumes
                             and Cosmetics. </p>
-                        <p> In business world <strong class="text-color-primary">HNI</strong> stands for <strong
-                                class="text-color-primary">“High Net worth Investor or Individual“</strong>. HNIs are
+                        <p> In business world <strong class="text-color-primary">SILLAGE NICHE</strong> stands for <strong
+                                class="text-color-primary">“High Net worth Investor or Individual“</strong>. SILLAGE NICHEs are
                             Individuals
                             who think intelligently and invest smartly in Projects and Stocks to make Good Fortunes. For
                             us
-                            <strong class="text-color-primary">HNI</strong> stands for <strong
+                            <strong class="text-color-primary">SILLAGE NICHE</strong> stands for <strong
                                 class="text-color-primary">“Highly Natural Investor”</strong>. We strongly believe
                             <strong>“Invest in yourself to get the
                                 best Returns”</strong> investing in one’s Health and Mind.
                         </p>
 
-                        <h3 class="heading-tertiary heading-color mb--20">HNI stands for “Highly Natural Investor”</h3>
+                        <h3 class="heading-tertiary heading-color mb--20">SILLAGE NICHE stands for “Highly Natural Investor”</h3>
                         <p>Today market is flooded with Perfume and Cosmetic Manufacturers who rampantly uses Harmful
                             Chemicals
                             to make Cosmetic Products. Such Harmful chemicals can make person sick or give Life –

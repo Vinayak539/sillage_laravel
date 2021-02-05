@@ -10,7 +10,7 @@
         <div class="page-header-breadcrumb">
             <ul class="breadcrumb-title">
                 <li class="breadcrumb-item">
-                    <a href="/adrana951">Dashboard</a>
+                    <a href="/adsillage753">Dashboard</a>
                 </li>
             </ul>
         </div>
@@ -20,7 +20,7 @@
 <div class="card">
     <div class="card-block">
         @if($about)
-        <form method="post" action="/adrana951/manage-abouts/edit/{{ $about->id }}" class="needs-validation"
+        <form method="post" action="/adsillage753/manage-abouts/edit/{{ $about->id }}" class="needs-validation"
             enctype="multipart/form-data">
             @csrf
             <div class="row">
@@ -140,7 +140,7 @@
     </div>
 </div>
 @endsection
-<form action="/adrana951/manage-abouts/delete/" method="post" id="formDelete">
+<form action="/adsillage753/manage-abouts/delete/" method="post" id="formDelete">
     @csrf
 </form>
 

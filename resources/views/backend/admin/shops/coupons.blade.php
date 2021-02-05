@@ -11,7 +11,7 @@
                 <h3 class="modal-title text-light">Generate Discount Coupon</h3>
                 <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
             </div>
-            <form action="/adhni753/manage-shops/generate-coupon/{{$shop->id}}" method="POST" class="form">
+            <form action="/adsillage753/manage-shops/generate-coupon/{{$shop->id}}" method="POST" class="form">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -41,7 +41,7 @@
         <div class="page-header-breadcrumb">
             <ul class="breadcrumb-title">
                 <li class="breadcrumb-item">
-                    <a href="/adhni753">Dashboard</a>
+                    <a href="/adsillage753">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item">
                     <a href="{{ route('admin.shops.all') }}">All Shops</a>
