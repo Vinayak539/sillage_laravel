@@ -100,7 +100,7 @@ class CategoryController extends Controller
         if ($cate) {
             $request['slug_url'] = Str::slug($cate->name . '-' . $request->category_name . $cate->id, '-');
         } else {
-            $request['slug_url'] = Str::slug($request->category_name. $cate->id, '-');
+            $request['slug_url'] = Str::slug($request->category_name, '-');
         }
 
         TxnCategory::create([

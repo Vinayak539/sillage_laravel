@@ -98,8 +98,8 @@
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
                         <a href="/adsillage753">
-                            <img alt="image" src="/admin/img/logo.png" class="header-logo" /> 
-                            <span class="logo-name">SILLAGE</span>
+                            <img alt="SILLAGE-NICHE" src="/admin/img/logo1.png" class="header-logo" /> 
+                            <!-- <span class="logo-name">SILLAGE</span> -->
                         </a>
                     </div>
                     <ul class="sidebar-menu">
@@ -177,6 +177,16 @@
                         <li class="dropdown">
                             <a href="{{ route('admin.faqs.all') }}" class="nav-link"><i
                                     data-feather="message-square"></i><span>FAQ's</span></a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="{{ route('admin.pages.all') }}" class="nav-link"><i
+                                    data-feather="layout"></i><span>Pages</span></a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="{{ route('admin.blogs.all') }}" class="nav-link"><i
+                                    data-feather="image"></i><span>Blogs</span></a>
                         </li>
 
                         <li class="dropdown">

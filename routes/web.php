@@ -173,6 +173,22 @@ Route::prefix('adsillage753')->group(function () {
             Route::POST('/edit/{id}', 'Admin\BrandController@update');
         });
 
+        Route::prefix('/manage-pages')->group(function () {
+            Route::GET('/', 'Admin\PageController@index')->name('admin.pages.all');
+            Route::POST('/', 'Admin\PageController@store');
+            Route::GET('/edit/{id}', 'Admin\PageController@edit')->name('admin.pages.edit');
+            Route::POST('/edit/{id}', 'Admin\PageController@update')->name('admin.pages.update');
+            Route::POST('/delete', 'Admin\PageController@delete')->name('admin.pages.delete');
+        });
+
+        Route::prefix('/manage-blogs')->group(function () {
+            Route::GET('/', 'Admin\BlogController@index')->name('admin.blogs.all');
+            Route::POST('/', 'Admin\BlogController@store');
+            Route::GET('/edit/{id}', 'Admin\BlogController@edit')->name('admin.blogs.edit');
+            Route::POST('/edit/{id}', 'Admin\BlogController@update')->name('admin.blogs.update');
+            Route::POST('/delete', 'Admin\BlogController@delete')->name('admin.blogs.delete');
+        });
+
         Route::prefix('/manage-gsts')->group(function () {
             Route::GET('/', 'Admin\GstController@index')->name('admin.gsts.all');
             Route::POST('/', 'Admin\GstController@store');
