@@ -29,31 +29,31 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-        if (config('app.env') === 'production') {
-            \URL::forceScheme('https');
-        }
+        // if (config('app.env') === 'production') {
+        //     \URL::forceScheme('https');
+        // }
 
-        $txnCategory = TxnCategory::where('status', true)->orderBy('parent_id')->get();
-        $category = array(
-            'categories' => array(),
-            'parent_cats' => array(),
-        );
+        // $txnCategory = TxnCategory::where('status', true)->orderBy('parent_id')->get();
+        // $category = array(
+        //     'categories' => array(),
+        //     'parent_cats' => array(),
+        // );
 
-        foreach ($txnCategory as $key => $value) {
-            $category['categories'][$value->id] = $value;
-            //creates entry into parent_cats array. parent_cats array contains a list of all categories with children
-            $category['parent_cats'][$value->parent_id][] = $value->id;
-        }
+        // foreach ($txnCategory as $key => $value) {
+        //     $category['categories'][$value->id] = $value;
+        //     //creates entry into parent_cats array. parent_cats array contains a list of all categories with children
+        //     $category['parent_cats'][$value->parent_id][] = $value->id;
+        // }
 
-        // footer only parent start
-        $footerDynamicCategory = TxnCategory::where('status', true)->where('parent_id', 0)->orderBy('parent_id')->get();
-        // footer only parent end
+        // // footer only parent start
+        // $footerDynamicCategory = TxnCategory::where('status', true)->where('parent_id', 0)->orderBy('parent_id')->get();
+        // // footer only parent end
 
-        $dynamicCategory = $this->buildCategory(0, $category, 0);
-        $smallDeviceDynamicCategory = $this->smallDeviceBuildCategory(0, $category, 0);
-        $keywords = TxnKeyword::groupBy('keyword')->get();
-        // $topsections     = TopMasterSection::limit(5)->get();
-        view()->share(['keywords' => $keywords, 'dynamicCategory' => $dynamicCategory, 'smallDeviceDynamicCategory' => $smallDeviceDynamicCategory, 'footerDynamicCategory' => $footerDynamicCategory, 'wishlists' => 0]);
+        // $dynamicCategory = $this->buildCategory(0, $category, 0);
+        // $smallDeviceDynamicCategory = $this->smallDeviceBuildCategory(0, $category, 0);
+        // $keywords = TxnKeyword::groupBy('keyword')->get();
+        // // $topsections     = TopMasterSection::limit(5)->get();
+        // view()->share(['keywords' => $keywords, 'dynamicCategory' => $dynamicCategory, 'smallDeviceDynamicCategory' => $smallDeviceDynamicCategory, 'footerDynamicCategory' => $footerDynamicCategory, 'wishlists' => 0]);
 
     }
     public function buildCategory($parent, $category, $count)

@@ -1,0 +1,560 @@
+#sec1 {
+	width: 100%;
+	/*background-color: #f6f5f1;*/
+	margin: 20px auto 50px auto;
+	/*padding:20px;*/
+	border-radius: 4px;
+	text-align: center;
+}
+
+#sec1 .small img {
+	/*border:2px solid black;*/
+	margin: auto;
+	/*box-shadow: 5px 5px 8px 5px #888888;*/
+}
+
+.blog-ind-sec {
+	margin: 50px auto;
+}
+
+.blog-ind-sec .img-sec {
+	text-align: center;
+	margin-bottom: 40px;
+}
+
+.blog-ind-sec .img-sec img {
+	width: 90%;
+	margin: auto;
+}
+
+.blog-sec {
+	margin: 50px auto;
+}
+
+.blog-post {
+	width: 100%;
+	position: relative;
+	margin-top: 30px;
+	border: 2px solid black;
+	border-radius: 5px;
+}
+
+.blog-post:hover {
+	border: 2px solid gold;
+}
+
+.blog-post img {
+	width: 100%;
+}
+
+.blog-post .blog-text {
+	position: absolute;
+	background-color: black;
+	height: 40%;
+	/*opacity:.7;*/
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
+	padding: 10px;
+}
+
+.blog-post .blog-text h2 {
+	color: gold;
+}
+
+.blog-post .blog-text p {
+	color: white;
+}
+
+.social-reg {
+	margin: 40px auto;
+	width: 100%;
+}
+
+.privacy {
+	margin: 30px 0px;
+	padding: 20px;
+}
+
+.privacy p {
+	font-size: 17px;
+	line-height: 1.4;
+}
+
+.privacy ul {
+	margin: 30px 0px;
+}
+
+.privacy li {
+	font-size: 18px;
+	line-height: 1.4;
+	color: black;
+	list-style-type: circle;
+}
+
+.privacy h2 {
+	margin-top: 30px;
+}
+
+#whatsapp {
+	position: fixed;
+	right: 40px;
+	top: 75%;
+	background-color: green;
+	width: 55px;
+	height: 55px;
+	border-radius: 50%;
+	z-index: 200;
+	transition: transform .5s
+}
+
+#business, #salareid {
+	width: 20px;
+}
+
+#whatsapp:hover {
+	transform: scale3d(1.5, 1.5, 1.5);
+}
+
+.carousel-item {
+	position: relative;
+}
+
+.caption {
+	position: absolute;
+	bottom: 0px;
+	top: 0px;
+	right: 0px;
+	width: 100%;
+	/*background-color: black;
+	padding:20px;
+	opacity: .8;*/
+}
+
+.caption a {
+	position: absolute;
+	margin: auto;
+	bottom: 116px;
+	left: 41%;
+	width: 15%;
+	padding: 20px;
+}
+
+.view-all a {
+	width: 20%;
+	margin: auto;
+}
+
+.logo {
+	width: 350px;
+}
+
+.social-login {
+	margin: auto;
+	text-align: center;
+}
+
+.social-login a {
+	margin-top: 15px;
+	width: 350px;
+	height: 35px;
+	border-radius: 5px;
+	color: white;
+}
+
+#sec1 .img {
+	max-width: 100%;
+	margin: 10px auto;
+	align-content: center;
+	box-shadow: 3px 3px 5px 3px #888888;
+}
+#occupat{
+	border:1px solid rgb(119, 111, 111);
+	padding:20px;
+	margin-bottom: 20px;
+}
+#sec1 .img:hover {
+	transform: scale3d(1.1, 1.1, 1.1);
+}
+#salareid1, #business1{
+	display:none;
+}
+/*.header-middle{
+	position: fixed;
+	top:0px;
+	left: 0px;
+	right: 0px;
+	z-index: 90;
+	background-color: white;
+	opacity: .6;
+}*/
+
+.box {
+	background-color: #e6e6e6;
+	text-align: center;
+	/* border: 5px solid white; */
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+}
+
+.box h3 {
+	padding: 10px 0px;
+	/*border-radius: 6px;
+	background-color: black;*/
+}
+
+.box img {
+	margin: auto;
+	margin-top: 20px;
+}
+
+.main-menu li a {
+	/*color:#ffc60b;
+*/
+	color: black;
+}
+
+.main-slider {
+	position: relative;
+	top: 0px;
+	right: 0px;
+	left: 0px;
+}
+
+.blog-init1 img {
+	margin: auto;
+	width: 200px;
+	height: 200px;
+	border: 2px solid #ffc60b;
+}
+
+.bg-grey {
+	/*background-color: #9ba4b4;*/
+	width: 100%;
+	background-color: #e6e6e6;
+	/* margin:15px 0px !important; */
+	/* padding:40px 20px; */
+	/*border-radius: 5px;*/
+}
+
+.footer-bottom li {
+	color: black;
+}
+
+.blog-init img {
+	margin: auto;
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	border: 5px solid black;
+	margin-bottom: 30px;
+	padding: 5px;
+}
+
+.blog-init h3 {
+	text-align: center;
+	margin-top: 20px;
+}
+
+.blog-init .blog-post-content {
+	text-align: center;
+	/*margin: 0px 200px;*/
+}
+
+/* .container-fluid {
+	width: 98%;
+	margin: 0px 20px;
+} */
+
+.cbtn {
+	color: #fff;
+	background: #111;
+	border-radius: 5px;
+	padding: 15px;
+	text-transform: capitalize;
+	margin-top: 15px;
+}
+
+#colors div {
+	text-align: center;
+}
+
+.footer-logo {
+	width: 300px;
+	margin: auto;
+}
+.testi{
+	padding:15px 10px;
+}
+.testi div {
+	text-align: left;
+}
+
+.testi img {
+	width: 70%;
+	border-radius: 50%;
+}
+
+.track {
+	padding: 50px 30px;
+}
+
+.track img {
+	width: 100%;
+}
+
+.track form {
+	width: 100%;
+	text-align: center;
+	margin-top: 50px;
+}
+
+.track form input, button {
+	width: 100%;
+	margin-top: 10px;
+}
+
+.login-register-area .btn-dark {
+	width: 100%;
+	margin: 40px auto;
+}
+
+.login-register-area .button-box {
+	text-align: center;
+}
+
+.login-register-area .btn-lg {
+	width: 100%;
+}
+
+.login-register-area .textarea {
+	margin-bottom: 20px;
+	border: 1px solid lightgrey;
+	width: 100%
+}
+
+.content-title {
+	text-align: center;
+	margin: 30px 0;
+	font-size: 30px;
+}
+
+@media screen and (max-width:1024px) {
+	.logo {
+		width: 312px;
+	}
+}
+
+@media screen and (max-width:768px) {
+	.mmtoff .mobile-menu-toggle a {
+		font-size: 20px;
+		margin-left: 17px;
+	}
+	#whatsapp {
+		top: 82%;
+	}
+	.content-title {
+		text-align: center;
+		margin: 10px 0 15px !important;
+		font-size: 30px;
+	}
+
+		.bg-grey {
+			margin: auto;
+			padding: 10px 1px;
+		}
+	
+	.trending .content-item {
+		margin-bottom: 20px;
+	}
+	.specail-product .col-6 {
+		padding:0px;
+	}
+	.box {
+		padding-bottom: 20px;
+		margin-bottom: 1px;
+	}
+	.caption a {
+		bottom: 20px !important;
+	}
+}
+
+@media screen and (max-width:700px) {
+	#sec1 {
+		margin: 0px;
+	}
+	#sec1 img {
+		max-width: 100%;
+		margin: 10px;
+	}
+	.testi div {
+		text-align: center;
+	}
+	.testi img {
+		width: 40%;
+		border-radius: 50%;
+	}
+	.blog-ind-sec .img-sec img {
+		width: 100%;
+	}
+	.view-all a {
+		width: 40%;
+		margin: auto;
+	}
+	.caption a {
+		width: 40%;
+		padding: 10px;
+		font-size: 15px;
+	}
+	.blog-init1 img {
+		width: 150px;
+		height: 150px;
+	}
+	.logo {
+		width: 280px;
+		text-align: center;
+		position: relative;
+		/* right: 50%; */
+		/* left: 50%; */
+		top: 0px;
+		z-index: 199;
+	}
+	.mob_menu {
+		position: fixed;
+		top: 0px;
+		left: 0px;
+	}
+	#sec1 .small {
+		max-width: 50%;
+	}
+	.blog-init .blog-post-content {
+		margin: 0px 10px;
+	}
+	.box {
+		border: 3px solid white;
+	}
+	/*.main-slider{
+	top: -107px;
+}*/
+	.header-top {
+		display: none;
+	}
+	.mmtoff .cbdg1 {
+		width: 15px;
+		height: 15px;
+		bottom: 10px;
+		left: 15px;
+		top: 0px;
+		padding: 0;
+		line-height: 18px;
+		border-radius: 50%;
+	}
+	.mmtoff .badge {
+		font-size: 12px;
+	}
+	.mmtoff .mobile-menu-toggle.right-side {
+		margin-top: 12px
+	}
+	.mmtoff .mobile-menu-toggle a {
+		font-size: 20px;
+		margin-left: 5px
+	}
+}
+
+@media screen and (max-width:540px) {
+	.caption a {
+		position: absolute;
+		margin: auto;
+		bottom: -3px;
+		left: 30%;
+		width: 15%;
+		padding: 10px;
+		width: 40%;
+	}
+	#whatsapp {
+		top: 75%;
+	}
+}
+
+@media screen and (max-width:420px) {
+	.logo {
+		width: 234px;
+	}
+	#whatsapp {
+		position: fixed;
+		width: 46px;
+		height: 46px;
+		right: 11px;
+	}
+	#scrollUp {
+		right: 11px;
+	}
+}
+
+@media screen and (max-width:411px) {
+	.caption a {
+		position: absolute;
+		margin: auto;
+		bottom: 0px;
+		left: 30%;
+		width: 15%;
+		padding: 10px;
+		width: 40%;
+	}
+	#scrollUp {
+		right: 15px;
+	}
+	#whatsapp {
+		top: 80%;
+		right: 14px;
+	}
+}
+
+@media screen and (max-width:375px) {
+	.logo {
+		width: 221px;
+	}
+	#whatsapp {
+		top: 77%;
+	}
+	.mmtoff .mobile-menu-toggle a {
+		margin-left: -1px;
+	}
+}
+
+@media screen and (max-width:360px) {
+	.logo {
+		width: 186px;
+	}
+	.caption a {
+		position: absolute;
+		margin: auto;
+		bottom: 4px;
+		left: 29%;
+		width: 15%;
+		padding: 20px;
+		width: 40%;
+		padding: 10px;
+		font-size: 15px;
+	}
+}
+
+@media screen and (max-width:320px) {
+	.mmtoff .mobile-menu-toggle a {
+		font-size: 20px;
+		margin-left: 0px;
+	}
+	#whatsapp {
+		top: 73%;
+	}
+	.logo {
+		width: 166px;
+	}
+}
+
+@media screen and (max-width:280px) {
+	.mmtoff .mobile-menu-toggle a {
+		font-size: 15px;
+		margin-left: -6px;
+	}
+}
