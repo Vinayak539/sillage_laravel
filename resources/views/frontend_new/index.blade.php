@@ -117,17 +117,20 @@
   <section id="sec1" class="whatweoffer">
     <div class="container-fluid">
       <div class="row ">
-        <div class="col-md-12">
+        <div class="col-md-12"  >
           <h2 class="title pt-3" style="text-align: center;font-size: 40px;">What We Offer</h2>
         </div>
-        <div class="col-lg-4 col-md-4 ">
-          <a href="login.html"><img class="img" src="{{asset('assets/img/per5.jpg')}}"></a>
+        <div class="col-lg-4 col-md-4 wwf1" >
+         <img class="img" src="{{asset('assets/img/per5.jpg')}}">
+         <a href="{{route('user.login')}}" class="btn btn-lg btn-warning wwf">Login</a>
         </div>
-        <div class="col-lg-4 col-md-4 ">
-          <a href="login.html"><img class="img" src="{{asset('assets/img/per6.jpg')}}"></a>
+        <div class="col-lg-4 col-md-4 wwf1">
+         <img class="img" src="{{asset('assets/img/per6.jpg')}}">
+         <a href="{{route('user.login')}}" class="btn btn-lg btn-warning wwf">Login</a>
         </div>
-        <div class="col-lg-4 col-md-4 ">
-          <a href="login.html"><img class="img" src="{{asset('assets/img/per5.jpg')}}"></a>
+        <div class="col-lg-4 col-md-4 wwf1">
+         <img class="img" src="{{asset('assets/img/per5.jpg')}}">
+         <a href="{{route('user.login')}}" class="btn btn-lg btn-warning wwf">Login</a>
         </div>
       </div>
     </div>
@@ -140,10 +143,12 @@
           <h3 class="content-title mt-4">Trending</h3>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 content-item ">
-          <a href="designer(men).html"><img class="img" src="{{asset('assets/img/mens.png')}}"></a>
+          <img class="img" src="{{asset('assets/img/mens.png')}}">
+          <a href="designer(men).html" class="btn btn-lg btn-warning tren">Shop Now</a>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6  content-item">
-          <a href="designer(men).html"><img class="img" src="{{asset('assets/img/womens.png')}}"></a>
+          <img class="img" src="{{asset('assets/img/womens.png')}}">
+          <a href="designer(men).html" class="btn btn-lg btn-warning tren">Shop Now</a>
         </div>
       </div>
     </div>
@@ -222,7 +227,7 @@
   <section id="sec5" class="whatweoffer mb-4">
     
           <video style="width: 100%;" autoplay controls loop>
-            <source src="{{asset('assets/img/videos/v1.mp4')}}" type="video/mp4">
+            <source src="{{asset('assets/img/videos/v3.mp4')}}" type="video/mp4">
           </video>
           <div class="text-center">
             <a href="" class="btn btn-lg btn-dark cbtn">View All Videos</a>
@@ -230,7 +235,7 @@
         
   </section>
 
-
+<hr>
   <!-- product tab repetation start -->
   <section class="bg-white theme1 pb-30">
     <div class="container">
@@ -238,10 +243,9 @@
         <div class="col-12">
           <!-- section-title start -->
           <div class="section-title text-center">
-            <h2 class="title pb-3 mb-3">New Arrival products</h2>
-            <p class="text">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Dignissimos, repellat.
+            <h2 class="title pb-3 ">New Arrival products</h2>
+            <p class="text mb-3">
+             The newest & hottest collection is out here. Get it now ! 
             </p>
           </div>
           <!-- section-title end -->
@@ -675,8 +679,8 @@
       <div class="row">
         <div class="col-12">
           <div class="section-title text-center">
-            <h2 class=" pb-3 mb-3" style="margin-top: 30px;">Customer Testimonials</h2>
-            <p class="text">
+            <h2 class=" pb-3 " style="margin-top: 30px;">Customer Testimonials</h2>
+            <p class="text mb-3">
               Some of our Customer Reviews
             </p>
           </div>
@@ -774,7 +778,7 @@
 
 
           </div>
-          <a href="testimonials.html" class="btn btn-block btn-dark cbtn">View All</a>
+          <a href="/testimonials" class="btn btn-block btn-dark cbtn">View All</a>
         </div>
       </div>
     </div>
@@ -796,8 +800,8 @@
             <div class="d-flex static-media2 flex-column flex-sm-row">
               <img class="align-self-center mb-2 mb-sm-0 mr-auto mr-sm-3" src="{{asset('assets/img/icon/2.png')}}" alt="icon" />
               <div class="media-body">
-                <h4 class="title" style="color:gold;">Free Shipping</h4>
-                <p class="text">Free Shipping all over India</p>
+                <h4 class="title" style="color:gold;"> Shipping</h4>
+                <p class="text"> Shipping all over India</p>
               </div>
             </div>
           </div>
@@ -805,8 +809,8 @@
             <div class="d-flex static-media2 flex-column flex-sm-row">
               <img class="align-self-center mb-2 mb-sm-0 mr-auto mr-sm-3" src="{{asset('assets/img/icon/3.png')}}" alt="icon" />
               <div class="media-body">
-                <h4 class="title" style="color:gold;">Free Returns</h4>
-                <p class="text">Returns are free within 14 days</p>
+                <h4 class="title" style="color:gold;"> Returns</h4>
+                <p class="text">Returns accepted within 14 days</p>
               </div>
             </div>
           </div>

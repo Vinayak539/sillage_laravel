@@ -59,9 +59,10 @@ class UserController extends Controller
     public function showMyAccount()
     {
         try {
-            $user = TxnUser::where('id', auth('user')->user()->id)->firstOrFail();
+            // $user = TxnUser::where('id', auth('user')->user()->id)->firstOrFail();
 
-            return view('frontend.user.profile', compact('user'));
+            return view('frontend_new.my-account');
+            // , compact('user'));
 
         } catch (\Exception $ex) {
             if ($ex instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {

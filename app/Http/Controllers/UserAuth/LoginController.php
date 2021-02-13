@@ -26,7 +26,7 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        return view('frontend.user.login');
+        return view('frontend_new.login');
     }
 
     public function create()

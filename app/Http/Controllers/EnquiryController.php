@@ -17,7 +17,7 @@ class EnquiryController extends Controller
 
     public function create()
     {
-        return view('frontend.contact');
+        return view('frontend_new.contact-us');
     }
 
     public function store(Request $request)

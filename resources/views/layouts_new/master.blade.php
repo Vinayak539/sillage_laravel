@@ -154,7 +154,7 @@
           </li>
 
           <li>
-            <a href="#"><span class="menu-text"> Niche</span></a>
+            <a href="/niche"><span class="menu-text"> Niche</span></a>
           </li>
 
           <li>
@@ -271,7 +271,7 @@
       </div>
       <ul class="minicart-product-list">
         <li>
-          <a href="single-product.html" class="image"><img src="{{assets('assets/img/mini-cart/4.png')}}"
+          <a href="single-product.html" class="image"><img src="{{asset('assets/img/mini-cart/4.png')}}"
               alt="Cart product Image" /></a>
           <div class="content">
             <a href="single-product.html" class="title">orginal Age Defying Cosmetics Makeup</a>
@@ -280,7 +280,7 @@
           </div>
         </li>
         <li>
-          <a href="single-product.html" class="image"><img src="{{assets('assets/img/mini-cart/5.png')}}"
+          <a href="single-product.html" class="image"><img src="{{asset('assets/img/mini-cart/5.png')}}"
               alt="Cart product Image" /></a>
           <div class="content">
             <a href="single-product.html" class="title">On Trend Makeup and Beauty Cosmetics</a>
@@ -289,7 +289,7 @@
           </div>
         </li>
         <li>
-          <a href="single-product.html" class="image"><img src="{{assets('assets/img/mini-cart/6.png')}}"
+          <a href="single-product.html" class="image"><img src="{{asset('assets/img/mini-cart/6.png')}}"
               alt="Cart product Image" /></a>
           <div class="content">
             <a href="single-product.html" class="title">orginal Age Defying Cosmetics Makeup</a>
@@ -312,7 +312,7 @@
       </div>
       <ul class="minicart-product-list">
         <li>
-          <a href="single-product.html" class="image"><img src="{{assets('assets/img/mini-cart/1.png')}}"
+          <a href="single-product.html" class="image"><img src="{{asset('assets/img/mini-cart/1.png')}}"
               alt="Cart product Image" /></a>
           <div class="content">
             <a href="single-product.html" class="title">orginal Age Defying Cosmetics Makeup</a>
@@ -321,7 +321,7 @@
           </div>
         </li>
         <li>
-          <a href="single-product.html" class="image"><img src="{{assets('assets/img/mini-cart/2.png')}}"
+          <a href="single-product.html" class="image"><img src="{{asset('assets/img/mini-cart/2.png')}}"
               alt="Cart product Image" /></a>
           <div class="content">
             <a href="single-product.html" class="title">On Trend Makeup and Beauty Cosmetics</a>
@@ -330,7 +330,7 @@
           </div>
         </li>
         <li>
-          <a href="single-product.html" class="image"><img src="{{assets('assets/img/mini-cart/3.png')}}"
+          <a href="single-product.html" class="image"><img src="{{asset('assets/img/mini-cart/3.png')}}"
               alt="Cart product Image" /></a>
           <div class="content">
             <a href="single-product.html" class="title">orginal Age Defying Cosmetics Makeup</a>
@@ -507,7 +507,7 @@
               </div>
 
               <div class="logo">
-                <a href="index.html"><img src="{{assets('assets/img/logon.png')}}" alt="logo" /></a>
+                <a href="index.html"><img src="{{asset('assets/img/logon.png')}}" alt="logo" /></a>
                 <!-- <a href="index.html"><img src="assets/img/logo/logo_new.png" alt="logo" /></a> -->
               </div>
 
@@ -533,7 +533,7 @@
           </div>
           <div class="col-6 col-lg-2 col-xl-2 d-none d-lg-block">
             <div class="logo">
-              <a href="index.html"><img src="{{assets('assets/img/logon.png')}}" alt="logo" /></a>
+              <a href="/"><img src="{{asset('assets/img/logon.png')}}" alt="logo" /></a>
             </div>
           </div>
           <div class="col-xl-8 col-lg-7 d-none d-lg-block">
@@ -634,7 +634,7 @@
               </li>
 
               <li class="position-static">
-                <a href="shop-grid-3-column.html"> Niche </i></a>
+                <a href="/niche"> Niche </i></a>
               </li>
               <!-- <li>
               <a href="#">Pages <i class="ion-ios-arrow-down"></i></a>
@@ -797,7 +797,7 @@
           <div class="col-12 col-sm-6 col-lg-3 mb-30">
             <div class="footer-widget">
               <div class="footer-logo mb-25">
-                <a href="index.html">
+                <a href="/">
                   <img src="{{asset('assets/img/logo/logo1-01.png')}}" alt="footer logo" />
                 </a>
               </div>
@@ -812,13 +812,13 @@
               </div>
               <!-- footer-menu start -->
               <ul class="footer-menu">
-                <li><a href="about-us.html">About us</a></li>
-                <li><a href="privacy.html">Privacy Policy</a></li>
-                <li><a href="terms.html">Terms of Service</a></li>
-                <li><a href="cancellation.html">Cancellation & Refund</a></li>
-                <li><a href="#">Shipping Information</a></li>
-                <li><a href="blogs.html">Blog Posts</a></li>
-                <li><a href="contact-us.html">Contact Us</a></li>
+                <li><a href="/about">About us</a></li>
+                <li><a href="/privacy">Privacy Policy</a></li>
+                <li><a href="/terms-condition">Terms of Service</a></li>
+                <li><a href="/cancellation">Cancellation & Refund</a></li>
+                <li><a href="/shipping">Shipping Information</a></li>
+                <li><a href="/blogs">Blog Posts</a></li>
+                <li><a href="/contact">Contact Us</a></li>
               </ul>
               <!-- footer-menu end -->
             </div>
@@ -834,7 +834,7 @@
               <ul class="footer-menu">
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Designer</a></li>
-                <li><a href="#">Niche</a></li>
+                <li><a href="/niche">Niche</a></li>
                 <li><a href="login.html">Ultra Niche</a></li>
               </ul>
             </div>
@@ -852,13 +852,13 @@
               <ul class="footer-menu">
                 <!-- <li><a href="#">Blog Posts</a></li> -->
                 <li><a href="#">Discount Coupons</a></li>
-                <li><a href="testimonials.html">Customer Testimonials</a></li>
+                <li><a href="/testimonials">Customer Testimonials</a></li>
                 <!--  <li><a href="#">International Shopping</a></li> -->
                 <li><a href="#">Sitemap</a></li>
-                <li><a href="my-account.html">My Account</a></li>
-                <li><a href="login.html">Login</a></li>
-
-                <li><a href="track-order.html">Track Order</a></li>
+                <li><a href="/my-account">My Account</a></li>
+                <li><a href="{{route('user.login')}}">Login</a></li>
+                <li><a href="/sample">Sample Order</a></li>
+                <li><a href="/track-order">Track Order</a></li>
               </ul>
               <!-- footer-menu end -->
             </div>
@@ -873,7 +873,7 @@
                 </div>
               </div>
               <p class="text mb-20">
-                Subcribe to the TheFace mailing list to receive update on mnew
+                Subcribe to the mailing list to receive update on new
                 arrivals, special offers and other discount information.
               </p>
               <div class="nletter-form mb-35">
@@ -909,7 +909,7 @@
           <div class="col-12 col-md-6 col-xl-4 order-last order-md-first">
             <div class="text-md-left text-center mt-3 mt-md-0">
               <p>
-                Copyright &copy; <a href="#" style="color:#ffc60b;">Sillage Fragrances & Cosmetics</a>.<br>
+                Copyright &copy; <a href="" style="color:#ffc60b;">Sillage Fragrances & Cosmetics</a>.<br>
                 All Rights Reserved
               </p>
             </div>

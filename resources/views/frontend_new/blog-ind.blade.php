@@ -7,10 +7,48 @@
 <section class="container blog-ind-sec" >
     <div class="row">
   
-      <div class="justify-content-center col-lg-12 col-md-12 img-sec ">
+      <div class="justify-content-center col-lg-4 col-md-4  side">
+        <button type="button" class="btn btn-block btn-dark" onclick="callFunct()">Extras</button>
+
+        <section id="blog_side">
+        <ul>
+          <li> <img src="{{asset('assets/img/spb6.jpg')}}">
+            <a href="/blogs-indvidual">
+              <div class="side_div">
+                <h2>Biisiuye</h2>
+                <p>yuwfweygwucfyewncyuwyncfuyfncuy</p>
+                </div>
+              </a>  
+          </li>
+
+          <li> <img src="{{asset('assets/img/spb6.jpg')}}">
+            <a href="/blogs-indvidual">
+              <div class="side_div">
+                <h2>Biisiuye</h2>
+                <p>yuwfweygwucfyewncyuwyncfuyfncuy</p>
+                </div>
+              </a>  
+          </li>
+
+          <li> <img src="{{asset('assets/img/spb6.jpg')}}">
+            <a href="/blogs-indvidual">
+            <div class="side_div">
+              <h2>Biisiuye</h2>
+              <p>yuwfweygwucfyewncyuwyncfuyfncuy</p>
+              </div>
+            </a>  
+          </li>
+
+        </ul>
+        </section>
+
+      </div>
+      <div class="justify-content-center col-lg-8 col-md-8 img-sec ">
         <img src="{{asset('assets/img/spb6.jpg')}}">
       </div>
-       <div class="col-lg-12 col-md-12 bg-grey">
+     
+
+       <div class="col-lg-12 col-md-12 cont ">
         <h2 style="text-align: center;margin-bottom: 30px;">This is the blog</h2>
         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
   
@@ -26,7 +64,11 @@
     </div>
   </section>
   
-  
+  <script>
+    function callFunct(){
+       $('#blog_side').toggle();
+    }
+  </script>
 
 
 @endsection

@@ -14,19 +14,39 @@
 Route::middleware(['AuthUser'])->group(function () {
 
     Route::GET('/', 'MainController@index')->name('index');
-    Route::view('/about', 'frontend.about')->name('about');
+    Route::view('/about', 'frontend_new.about-us')->name('about');
+    
+    Route::GET('/my-account', function(){
+        return view('frontend_new.my-account');
+     });
+     Route::GET('/sample', function(){
+        return view('frontend_new.sample-order-form');
+     });
+    Route::get('/blogs', function () {
+        return view('frontend_new.blogs');
+    });
+    Route::get('/blogs-indvidual', function () {
+        return view('frontend_new.blog-ind');
+    });
+    Route::GET('/niche', function(){
+        return view('frontend_new.niche');
+     });
+    Route::get('/testimonials', function () {
+        return view('frontend_new.testimonials');
+    });
     Route::view('/all-product', 'frontend.all-product')->name('all-product');
     Route::view('/product-detail', 'frontend.product-detail')->name('product-detail');
     Route::view('/checkout', 'frontend.checkout')->name('checkout');
     Route::GET('/faq', 'Admin\FaqController@manage')->name('faq');
+    
 
 // policy
 
-    Route::view('/terms-condition', 'frontend.policy.terms-condition')->name('terms-condition');
-    Route::view('/privacy', 'frontend.policy.privacy')->name('privacy');
-    Route::view('/cancellation', 'frontend.policy.cancellation')->name('cancellation');
-    Route::view('/refund-return', 'frontend.policy.refund-return')->name('refund-return');
-    Route::view('/shipping', 'frontend.policy.shipping')->name('shipping');
+    Route::view('/terms-condition', 'frontend_new.terms')->name('terms-condition');
+    Route::view('/privacy', 'frontend_new.privacy')->name('privacy');
+    Route::view('/cancellation', 'frontend_new.cancellation')->name('cancellation');
+    Route::view('/refund-return', 'frontend_new.refund-return')->name('refund-return');
+    Route::view('/shipping', 'frontend_new.shipping')->name('shipping');
 
 // contact us
 
@@ -359,6 +379,10 @@ Route::prefix('adsillage753')->group(function () {
     });
 });
 
+Route::GET('/track-order', function(){
+    return view('frontend_new.track-order');
+})->name('user.order');
+
 // User
 Route::prefix('myaccount')->group(function () {
 
@@ -391,7 +415,10 @@ Route::prefix('myaccount')->group(function () {
         Route::POST('/profile', 'UserController@update')->name('user.profile.updateRequest');
         Route::POST('/change-password', 'UserController@updateChangePassword')->name('user.change-password.updateRequest');
         Route::POST('/review', 'UserController@review');
-        Route::GET('/order/{id}', 'UserController@getOrder')->name('user.order');
+       
+      
+
+        // Route::GET('/order/{id}', 'UserController@getOrder')->name('user.order');
         Route::GET('/order-tracking/{id}', 'UserController@getOrderTracking')->name('user.order.tracking');
         Route::POST('/order/return/{id}', 'UserController@returnOrder')->name('user.orders.return');
         Route::POST('/order/help/{id}', 'UserController@orderHelp')->name('user.orders.help');

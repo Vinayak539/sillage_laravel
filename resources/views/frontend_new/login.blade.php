@@ -3,7 +3,7 @@
 @section('content')
 
 <!-- login area start -->
-<div class="login-register-area pt-30 pb-30">
+<div class="login-register-area pt-30 pb-10">
     <div class="container">
       <div class="row">
         <div class="col-lg-7 col-md-12 ml-auto mr-auto">
@@ -73,7 +73,7 @@
                       <input name="user-email" placeholder="Email" type="email" />
                        <input name="number" placeholder="Contact" type="tel" />
                        <textarea rows="5" class="textarea" placeholder="Address"></textarea>
-                       <input name="linkedin" placeholder="LinkedIn Profile" type="text" />
+                       <input name="linkedin" placeholder="LinkedIn/ Facebook/ Twitter Profile" type="text" />
                        
                        <div id="occupat">
                         <h3>Select your Occupation</h3>

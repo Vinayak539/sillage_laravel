@@ -25,11 +25,12 @@ class MainController extends Controller
 {
     public function index()
     {
-        $sliders = Slider::where('status', true)->orderBy('sort_index')->get();
-        $testimonials = Testimonial::where('status', true)->orderBy('sort_index')->get();
-        $homeOfferSliders = HomeOfferSlider::where('status', true)->orderBy('sort_index')->get();
-        $sections = MsSection::where('status', true)->with('msections')->get();
-        return view('frontend.index', compact('sliders', 'sections', 'testimonials', 'homeOfferSliders'));
+        // $sliders = Slider::where('status', true)->orderBy('sort_index')->get();
+        // $testimonials = Testimonial::where('status', true)->orderBy('sort_index')->get();
+        // $homeOfferSliders = HomeOfferSlider::where('status', true)->orderBy('sort_index')->get();
+        // $sections = MsSection::where('status', true)->with('msections')->get();
+        return view('frontend_new.index');
+        // , compact('sliders', 'sections', 'testimonials', 'homeOfferSliders'));
     }
 
     public function subscribers(Request $request)
