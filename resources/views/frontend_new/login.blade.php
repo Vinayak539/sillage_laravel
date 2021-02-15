@@ -24,12 +24,12 @@
                     <form action="" method="post">
                       <input
                         type="text"
-                        name="user-name"
-                        placeholder="Username"
+                        name="username"
+                        placeholder="Name"
                       />
                       <input
                         type="password"
-                        name="user-password"
+                        name="password"
                         placeholder="Password"
                       />
                       <div class="button-box">
@@ -47,7 +47,7 @@
                         <h4 style="text-align: center;">OR</h4>
   
                         <div class="social-login">
-                          <a href="" class="btn btn-lg " style="background-color: #EA4335;"><span class="fab  fa-google fa-lg"></span> Google</a><br>
+                          <a href="" class="btn btn-lg " style="background-color: #f30808;"><span class="fab  fa-google fa-lg"></span> Google</a><br>
                           <a href="" class="btn btn-lg " style="background-color: #0084FF;"><span class="fab fa-facebook fa-lg"></span> Facebook</a>
                         </div>
   
@@ -62,27 +62,29 @@
                     <form action="" method="post">
                       <input
                         type="text"
-                        name="user-name"
-                        placeholder="Username"
+                        name="name"
+                        placeholder="Name"
                       />
                       <input
                         type="password"
-                        name="user-password"
+                        name="password"
                         placeholder="Password"
                       />
-                      <input name="user-email" placeholder="Email" type="email" />
-                       <input name="number" placeholder="Contact" type="tel" />
-                       <textarea rows="5" class="textarea" placeholder="Address"></textarea>
-                       <input name="linkedin" placeholder="LinkedIn/ Facebook/ Twitter Profile" type="text" />
+                      <input name="email" placeholder="Email" type="email" />
+                       <input name="mobile" placeholder="Contact" type="tel" />
+                       <textarea rows="5" name="address" class="textarea" placeholder="Address"></textarea>
+                       <input name="social_profile" class="soc-box" placeholder="LinkedIn/ Facebook/ Twitter Profile" type="text" />
                        
                        <div id="occupat">
                         <h3>Select your Occupation</h3>
+                        <fieldset>
   
-                        <input type="radio" id="business" name="occupation" value="business" onclick="occChanged(event)"> 
-                        <label for="business" >Business</label><br>
+                        <input type="radio" id="business" name="occupation" value="business" onclick="occChanged(event)"> Business
+                      <br>
    
-                        <input type="radio" id="salareid" name="occupation" value="salareid" onclick="occChanged(event)">
-                        <label for="salareid" >Salareid </label><br>
+                        <input type="radio" id="salareid" name="occupation" value="salareid" onclick="occChanged(event)"> Salareid
+                       <br>
+                        </fieldset>
                        </div>
                        
   
@@ -123,7 +125,7 @@
    <h4 style="text-align: center;">OR</h4>
   
                         <div class="social-login">
-                          <a href="" class="btn btn-lg " style="background-color:#d34836;"><span class="fab  fa-google fa-lg"></span> Google</a><br>
+                          <a href="" class="btn btn-lg " style="background-color:#f30808;"><span class="fab  fa-google fa-lg"></span> Google</a><br>
                           <a href="" class="btn btn-lg " style="background-color: #0084FF;"><span class="fab fa-facebook fa-lg"></span> Facebook</a>
                         </div>
   

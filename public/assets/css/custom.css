@@ -366,10 +366,12 @@ border: 1px solid rgb(61, 60, 60);
 
 .login-register-area .textarea {
 	margin-bottom: 20px;
-	border: 1px solid lightgrey;
+	border:1px solid #747373;
 	width: 100%
 }
-
+.login-register-area .soc-box{
+	border: 1px solid lightgrey;
+}
 .content-title {
 	text-align: center;
 	margin: 30px 0;
@@ -458,6 +460,9 @@ border: 1px solid rgb(61, 60, 60);
 @media screen and (max-width:700px) {
 	blog-sec {
 		margin: 0px auto;
+	}
+	.slick-arrow{
+		top:30%;
 	}
 	#blog_side{
 		display:none;

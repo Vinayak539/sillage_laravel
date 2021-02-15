@@ -33,7 +33,7 @@
   <div class="container">
     <div class="grid-nav-wraper bg-lighten2 mb-30">
       <div class="row align-items-center">
-        <div class="col-12 col-md-6 mb-3 mb-md-0">
+        {{-- <div class="col-12 col-md-6 mb-3 mb-md-0">
           <nav class="shop-grid-nav">
             <ul
               class="nav nav-pills align-items-center"
@@ -65,14 +65,14 @@
                   ><i class="fa fa-list"></i
                 ></a>
               </li>
-              {{-- <li>
+              <li>
                 <span class="total-products text-capitalize"
                   >There are 13 products.</span
                 >
-              </li> --}}
+              </li>
             </ul>
           </nav>
-        </div>
+        </div> --}}
         <div class="col-12 col-md-6 position-relative">
           <div class="shop-grid-button d-flex align-items-center">
             <span class="sort-by">Products By Brands:</span>

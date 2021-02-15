@@ -369,8 +369,8 @@
 
   var $blogInit = $(".blog-init");
   $blogInit.slick({
-    autoplay: false,
-    autoplaySpeed: 10000,
+    autoplay: true,
+    autoplaySpeed: 1500,
     dots: false,
     infinite: false,
     arrows: true,
@@ -400,7 +400,7 @@
       settings: {
         slidesToShow: 1,
         slidesToScroll: 1,
-        arrows: false,
+        arrows: true,
         autoplay: true
       }
     }, {
@@ -408,7 +408,7 @@
       settings: {
         slidesToShow: 1,
         slidesToScroll: 1,
-        arrows: false,
+        arrows: true,
         autoplay: true
       }
     } // You can unslick at a given breakpoint now by adding:
